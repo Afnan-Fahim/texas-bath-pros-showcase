@@ -18,7 +18,9 @@ import {
   ChevronRight,
   ChevronLeft,
   Waves,
+  CreditCard,
 } from "lucide-react";
+import logoAsset from "@/assets/tx-bath-pros-logo.jpg.asset.json";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -85,15 +87,19 @@ const PHONE_TEL = "tel:+12107020753";
 function Logo({ className }: { className?: string }) {
   return (
     <a href="#top" className={cn("flex items-center gap-2.5 group", className)}>
-      <span className="grid h-9 w-9 place-items-center rounded-lg bg-navy text-navy-foreground shadow-sm">
-        <Waves className="h-5 w-5" strokeWidth={2.25} />
-      </span>
+      <img
+        src={logoAsset.url}
+        alt="Texas Bath Pros — Built on Trust"
+        width={160}
+        height={160}
+        className="h-11 w-11 md:h-12 md:w-12 object-contain"
+      />
       <span className="flex flex-col leading-none">
         <span className="font-display text-lg font-bold tracking-tight text-navy">
           Texas Bath Pros
         </span>
         <span className="text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
-          San Antonio, TX
+          Built on Trust • San Antonio, TX
         </span>
       </span>
     </a>
@@ -256,6 +262,18 @@ function Hero({ onBook }: { onBook: () => void }) {
           >
             <Phone className="h-4 w-4" /> Call now: {PHONE_DISPLAY}
           </a>
+          <div className="mt-6 flex items-start gap-3 rounded-xl border border-teal/30 bg-teal/5 p-4 max-w-xl">
+            <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-teal/15 text-navy">
+              <CreditCard className="h-5 w-5" />
+            </div>
+            <div className="text-sm">
+              <div className="font-semibold text-navy">$0 Down Financing Available</div>
+              <p className="mt-0.5 text-foreground/75">
+                Hassle-free <span className="font-semibold text-navy">soft credit check</span> — won't affect your score.
+                Qualify for <span className="font-semibold text-navy">up to 12 months no payments &amp; no interest</span>.
+              </p>
+            </div>
+          </div>
         </div>
         <div className="relative animate-fade-up">
           <div className="absolute -inset-6 -z-10 rounded-[2rem] bg-gradient-to-br from-teal/25 via-transparent to-navy/20 blur-2xl" />
@@ -312,6 +330,56 @@ function TrustBar() {
     </section>
   );
 }
+
+/* ---------------- FINANCING BANNER ---------------- */
+function FinancingBanner({ onBook }: { onBook: () => void }) {
+  return (
+    <section className="py-10 md:py-14">
+      <div className="container-x">
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-navy to-navy/90 text-navy-foreground shadow-elegant">
+          <div className="absolute -right-16 -top-16 h-64 w-64 rounded-full bg-teal/25 blur-3xl" aria-hidden />
+          <div className="absolute -left-10 -bottom-16 h-56 w-56 rounded-full bg-teal/15 blur-3xl" aria-hidden />
+          <div className="relative grid gap-6 p-6 md:p-10 lg:grid-cols-[auto_1fr_auto] lg:items-center">
+            <div className="grid h-14 w-14 place-items-center rounded-xl bg-white/10 text-navy-foreground">
+              <CreditCard className="h-7 w-7" />
+            </div>
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-teal">
+                $0 Down Financing
+              </div>
+              <h3 className="mt-2 font-display text-2xl md:text-3xl font-semibold text-navy-foreground text-balance">
+                Zero money down. Up to 12 months no payments &amp; no interest.
+              </h3>
+              <p className="mt-2 text-navy-foreground/80 max-w-2xl">
+                Prequalify in seconds with a <span className="font-semibold text-white">hassle-free soft credit check</span>{" "}
+                — it won't affect your credit score. Get the shower you love now, pay comfortably later.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-3 lg:justify-end">
+              <Button
+                onClick={onBook}
+                size="lg"
+                className="bg-white text-navy hover:bg-white/90 h-12 px-6 font-semibold shadow-sm"
+              >
+                See If I Prequalify
+              </Button>
+              <a href={PHONE_TEL}>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-white/40 bg-transparent text-navy-foreground hover:bg-white/10 h-12 px-6"
+                >
+                  <Phone className="h-4 w-4 mr-2" /> {PHONE_DISPLAY}
+                </Button>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 
 /* ---------------- ABOUT ---------------- */
 function About() {
@@ -799,7 +867,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
     >
       <div className="container-x grid gap-10 lg:grid-cols-5 items-start">
         <div className="lg:col-span-2 lg:sticky lg:top-28">
-          <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-navy">
+          <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold normal-case tracking-wide text-navy">
             Book Your Free Estimate
           </span>
           <h2 className="mt-4 text-3xl md:text-5xl text-navy text-balance">
@@ -811,6 +879,8 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
           <ul className="mt-6 space-y-3">
             {[
               "No pressure. No obligation. Ever.",
+              "$0 down financing — up to 12 months no payments, no interest",
+              "Soft credit check only — won't affect your score",
               "Same-day estimates for most San Antonio homes",
               "Honest, upfront pricing — no surprises",
               "A+ BBB rated with zero complaints",
@@ -1117,9 +1187,13 @@ function Footer() {
       <div className="container-x py-14 grid gap-10 md:grid-cols-3">
         <div>
           <div className="flex items-center gap-2.5">
-            <span className="grid h-9 w-9 place-items-center rounded-lg bg-white/10 text-navy-foreground">
-              <Waves className="h-5 w-5" strokeWidth={2.25} />
-            </span>
+            <img
+              src={logoAsset.url}
+              alt="Texas Bath Pros"
+              width={160}
+              height={160}
+              className="h-12 w-12 object-contain rounded-md bg-white/5 p-1"
+            />
             <span className="font-display text-lg font-bold">Texas Bath Pros</span>
           </div>
           <p className="mt-4 text-navy-foreground/70 text-sm max-w-xs">
@@ -1188,6 +1262,7 @@ function Index() {
       <main>
         <Hero onBook={scrollToBook} />
         <TrustBar />
+        <FinancingBanner onBook={scrollToBook} />
         <About />
         <Gallery />
         <WhyUs />
