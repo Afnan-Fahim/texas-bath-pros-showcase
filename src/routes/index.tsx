@@ -1262,6 +1262,7 @@ function Index() {
       <main>
         <Hero onBook={scrollToBook} />
         <TrustBar />
+        <FinancingBanner onBook={scrollToBook} />
         <About />
         <Gallery />
         <WhyUs />
