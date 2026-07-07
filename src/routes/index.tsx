@@ -18,7 +18,9 @@ import {
   ChevronRight,
   ChevronLeft,
   Waves,
+  CreditCard,
 } from "lucide-react";
+import logoAsset from "@/assets/tx-bath-pros-logo.jpg.asset.json";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -85,15 +87,19 @@ const PHONE_TEL = "tel:+12107020753";
 function Logo({ className }: { className?: string }) {
   return (
     <a href="#top" className={cn("flex items-center gap-2.5 group", className)}>
-      <span className="grid h-9 w-9 place-items-center rounded-lg bg-navy text-navy-foreground shadow-sm">
-        <Waves className="h-5 w-5" strokeWidth={2.25} />
-      </span>
+      <img
+        src={logoAsset.url}
+        alt="Texas Bath Pros — Built on Trust"
+        width={160}
+        height={160}
+        className="h-11 w-11 md:h-12 md:w-12 object-contain"
+      />
       <span className="flex flex-col leading-none">
         <span className="font-display text-lg font-bold tracking-tight text-navy">
           Texas Bath Pros
         </span>
         <span className="text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
-          San Antonio, TX
+          Built on Trust • San Antonio, TX
         </span>
       </span>
     </a>
@@ -799,7 +805,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
     >
       <div className="container-x grid gap-10 lg:grid-cols-5 items-start">
         <div className="lg:col-span-2 lg:sticky lg:top-28">
-          <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-navy">
+          <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold normal-case tracking-wide text-navy">
             Book Your Free Estimate
           </span>
           <h2 className="mt-4 text-3xl md:text-5xl text-navy text-balance">
@@ -1117,9 +1123,13 @@ function Footer() {
       <div className="container-x py-14 grid gap-10 md:grid-cols-3">
         <div>
           <div className="flex items-center gap-2.5">
-            <span className="grid h-9 w-9 place-items-center rounded-lg bg-white/10 text-navy-foreground">
-              <Waves className="h-5 w-5" strokeWidth={2.25} />
-            </span>
+            <img
+              src={logoAsset.url}
+              alt="Texas Bath Pros"
+              width={160}
+              height={160}
+              className="h-12 w-12 object-contain rounded-md bg-white/5 p-1"
+            />
             <span className="font-display text-lg font-bold">Texas Bath Pros</span>
           </div>
           <p className="mt-4 text-navy-foreground/70 text-sm max-w-xs">
