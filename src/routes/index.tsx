@@ -829,6 +829,8 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
           <ul className="mt-6 space-y-3">
             {[
               "No pressure. No obligation. Ever.",
+              "$0 down financing — up to 12 months no payments, no interest",
+              "Soft credit check only — won't affect your score",
               "Same-day estimates for most San Antonio homes",
               "Honest, upfront pricing — no surprises",
               "A+ BBB rated with zero complaints",
