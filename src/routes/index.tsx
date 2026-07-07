@@ -90,9 +90,9 @@ function Logo({ className }: { className?: string }) {
       <img
         src={logoAsset.url}
         alt="Texas Bath Pros — Built on Trust"
-        width={160}
-        height={160}
-        className="h-11 w-11 md:h-12 md:w-12 object-contain"
+        width={240}
+        height={240}
+        className="h-32 w-32 md:h-36 md:w-36 object-contain"
       />
       <span className="flex flex-col leading-none">
         <span className="font-display text-lg font-bold tracking-tight text-navy">
