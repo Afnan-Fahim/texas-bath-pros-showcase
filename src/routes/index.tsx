@@ -712,9 +712,8 @@ function WhyUs() {
 function Process() {
   const steps = [
     { n: "1", title: "Book Your Free Estimate", body: "Call or fill out the form — same-day appointments often available." },
-    { n: "2", title: "We Visit & Measure", body: "A friendly, no-obligation home visit with an honest, upfront quote." },
-    { n: "3", title: "Choose Your Style", body: "We walk you through beautiful acrylic tile, marble, and stone options." },
-    { n: "4", title: "Professional Installation", body: "Fast, clean installation — most showers finished in a single day." },
+    { n: "2", title: "We Visit, Measure & Design", body: "A friendly, no-obligation home visit with an honest, upfront quote — then we walk you through beautiful acrylic tile, marble, and stone options." },
+    { n: "3", title: "Professional Installation", body: "Fast, clean installation — most showers finished in a single day." },
   ];
   return (
     <section id="process" className="py-16 md:py-24 bg-gradient-to-b from-navy to-navy/95 text-navy-foreground">
