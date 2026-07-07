@@ -99,7 +99,7 @@ function Logo({ className }: { className?: string }) {
           Texas Bath Pros
         </span>
         <span className="text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
-          Quality Texas Craftsmanship • San Antonio, TX
+          Baths Built Right • San Antonio, TX
         </span>
       </span>
     </a>
@@ -1198,7 +1198,7 @@ function Footer() {
                 Texas Bath Pros
               </span>
               <span className="mt-1 text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
-                Quality Texas Craftsmanship • San Antonio, TX
+                Baths Built Right • San Antonio, TX
               </span>
             </span>
           </div>
