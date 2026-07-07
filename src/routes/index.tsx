@@ -134,7 +134,7 @@ function Navbar({ onBook }: { onBook: () => void }) {
           : "bg-background/60 backdrop-blur-sm",
       )}
     >
-      <div className="container-x flex h-16 items-center gap-4 md:h-20">
+      <div className="container-x flex h-24 items-center gap-4 md:h-28">
         <Logo />
         <nav className="ml-auto hidden lg:flex items-center gap-8">
           {links.map((l) => (
@@ -1192,7 +1192,7 @@ function Footer() {
               alt="Texas Bath Pros"
               width={160}
               height={160}
-              className="h-12 w-12 object-contain rounded-md bg-white/5 p-1"
+              className="h-36 w-36 object-contain rounded-md bg-white/5 p-1"
             />
             <span className="font-display text-lg font-bold">Texas Bath Pros</span>
           </div>
