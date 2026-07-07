@@ -1186,20 +1186,27 @@ function Footer() {
     <footer className="bg-navy text-navy-foreground">
       <div className="container-x py-14 grid gap-10 md:grid-cols-3">
         <div>
-          <div className="flex items-center gap-2.5">
+          <div className="inline-flex items-center gap-3 rounded-2xl bg-white p-3 pr-5 shadow-sm ring-1 ring-black/5">
             <img
               src={logoAsset.url}
-              alt="Texas Bath Pros"
-              width={160}
-              height={160}
-              className="h-36 w-36 object-contain rounded-md bg-white/5 p-1"
+              alt="Texas Bath Pros — Built on Trust"
+              width={240}
+              height={240}
+              className="h-16 w-16 object-contain"
             />
-            <span className="font-display text-lg font-bold">Texas Bath Pros</span>
+            <span className="flex flex-col leading-none">
+              <span className="font-display text-lg font-bold tracking-tight text-navy">
+                Texas Bath Pros
+              </span>
+              <span className="mt-1 text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
+                Built on Trust • San Antonio, TX
+              </span>
+            </span>
           </div>
-          <p className="mt-4 text-navy-foreground/70 text-sm max-w-xs">
+          <p className="mt-5 text-navy-foreground/70 text-sm max-w-xs">
             Family-owned bathroom remodeling. Beautiful showers, fast installs, zero hassle.
           </p>
-          <p className="mt-4 text-navy-foreground/60 text-sm">
+          <p className="mt-3 text-navy-foreground/60 text-sm">
             Proudly serving San Antonio and surrounding areas.
           </p>
         </div>
@@ -1267,9 +1274,9 @@ function Index() {
         <Gallery />
         <WhyUs />
         <Process />
-        <Testimonials />
         <BookingForm formRef={formRef} />
         <FAQ />
+        <Testimonials />
       </main>
       <Footer />
       <MobilePhoneCTA />
