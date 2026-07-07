@@ -90,9 +90,9 @@ function Logo({ className }: { className?: string }) {
       <img
         src={logoAsset.url}
         alt="Texas Bath Pros — Built on Trust"
-        width={160}
-        height={160}
-        className="h-11 w-11 md:h-12 md:w-12 object-contain"
+        width={240}
+        height={240}
+        className="h-32 w-32 md:h-36 md:w-36 object-contain"
       />
       <span className="flex flex-col leading-none">
         <span className="font-display text-lg font-bold tracking-tight text-navy">
@@ -134,7 +134,7 @@ function Navbar({ onBook }: { onBook: () => void }) {
           : "bg-background/60 backdrop-blur-sm",
       )}
     >
-      <div className="container-x flex h-16 items-center gap-4 md:h-20">
+      <div className="container-x flex h-24 items-center gap-4 md:h-28">
         <Logo />
         <nav className="ml-auto hidden lg:flex items-center gap-8">
           {links.map((l) => (
@@ -221,7 +221,7 @@ function MobilePhoneCTA() {
 /* ---------------- HERO ---------------- */
 function Hero({ onBook }: { onBook: () => void }) {
   return (
-    <section id="top" className="relative pt-24 md:pt-28 pb-16 md:pb-24 overflow-hidden">
+    <section id="top" className="relative pt-32 md:pt-40 pb-16 md:pb-24 overflow-hidden">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_color-mix(in_oklab,var(--teal)_18%,transparent)_0%,transparent_60%)]" />
       <div className="container-x grid gap-10 lg:grid-cols-2 lg:gap-16 items-center">
         <div className="animate-fade-up">
@@ -1192,7 +1192,7 @@ function Footer() {
               alt="Texas Bath Pros"
               width={160}
               height={160}
-              className="h-12 w-12 object-contain rounded-md bg-white/5 p-1"
+              className="h-36 w-36 object-contain rounded-md bg-white/5 p-1"
             />
             <span className="font-display text-lg font-bold">Texas Bath Pros</span>
           </div>
