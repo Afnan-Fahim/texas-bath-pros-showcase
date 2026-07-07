@@ -262,6 +262,18 @@ function Hero({ onBook }: { onBook: () => void }) {
           >
             <Phone className="h-4 w-4" /> Call now: {PHONE_DISPLAY}
           </a>
+          <div className="mt-6 flex items-start gap-3 rounded-xl border border-teal/30 bg-teal/5 p-4 max-w-xl">
+            <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-teal/15 text-navy">
+              <CreditCard className="h-5 w-5" />
+            </div>
+            <div className="text-sm">
+              <div className="font-semibold text-navy">$0 Down Financing Available</div>
+              <p className="mt-0.5 text-foreground/75">
+                Hassle-free <span className="font-semibold text-navy">soft credit check</span> — won't affect your score.
+                Qualify for <span className="font-semibold text-navy">up to 12 months no payments &amp; no interest</span>.
+              </p>
+            </div>
+          </div>
         </div>
         <div className="relative animate-fade-up">
           <div className="absolute -inset-6 -z-10 rounded-[2rem] bg-gradient-to-br from-teal/25 via-transparent to-navy/20 blur-2xl" />
