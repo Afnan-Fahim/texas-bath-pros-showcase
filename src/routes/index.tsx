@@ -94,14 +94,7 @@ function Logo({ className }: { className?: string }) {
         height={240}
         className="h-32 w-32 md:h-36 md:w-36 object-contain"
       />
-      <span className="flex flex-col leading-none">
-        <span className="font-display text-lg font-bold tracking-tight text-navy">
-          Texas Bath Pros
-        </span>
-        <span className="text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
-          Trusted Bath Masters • San Antonio, TX
-        </span>
-      </span>
+      <span className="sr-only">Texas Bath Solutions — Trusted Shower Experts</span>
     </a>
   );
 }
