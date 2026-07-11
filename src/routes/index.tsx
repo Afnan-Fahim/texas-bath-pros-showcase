@@ -20,7 +20,7 @@ import {
   Waves,
   CreditCard,
 } from "lucide-react";
-import logoAsset from "@/assets/texas-bath-solutions-mark.png.asset.json";
+import logoAsset from "@/assets/texas-bath-solutions-logo-full.jpg.asset.json";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -96,16 +96,13 @@ function Logo({ className }: { className?: string }) {
       <img
         src={logoAsset.url}
         alt="Texas Bath Solutions"
-        width={200}
-        height={200}
-        className="h-16 w-16 md:h-20 md:w-20 object-contain"
+        width={320}
+        height={120}
+        className="h-16 md:h-20 w-auto object-contain"
       />
-      <div className="flex flex-col leading-tight">
-        <span className="font-display text-2xl md:text-3xl font-bold text-navy tracking-tight">
-          Texas Bath Solutions
-        </span>
+      <div className="hidden sm:flex flex-col leading-tight">
         <span className="text-xs md:text-sm font-medium text-navy/70 tracking-wide">
-          Trusted Shower Experts · San Antonio, Texas
+          San Antonio, Texas
         </span>
       </div>
     </a>
@@ -1320,22 +1317,17 @@ function Footer() {
     <footer className="bg-navy text-navy-foreground">
       <div className="container-x py-14 grid gap-10 md:grid-cols-3">
         <div>
-          <div className="inline-flex items-center gap-3 rounded-2xl bg-white p-4 pr-6 shadow-sm ring-1 ring-black/5">
+          <div className="inline-flex flex-col items-start gap-2 rounded-2xl bg-white p-4 pr-6 shadow-sm ring-1 ring-black/5">
             <img
               src={logoAsset.url}
               alt="Texas Bath Solutions"
-              width={200}
-              height={200}
-              className="h-16 w-16 object-contain"
+              width={320}
+              height={120}
+              className="h-16 w-auto object-contain"
             />
-            <div className="flex flex-col leading-tight">
-              <span className="font-display text-xl font-bold text-navy tracking-tight">
-                Texas Bath Solutions
-              </span>
-              <span className="text-xs font-medium text-navy/70 tracking-wide">
-                Trusted Shower Experts · San Antonio, Texas
-              </span>
-            </div>
+            <span className="text-xs font-medium text-navy/70 tracking-wide">
+              San Antonio, Texas
+            </span>
           </div>
           <p className="mt-5 text-navy-foreground/70 text-sm max-w-xs">
             Family-owned bathroom remodeling. Beautiful showers, fast installs, zero hassle.
