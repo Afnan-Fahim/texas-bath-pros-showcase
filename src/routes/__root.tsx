@@ -77,18 +77,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Texas Bath Pros | San Antonio Bathroom Remodeling | Free Same-Day Estimates" },
+      { title: "Texas Bath Solutions | San Antonio Bathroom Remodeling | Free Same-Day Estimates" },
       {
         name: "description",
         content:
-          "San Antonio's trusted family-owned bathroom remodeler. Beautiful acrylic showers, tub-to-shower conversions, free same-day estimates. A+ BBB rated with zero complaints.",
+          "San Antonio's Trusted Shower Experts. Bella Stone acrylic shower remodels starting at $8,477. Free same-day estimates, $0 down financing, A+ BBB rated.",
       },
-      { name: "author", content: "Texas Bath Pros" },
-      { property: "og:site_name", content: "Texas Bath Pros" },
-      { property: "og:title", content: "Texas Bath Pros | San Antonio Bathroom Remodeling" },
+      { name: "author", content: "Texas Bath Solutions" },
+      { property: "og:site_name", content: "Texas Bath Solutions" },
+      { property: "og:title", content: "Texas Bath Solutions | San Antonio Bathroom Remodeling" },
       {
         property: "og:description",
-        content: "Beautiful showers. Fast, clean installs. Zero hassle. Free same-day estimates in San Antonio.",
+        content: "Bella Stone acrylic showers from $8,477. Fast, clean installs. Free same-day estimates in San Antonio.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

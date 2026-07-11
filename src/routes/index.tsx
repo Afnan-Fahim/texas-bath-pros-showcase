@@ -20,7 +20,7 @@ import {
   Waves,
   CreditCard,
 } from "lucide-react";
-import logoAsset from "@/assets/tx-bath-pros-logo.jpg.asset.json";
+import logoAsset from "@/assets/texas-bath-solutions-logo.jpg.asset.json";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -66,13 +66,13 @@ export const Route = createFileRoute("/")({
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "LocalBusiness",
-          name: "Texas Bath Pros",
+          name: "Texas Bath Solutions",
           description:
-            "Family-owned San Antonio bathroom remodeler specializing in acrylic showers and tub-to-shower conversions.",
+            "Family-owned San Antonio bathroom remodeler specializing in Bella Stone acrylic showers and tub-to-shower conversions. Trusted Shower Experts.",
           telephone: "+1-210-702-0753",
           areaServed: "San Antonio, TX",
           address: { "@type": "PostalAddress", addressLocality: "San Antonio", addressRegion: "TX", addressCountry: "US" },
-          url: "https://www.texasbathpros.com",
+          url: "https://www.texasbathsolutions.com",
         }),
       },
     ],
@@ -89,19 +89,12 @@ function Logo({ className }: { className?: string }) {
     <a href="#top" className={cn("flex items-center gap-2.5 group", className)}>
       <img
         src={logoAsset.url}
-        alt="Texas Bath Pros — Built on Trust"
+        alt="Texas Bath Solutions — Trusted Shower Experts"
         width={240}
         height={240}
         className="h-32 w-32 md:h-36 md:w-36 object-contain"
       />
-      <span className="flex flex-col leading-none">
-        <span className="font-display text-lg font-bold tracking-tight text-navy">
-          Texas Bath Pros
-        </span>
-        <span className="text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
-          Trusted Bath Masters • San Antonio, TX
-        </span>
-      </span>
+      <span className="sr-only">Texas Bath Solutions — Trusted Shower Experts</span>
     </a>
   );
 }
@@ -277,15 +270,7 @@ function Hero({ onBook }: { onBook: () => void }) {
         </div>
         <div className="relative animate-fade-up">
           <div className="absolute -inset-6 -z-10 rounded-[2rem] bg-gradient-to-br from-teal/25 via-transparent to-navy/20 blur-2xl" />
-          <div className="relative overflow-hidden rounded-2xl shadow-elegant ring-1 ring-black/5">
-            <img
-              src={heroShower}
-              alt="Modern acrylic marble-look walk-in shower installed by Texas Bath Pros"
-              width={1600}
-              height={1200}
-              className="w-full h-auto object-cover"
-            />
-          </div>
+          <BeforeAfterReel />
           <div className="absolute -bottom-6 -left-6 hidden md:flex items-center gap-3 rounded-xl bg-card px-4 py-3 shadow-card ring-1 ring-border">
             <div className="flex -space-x-1">
               {[0, 1, 2, 3, 4].map((i) => (
@@ -300,6 +285,100 @@ function Hero({ onBook }: { onBook: () => void }) {
         </div>
       </div>
     </section>
+  );
+}
+
+/* ---------------- BEFORE/AFTER REEL (auto-play) ---------------- */
+const REEL_PAIRS = [
+  { before: beforeFiberglass, after: afterMarble, label: "Fiberglass → Bella Stone Marble" },
+  { before: beforePink, after: afterSubway, label: "Dated Tile → Modern Subway" },
+  { before: beforeBeige, after: afterVenatino, label: "Beige Tub → Venatino Walk-In" },
+  { before: beforeWhiteTile, after: afterModern, label: "Tired Tile → Modern Spa" },
+];
+
+function BeforeAfterReel() {
+  const [i, setI] = useState(0);
+  const [phase, setPhase] = useState<"before" | "after">("before");
+  useEffect(() => {
+    const t = setInterval(() => {
+      setPhase((p) => {
+        if (p === "before") return "after";
+        setI((n) => (n + 1) % REEL_PAIRS.length);
+        return "before";
+      });
+    }, 2400);
+    return () => clearInterval(t);
+  }, []);
+  const pair = REEL_PAIRS[i];
+  return (
+    <div className="relative overflow-hidden rounded-2xl shadow-elegant ring-1 ring-black/5 aspect-[4/3] bg-navy">
+      {REEL_PAIRS.map((p, idx) => (
+        <div
+          key={idx}
+          className={cn(
+            "absolute inset-0 transition-opacity duration-700",
+            idx === i ? "opacity-100" : "opacity-0",
+          )}
+        >
+          <img
+            src={p.before}
+            alt={`${p.label} — before`}
+            className={cn(
+              "absolute inset-0 h-full w-full object-cover transition-opacity duration-700",
+              idx === i && phase === "before" ? "opacity-100" : "opacity-0",
+            )}
+          />
+          <img
+            src={p.after}
+            alt={`${p.label} — after`}
+            className={cn(
+              "absolute inset-0 h-full w-full object-cover transition-opacity duration-700",
+              idx === i && phase === "after" ? "opacity-100" : "opacity-0",
+            )}
+          />
+        </div>
+      ))}
+      {/* corner label */}
+      <div className="absolute left-4 top-4 rounded-full bg-black/60 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white backdrop-blur">
+        {phase === "before" ? "Before" : "After"}
+      </div>
+      <div className="absolute right-4 top-4 rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold text-navy shadow">
+        {pair.label}
+      </div>
+      {/* pricing overlay */}
+      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/50 to-transparent p-5 md:p-6 text-white">
+        <div className="flex items-end justify-between gap-4 flex-wrap">
+          <div>
+            <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-teal-foreground/90 text-white/80">
+              Bella Stone Acrylic Shower Remodel
+            </div>
+            <div className="mt-1 font-display text-2xl md:text-3xl font-bold leading-tight">
+              Starting at <span className="text-gold">$8,477</span>
+            </div>
+            <div className="mt-1 text-xs md:text-sm text-white/80">
+              Full walk-in conversion • Installed in as little as 1 day
+            </div>
+          </div>
+          <ul className="grid grid-cols-1 gap-1 text-xs md:text-sm text-white/90">
+            <li className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-teal" /> Lifetime warranty</li>
+            <li className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-teal" /> Mold &amp; leak-proof</li>
+            <li className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-teal" /> $0 down financing</li>
+          </ul>
+        </div>
+        {/* progress dots */}
+        <div className="mt-4 flex items-center gap-1.5">
+          {REEL_PAIRS.map((_, idx) => (
+            <span
+              key={idx}
+              className={cn(
+                "h-1 rounded-full transition-all",
+                idx === i ? "w-8 bg-gold" : "w-3 bg-white/40",
+              )}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -680,7 +759,7 @@ function WhyUs() {
       <div className="container-x">
         <div className="max-w-3xl mx-auto text-center">
           <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-navy">
-            Why Texas Bath Pros
+            Why Texas Bath Solutions
           </span>
           <h2 className="mt-4 text-3xl md:text-5xl text-navy text-balance">
             Everything you'd want from a remodeler — nothing you wouldn't.
@@ -763,7 +842,7 @@ function Testimonials() {
     {
       name: "Robert & Linda M.",
       area: "Boerne",
-      body: "We got three quotes — Texas Bath Pros was the most professional and by far the easiest to work with. Beautiful subway-tile shower.",
+      body: "We got three quotes — Texas Bath Solutions was the most professional and by far the easiest to work with. Beautiful subway-tile shower.",
     },
     {
       name: "Anthony P.",
@@ -1188,19 +1267,11 @@ function Footer() {
           <div className="inline-flex items-center gap-3 rounded-2xl bg-white p-3 pr-5 shadow-sm ring-1 ring-black/5">
             <img
               src={logoAsset.url}
-              alt="Texas Bath Pros — Built on Trust"
+              alt="Texas Bath Solutions — Trusted Shower Experts"
               width={240}
               height={240}
-              className="h-16 w-16 object-contain"
+              className="h-24 w-24 object-contain"
             />
-            <span className="flex flex-col leading-none">
-              <span className="font-display text-lg font-bold tracking-tight text-navy">
-                Texas Bath Pros
-              </span>
-              <span className="mt-1 text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
-                Trusted Bath Masters • San Antonio, TX
-              </span>
-            </span>
           </div>
           <p className="mt-5 text-navy-foreground/70 text-sm max-w-xs">
             Family-owned bathroom remodeling. Beautiful showers, fast installs, zero hassle.
@@ -1243,7 +1314,7 @@ function Footer() {
       </div>
       <div className="border-t border-white/10">
         <div className="container-x py-5 flex flex-wrap items-center justify-between gap-3 text-xs text-navy-foreground/60">
-          <div>© {new Date().getFullYear()} Texas Bath Pros. All rights reserved.</div>
+          <div>© {new Date().getFullYear()} Texas Bath Solutions. All rights reserved.</div>
           <div className="flex gap-4">
             <a href="#" className="hover:text-white">Privacy</a>
             <a href="#" className="hover:text-white">Terms</a>
