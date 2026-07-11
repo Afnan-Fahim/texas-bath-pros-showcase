@@ -1341,7 +1341,9 @@ function Footer() {
     <footer className="bg-navy text-navy-foreground">
       <div className="container-x py-14 grid gap-10 md:grid-cols-3">
         <div>
-          <Logo size="sm" dark />
+          <div className="inline-flex items-center bg-white rounded-xl px-4 py-3 shadow-sm">
+            <Logo size="sm" />
+          </div>
           <p className="mt-5 text-navy-foreground/70 text-sm max-w-xs">
             Family-owned bathroom remodeling. Beautiful showers, fast installs, zero hassle.
           </p>
