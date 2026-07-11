@@ -98,11 +98,11 @@ function Logo({ className }: { className?: string }) {
         alt="Texas Bath Solutions"
         width={320}
         height={120}
-        className="h-16 md:h-20 w-auto object-contain"
+        className="h-40 md:h-48 w-auto object-contain"
       />
       <div className="hidden sm:flex flex-col leading-tight">
         <span className="text-xs md:text-sm font-medium text-navy/70 tracking-wide">
-          San Antonio, Texas
+          Trusted Shower Experts · San Antonio, Texas
         </span>
       </div>
     </a>
@@ -137,7 +137,7 @@ function Navbar({ onBook }: { onBook: () => void }) {
           : "bg-background/60 backdrop-blur-sm",
       )}
     >
-      <div className="container-x flex h-24 items-center gap-4 md:h-28">
+      <div className="container-x flex h-48 items-center gap-4 md:h-56">
         <Logo />
         <nav className="ml-auto hidden lg:flex items-center gap-8">
           {links.map((l) => (
@@ -224,7 +224,7 @@ function MobilePhoneCTA() {
 /* ---------------- HERO ---------------- */
 function Hero({ onBook }: { onBook: () => void }) {
   return (
-    <section id="top" className="relative pt-32 md:pt-40 pb-16 md:pb-24 overflow-hidden">
+    <section id="top" className="relative pt-56 md:pt-64 pb-16 md:pb-24 overflow-hidden">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_color-mix(in_oklab,var(--teal)_18%,transparent)_0%,transparent_60%)]" />
       <div className="container-x grid gap-10 lg:grid-cols-2 lg:gap-16 items-center">
         <div className="animate-fade-up">
@@ -238,7 +238,7 @@ function Hero({ onBook }: { onBook: () => void }) {
             Beautiful showers. Fast, clean installs. Zero hassle.
           </p>
           <p className="mt-3 text-sm md:text-base font-medium text-foreground/80">
-            Family-Owned <span className="text-muted-foreground">•</span> Free Same-Day Estimates{" "}
+            Family-Owned <span className="text-muted-foreground">•</span> Free No Hassle Estimates{" "}
             <span className="text-muted-foreground">•</span> A+ BBB Rated — Zero Complaints
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
@@ -247,7 +247,7 @@ function Hero({ onBook }: { onBook: () => void }) {
               onClick={onBook}
               className="bg-navy text-navy-foreground hover:bg-navy/90 shadow-elegant text-base h-12 px-6"
             >
-              Book Your Free Same-Day Estimate
+              Book Your Free No Hassle Estimate
             </Button>
             <a href="#work">
               <Button
@@ -1323,10 +1323,10 @@ function Footer() {
               alt="Texas Bath Solutions"
               width={320}
               height={120}
-              className="h-16 w-auto object-contain"
+              className="h-40 w-auto object-contain"
             />
             <span className="text-xs font-medium text-navy/70 tracking-wide">
-              San Antonio, Texas
+              Trusted Shower Experts · San Antonio, Texas
             </span>
           </div>
           <p className="mt-5 text-navy-foreground/70 text-sm max-w-xs">
