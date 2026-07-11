@@ -104,11 +104,11 @@ function Logo({ className, size = "default" }: { className?: string; size?: "def
         )}
       />
       <div className="hidden sm:flex flex-col leading-tight">
-        <span className="text-xl md:text-2xl font-semibold text-navy tracking-wide">
+        <span className="text-[0.8125rem] md:text-[0.975rem] font-semibold text-navy tracking-wide">
           Trusted Shower Experts
         </span>
-        <span className="text-base md:text-lg font-medium text-navy/70 tracking-wide">
-          San Antonio, Texas
+        <span className="text-[0.65rem] md:text-[0.73125rem] font-medium text-navy/70 tracking-wide">
+          San Antonio, TX
         </span>
       </div>
     </a>
