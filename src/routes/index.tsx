@@ -288,6 +288,100 @@ function Hero({ onBook }: { onBook: () => void }) {
   );
 }
 
+/* ---------------- BEFORE/AFTER REEL (auto-play) ---------------- */
+const REEL_PAIRS = [
+  { before: beforeFiberglass, after: afterMarble, label: "Fiberglass → Bella Stone Marble" },
+  { before: beforePink, after: afterSubway, label: "Dated Tile → Modern Subway" },
+  { before: beforeBeige, after: afterVenatino, label: "Beige Tub → Venatino Walk-In" },
+  { before: beforeWhiteTile, after: afterModern, label: "Tired Tile → Modern Spa" },
+];
+
+function BeforeAfterReel() {
+  const [i, setI] = useState(0);
+  const [phase, setPhase] = useState<"before" | "after">("before");
+  useEffect(() => {
+    const t = setInterval(() => {
+      setPhase((p) => {
+        if (p === "before") return "after";
+        setI((n) => (n + 1) % REEL_PAIRS.length);
+        return "before";
+      });
+    }, 2400);
+    return () => clearInterval(t);
+  }, []);
+  const pair = REEL_PAIRS[i];
+  return (
+    <div className="relative overflow-hidden rounded-2xl shadow-elegant ring-1 ring-black/5 aspect-[4/3] bg-navy">
+      {REEL_PAIRS.map((p, idx) => (
+        <div
+          key={idx}
+          className={cn(
+            "absolute inset-0 transition-opacity duration-700",
+            idx === i ? "opacity-100" : "opacity-0",
+          )}
+        >
+          <img
+            src={p.before}
+            alt={`${p.label} — before`}
+            className={cn(
+              "absolute inset-0 h-full w-full object-cover transition-opacity duration-700",
+              idx === i && phase === "before" ? "opacity-100" : "opacity-0",
+            )}
+          />
+          <img
+            src={p.after}
+            alt={`${p.label} — after`}
+            className={cn(
+              "absolute inset-0 h-full w-full object-cover transition-opacity duration-700",
+              idx === i && phase === "after" ? "opacity-100" : "opacity-0",
+            )}
+          />
+        </div>
+      ))}
+      {/* corner label */}
+      <div className="absolute left-4 top-4 rounded-full bg-black/60 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white backdrop-blur">
+        {phase === "before" ? "Before" : "After"}
+      </div>
+      <div className="absolute right-4 top-4 rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold text-navy shadow">
+        {pair.label}
+      </div>
+      {/* pricing overlay */}
+      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/50 to-transparent p-5 md:p-6 text-white">
+        <div className="flex items-end justify-between gap-4 flex-wrap">
+          <div>
+            <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-teal-foreground/90 text-white/80">
+              Bella Stone Acrylic Shower Remodel
+            </div>
+            <div className="mt-1 font-display text-2xl md:text-3xl font-bold leading-tight">
+              Starting at <span className="text-gold">$8,477</span>
+            </div>
+            <div className="mt-1 text-xs md:text-sm text-white/80">
+              Full walk-in conversion • Installed in as little as 1 day
+            </div>
+          </div>
+          <ul className="grid grid-cols-1 gap-1 text-xs md:text-sm text-white/90">
+            <li className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-teal" /> Lifetime warranty</li>
+            <li className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-teal" /> Mold &amp; leak-proof</li>
+            <li className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-teal" /> $0 down financing</li>
+          </ul>
+        </div>
+        {/* progress dots */}
+        <div className="mt-4 flex items-center gap-1.5">
+          {REEL_PAIRS.map((_, idx) => (
+            <span
+              key={idx}
+              className={cn(
+                "h-1 rounded-full transition-all",
+                idx === i ? "w-8 bg-gold" : "w-3 bg-white/40",
+              )}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ---------------- TRUST BAR ---------------- */
 function TrustBar() {
   const items = [
