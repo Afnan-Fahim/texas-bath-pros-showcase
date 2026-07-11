@@ -98,7 +98,7 @@ function Logo({ className }: { className?: string }) {
         alt="Texas Bath Solutions"
         width={320}
         height={120}
-        className="h-32 md:h-40 w-auto object-contain"
+        className="h-40 md:h-48 w-auto object-contain"
       />
       <div className="hidden sm:flex flex-col leading-tight">
         <span className="text-xs md:text-sm font-medium text-navy/70 tracking-wide">
