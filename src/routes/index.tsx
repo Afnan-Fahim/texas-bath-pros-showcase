@@ -96,16 +96,13 @@ function Logo({ className }: { className?: string }) {
       <img
         src={logoAsset.url}
         alt="Texas Bath Solutions"
-        width={200}
-        height={200}
-        className="h-16 w-16 md:h-20 md:w-20 object-contain"
+        width={320}
+        height={120}
+        className="h-16 md:h-20 w-auto object-contain"
       />
-      <div className="flex flex-col leading-tight">
-        <span className="font-display text-2xl md:text-3xl font-bold text-navy tracking-tight">
-          Texas Bath Solutions
-        </span>
+      <div className="hidden sm:flex flex-col leading-tight">
         <span className="text-xs md:text-sm font-medium text-navy/70 tracking-wide">
-          Trusted Shower Experts · San Antonio, Texas
+          San Antonio, Texas
         </span>
       </div>
     </a>
