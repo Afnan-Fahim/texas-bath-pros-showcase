@@ -602,6 +602,14 @@ const GALLERY: GalleryItem[] = [
   },
 ];
 
+const FILTERS = [
+  { id: "all", label: "All" },
+  { id: "subway", label: "Subway Tile" },
+  { id: "marble", label: "Marble & Stone" },
+  { id: "modern", label: "Modern Minimal" },
+] as const;
+
+
 function Gallery() {
   const [filter, setFilter] = useState<(typeof FILTERS)[number]["id"]>("all");
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
