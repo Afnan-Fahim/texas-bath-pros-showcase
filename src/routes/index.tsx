@@ -103,9 +103,14 @@ function Logo({ className, size = "default" }: { className?: string; size?: "def
           size === "sm" ? "h-30 md:h-36" : "h-60 md:h-72",
         )}
       />
-      <span className="text-2xl md:text-3xl font-semibold text-navy/80 tracking-wide whitespace-nowrap">
-        Trusted Shower Experts · San Antonio, Texas
-      </span>
+      <div className="hidden sm:flex flex-col leading-tight">
+        <span className="text-xl md:text-2xl font-semibold text-navy tracking-wide">
+          Trusted Shower Experts
+        </span>
+        <span className="text-base md:text-lg font-medium text-navy/70 tracking-wide">
+          San Antonio, Texas
+        </span>
+      </div>
     </a>
   );
 }
