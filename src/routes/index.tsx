@@ -1411,10 +1411,10 @@ function Index() {
         <Hero onBook={scrollToBook} />
         <TrustBar />
         <About />
+        <BookingForm formRef={formRef} />
         <Gallery />
         <WhyUs />
         <Process />
-        <BookingForm formRef={formRef} />
         <FAQ />
         <Testimonials />
       </main>
