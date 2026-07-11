@@ -673,7 +673,7 @@ function WhyUs() {
       <div className="container-x">
         <div className="max-w-3xl mx-auto text-center">
           <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-navy">
-            Why Texas Bath Pros
+            Why Texas Bath Solutions
           </span>
           <h2 className="mt-4 text-3xl md:text-5xl text-navy text-balance">
             Everything you'd want from a remodeler — nothing you wouldn't.
@@ -756,7 +756,7 @@ function Testimonials() {
     {
       name: "Robert & Linda M.",
       area: "Boerne",
-      body: "We got three quotes — Texas Bath Pros was the most professional and by far the easiest to work with. Beautiful subway-tile shower.",
+      body: "We got three quotes — Texas Bath Solutions was the most professional and by far the easiest to work with. Beautiful subway-tile shower.",
     },
     {
       name: "Anthony P.",
@@ -1181,19 +1181,11 @@ function Footer() {
           <div className="inline-flex items-center gap-3 rounded-2xl bg-white p-3 pr-5 shadow-sm ring-1 ring-black/5">
             <img
               src={logoAsset.url}
-              alt="Texas Bath Pros — Built on Trust"
+              alt="Texas Bath Solutions — Trusted Shower Experts"
               width={240}
               height={240}
-              className="h-16 w-16 object-contain"
+              className="h-24 w-24 object-contain"
             />
-            <span className="flex flex-col leading-none">
-              <span className="font-display text-lg font-bold tracking-tight text-navy">
-                Texas Bath Pros
-              </span>
-              <span className="mt-1 text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
-                Trusted Bath Masters • San Antonio, TX
-              </span>
-            </span>
           </div>
           <p className="mt-5 text-navy-foreground/70 text-sm max-w-xs">
             Family-owned bathroom remodeling. Beautiful showers, fast installs, zero hassle.
@@ -1236,7 +1228,7 @@ function Footer() {
       </div>
       <div className="border-t border-white/10">
         <div className="container-x py-5 flex flex-wrap items-center justify-between gap-3 text-xs text-navy-foreground/60">
-          <div>© {new Date().getFullYear()} Texas Bath Pros. All rights reserved.</div>
+          <div>© {new Date().getFullYear()} Texas Bath Solutions. All rights reserved.</div>
           <div className="flex gap-4">
             <a href="#" className="hover:text-white">Privacy</a>
             <a href="#" className="hover:text-white">Terms</a>
