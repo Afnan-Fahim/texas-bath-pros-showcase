@@ -558,14 +558,49 @@ const GALLERY: GalleryItem[] = [
     title: "Spa-Style Walk-In",
     location: "Fair Oaks Ranch",
   },
+  {
+    id: "9",
+    category: "subway",
+    after: afterSubway2,
+    title: "Bright White Subway Conversion",
+    location: "Alamo Ranch",
+  },
+  {
+    id: "10",
+    category: "subway",
+    after: afterSubway3,
+    title: "Vertical Subway with Bench",
+    location: "Schertz",
+  },
+  {
+    id: "11",
+    category: "modern",
+    after: afterModern2,
+    title: "Matte Black Minimalist Shower",
+    location: "Cibolo",
+  },
+  {
+    id: "12",
+    category: "modern",
+    after: afterModern3,
+    title: "Dark Stone Spa Retreat",
+    location: "Garden Ridge",
+  },
+  {
+    id: "13",
+    category: "marble",
+    after: afterMarble2,
+    title: "Carrara Marble Master Shower",
+    location: "Olmos Park",
+  },
+  {
+    id: "14",
+    category: "marble",
+    after: afterMarble3,
+    title: "Calacatta Gold Luxury Shower",
+    location: "Hill Country Village",
+  },
 ];
-
-const FILTERS = [
-  { id: "all", label: "All" },
-  { id: "subway", label: "Subway Tile" },
-  { id: "marble", label: "Marble & Stone" },
-  { id: "modern", label: "Modern Minimal" },
-] as const;
 
 function Gallery() {
   const [filter, setFilter] = useState<(typeof FILTERS)[number]["id"]>("all");
