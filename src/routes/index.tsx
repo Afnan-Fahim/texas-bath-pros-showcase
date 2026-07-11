@@ -222,7 +222,7 @@ function MobilePhoneCTA() {
 /* ---------------- HERO ---------------- */
 function Hero({ onBook }: { onBook: () => void }) {
   return (
-    <section id="top" className="relative pt-56 md:pt-64 pb-16 md:pb-24 overflow-hidden">
+    <section id="top" className="relative pt-80 md:pt-96 pb-16 md:pb-24 overflow-hidden">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_color-mix(in_oklab,var(--teal)_18%,transparent)_0%,transparent_60%)]" />
       <div className="container-x grid gap-10 lg:grid-cols-2 lg:gap-16 items-center">
         <div className="animate-fade-up">
