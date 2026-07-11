@@ -137,7 +137,7 @@ function Navbar({ onBook }: { onBook: () => void }) {
           : "bg-background/60 backdrop-blur-sm",
       )}
     >
-      <div className="container-x flex h-40 items-center gap-4 md:h-48">
+      <div className="container-x flex h-48 items-center gap-4 md:h-56">
         <Logo />
         <nav className="ml-auto hidden lg:flex items-center gap-8">
           {links.map((l) => (
