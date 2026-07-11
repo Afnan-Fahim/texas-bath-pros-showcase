@@ -45,8 +45,14 @@ import { cn } from "@/lib/utils";
 
 import heroShower from "@/assets/hero-shower.jpg";
 import afterSubway from "@/assets/after-subway.jpg";
+import afterSubway2 from "@/assets/after-subway-2.jpg";
+import afterSubway3 from "@/assets/after-subway-3.jpg";
 import afterMarble from "@/assets/after-marble.jpg";
+import afterMarble2 from "@/assets/after-marble-2.jpg";
+import afterMarble3 from "@/assets/after-marble-3.jpg";
 import afterModern from "@/assets/after-modern.jpg";
+import afterModern2 from "@/assets/after-modern-2.jpg";
+import afterModern3 from "@/assets/after-modern-3.jpg";
 import afterVenatino from "@/assets/after-venatino.jpg";
 import beforeBeige from "@/assets/before-beige.jpg";
 import beforeFiberglass from "@/assets/before-fiberglass.jpg";
