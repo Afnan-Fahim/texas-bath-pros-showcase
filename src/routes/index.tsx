@@ -1320,14 +1320,22 @@ function Footer() {
     <footer className="bg-navy text-navy-foreground">
       <div className="container-x py-14 grid gap-10 md:grid-cols-3">
         <div>
-          <div className="inline-flex items-center gap-3 rounded-2xl bg-white p-3 pr-5 shadow-sm ring-1 ring-black/5">
+          <div className="inline-flex items-center gap-3 rounded-2xl bg-white p-4 pr-6 shadow-sm ring-1 ring-black/5">
             <img
               src={logoAsset.url}
-              alt="Texas Bath Solutions — Trusted Shower Experts"
-              width={240}
-              height={240}
-              className="h-24 w-24 object-contain"
+              alt="Texas Bath Solutions"
+              width={200}
+              height={200}
+              className="h-16 w-16 object-contain"
             />
+            <div className="flex flex-col leading-tight">
+              <span className="font-display text-xl font-bold text-navy tracking-tight">
+                Texas Bath Solutions
+              </span>
+              <span className="text-xs font-medium text-navy/70 tracking-wide">
+                Trusted Shower Experts · San Antonio, Texas
+              </span>
+            </div>
           </div>
           <p className="mt-5 text-navy-foreground/70 text-sm max-w-xs">
             Family-owned bathroom remodeling. Beautiful showers, fast installs, zero hassle.
