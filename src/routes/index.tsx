@@ -238,7 +238,7 @@ function Hero({ onBook }: { onBook: () => void }) {
             Beautiful showers. Fast, clean installs. Zero hassle.
           </p>
           <p className="mt-3 text-sm md:text-base font-medium text-foreground/80">
-            Family-Owned <span className="text-muted-foreground">•</span> Free Same-Day Estimates{" "}
+            Family-Owned <span className="text-muted-foreground">•</span> Free No Hassle Estimates{" "}
             <span className="text-muted-foreground">•</span> A+ BBB Rated — Zero Complaints
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
@@ -247,7 +247,7 @@ function Hero({ onBook }: { onBook: () => void }) {
               onClick={onBook}
               className="bg-navy text-navy-foreground hover:bg-navy/90 shadow-elegant text-base h-12 px-6"
             >
-              Book Your Free Same-Day Estimate
+              Book Your Free No Hassle Estimate
             </Button>
             <a href="#work">
               <Button
