@@ -479,7 +479,7 @@ function FinancingBanner({ onBook }: { onBook: () => void }) {
 /* ---------------- ABOUT ---------------- */
 function About() {
   return (
-    <section className="py-16 md:py-24">
+    <section className="pt-16 pb-10 md:pt-24 md:pb-14">
       <div className="container-x max-w-3xl text-center">
         <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-navy">
           About Us
