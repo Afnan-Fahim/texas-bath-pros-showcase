@@ -45,8 +45,14 @@ import { cn } from "@/lib/utils";
 
 import heroShower from "@/assets/hero-shower.jpg";
 import afterSubway from "@/assets/after-subway.jpg";
+import afterSubway2 from "@/assets/after-subway-2.jpg";
+import afterSubway3 from "@/assets/after-subway-3.jpg";
 import afterMarble from "@/assets/after-marble.jpg";
+import afterMarble2 from "@/assets/after-marble-2.jpg";
+import afterMarble3 from "@/assets/after-marble-3.jpg";
 import afterModern from "@/assets/after-modern.jpg";
+import afterModern2 from "@/assets/after-modern-2.jpg";
+import afterModern3 from "@/assets/after-modern-3.jpg";
 import afterVenatino from "@/assets/after-venatino.jpg";
 import beforeBeige from "@/assets/before-beige.jpg";
 import beforeFiberglass from "@/assets/before-fiberglass.jpg";
@@ -552,6 +558,48 @@ const GALLERY: GalleryItem[] = [
     title: "Spa-Style Walk-In",
     location: "Fair Oaks Ranch",
   },
+  {
+    id: "9",
+    category: "subway",
+    after: afterSubway2,
+    title: "Bright White Subway Conversion",
+    location: "Alamo Ranch",
+  },
+  {
+    id: "10",
+    category: "subway",
+    after: afterSubway3,
+    title: "Vertical Subway with Bench",
+    location: "Schertz",
+  },
+  {
+    id: "11",
+    category: "modern",
+    after: afterModern2,
+    title: "Matte Black Minimalist Shower",
+    location: "Cibolo",
+  },
+  {
+    id: "12",
+    category: "modern",
+    after: afterModern3,
+    title: "Dark Stone Spa Retreat",
+    location: "Garden Ridge",
+  },
+  {
+    id: "13",
+    category: "marble",
+    after: afterMarble2,
+    title: "Carrara Marble Master Shower",
+    location: "Olmos Park",
+  },
+  {
+    id: "14",
+    category: "marble",
+    after: afterMarble3,
+    title: "Calacatta Gold Luxury Shower",
+    location: "Hill Country Village",
+  },
 ];
 
 const FILTERS = [
@@ -560,6 +608,7 @@ const FILTERS = [
   { id: "marble", label: "Marble & Stone" },
   { id: "modern", label: "Modern Minimal" },
 ] as const;
+
 
 function Gallery() {
   const [filter, setFilter] = useState<(typeof FILTERS)[number]["id"]>("all");
