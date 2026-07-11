@@ -1323,7 +1323,7 @@ function Footer() {
               alt="Texas Bath Solutions"
               width={320}
               height={120}
-              className="h-32 w-auto object-contain"
+              className="h-40 w-auto object-contain"
             />
             <span className="text-xs font-medium text-navy/70 tracking-wide">
               Trusted Shower Experts · San Antonio, Texas
