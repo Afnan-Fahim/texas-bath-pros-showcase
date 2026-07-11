@@ -92,19 +92,17 @@ const PHONE_TEL = "tel:+12107020753";
 /* ---------------- LOGO ---------------- */
 function Logo({ className }: { className?: string }) {
   return (
-    <a href="#top" className={cn("flex items-center gap-3 group", className)}>
+    <a href="#top" className={cn("flex flex-col items-start gap-1 group", className)}>
       <img
         src={logoAsset.url}
         alt="Texas Bath Solutions"
         width={320}
         height={120}
-        className="h-40 md:h-48 w-auto object-contain"
+        className="h-60 md:h-72 w-auto object-contain"
       />
-      <div className="hidden sm:flex flex-col leading-tight">
-        <span className="text-xs md:text-sm font-medium text-navy/70 tracking-wide">
-          Trusted Shower Experts · San Antonio, Texas
-        </span>
-      </div>
+      <span className="text-xs md:text-sm font-medium text-navy/70 tracking-wide">
+        Trusted Shower Experts · San Antonio, Texas
+      </span>
     </a>
   );
 }
