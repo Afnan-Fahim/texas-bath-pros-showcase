@@ -92,7 +92,7 @@ const PHONE_TEL = "tel:+12107020753";
 /* ---------------- LOGO ---------------- */
 function Logo({ className, size = "default" }: { className?: string; size?: "default" | "sm" }) {
   return (
-    <a href="#top" className={cn("flex flex-col items-start gap-1 group", className)}>
+    <a href="#top" className={cn("flex flex-row items-center gap-3 group", className)}>
       <img
         src={logoAsset.url}
         alt="Texas Bath Solutions"
@@ -103,9 +103,14 @@ function Logo({ className, size = "default" }: { className?: string; size?: "def
           size === "sm" ? "h-30 md:h-36" : "h-60 md:h-72",
         )}
       />
-      <span className="text-xs md:text-sm font-medium text-navy/70 tracking-wide">
-        Trusted Shower Experts · San Antonio, Texas
-      </span>
+      <div className="hidden sm:flex flex-col leading-tight">
+        <span className="text-xl md:text-2xl font-semibold text-navy tracking-wide">
+          Trusted Shower Experts
+        </span>
+        <span className="text-base md:text-lg font-medium text-navy/70 tracking-wide">
+          San Antonio, Texas
+        </span>
+      </div>
     </a>
   );
 }
