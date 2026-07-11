@@ -20,7 +20,7 @@ import {
   Waves,
   CreditCard,
 } from "lucide-react";
-import logoAsset from "@/assets/texas-bath-solutions-logo-full.jpg.asset.json";
+import logoAsset from "@/assets/texas-bath-solutions-logo.png.asset.json";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
