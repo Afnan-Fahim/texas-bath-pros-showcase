@@ -20,7 +20,7 @@ import {
   Waves,
   CreditCard,
 } from "lucide-react";
-import logoAsset from "@/assets/texas-bath-solutions-logo.png.asset.json";
+import logoAsset from "@/assets/texas-bath-solutions-logo-transparent.png.asset.json";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -1315,7 +1315,7 @@ function Footer() {
     <footer className="bg-navy text-navy-foreground">
       <div className="container-x py-14 grid gap-10 md:grid-cols-3">
         <div>
-          <div className="inline-flex flex-col items-start gap-2 rounded-2xl bg-white p-5 pr-8 shadow-sm ring-1 ring-black/5">
+          <div className="inline-flex flex-col items-start gap-2">
             <img
               src={logoAsset.url}
               alt="Texas Bath Solutions"
@@ -1323,7 +1323,7 @@ function Footer() {
               height={120}
               className="h-60 md:h-72 w-auto object-contain"
             />
-            <span className="text-xs md:text-sm font-medium text-navy/70 tracking-wide">
+            <span className="text-xs md:text-sm font-medium text-navy-foreground/80 tracking-wide">
               Trusted Shower Experts · San Antonio, Texas
             </span>
           </div>
