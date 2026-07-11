@@ -872,24 +872,24 @@ function Process() {
     { n: "3", title: "Professional Installation", body: "Fast, clean installation — most showers finished in a single day." },
   ];
   return (
-    <section id="process" className="py-8 md:py-12 bg-gradient-to-b from-navy to-navy/95 text-navy-foreground">
+    <section id="process" className="py-5 md:py-8 bg-gradient-to-b from-navy to-navy/95 text-navy-foreground">
       <div className="container-x">
-        <div className="max-w-3xl mx-auto text-center">
-          <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-navy-foreground/90">
+        <div className="max-w-2xl mx-auto text-center">
+          <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-2 py-0.5 text-[8px] font-semibold uppercase tracking-wider text-navy-foreground/90">
             The Process
           </span>
-          <h2 className="mt-3 text-2xl md:text-3xl text-navy-foreground text-balance">
+          <h2 className="mt-2 text-lg md:text-2xl text-navy-foreground text-balance">
             Simple, honest, and hassle-free from day one.
           </h2>
         </div>
-        <ol className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <ol className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((s) => (
-            <li key={s.n} className="rounded-xl bg-white/5 backdrop-blur border border-white/10 p-4">
-              <div className="grid h-8 w-8 place-items-center rounded-full bg-white text-navy font-display font-bold text-sm">
+            <li key={s.n} className="rounded-xl bg-white/5 backdrop-blur border border-white/10 p-3">
+              <div className="grid h-6 w-6 place-items-center rounded-full bg-white text-navy font-display font-bold text-[10px]">
                 {s.n}
               </div>
-              <h3 className="mt-3 text-base font-semibold text-navy-foreground">{s.title}</h3>
-              <p className="mt-1 text-xs text-navy-foreground/75">{s.body}</p>
+              <h3 className="mt-2 text-sm font-semibold text-navy-foreground">{s.title}</h3>
+              <p className="mt-0.5 text-[10px] text-navy-foreground/75">{s.body}</p>
             </li>
           ))}
         </ol>
