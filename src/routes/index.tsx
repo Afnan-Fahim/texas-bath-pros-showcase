@@ -20,7 +20,7 @@ import {
   Waves,
   CreditCard,
 } from "lucide-react";
-import logoAsset from "@/assets/tx-bath-pros-logo.jpg.asset.json";
+import logoAsset from "@/assets/texas-bath-solutions-logo.jpg.asset.json";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -66,13 +66,13 @@ export const Route = createFileRoute("/")({
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "LocalBusiness",
-          name: "Texas Bath Pros",
+          name: "Texas Bath Solutions",
           description:
-            "Family-owned San Antonio bathroom remodeler specializing in acrylic showers and tub-to-shower conversions.",
+            "Family-owned San Antonio bathroom remodeler specializing in Bella Stone acrylic showers and tub-to-shower conversions. Trusted Shower Experts.",
           telephone: "+1-210-702-0753",
           areaServed: "San Antonio, TX",
           address: { "@type": "PostalAddress", addressLocality: "San Antonio", addressRegion: "TX", addressCountry: "US" },
-          url: "https://www.texasbathpros.com",
+          url: "https://www.texasbathsolutions.com",
         }),
       },
     ],
@@ -89,7 +89,7 @@ function Logo({ className }: { className?: string }) {
     <a href="#top" className={cn("flex items-center gap-2.5 group", className)}>
       <img
         src={logoAsset.url}
-        alt="Texas Bath Pros — Built on Trust"
+        alt="Texas Bath Solutions — Trusted Shower Experts"
         width={240}
         height={240}
         className="h-32 w-32 md:h-36 md:w-36 object-contain"
