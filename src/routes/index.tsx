@@ -90,7 +90,7 @@ const PHONE_DISPLAY = "(210) 702-0753";
 const PHONE_TEL = "tel:+12107020753";
 
 /* ---------------- LOGO ---------------- */
-function Logo({ className }: { className?: string }) {
+function Logo({ className, size = "default" }: { className?: string; size?: "default" | "sm" }) {
   return (
     <a href="#top" className={cn("flex flex-col items-start gap-1 group", className)}>
       <img
@@ -98,7 +98,10 @@ function Logo({ className }: { className?: string }) {
         alt="Texas Bath Solutions"
         width={320}
         height={120}
-        className="h-60 md:h-72 w-auto object-contain"
+        className={cn(
+          "w-auto object-contain",
+          size === "sm" ? "h-30 md:h-36" : "h-60 md:h-72",
+        )}
       />
       <span className="text-xs md:text-sm font-medium text-navy/70 tracking-wide">
         Trusted Shower Experts · San Antonio, Texas
@@ -135,8 +138,8 @@ function Navbar({ onBook }: { onBook: () => void }) {
           : "bg-background/60 backdrop-blur-sm",
       )}
     >
-      <div className="container-x flex h-72 items-center gap-4 md:h-80">
-        <Logo />
+      <div className="container-x flex h-40 items-center gap-4 md:h-48">
+        <Logo size="sm" />
         <nav className="ml-auto hidden lg:flex items-center gap-8">
           {links.map((l) => (
             <a
@@ -222,7 +225,7 @@ function MobilePhoneCTA() {
 /* ---------------- HERO ---------------- */
 function Hero({ onBook }: { onBook: () => void }) {
   return (
-    <section id="top" className="relative pt-80 md:pt-96 pb-16 md:pb-24 overflow-hidden">
+    <section id="top" className="relative pt-52 md:pt-60 pb-16 md:pb-24 overflow-hidden">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_color-mix(in_oklab,var(--teal)_18%,transparent)_0%,transparent_60%)]" />
       <div className="container-x grid gap-10 lg:grid-cols-2 lg:gap-16 items-center">
         <div className="animate-fade-up">
