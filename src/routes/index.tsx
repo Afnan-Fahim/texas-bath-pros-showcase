@@ -20,7 +20,7 @@ import {
   Waves,
   CreditCard,
 } from "lucide-react";
-import logoAsset from "@/assets/texas-bath-solutions-logo-full.jpg.asset.json";
+import logoAsset from "@/assets/texas-bath-solutions-logo.png.asset.json";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -92,19 +92,17 @@ const PHONE_TEL = "tel:+12107020753";
 /* ---------------- LOGO ---------------- */
 function Logo({ className }: { className?: string }) {
   return (
-    <a href="#top" className={cn("flex items-center gap-3 group", className)}>
+    <a href="#top" className={cn("flex flex-col items-start gap-1 group", className)}>
       <img
         src={logoAsset.url}
         alt="Texas Bath Solutions"
         width={320}
         height={120}
-        className="h-40 md:h-48 w-auto object-contain"
+        className="h-60 md:h-72 w-auto object-contain"
       />
-      <div className="hidden sm:flex flex-col leading-tight">
-        <span className="text-xs md:text-sm font-medium text-navy/70 tracking-wide">
-          Trusted Shower Experts · San Antonio, Texas
-        </span>
-      </div>
+      <span className="text-xs md:text-sm font-medium text-navy/70 tracking-wide">
+        Trusted Shower Experts · San Antonio, Texas
+      </span>
     </a>
   );
 }
@@ -137,7 +135,7 @@ function Navbar({ onBook }: { onBook: () => void }) {
           : "bg-background/60 backdrop-blur-sm",
       )}
     >
-      <div className="container-x flex h-48 items-center gap-4 md:h-56">
+      <div className="container-x flex h-72 items-center gap-4 md:h-80">
         <Logo />
         <nav className="ml-auto hidden lg:flex items-center gap-8">
           {links.map((l) => (
@@ -224,7 +222,7 @@ function MobilePhoneCTA() {
 /* ---------------- HERO ---------------- */
 function Hero({ onBook }: { onBook: () => void }) {
   return (
-    <section id="top" className="relative pt-56 md:pt-64 pb-16 md:pb-24 overflow-hidden">
+    <section id="top" className="relative pt-80 md:pt-96 pb-16 md:pb-24 overflow-hidden">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_color-mix(in_oklab,var(--teal)_18%,transparent)_0%,transparent_60%)]" />
       <div className="container-x grid gap-10 lg:grid-cols-2 lg:gap-16 items-center">
         <div className="animate-fade-up">
@@ -1317,15 +1315,15 @@ function Footer() {
     <footer className="bg-navy text-navy-foreground">
       <div className="container-x py-14 grid gap-10 md:grid-cols-3">
         <div>
-          <div className="inline-flex flex-col items-start gap-2 rounded-2xl bg-white p-4 pr-6 shadow-sm ring-1 ring-black/5">
+          <div className="inline-flex flex-col items-start gap-2 rounded-2xl bg-white p-5 pr-8 shadow-sm ring-1 ring-black/5">
             <img
               src={logoAsset.url}
               alt="Texas Bath Solutions"
               width={320}
               height={120}
-              className="h-40 w-auto object-contain"
+              className="h-60 md:h-72 w-auto object-contain"
             />
-            <span className="text-xs font-medium text-navy/70 tracking-wide">
+            <span className="text-xs md:text-sm font-medium text-navy/70 tracking-wide">
               Trusted Shower Experts · San Antonio, Texas
             </span>
           </div>
