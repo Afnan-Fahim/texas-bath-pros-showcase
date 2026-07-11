@@ -90,7 +90,15 @@ const PHONE_DISPLAY = "(210) 702-0753";
 const PHONE_TEL = "tel:+12107020753";
 
 /* ---------------- LOGO ---------------- */
-function Logo({ className, size = "default" }: { className?: string; size?: "default" | "sm" }) {
+function Logo({
+  className,
+  size = "default",
+  dark,
+}: {
+  className?: string;
+  size?: "default" | "sm";
+  dark?: boolean;
+}) {
   return (
     <a href="#top" className={cn("flex flex-row items-center gap-3 group", className)}>
       <img
@@ -104,10 +112,20 @@ function Logo({ className, size = "default" }: { className?: string; size?: "def
         )}
       />
       <div className="hidden sm:flex flex-col leading-tight">
-        <span className="text-[0.975rem] md:text-[1.17rem] font-semibold text-navy tracking-wide">
+        <span
+          className={cn(
+            "text-[0.975rem] md:text-[1.17rem] font-semibold tracking-wide",
+            dark ? "text-white" : "text-navy",
+          )}
+        >
           Trusted Shower Experts
         </span>
-        <span className="text-[0.78rem] md:text-[0.8775rem] font-medium text-navy/70 tracking-wide">
+        <span
+          className={cn(
+            "text-[0.78rem] md:text-[0.8775rem] font-medium tracking-wide",
+            dark ? "text-white/70" : "text-navy/70",
+          )}
+        >
           San Antonio, TX
         </span>
       </div>
@@ -1323,18 +1341,7 @@ function Footer() {
     <footer className="bg-navy text-navy-foreground">
       <div className="container-x py-14 grid gap-10 md:grid-cols-3">
         <div>
-          <div className="inline-flex flex-col items-start gap-2">
-            <img
-              src={logoAsset.url}
-              alt="Texas Bath Solutions"
-              width={320}
-              height={120}
-              className="h-60 md:h-72 w-auto object-contain"
-            />
-            <span className="text-xs md:text-sm font-medium text-navy-foreground/80 tracking-wide">
-              Trusted Shower Experts · San Antonio, Texas
-            </span>
-          </div>
+          <Logo size="sm" dark />
           <p className="mt-5 text-navy-foreground/70 text-sm max-w-xs">
             Family-owned bathroom remodeling. Beautiful showers, fast installs, zero hassle.
           </p>
