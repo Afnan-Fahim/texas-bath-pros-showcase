@@ -694,6 +694,10 @@ function Gallery() {
           </p>
         </div>
 
+        <div className="mt-10 mx-auto max-w-3xl">
+          <BeforeAfterReel />
+        </div>
+
         <div className="mt-8 flex flex-wrap justify-center gap-2">
           {FILTERS.map((f) => (
             <button
