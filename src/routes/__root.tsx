@@ -88,7 +88,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:title", content: "Texas Bath Solutions | San Antonio Bathroom Remodeling" },
       {
         property: "og:description",
-        content: "Bella Stone acrylic showers from $8,477. Fast, clean installs. Free same-day estimates in San Antonio.",
+        content: "Bella Stone acrylic showers from $8,477. Fast, clean installs. Free hassle-free estimates in San Antonio.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

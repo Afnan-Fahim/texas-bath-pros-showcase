@@ -637,13 +637,6 @@ const GALLERY: GalleryItem[] = [
     location: "Helotes",
   },
   {
-    id: "6",
-    category: "subway",
-    after: afterSubway,
-    title: "Classic Subway Shower",
-    location: "Boerne",
-  },
-  {
     id: "7",
     category: "marble",
     after: afterMarble,
