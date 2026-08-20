@@ -90,7 +90,7 @@ export const Route = createFileRoute("/")({
           "@type": "LocalBusiness",
           name: "Texas Bath Solutions",
           description:
-            "Family-owned San Antonio bathroom remodeler specializing in acrylic showers and tub-to-shower conversions. Trusted Shower Experts.",
+            "Family-owned San Antonio bathroom remodeler specializing in acrylic and Onyx shower systems and tub-to-shower conversions. Trusted Shower Experts.",
           telephone: "+1-210-702-0753",
           areaServed: "San Antonio, TX",
           address: { "@type": "PostalAddress", addressLocality: "San Antonio", addressRegion: "TX", addressCountry: "US" },
@@ -459,7 +459,7 @@ function BeforeAfterReel() {
         <div className="flex items-end justify-between gap-4 flex-wrap">
           <div>
             <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-teal-foreground/90 text-white/80">
-              Acrylic Shower Remodel
+              Acrylic & Onyx Shower Remodel
             </div>
             <div className="mt-1 font-display text-2xl md:text-3xl font-bold leading-tight">
               Starting at <span className="text-gold">$8,477</span>
@@ -497,7 +497,7 @@ function TrustBar() {
     { icon: Award, label: "A+ BBB Rating", sub: "Zero Complaints" },
     { icon: Home, label: "Family Owned", sub: "San Antonio, TX" },
     { icon: Clock, label: "Free Hassle-Free", sub: "Estimates" },
-    { icon: Droplets, label: "Premium Acrylic", sub: "Fast & Leak-Proof" },
+    { icon: Droplets, label: "Acrylic & Onyx", sub: "Fast & Leak-Proof" },
     { icon: MapPin, label: "Local Service", sub: "San Antonio Area" },
   ];
   return (
@@ -776,7 +776,7 @@ function Gallery() {
         </div>
 
         <p className="mt-10 text-center text-sm text-muted-foreground max-w-2xl mx-auto">
-          All showers feature durable, leak-resistant premium acrylic panels — installed quickly and cleanly.
+          All showers feature durable, leak-resistant premium acrylic or Onyx shower systems — installed quickly and cleanly.
         </p>
       </div>
 
@@ -897,7 +897,7 @@ const OFFERS: Offer[] = [
     headline: "Summer Sale",
     sub: "Limited-time savings on any shower remodel",
     detail:
-      "Beat the San Antonio heat with a brand-new shower. Save $500 on any complete acrylic shower remodel booked during our Summer Sale — light marble walls, rain shower head, and matte black glass barn doors available.",
+      "Beat the San Antonio heat with a brand-new shower. Save $500 on any complete acrylic or Onyx shower remodel booked during our Summer Sale — light marble walls, rain shower head, and matte black glass barn doors available.",
     image: offerSummer,
     badge: "Limited Time",
   },
@@ -1110,8 +1110,8 @@ function WhyUs() {
     },
     {
       icon: Sparkles,
-      title: "Premium Acrylic Systems",
-      body: "Beautiful subway tile, marble, and stone looks with lifetime durability and easy cleaning.",
+      title: "Premium Acrylic & Onyx Systems",
+      body: "Choose classic acrylic or upgrade to Onyx shower systems — subway tile, marble, and stone looks with lifetime durability and easy cleaning.",
     },
     {
       icon: Droplets,
@@ -1166,7 +1166,7 @@ function WhyUs() {
 function Process() {
   const steps = [
     { n: "1", title: "Book Your Free Estimate", body: "Call or fill out the form — hassle-free appointments often available." },
-    { n: "2", title: "We Visit, Measure & Design", body: "A friendly, no-obligation home visit with an honest, upfront quote — then we walk you through beautiful acrylic tile, marble, and stone options." },
+    { n: "2", title: "We Visit, Measure & Design", body: "A friendly, no-obligation home visit with an honest, upfront quote — then we walk you through beautiful acrylic and Onyx tile, marble, and stone options." },
     { n: "3", title: "Professional Installation", body: "Fast, clean installation — most showers finished in a single day." },
   ];
   return (
@@ -1576,19 +1576,19 @@ function FAQ() {
   const items = [
     {
       q: "How long does a shower installation take?",
-      a: "Most acrylic shower installations are completed in a single day. Larger remodels or tub-to-shower conversions may take 1–2 days depending on plumbing and prep work.",
+      a: "Most acrylic and Onyx shower installations are completed in a single day. Larger remodels or tub-to-shower conversions may take 1–2 days depending on plumbing and prep work.",
     },
     {
       q: "Do you really offer hassle-free estimates?",
       a: "Yes! We work around your schedule and can often come by within a day or two. We'll call within 1 hour to confirm your appointment window.",
     },
     {
-      q: "What do your acrylic shower systems cost?",
+      q: "What do your acrylic and Onyx shower systems cost?",
       a: "Every home is different, so we provide free, honest, no-pressure quotes tailored to your bathroom. Most tub-to-shower conversions land in a competitive, affordable range with financing options available.",
     },
     {
-      q: "Are your acrylic panels really as durable as tile?",
-      a: "Absolutely. Our premium acrylic wall systems are non-porous, leak-resistant, easy to clean, and built to last a lifetime — with none of the grout maintenance real tile requires.",
+      q: "Are your acrylic and Onyx panels really as durable as tile?",
+      a: "Absolutely. Our premium acrylic and Onyx wall systems are non-porous, leak-resistant, easy to clean, and built to last a lifetime — with none of the grout maintenance real tile requires.",
     },
     {
       q: "Do you serve all of San Antonio?",
@@ -1654,7 +1654,7 @@ function Footer() {
             </span>
           </div>
           <p className="mt-4 text-xs text-neutral-400 max-w-xs">
-            Quality acrylic shower systems featuring premium finishes and lifetime durability.
+            Quality acrylic and Onyx shower systems featuring premium finishes and lifetime durability.
           </p>
         </div>
       </div>
