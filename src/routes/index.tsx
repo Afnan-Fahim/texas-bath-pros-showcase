@@ -643,13 +643,6 @@ const GALLERY: GalleryItem[] = [
     title: "Vertical Subway with Bench",
     location: "Schertz",
   },
-  {
-    id: "13",
-    category: "marble",
-    after: afterMarble2,
-    title: "Carrara Marble Master Shower",
-    location: "Olmos Park",
-  },
 ];
 
 const FILTERS = [
