@@ -131,3 +131,9 @@
 @utility animate-fade-up {
   animation: fadeUp 0.7s ease-out both;
 }
+
+/* Skip rendering work for offscreen sections until they scroll into view */
+@utility cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 700px;
+}
