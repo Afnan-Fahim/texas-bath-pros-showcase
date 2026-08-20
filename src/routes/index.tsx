@@ -512,42 +512,40 @@ function TrustBar() {
 /* ---------------- FINANCING BANNER ---------------- */
 function FinancingBanner({ onBook }: { onBook: () => void }) {
   return (
-    <section className="py-8 md:py-10">
+    <section className="py-4 md:py-5">
       <div className="container-x">
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-navy to-navy/90 text-navy-foreground shadow-elegant">
-          <div className="absolute -right-16 -top-16 h-64 w-64 rounded-full bg-teal/25 blur-3xl" aria-hidden />
-          <div className="absolute -left-10 -bottom-16 h-56 w-56 rounded-full bg-teal/15 blur-3xl" aria-hidden />
-          <div className="relative grid gap-6 p-6 md:p-10 lg:grid-cols-[auto_1fr_auto] lg:items-center">
-            <div className="grid h-14 w-14 place-items-center rounded-xl bg-white/10 text-navy-foreground">
-              <CreditCard className="h-7 w-7" />
+        <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-navy to-navy/90 text-navy-foreground shadow-elegant">
+          <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-teal/25 blur-2xl" aria-hidden />
+          <div className="absolute -left-6 -bottom-10 h-32 w-32 rounded-full bg-teal/15 blur-2xl" aria-hidden />
+          <div className="relative grid gap-4 p-4 md:p-5 lg:grid-cols-[auto_1fr_auto] lg:items-center">
+            <div className="grid h-10 w-10 place-items-center rounded-lg bg-white/10 text-navy-foreground">
+              <CreditCard className="h-5 w-5" />
             </div>
             <div>
-              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-teal">
+              <div className="text-[10px] font-semibold uppercase tracking-[0.15em] text-teal">
                 $0 Down Financing
               </div>
-              <h3 className="mt-2 font-display text-2xl md:text-3xl font-semibold text-navy-foreground text-balance">
+              <h3 className="mt-0.5 font-display text-base md:text-lg font-semibold text-navy-foreground text-balance">
                 Zero money down. Up to 12 months no payments.
               </h3>
-              <p className="mt-2 text-navy-foreground/80 max-w-2xl">
-                Prequalify in seconds with a <span className="font-semibold text-white">hassle-free soft credit check</span>{" "}
-                — it won't affect your credit score. Get the shower you love now, pay comfortably later.
+              <p className="mt-0.5 text-sm text-navy-foreground/80 max-w-2xl">
+                Prequalify with a <span className="font-semibold text-white">soft credit check</span> — won't affect your score.
               </p>
             </div>
-            <div className="flex flex-wrap gap-3 lg:justify-end">
+            <div className="flex flex-wrap gap-2 lg:justify-end">
               <Button
                 onClick={onBook}
-                size="lg"
-                className="bg-white text-navy hover:bg-white/90 h-12 px-6 font-semibold shadow-sm"
+                className="bg-white text-navy hover:bg-white/90 h-9 px-4 text-sm font-semibold shadow-sm"
               >
                 See If I Prequalify
               </Button>
               <a href={PHONE_TEL}>
                 <Button
-                  size="lg"
+                  size="sm"
                   variant="outline"
-                  className="border-white/40 bg-transparent text-navy-foreground hover:bg-white/10 h-12 px-6"
+                  className="border-white/40 bg-transparent text-navy-foreground hover:bg-white/10 h-9 px-4"
                 >
-                  <Phone className="h-4 w-4 mr-2" /> {PHONE_DISPLAY}
+                  <Phone className="h-3.5 w-3.5 mr-1.5" /> {PHONE_DISPLAY}
                 </Button>
               </a>
             </div>
