@@ -20,7 +20,7 @@ import {
   Waves,
   CreditCard,
 } from "lucide-react";
-import logoAsset from "@/assets/texas-bath-solutions-logo-transparent.png.asset.json";
+import logoImg from "@/assets/logo-header.webp";
 import heroVideoAsset from "@/assets/texas-bath-solutions-hero.mp4.asset.json";
 import heroPoster from "@/assets/hero-video-poster.webp";
 
@@ -115,10 +115,12 @@ function Logo({
   return (
     <a href="#top" className={cn("flex flex-row items-center gap-3 group", className)}>
       <img
-        src={logoAsset.url}
+        src={logoImg}
         alt="Texas Bath Solutions"
-        width={320}
-        height={120}
+        width={758}
+        height={609}
+        fetchPriority="high"
+        decoding="async"
         className={cn(
           "w-auto object-contain",
           size === "sm" ? "h-30 md:h-36" : "h-60 md:h-72",
@@ -772,6 +774,7 @@ function Gallery() {
                   src={item.after}
                   alt={`${item.title} — ${item.location}`}
                   loading="lazy"
+                  decoding="async"
                   width={1200}
                   height={1200}
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
@@ -971,6 +974,7 @@ function Offers({ onBook }: { onBook: () => void }) {
                   src={o.image}
                   alt={`${o.headline} bathroom remodel discount in San Antonio, TX`}
                   loading="lazy"
+                  decoding="async"
                   width={1024}
                   height={768}
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
