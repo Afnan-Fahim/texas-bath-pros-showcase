@@ -1,11 +1,13 @@
 import { lazy, Suspense, type ComponentProps } from "react";
-import { Calendar } from "@/components/ui/calendar";
+
+type CalendarType = (typeof import("@/components/ui/calendar"))["Calendar"];
+type CalendarProps = ComponentProps<CalendarType>;
 
 const CalendarLazy = lazy(async () => ({
   default: (await import("@/components/ui/calendar")).Calendar,
 }));
 
-export function LazyCalendar(props: ComponentProps<typeof Calendar>) {
+export function LazyCalendar(props: CalendarProps) {
   return (
     <Suspense
       fallback={
