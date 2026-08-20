@@ -134,6 +134,7 @@ function Logo({
         )}
       />
 
+      {!isFooter && (
       <div className="hidden sm:flex flex-col leading-tight">
 
         <span
@@ -145,6 +146,7 @@ function Logo({
           San Antonio, TX
         </span>
       </div>
+      )}
     </a>
   );
 }
@@ -300,12 +302,6 @@ function Hero({ onBook }: { onBook: () => void }) {
               </Button>
             </a>
           </div>
-          <a
-            href={PHONE_TEL}
-            className="mt-6 inline-flex items-center gap-2 text-navy font-semibold hover:text-teal"
-          >
-            <Phone className="h-4 w-4" /> Call now: {PHONE_DISPLAY}
-          </a>
           <div className="mt-6 flex items-start gap-3 rounded-xl border border-teal/30 bg-teal/5 p-4 max-w-xl">
             <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-teal/15 text-navy">
               <CreditCard className="h-5 w-5" />
@@ -314,7 +310,7 @@ function Hero({ onBook }: { onBook: () => void }) {
               <div className="font-semibold text-navy">$0 Down Financing Available</div>
               <p className="mt-0.5 text-foreground/75">
                 Hassle-free <span className="font-semibold text-navy">soft credit check</span> — won't affect your score.
-                Qualify for <span className="font-semibold text-navy">up to 12 months no payments &amp; no interest</span>.
+                Qualify for <span className="font-semibold text-navy">up to 12 months no payments</span>.
               </p>
             </div>
           </div>
@@ -529,7 +525,7 @@ function FinancingBanner({ onBook }: { onBook: () => void }) {
                 $0 Down Financing
               </div>
               <h3 className="mt-2 font-display text-2xl md:text-3xl font-semibold text-navy-foreground text-balance">
-                Zero money down. Up to 12 months no payments &amp; no interest.
+                Zero money down. Up to 12 months no payments.
               </h3>
               <p className="mt-2 text-navy-foreground/80 max-w-2xl">
                 Prequalify in seconds with a <span className="font-semibold text-white">hassle-free soft credit check</span>{" "}
@@ -1325,7 +1321,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
           <ul className="mt-6 space-y-3">
             {[
               "No pressure. No obligation.",
-              "$0 down financing — up to 12 months no payments, no interest",
+              "$0 down financing — up to 12 months no payments",
               "Soft credit check only — won't affect your score",
               "Hassle-free estimates for most San Antonio homes",
               "Honest, upfront pricing — no surprises",
@@ -1473,7 +1469,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
                   Request My Free Estimate
                 </Button>
                 <p className="text-center text-xs text-muted-foreground">
-                  We'll call within 1 hour to confirm. No obligation, ever.
+                  We'll call within 1 hour to confirm. No obligation.
                 </p>
               </form>
             )}
@@ -1618,7 +1614,7 @@ function FAQ() {
 function Footer() {
   return (
     <footer className="cloth-gray text-neutral-800">
-      <div className="container-x py-14 grid gap-10 md:grid-cols-2">
+      <div className="container-x pt-4 pb-14 grid gap-10 md:grid-cols-2">
         <div>
           <Logo size="sm" variant="footer" />
           <p className="mt-5 text-neutral-700 text-sm max-w-sm">
