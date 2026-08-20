@@ -137,3 +137,12 @@
   content-visibility: auto;
   contain-intrinsic-size: auto 700px;
 }
+
+/* Light gray woven-cloth texture (pure CSS — zero image weight) */
+@utility cloth-gray {
+  background-color: oklch(0.9 0.003 90);
+  background-image:
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.55) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(0deg, rgba(0,0,0,0.045) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(45deg, rgba(0,0,0,0.02) 0 2px, transparent 2px 4px);
+}

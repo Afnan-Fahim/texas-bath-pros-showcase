@@ -24,7 +24,7 @@ import logoImg from "@/assets/logo-header.webp";
 import logoFooterImg from "@/assets/logo-footer.webp";
 
 import heroVideoAsset from "@/assets/texas-bath-solutions-hero.mp4.asset.json";
-import heroPoster from "@/assets/hero-video-poster.webp";
+import heroPoster from "@/assets/hero-video-poster.avif";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -54,22 +54,22 @@ import {
 } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
 
-import heroShower from "@/assets/hero-shower.webp";
-import afterSubway from "@/assets/after-subway.webp";
-import afterSubway2 from "@/assets/after-subway-2.webp";
-import afterSubway3 from "@/assets/after-subway-3.webp";
-import afterMarble from "@/assets/after-marble.webp";
-import afterMarble2 from "@/assets/after-marble-2.webp";
-import afterModern from "@/assets/after-modern.webp";
-import afterVenatino from "@/assets/after-venatino.webp";
-import offerTeachers from "@/assets/offer-teachers-first-responders.webp";
-import offerMilitary from "@/assets/offer-military-veterans.webp";
-import offerSeniors from "@/assets/offer-seniors.webp";
-import offerSummer from "@/assets/offer-summer-sale.webp";
-import beforeBeige from "@/assets/before-beige.webp";
-import beforeFiberglass from "@/assets/before-fiberglass.webp";
-import beforePink from "@/assets/before-pink.webp";
-import beforeWhiteTile from "@/assets/before-white-tile.webp";
+import heroShower from "@/assets/hero-shower.avif";
+import afterSubway from "@/assets/after-subway.avif";
+import afterSubway2 from "@/assets/after-subway-2.avif";
+import afterSubway3 from "@/assets/after-subway-3.avif";
+import afterMarble from "@/assets/after-marble.avif";
+import afterMarble2 from "@/assets/after-marble-2.avif";
+import afterModern from "@/assets/after-modern.avif";
+import afterVenatino from "@/assets/after-venatino.avif";
+import offerTeachers from "@/assets/offer-teachers-first-responders.avif";
+import offerMilitary from "@/assets/offer-military-veterans.avif";
+import offerSeniors from "@/assets/offer-seniors.avif";
+import offerSummer from "@/assets/offer-summer-sale.avif";
+import beforeBeige from "@/assets/before-beige.avif";
+import beforeFiberglass from "@/assets/before-fiberglass.avif";
+import beforePink from "@/assets/before-pink.avif";
+import beforeWhiteTile from "@/assets/before-white-tile.avif";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -90,7 +90,7 @@ export const Route = createFileRoute("/")({
           "@type": "LocalBusiness",
           name: "Texas Bath Solutions",
           description:
-            "Family-owned San Antonio bathroom remodeler specializing in acrylic showers and tub-to-shower conversions. Trusted Shower Experts.",
+            "Family-owned San Antonio bathroom remodeler specializing in acrylic and Onyx shower systems and tub-to-shower conversions. Trusted Shower Experts.",
           telephone: "+1-210-702-0753",
           areaServed: "San Antonio, TX",
           address: { "@type": "PostalAddress", addressLocality: "San Antonio", addressRegion: "TX", addressCountry: "US" },
@@ -135,17 +135,10 @@ function Logo({
       />
 
       <div className="hidden sm:flex flex-col leading-tight">
+
         <span
           className={cn(
-            "text-[0.975rem] md:text-[1.17rem] font-semibold tracking-wide",
-            dark ? "text-white" : "text-navy",
-          )}
-        >
-          Trusted Shower Experts
-        </span>
-        <span
-          className={cn(
-            "text-[0.78rem] md:text-[0.8775rem] font-medium tracking-wide",
+            "text-[0.78rem] md:text-[0.8775rem] font-medium tracking-wide whitespace-nowrap",
             dark ? "text-white/70" : "text-navy/70",
           )}
         >
@@ -459,7 +452,7 @@ function BeforeAfterReel() {
         <div className="flex items-end justify-between gap-4 flex-wrap">
           <div>
             <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-teal-foreground/90 text-white/80">
-              Acrylic Shower Remodel
+              Acrylic & Onyx Shower Remodel
             </div>
             <div className="mt-1 font-display text-2xl md:text-3xl font-bold leading-tight">
               Starting at <span className="text-gold">$8,477</span>
@@ -497,7 +490,7 @@ function TrustBar() {
     { icon: Award, label: "A+ BBB Rating", sub: "Zero Complaints" },
     { icon: Home, label: "Family Owned", sub: "San Antonio, TX" },
     { icon: Clock, label: "Free Hassle-Free", sub: "Estimates" },
-    { icon: Droplets, label: "Premium Acrylic", sub: "Fast & Leak-Proof" },
+    { icon: Droplets, label: "Acrylic & Onyx", sub: "Fast & Leak-Proof" },
     { icon: MapPin, label: "Local Service", sub: "San Antonio Area" },
   ];
   return (
@@ -776,7 +769,7 @@ function Gallery() {
         </div>
 
         <p className="mt-10 text-center text-sm text-muted-foreground max-w-2xl mx-auto">
-          All showers feature durable, leak-resistant premium acrylic panels — installed quickly and cleanly.
+          All showers feature durable, leak-resistant premium acrylic or Onyx shower systems — installed quickly and cleanly.
         </p>
       </div>
 
@@ -897,7 +890,7 @@ const OFFERS: Offer[] = [
     headline: "Summer Sale",
     sub: "Limited-time savings on any shower remodel",
     detail:
-      "Beat the San Antonio heat with a brand-new shower. Save $500 on any complete acrylic shower remodel booked during our Summer Sale — light marble walls, rain shower head, and matte black glass barn doors available.",
+      "Beat the San Antonio heat with a brand-new shower. Save $500 on any complete acrylic or Onyx shower remodel booked during our Summer Sale — light marble walls, rain shower head, and matte black glass barn doors available.",
     image: offerSummer,
     badge: "Limited Time",
   },
@@ -1110,8 +1103,8 @@ function WhyUs() {
     },
     {
       icon: Sparkles,
-      title: "Premium Acrylic Systems",
-      body: "Beautiful subway tile, marble, and stone looks with lifetime durability and easy cleaning.",
+      title: "Premium Acrylic & Onyx Systems",
+      body: "Choose classic acrylic or upgrade to Onyx shower systems — subway tile, marble, and stone looks with lifetime durability and easy cleaning.",
     },
     {
       icon: Droplets,
@@ -1166,7 +1159,7 @@ function WhyUs() {
 function Process() {
   const steps = [
     { n: "1", title: "Book Your Free Estimate", body: "Call or fill out the form — hassle-free appointments often available." },
-    { n: "2", title: "We Visit, Measure & Design", body: "A friendly, no-obligation home visit with an honest, upfront quote — then we walk you through beautiful acrylic tile, marble, and stone options." },
+    { n: "2", title: "We Visit, Measure & Design", body: "A friendly, no-obligation home visit with an honest, upfront quote — then we walk you through beautiful acrylic and Onyx tile, marble, and stone options." },
     { n: "3", title: "Professional Installation", body: "Fast, clean installation — most showers finished in a single day." },
   ];
   return (
@@ -1576,19 +1569,19 @@ function FAQ() {
   const items = [
     {
       q: "How long does a shower installation take?",
-      a: "Most acrylic shower installations are completed in a single day. Larger remodels or tub-to-shower conversions may take 1–2 days depending on plumbing and prep work.",
+      a: "Most acrylic and Onyx shower installations are completed in a single day. Larger remodels or tub-to-shower conversions may take 1–2 days depending on plumbing and prep work.",
     },
     {
       q: "Do you really offer hassle-free estimates?",
       a: "Yes! We work around your schedule and can often come by within a day or two. We'll call within 1 hour to confirm your appointment window.",
     },
     {
-      q: "What do your acrylic shower systems cost?",
+      q: "What do your acrylic and Onyx shower systems cost?",
       a: "Every home is different, so we provide free, honest, no-pressure quotes tailored to your bathroom. Most tub-to-shower conversions land in a competitive, affordable range with financing options available.",
     },
     {
-      q: "Are your acrylic panels really as durable as tile?",
-      a: "Absolutely. Our premium acrylic wall systems are non-porous, leak-resistant, easy to clean, and built to last a lifetime — with none of the grout maintenance real tile requires.",
+      q: "Are your acrylic and Onyx panels really as durable as tile?",
+      a: "Absolutely. Our premium acrylic and Onyx wall systems are non-porous, leak-resistant, easy to clean, and built to last a lifetime — with none of the grout maintenance real tile requires.",
     },
     {
       q: "Do you serve all of San Antonio?",
@@ -1624,49 +1617,50 @@ function FAQ() {
 /* ---------------- FOOTER ---------------- */
 function Footer() {
   return (
-    <footer className="bg-neutral-800 text-neutral-100">
+    <footer className="cloth-gray text-neutral-800">
       <div className="container-x py-14 grid gap-10 md:grid-cols-2">
         <div>
-          <Logo size="sm" variant="footer" dark />
-          <p className="mt-5 text-neutral-300 text-sm max-w-sm">
+          <Logo size="sm" variant="footer" />
+          <p className="mt-5 text-neutral-700 text-sm max-w-sm">
             Family-owned bathroom remodeling. Beautiful showers, fast installs, zero hassle.
           </p>
-          <p className="mt-3 text-neutral-400 text-sm">
+          <p className="mt-3 text-neutral-600 text-sm">
             Proudly serving San Antonio and surrounding areas.
           </p>
         </div>
         <div className="md:justify-self-end">
-          <h4 className="font-semibold text-neutral-100">Trust &amp; Credentials</h4>
+          <h4 className="font-semibold text-neutral-900">Trust &amp; Credentials</h4>
           <div className="mt-3 flex flex-wrap gap-2">
             <a
               href="https://www.bbb.org"
               target="_blank"
               rel="noreferrer"
-              className="rounded-md bg-white/10 px-3 py-2 text-xs font-semibold text-neutral-100 hover:bg-white/15"
+              className="rounded-md bg-neutral-900/8 px-3 py-2 text-xs font-semibold text-neutral-800 hover:bg-neutral-900/15"
             >
               A+ BBB Accredited
             </a>
-            <span className="rounded-md bg-white/10 px-3 py-2 text-xs font-semibold">
+            <span className="rounded-md bg-neutral-900/8 px-3 py-2 text-xs font-semibold">
               Zero Complaints
             </span>
-            <span className="rounded-md bg-white/10 px-3 py-2 text-xs font-semibold">
+            <span className="rounded-md bg-neutral-900/8 px-3 py-2 text-xs font-semibold">
               Licensed &amp; Insured
             </span>
           </div>
-          <p className="mt-4 text-xs text-neutral-400 max-w-xs">
-            Quality acrylic shower systems featuring premium finishes and lifetime durability.
+          <p className="mt-4 text-xs text-neutral-600 max-w-xs">
+            Quality acrylic and Onyx shower systems featuring premium finishes and lifetime durability.
           </p>
         </div>
       </div>
-      <div className="border-t border-white/10">
-        <div className="container-x py-5 flex flex-wrap items-center justify-between gap-3 text-xs text-neutral-400">
+      <div className="border-t border-neutral-900/10">
+        <div className="container-x py-5 flex flex-wrap items-center justify-between gap-3 text-xs text-neutral-600">
           <div>© {new Date().getFullYear()} Texas Bath Solutions. All rights reserved.</div>
           <div className="flex gap-4">
-            <a href="#" className="hover:text-white">Privacy</a>
-            <a href="#" className="hover:text-white">Terms</a>
+            <a href="#" className="hover:text-neutral-900">Privacy</a>
+            <a href="#" className="hover:text-neutral-900">Terms</a>
           </div>
         </div>
       </div>
+
 
     </footer>
   );
