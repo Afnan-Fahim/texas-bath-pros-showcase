@@ -1157,9 +1157,9 @@ function WhyUs() {
 /* ---------------- PROCESS ---------------- */
 function Process() {
   const steps = [
-    { n: "1", title: "Book Your Free Estimate", body: "Call or fill out the form — hassle-free appointments often available." },
-    { n: "2", title: "We Visit, Measure & Design", body: "A friendly, no-obligation home visit with an honest, upfront quote — then we walk you through beautiful acrylic and Onyx tile, marble, and stone options." },
-    { n: "3", title: "Professional Installation", body: "Fast, clean installation — most showers finished in a single day." },
+    { n: "1", Icon: ClipboardCheck, title: "Book Your Free Estimate", body: "Call or fill out the form — hassle-free appointments often available." },
+    { n: "2", Icon: Ruler, title: "We Visit, Measure & Design", body: "A friendly, no-obligation home visit with an honest, upfront quote — then we walk you through beautiful acrylic and Onyx tile, marble, and stone options." },
+    { n: "3", Icon: ShowerHead, title: "Professional Installation", body: "Fast, clean installation — and we provide Post-Care for Peace of Mind." },
   ];
   return (
     <section id="process" className="cv-auto py-5 md:py-8 bg-gradient-to-b from-navy to-navy/95 text-navy-foreground">
@@ -1172,14 +1172,22 @@ function Process() {
             Simple, honest, and hassle-free from day one.
           </h2>
         </div>
-        <ol className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+        <ol className="mt-4 grid gap-3 grid-cols-3">
           {steps.map((s) => (
-            <li key={s.n} className="rounded-xl bg-white/5 backdrop-blur border border-white/10 p-3">
-              <div className="grid h-6 w-6 place-items-center rounded-full bg-white text-navy font-display font-bold text-[10px]">
-                {s.n}
+            <li
+              key={s.n}
+              className="relative flex flex-col items-center text-center rounded-xl bg-white/5 backdrop-blur border border-white/10 p-3 md:p-4"
+            >
+              <div className="relative">
+                <div className="grid h-12 w-12 md:h-14 md:w-14 place-items-center rounded-full bg-white/10 border border-white/20 text-teal">
+                  <s.Icon className="h-6 w-6 md:h-7 md:w-7" strokeWidth={1.75} aria-hidden="true" />
+                </div>
+                <span className="absolute -top-1 -right-1 grid h-5 w-5 place-items-center rounded-full bg-white text-navy font-display font-bold text-[10px]">
+                  {s.n}
+                </span>
               </div>
-              <h3 className="mt-2 text-sm font-semibold text-navy-foreground">{s.title}</h3>
-              <p className="mt-0.5 text-[10px] text-navy-foreground/75">{s.body}</p>
+              <h3 className="mt-2 text-[11px] md:text-sm font-semibold text-navy-foreground text-balance">{s.title}</h3>
+              <p className="mt-1 text-[9px] md:text-[11px] leading-snug text-navy-foreground/75">{s.body}</p>
             </li>
           ))}
         </ol>
