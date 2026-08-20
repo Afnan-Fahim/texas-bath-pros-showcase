@@ -123,14 +123,14 @@ function Logo({
       <img
         src={isFooter ? logoFooterImg : logoImg}
         alt="Texas Bath Solutions"
-        width={isFooter ? 1200 : 900}
-        height={isFooter ? 449 : 669}
+        width={isFooter ? 1400 : 900}
+        height={isFooter ? 524 : 669}
         fetchPriority={isFooter ? "low" : "high"}
         decoding="async"
         loading={isFooter ? "lazy" : "eager"}
         className={cn(
           "w-auto object-contain",
-          isFooter ? "h-20 md:h-24" : size === "sm" ? "h-30 md:h-36" : "h-60 md:h-72",
+          isFooter ? "h-40 md:h-48" : size === "sm" ? "h-30 md:h-36" : "h-60 md:h-72",
         )}
       />
 
