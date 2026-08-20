@@ -260,7 +260,7 @@ function MobilePhoneCTA() {
 /* ---------------- HERO ---------------- */
 function Hero({ onBook }: { onBook: () => void }) {
   return (
-    <section id="top" className="relative pt-52 md:pt-60 pb-16 md:pb-24 overflow-hidden">
+    <section id="top" className="relative pt-52 md:pt-60 pb-12 md:pb-16 overflow-hidden">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_color-mix(in_oklab,var(--teal)_18%,transparent)_0%,transparent_60%)]" />
       <div className="container-x grid gap-10 lg:grid-cols-2 lg:gap-16 items-center">
         <div className="animate-fade-up">
@@ -511,7 +511,7 @@ function TrustBar() {
 /* ---------------- FINANCING BANNER ---------------- */
 function FinancingBanner({ onBook }: { onBook: () => void }) {
   return (
-    <section className="py-10 md:py-14">
+    <section className="py-8 md:py-10">
       <div className="container-x">
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-navy to-navy/90 text-navy-foreground shadow-elegant">
           <div className="absolute -right-16 -top-16 h-64 w-64 rounded-full bg-teal/25 blur-3xl" aria-hidden />
@@ -561,7 +561,7 @@ function FinancingBanner({ onBook }: { onBook: () => void }) {
 /* ---------------- ABOUT ---------------- */
 function About() {
   return (
-    <section className="pt-16 pb-10 md:pt-24 md:pb-14">
+    <section className="pt-12 pb-8 md:pt-16 md:pb-10">
       <div className="container-x max-w-3xl text-center">
         <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-navy">
           About Us
@@ -640,7 +640,7 @@ const GALLERY: GalleryItem[] = [
     id: "7",
     category: "marble",
     after: afterMarble,
-    title: "Calacatta Marble Look",
+    title: "Calcutta Marble Look — Moen Gibson Fixtures",
     location: "The Dominion",
   },
   {
@@ -689,7 +689,7 @@ const GALLERY: GalleryItem[] = [
     id: "14",
     category: "marble",
     after: afterMarble3,
-    title: "Calacatta Gold Luxury Shower",
+    title: "Calcutta Gold Shower — Moen Gibson Fixtures",
     location: "Hill Country Village",
   },
 ];
@@ -724,7 +724,7 @@ function Gallery() {
     setActiveIdx((i) => (i === null ? 0 : (i - 1 + items.length) % items.length));
 
   return (
-    <section id="work" className="pt-10 pb-16 md:pt-16 md:pb-28 bg-gradient-to-b from-secondary/40 to-background">
+    <section id="work" className="pt-8 pb-12 md:pt-12 md:pb-16 bg-gradient-to-b from-secondary/40 to-background">
       <div className="container-x">
         <div className="max-w-3xl mx-auto text-center">
           <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-navy">
@@ -931,7 +931,7 @@ function Offers({ onBook }: { onBook: () => void }) {
   };
 
   return (
-    <section id="offers" className="py-16 md:py-24 bg-secondary/40">
+    <section id="offers" className="py-12 md:py-16 bg-secondary/40">
       <div className="container-x">
         <div className="max-w-3xl mx-auto text-center">
           <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-navy">
@@ -1145,7 +1145,7 @@ function WhyUs() {
     },
   ];
   return (
-    <section id="why" className="py-16 md:py-24">
+    <section id="why" className="py-12 md:py-16">
       <div className="container-x">
         <div className="max-w-3xl mx-auto text-center">
           <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-navy">
@@ -1241,7 +1241,7 @@ function Testimonials() {
     },
   ];
   return (
-    <section className="py-16 md:py-24">
+    <section className="py-12 md:py-16">
       <div className="container-x">
         <div className="max-w-3xl mx-auto text-center">
           <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-navy">
@@ -1331,7 +1331,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
     <section
       id="book"
       ref={formRef as React.RefObject<HTMLElement>}
-      className="py-16 md:py-28 bg-gradient-to-b from-background to-secondary/60"
+      className="py-12 md:py-16 bg-gradient-to-b from-background to-secondary/60"
     >
       <div className="container-x grid gap-10 lg:grid-cols-5 items-start">
         <div className="lg:col-span-2 lg:sticky lg:top-28">
@@ -1346,7 +1346,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
           </p>
           <ul className="mt-6 space-y-3">
             {[
-              "No pressure. No obligation. Ever.",
+              "No pressure. No obligation.",
               "$0 down financing — up to 12 months no payments, no interest",
               "Soft credit check only — won't affect your score",
               "Same-day estimates for most San Antonio homes",
@@ -1623,7 +1623,7 @@ function FAQ() {
     },
   ];
   return (
-    <section className="py-16 md:py-24 bg-secondary/40">
+    <section className="py-12 md:py-16 bg-secondary/40">
       <div className="container-x max-w-3xl">
         <div className="text-center">
           <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-navy">
