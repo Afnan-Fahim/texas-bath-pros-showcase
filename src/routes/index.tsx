@@ -630,13 +630,6 @@ const GALLERY: GalleryItem[] = [
     location: "The Dominion",
   },
   {
-    id: "8",
-    category: "modern",
-    after: afterModern,
-    title: "Spa-Style Walk-In",
-    location: "Fair Oaks Ranch",
-  },
-  {
     id: "9",
     category: "subway",
     after: afterSubway2,
