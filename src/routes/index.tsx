@@ -865,6 +865,208 @@ function Gallery() {
   );
 }
 
+/* ---------------- OFFERS ---------------- */
+type Offer = {
+  amount: string;
+  headline: string;
+  sub: string;
+  detail: string;
+  image: string;
+  badge: string;
+};
+
+const OFFERS: Offer[] = [
+  {
+    amount: "$1,000 Off",
+    headline: "Teacher Appreciation",
+    sub: "For San Antonio educators & school staff",
+    detail:
+      "Our biggest thank-you goes to the teachers, aides, and school staff who shape our city. Show a valid school ID or district pay stub and we'll take $1,000 off your complete Bella Stone shower or bath remodel.",
+    image: afterMarble,
+    badge: "Most Popular",
+  },
+  {
+    amount: "$1,000 Off",
+    headline: "Military & Veterans",
+    sub: "Active duty, Guard, Reserve & Veterans",
+    detail:
+      "San Antonio is Military City USA. Active duty, Guard, Reserve, retirees, and Veterans receive $1,000 off any complete remodel with a valid military or VA ID.",
+    image: afterSubway,
+    badge: "Military City USA",
+  },
+  {
+    amount: "$850 Off",
+    headline: "First Responders & Nurses",
+    sub: "Police, fire, EMS & healthcare heroes",
+    detail:
+      "Police, firefighters, EMS, and nurses save $850 on a tub-to-shower conversion or full shower update. Just show your department or hospital badge at your Free Estimate.",
+    image: afterModern,
+    badge: "Thank You",
+  },
+  {
+    amount: "$500 Off",
+    headline: "Seniors (60+) & New Customers",
+    sub: "Includes free grab bar & safety seat upgrade",
+    detail:
+      "Homeowners 60 and older save $500 and receive a complimentary grab bar plus built-in safety seat upgrade on any walk-in shower conversion. First-time customers qualify too.",
+    image: afterVenatino,
+    badge: "Safety Upgrade",
+  },
+];
+
+function Offers({ onBook }: { onBook: () => void }) {
+  const [active, setActive] = useState<Offer | null>(null);
+  const [claimed, setClaimed] = useState(false);
+  const [form, setForm] = useState({ name: "", phone: "", email: "" });
+
+  const open = (o: Offer) => {
+    setActive(o);
+    setClaimed(false);
+    setForm({ name: "", phone: "", email: "" });
+  };
+
+  return (
+    <section id="offers" className="py-16 md:py-24 bg-secondary/40">
+      <div className="container-x">
+        <div className="max-w-3xl mx-auto text-center">
+          <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-navy">
+            Current Savings
+          </span>
+          <h2 className="mt-4 text-3xl md:text-5xl text-navy text-balance">
+            San Antonio, TX Bathroom Remodel Offers &amp; Discounts
+          </h2>
+          <p className="mt-4 text-muted-foreground">
+            We save our best pricing for the people who serve San Antonio every day. Offers stack with
+            $0 down financing and up to 12 months no payments, no interest.
+          </p>
+        </div>
+
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {OFFERS.map((o) => (
+            <article
+              key={o.headline}
+              className="group overflow-hidden rounded-2xl border border-border bg-card shadow-card hover:shadow-elegant transition-shadow flex flex-col"
+            >
+              <div className="relative aspect-[4/3] overflow-hidden">
+                <img
+                  src={o.image}
+                  alt={`${o.headline} bathroom remodel discount in San Antonio, TX`}
+                  loading="lazy"
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <span className="absolute left-3 top-3 rounded-full bg-navy/90 px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-wide text-navy-foreground">
+                  {o.badge}
+                </span>
+              </div>
+              <div className="flex flex-1 flex-col p-6">
+                <p className="text-3xl font-bold text-navy">{o.amount}</p>
+                <h3 className="mt-1 text-lg font-semibold text-navy">{o.headline}</h3>
+                <p className="mt-2 text-sm text-muted-foreground flex-1">{o.sub}</p>
+                <Button className="mt-5 w-full" onClick={() => open(o)}>
+                  Claim Offer
+                </Button>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <p className="mt-6 text-center text-xs text-muted-foreground">
+          One discount per household. Cannot be combined with other offers. Valid on new contracts only —
+          mention your offer at your Free Estimate.
+        </p>
+      </div>
+
+      <Dialog open={!!active} onOpenChange={(v) => !v && setActive(null)}>
+        <DialogContent className="sm:max-w-md">
+          {active && !claimed && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="text-2xl text-navy">
+                  {active.amount} — {active.headline}
+                </DialogTitle>
+                <DialogDescription>{active.detail}</DialogDescription>
+              </DialogHeader>
+              <form
+                className="mt-2 space-y-3"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  setClaimed(true);
+                }}
+              >
+                <div className="space-y-1.5">
+                  <Label htmlFor="offer-name">Full name</Label>
+                  <Input
+                    id="offer-name"
+                    required
+                    value={form.name}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    placeholder="Jane Doe"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="offer-phone">Phone</Label>
+                  <Input
+                    id="offer-phone"
+                    required
+                    type="tel"
+                    value={form.phone}
+                    onChange={(e) => setForm({ ...form, phone: formatPhone(e.target.value) })}
+                    placeholder="(210) 555-0123"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="offer-email">Email</Label>
+                  <Input
+                    id="offer-email"
+                    required
+                    type="email"
+                    value={form.email}
+                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    placeholder="you@email.com"
+                  />
+                </div>
+                <Button type="submit" className="w-full">
+                  Lock In My {active.amount}
+                </Button>
+                <p className="text-center text-xs text-muted-foreground">
+                  Soft credit check only · $0 down financing available
+                </p>
+              </form>
+            </>
+          )}
+          {active && claimed && (
+            <div className="py-4 text-center">
+              <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-navy text-navy-foreground">
+                <Check className="h-7 w-7" />
+              </div>
+              <DialogTitle className="mt-4 text-2xl text-navy">
+                Your {active.amount} is reserved!
+              </DialogTitle>
+              <DialogDescription className="mt-2">
+                We'll call you shortly to schedule your Free Estimate. Want it faster? Call us at{" "}
+                {PHONE_DISPLAY}.
+              </DialogDescription>
+              <div className="mt-5 grid gap-2">
+                <Button
+                  onClick={() => {
+                    setActive(null);
+                    onBook();
+                  }}
+                >
+                  Pick My Estimate Time
+                </Button>
+                <Button variant="outline" asChild>
+                  <a href={PHONE_TEL}>Call {PHONE_DISPLAY}</a>
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+    </section>
+  );
+}
+
 /* ---------------- WHY US ---------------- */
 function WhyUs() {
   const items = [
