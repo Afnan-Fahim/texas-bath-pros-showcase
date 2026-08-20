@@ -154,6 +154,7 @@ function Navbar({ onBook }: { onBook: () => void }) {
 
   const links = [
     { href: "#work", label: "Our Work" },
+    { href: "#offers", label: "Offers" },
     { href: "#why", label: "Why Us" },
     { href: "#process", label: "The Process" },
     { href: "#book", label: "Book Estimate" },
