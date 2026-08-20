@@ -393,7 +393,7 @@ const REEL_PAIRS = [
   { before: beforeFiberglass, after: afterMarble, label: "Fiberglass → Marble" },
   { before: beforePink, after: afterSubway, label: "Dated Tile → Modern Subway" },
   { before: beforeBeige, after: afterVenatino, label: "Beige Tub → Venatino Walk-In" },
-  { before: beforeWhiteTile, after: afterModern, label: "Tired Tile → Modern Spa" },
+  { before: beforeWhiteTile, after: afterSubway2, label: "Tired Tile → Bright White Subway" },
 ];
 
 function BeforeAfterReel() {
