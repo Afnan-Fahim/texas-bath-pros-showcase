@@ -62,7 +62,6 @@ import afterSubway from "@/assets/after-subway.avif";
 import afterSubway2 from "@/assets/after-subway-2.avif";
 import afterSubway3 from "@/assets/after-subway-3.avif";
 import afterMarble from "@/assets/after-marble.avif";
-import afterMarble2 from "@/assets/after-marble-2.avif";
 import afterVenatino from "@/assets/after-venatino.avif";
 import offerTeachers from "@/assets/offer-teachers-first-responders.avif";
 import offerMilitary from "@/assets/offer-military-veterans.avif";
