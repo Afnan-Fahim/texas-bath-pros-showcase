@@ -665,32 +665,11 @@ const GALLERY: GalleryItem[] = [
     location: "Schertz",
   },
   {
-    id: "11",
-    category: "modern",
-    after: afterModern2,
-    title: "Matte Black Minimalist Shower",
-    location: "Cibolo",
-  },
-  {
-    id: "12",
-    category: "modern",
-    after: afterModern3,
-    title: "Dark Stone Spa Retreat",
-    location: "Garden Ridge",
-  },
-  {
     id: "13",
     category: "marble",
     after: afterMarble2,
     title: "Carrara Marble Master Shower",
     location: "Olmos Park",
-  },
-  {
-    id: "14",
-    category: "marble",
-    after: afterMarble3,
-    title: "Calcutta Gold Shower — Moen Gibson Fixtures",
-    location: "Hill Country Village",
   },
 ];
 
