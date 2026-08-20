@@ -58,10 +58,7 @@ import afterSubway2 from "@/assets/after-subway-2.webp";
 import afterSubway3 from "@/assets/after-subway-3.webp";
 import afterMarble from "@/assets/after-marble.webp";
 import afterMarble2 from "@/assets/after-marble-2.webp";
-import afterMarble3 from "@/assets/after-marble-3.webp";
 import afterModern from "@/assets/after-modern.webp";
-import afterModern2 from "@/assets/after-modern-2.webp";
-import afterModern3 from "@/assets/after-modern-3.webp";
 import afterVenatino from "@/assets/after-venatino.webp";
 import offerTeachers from "@/assets/offer-teachers-first-responders.webp";
 import offerMilitary from "@/assets/offer-military-veterans.webp";
@@ -492,7 +489,7 @@ function TrustBar() {
   const items = [
     { icon: Award, label: "A+ BBB Rating", sub: "Zero Complaints" },
     { icon: Home, label: "Family Owned", sub: "San Antonio, TX" },
-    { icon: Clock, label: "Free Same-Day", sub: "Estimates" },
+    { icon: Clock, label: "Free Hassle-Free", sub: "Estimates" },
     { icon: Droplets, label: "Premium Acrylic", sub: "Fast & Leak-Proof" },
     { icon: MapPin, label: "Local Service", sub: "San Antonio Area" },
   ];
@@ -578,7 +575,7 @@ function About() {
         </h2>
         <p className="mt-5 text-lg text-muted-foreground text-balance">
           We're a family business dedicated to turning outdated bathrooms into beautiful,
-          functional spaces. We believe in honest pricing, same-day estimates, and doing the
+          functional spaces. We believe in honest pricing, hassle-free estimates, and doing the
           job right the first time — no pressure, no surprises, no hassle.
         </p>
       </div>
@@ -637,13 +634,6 @@ const GALLERY: GalleryItem[] = [
     location: "Helotes",
   },
   {
-    id: "6",
-    category: "subway",
-    after: afterSubway,
-    title: "Classic Subway Shower",
-    location: "Boerne",
-  },
-  {
     id: "7",
     category: "marble",
     after: afterMarble,
@@ -672,32 +662,11 @@ const GALLERY: GalleryItem[] = [
     location: "Schertz",
   },
   {
-    id: "11",
-    category: "modern",
-    after: afterModern2,
-    title: "Matte Black Minimalist Shower",
-    location: "Cibolo",
-  },
-  {
-    id: "12",
-    category: "modern",
-    after: afterModern3,
-    title: "Dark Stone Spa Retreat",
-    location: "Garden Ridge",
-  },
-  {
     id: "13",
     category: "marble",
     after: afterMarble2,
     title: "Carrara Marble Master Shower",
     location: "Olmos Park",
-  },
-  {
-    id: "14",
-    category: "marble",
-    after: afterMarble3,
-    title: "Calcutta Gold Shower — Moen Gibson Fixtures",
-    location: "Hill Country Village",
   },
 ];
 
@@ -741,7 +710,7 @@ function Gallery() {
             See the Difference — Real San Antonio Bathroom Transformations
           </h2>
           <p className="mt-4 text-lg text-muted-foreground text-balance">
-            Every project starts with a free same-day estimate. Here's what we deliver.
+            Every project starts with a free hassle-free estimate. Here's what we deliver.
           </p>
         </div>
 
@@ -1129,8 +1098,8 @@ function WhyUs() {
   const items = [
     {
       icon: Clock,
-      title: "Free Same-Day Estimates",
-      body: "No obligation, no pressure. We come to you and give you an honest quote — often the same day you call.",
+      title: "Free Hassle-Free Estimates",
+      body: "No obligation, no pressure. We come to you and give you an honest quote at a time that works for you.",
     },
     {
       icon: Sparkles,
@@ -1189,7 +1158,7 @@ function WhyUs() {
 /* ---------------- PROCESS ---------------- */
 function Process() {
   const steps = [
-    { n: "1", title: "Book Your Free Estimate", body: "Call or fill out the form — same-day appointments often available." },
+    { n: "1", title: "Book Your Free Estimate", body: "Call or fill out the form — hassle-free appointments often available." },
     { n: "2", title: "We Visit, Measure & Design", body: "A friendly, no-obligation home visit with an honest, upfront quote — then we walk you through beautiful acrylic tile, marble, and stone options." },
     { n: "3", title: "Professional Installation", body: "Fast, clean installation — most showers finished in a single day." },
   ];
@@ -1226,7 +1195,7 @@ function Testimonials() {
     {
       name: "Maria G.",
       area: "Alamo Heights",
-      body: "They came out the same day I called, gave me an honest quote, and my new shower looks straight out of a magazine. Zero hassle from start to finish.",
+      body: "They came out quickly, gave me an honest quote, and my new shower looks straight out of a magazine. Zero hassle from start to finish.",
     },
     {
       name: "David R.",
@@ -1351,14 +1320,14 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
             Ready to see your new shower? Schedule your free, no-obligation estimate.
           </h2>
           <p className="mt-5 text-lg text-muted-foreground">
-            Same-day appointments often available. We'll call to confirm within 1 hour.
+            Hassle-free appointments often available. We'll call to confirm within 1 hour.
           </p>
           <ul className="mt-6 space-y-3">
             {[
               "No pressure. No obligation.",
               "$0 down financing — up to 12 months no payments, no interest",
               "Soft credit check only — won't affect your score",
-              "Same-day estimates for most San Antonio homes",
+              "Hassle-free estimates for most San Antonio homes",
               "Honest, upfront pricing — no surprises",
               "A+ BBB rated with zero complaints",
             ].map((b) => (
@@ -1615,8 +1584,8 @@ function FAQ() {
       a: "Most acrylic shower installations are completed in a single day. Larger remodels or tub-to-shower conversions may take 1–2 days depending on plumbing and prep work.",
     },
     {
-      q: "Do you really offer same-day estimates?",
-      a: "Yes! Call us in the morning and we can often come by that same afternoon. We'll call within 1 hour to confirm your appointment window.",
+      q: "Do you really offer hassle-free estimates?",
+      a: "Yes! We work around your schedule and can often come by within a day or two. We'll call within 1 hour to confirm your appointment window.",
     },
     {
       q: "What do your acrylic shower systems cost?",
@@ -1679,7 +1648,7 @@ function Footer() {
             <Phone className="h-4 w-4" /> {PHONE_DISPLAY}
           </a>
           <a href="#book" className="mt-3 inline-block text-navy-foreground/80 hover:text-white">
-            Book a Free Same-Day Estimate →
+            Book a Free Hassle-Free Estimate →
           </a>
         </div>
         <div>
