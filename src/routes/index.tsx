@@ -19,6 +19,9 @@ import {
   ChevronLeft,
   Waves,
   CreditCard,
+  ClipboardCheck,
+  Ruler,
+  ShowerHead,
 } from "lucide-react";
 import logoImg from "@/assets/logo-header.webp";
 import logoFooterImg from "@/assets/logo-footer.webp";
