@@ -616,14 +616,6 @@ const GALLERY: GalleryItem[] = [
     location: "Terrell Hills",
   },
   {
-    id: "4",
-    category: "modern",
-    before: beforeWhiteTile,
-    after: afterModern,
-    title: "Guest Bath Refresh",
-    location: "Shavano Park",
-  },
-  {
     id: "5",
     category: "marble",
     after: afterVenatino,
