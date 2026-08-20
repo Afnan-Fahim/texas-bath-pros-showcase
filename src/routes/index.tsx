@@ -24,7 +24,7 @@ import logoImg from "@/assets/logo-header.webp";
 import logoFooterImg from "@/assets/logo-footer.webp";
 
 import heroVideoAsset from "@/assets/texas-bath-solutions-hero.mp4.asset.json";
-import heroPoster from "@/assets/hero-video-poster.webp";
+import heroPoster from "@/assets/hero-video-poster.avif";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -54,22 +54,22 @@ import {
 } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
 
-import heroShower from "@/assets/hero-shower.webp";
-import afterSubway from "@/assets/after-subway.webp";
-import afterSubway2 from "@/assets/after-subway-2.webp";
-import afterSubway3 from "@/assets/after-subway-3.webp";
-import afterMarble from "@/assets/after-marble.webp";
-import afterMarble2 from "@/assets/after-marble-2.webp";
-import afterModern from "@/assets/after-modern.webp";
-import afterVenatino from "@/assets/after-venatino.webp";
-import offerTeachers from "@/assets/offer-teachers-first-responders.webp";
-import offerMilitary from "@/assets/offer-military-veterans.webp";
-import offerSeniors from "@/assets/offer-seniors.webp";
-import offerSummer from "@/assets/offer-summer-sale.webp";
-import beforeBeige from "@/assets/before-beige.webp";
-import beforeFiberglass from "@/assets/before-fiberglass.webp";
-import beforePink from "@/assets/before-pink.webp";
-import beforeWhiteTile from "@/assets/before-white-tile.webp";
+import heroShower from "@/assets/hero-shower.avif";
+import afterSubway from "@/assets/after-subway.avif";
+import afterSubway2 from "@/assets/after-subway-2.avif";
+import afterSubway3 from "@/assets/after-subway-3.avif";
+import afterMarble from "@/assets/after-marble.avif";
+import afterMarble2 from "@/assets/after-marble-2.avif";
+import afterModern from "@/assets/after-modern.avif";
+import afterVenatino from "@/assets/after-venatino.avif";
+import offerTeachers from "@/assets/offer-teachers-first-responders.avif";
+import offerMilitary from "@/assets/offer-military-veterans.avif";
+import offerSeniors from "@/assets/offer-seniors.avif";
+import offerSummer from "@/assets/offer-summer-sale.avif";
+import beforeBeige from "@/assets/before-beige.avif";
+import beforeFiberglass from "@/assets/before-fiberglass.avif";
+import beforePink from "@/assets/before-pink.avif";
+import beforeWhiteTile from "@/assets/before-white-tile.avif";
 
 export const Route = createFileRoute("/")({
   head: () => ({
