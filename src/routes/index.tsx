@@ -1154,7 +1154,7 @@ function WhyUs() {
     },
   ];
   return (
-    <section className="cv-auto"  id="why" className="py-12 md:py-16">
+    <section id="why" className="cv-auto py-12 md:py-16">
       <div className="container-x">
         <div className="max-w-3xl mx-auto text-center">
           <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-navy">
@@ -1194,7 +1194,7 @@ function Process() {
     { n: "3", title: "Professional Installation", body: "Fast, clean installation — most showers finished in a single day." },
   ];
   return (
-    <section className="cv-auto"  id="process" className="py-5 md:py-8 bg-gradient-to-b from-navy to-navy/95 text-navy-foreground">
+    <section id="process" className="cv-auto py-5 md:py-8 bg-gradient-to-b from-navy to-navy/95 text-navy-foreground">
       <div className="container-x">
         <div className="max-w-2xl mx-auto text-center">
           <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-2 py-0.5 text-[8px] font-semibold uppercase tracking-wider text-navy-foreground/90">
@@ -1250,7 +1250,7 @@ function Testimonials() {
     },
   ];
   return (
-    <section className="cv-auto"  className="py-12 md:py-16">
+    <section className="cv-auto py-12 md:py-16">
       <div className="container-x">
         <div className="max-w-3xl mx-auto text-center">
           <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-navy">
@@ -1632,7 +1632,7 @@ function FAQ() {
     },
   ];
   return (
-    <section className="cv-auto"  className="py-12 md:py-16 bg-secondary/40">
+    <section className="cv-auto py-12 md:py-16 bg-secondary/40">
       <div className="container-x max-w-3xl">
         <div className="text-center">
           <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-navy">
