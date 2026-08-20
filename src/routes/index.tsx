@@ -1543,11 +1543,11 @@ function FAQ() {
   const items = [
     {
       q: "How long does a shower installation take?",
-      a: "Most acrylic and Onyx shower installations are completed in a single day. Larger remodels or tub-to-shower conversions may take 1–2 days depending on plumbing and prep work.",
+      a: "Most acrylic and Onyx shower installations follow a 2–3 day process. Larger remodels are typically 3–5 days depending on plumbing and prep work.",
     },
     {
       q: "Do you really offer hassle-free estimates?",
-      a: "Yes! We work around your schedule and can often come by within a day or two. We'll call within 1 hour to confirm your appointment window.",
+      a: "Yes! We work around your schedule and can often come by within a day or two. We'll send updates and reminders for your selected appointment time.",
     },
     {
       q: "What do your acrylic and Onyx shower systems cost?",
