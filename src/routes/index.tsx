@@ -492,7 +492,7 @@ function TrustBar() {
   const items = [
     { icon: Award, label: "A+ BBB Rating", sub: "Zero Complaints" },
     { icon: Home, label: "Family Owned", sub: "San Antonio, TX" },
-    { icon: Clock, label: "Free Same-Day", sub: "Estimates" },
+    { icon: Clock, label: "Free Hassle-Free", sub: "Estimates" },
     { icon: Droplets, label: "Premium Acrylic", sub: "Fast & Leak-Proof" },
     { icon: MapPin, label: "Local Service", sub: "San Antonio Area" },
   ];
@@ -578,7 +578,7 @@ function About() {
         </h2>
         <p className="mt-5 text-lg text-muted-foreground text-balance">
           We're a family business dedicated to turning outdated bathrooms into beautiful,
-          functional spaces. We believe in honest pricing, same-day estimates, and doing the
+          functional spaces. We believe in honest pricing, hassle-free estimates, and doing the
           job right the first time — no pressure, no surprises, no hassle.
         </p>
       </div>
@@ -741,7 +741,7 @@ function Gallery() {
             See the Difference — Real San Antonio Bathroom Transformations
           </h2>
           <p className="mt-4 text-lg text-muted-foreground text-balance">
-            Every project starts with a free same-day estimate. Here's what we deliver.
+            Every project starts with a free hassle-free estimate. Here's what we deliver.
           </p>
         </div>
 
@@ -1129,8 +1129,8 @@ function WhyUs() {
   const items = [
     {
       icon: Clock,
-      title: "Free Same-Day Estimates",
-      body: "No obligation, no pressure. We come to you and give you an honest quote — often the same day you call.",
+      title: "Free Hassle-Free Estimates",
+      body: "No obligation, no pressure. We come to you and give you an honest quote at a time that works for you.",
     },
     {
       icon: Sparkles,
@@ -1189,7 +1189,7 @@ function WhyUs() {
 /* ---------------- PROCESS ---------------- */
 function Process() {
   const steps = [
-    { n: "1", title: "Book Your Free Estimate", body: "Call or fill out the form — same-day appointments often available." },
+    { n: "1", title: "Book Your Free Estimate", body: "Call or fill out the form — hassle-free appointments often available." },
     { n: "2", title: "We Visit, Measure & Design", body: "A friendly, no-obligation home visit with an honest, upfront quote — then we walk you through beautiful acrylic tile, marble, and stone options." },
     { n: "3", title: "Professional Installation", body: "Fast, clean installation — most showers finished in a single day." },
   ];
@@ -1226,7 +1226,7 @@ function Testimonials() {
     {
       name: "Maria G.",
       area: "Alamo Heights",
-      body: "They came out the same day I called, gave me an honest quote, and my new shower looks straight out of a magazine. Zero hassle from start to finish.",
+      body: "They came out quickly, gave me an honest quote, and my new shower looks straight out of a magazine. Zero hassle from start to finish.",
     },
     {
       name: "David R.",
