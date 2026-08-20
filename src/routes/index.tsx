@@ -1640,9 +1640,6 @@ function Footer() {
         </div>
         <div>
           <h4 className="font-semibold text-navy-foreground">Get In Touch</h4>
-          <a href={PHONE_TEL} className="mt-3 flex items-center gap-2 text-lg font-semibold hover:text-white">
-            <Phone className="h-4 w-4" /> {PHONE_DISPLAY}
-          </a>
           <a href="#book" className="mt-3 inline-block text-navy-foreground/80 hover:text-white">
             Book a Free Hassle-Free Estimate →
           </a>
