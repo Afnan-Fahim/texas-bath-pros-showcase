@@ -21,6 +21,7 @@ import {
   CreditCard,
 } from "lucide-react";
 import logoAsset from "@/assets/texas-bath-solutions-logo-transparent.png.asset.json";
+import heroVideoAsset from "@/assets/texas-bath-solutions-hero.mp4.asset.json";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
