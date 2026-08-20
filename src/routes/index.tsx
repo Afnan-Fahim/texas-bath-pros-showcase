@@ -305,7 +305,7 @@ function Hero({ onBook }: { onBook: () => void }) {
         </div>
         <div className="relative animate-fade-up">
           <div className="absolute -inset-6 -z-10 rounded-[2rem] bg-gradient-to-br from-teal/25 via-transparent to-navy/20 blur-2xl" />
-          <BeforeAfterReel />
+          <HeroVideo />
           <div className="absolute -bottom-6 -left-6 hidden md:flex items-center gap-3 rounded-xl bg-card px-4 py-3 shadow-card ring-1 ring-border">
             <div className="flex -space-x-1">
               {[0, 1, 2, 3, 4].map((i) => (
