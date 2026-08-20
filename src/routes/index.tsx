@@ -64,6 +64,7 @@ import afterVenatino from "@/assets/after-venatino.jpg";
 import offerTeachers from "@/assets/offer-teachers-first-responders.jpg";
 import offerMilitary from "@/assets/offer-military-veterans.jpg";
 import offerSeniors from "@/assets/offer-seniors.jpg";
+import offerSummer from "@/assets/offer-summer-sale.jpg";
 import beforeBeige from "@/assets/before-beige.jpg";
 import beforeFiberglass from "@/assets/before-fiberglass.jpg";
 import beforePink from "@/assets/before-pink.jpg";
@@ -901,11 +902,20 @@ const OFFERS: Offer[] = [
   {
     amount: "$750 Off",
     headline: "Senior Citizens (60+)",
-    sub: "Free grab bar & built-in safety seat upgrade",
+    sub: "Free grab bar & fold-down safety seat upgrade",
     detail:
-      "Homeowners 60 and older save $750 on a walk-in shower conversion and receive a complimentary grab bar plus built-in safety seat upgrade. Low-threshold bases and glass doors make daily bathing safer and easier.",
+      "Homeowners 60 and older save $750 on a walk-in shower conversion and receive a complimentary grab bar plus fold-down safety seat upgrade. Low-threshold bases and glass doors make daily bathing safer and easier.",
     image: offerSeniors,
     badge: "Safety Upgrade",
+  },
+  {
+    amount: "$500 Off",
+    headline: "Summer Sale",
+    sub: "Limited-time savings on any Bella Stone shower remodel",
+    detail:
+      "Beat the San Antonio heat with a brand-new shower. Save $500 on any complete Bella Stone acrylic shower remodel booked during our Summer Sale — light marble walls, rain shower head, and matte black glass barn doors available.",
+    image: offerSummer,
+    badge: "Limited Time",
   },
 ];
 
@@ -939,11 +949,21 @@ function Offers({ onBook }: { onBook: () => void }) {
           </p>
         </div>
 
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {OFFERS.map((o) => (
             <article
               key={o.headline}
-              className="group overflow-hidden rounded-2xl border border-border bg-card shadow-card hover:shadow-elegant transition-shadow flex flex-col"
+              role="button"
+              tabIndex={0}
+              onClick={() => open(o)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  open(o);
+                }
+              }}
+              aria-label={`Claim ${o.amount} — ${o.headline}`}
+              className="group cursor-pointer overflow-hidden rounded-2xl border border-border bg-card shadow-card hover:shadow-elegant transition-shadow flex flex-col focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               <div className="relative aspect-[4/3] overflow-hidden">
                 <img
