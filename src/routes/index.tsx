@@ -1678,6 +1678,7 @@ function Index() {
         <About />
         <BookingForm formRef={formRef} />
         <Gallery />
+        <Offers onBook={scrollToBook} />
         <WhyUs />
         <Process />
         <FAQ />
