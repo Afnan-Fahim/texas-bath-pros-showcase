@@ -138,7 +138,7 @@ function Logo({
 
         <span
           className={cn(
-            "text-[0.78rem] md:text-[0.8775rem] font-medium tracking-wide",
+            "text-[0.78rem] md:text-[0.8775rem] font-medium tracking-wide whitespace-nowrap",
             dark ? "text-white/70" : "text-navy/70",
           )}
         >
