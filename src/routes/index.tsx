@@ -123,14 +123,14 @@ function Logo({
       <img
         src={isFooter ? logoFooterImg : logoImg}
         alt="Texas Bath Solutions"
-        width={isFooter ? 1200 : 900}
-        height={isFooter ? 449 : 669}
+        width={isFooter ? 1400 : 900}
+        height={isFooter ? 524 : 669}
         fetchPriority={isFooter ? "low" : "high"}
         decoding="async"
         loading={isFooter ? "lazy" : "eager"}
         className={cn(
           "w-auto object-contain",
-          isFooter ? "h-20 md:h-24" : size === "sm" ? "h-30 md:h-36" : "h-60 md:h-72",
+          isFooter ? "h-40 md:h-48" : size === "sm" ? "h-30 md:h-36" : "h-60 md:h-72",
         )}
       />
 
@@ -1624,34 +1624,25 @@ function FAQ() {
 /* ---------------- FOOTER ---------------- */
 function Footer() {
   return (
-    <footer className="bg-navy text-navy-foreground">
-      <div className="container-x py-14 grid gap-10 md:grid-cols-3">
+    <footer className="bg-neutral-800 text-neutral-100">
+      <div className="container-x py-14 grid gap-10 md:grid-cols-2">
         <div>
-          <div className="inline-flex items-center bg-white rounded-xl px-4 py-3 shadow-sm">
-            <Logo size="sm" variant="footer" />
-
-          </div>
-          <p className="mt-5 text-navy-foreground/70 text-sm max-w-xs">
+          <Logo size="sm" variant="footer" dark />
+          <p className="mt-5 text-neutral-300 text-sm max-w-sm">
             Family-owned bathroom remodeling. Beautiful showers, fast installs, zero hassle.
           </p>
-          <p className="mt-3 text-navy-foreground/60 text-sm">
+          <p className="mt-3 text-neutral-400 text-sm">
             Proudly serving San Antonio and surrounding areas.
           </p>
         </div>
-        <div>
-          <h4 className="font-semibold text-navy-foreground">Get In Touch</h4>
-          <a href="#book" className="mt-3 inline-block text-navy-foreground/80 hover:text-white">
-            Book a Free Hassle-Free Estimate →
-          </a>
-        </div>
-        <div>
-          <h4 className="font-semibold text-navy-foreground">Trust & Credentials</h4>
+        <div className="md:justify-self-end">
+          <h4 className="font-semibold text-neutral-100">Trust &amp; Credentials</h4>
           <div className="mt-3 flex flex-wrap gap-2">
             <a
               href="https://www.bbb.org"
               target="_blank"
               rel="noreferrer"
-              className="rounded-md bg-white/10 px-3 py-2 text-xs font-semibold text-navy-foreground hover:bg-white/15"
+              className="rounded-md bg-white/10 px-3 py-2 text-xs font-semibold text-neutral-100 hover:bg-white/15"
             >
               A+ BBB Accredited
             </a>
@@ -1659,16 +1650,16 @@ function Footer() {
               Zero Complaints
             </span>
             <span className="rounded-md bg-white/10 px-3 py-2 text-xs font-semibold">
-              Licensed & Insured
+              Licensed &amp; Insured
             </span>
           </div>
-          <p className="mt-4 text-xs text-navy-foreground/60">
+          <p className="mt-4 text-xs text-neutral-400 max-w-xs">
             Quality acrylic shower systems featuring premium finishes and lifetime durability.
           </p>
         </div>
       </div>
       <div className="border-t border-white/10">
-        <div className="container-x py-5 flex flex-wrap items-center justify-between gap-3 text-xs text-navy-foreground/60">
+        <div className="container-x py-5 flex flex-wrap items-center justify-between gap-3 text-xs text-neutral-400">
           <div>© {new Date().getFullYear()} Texas Bath Solutions. All rights reserved.</div>
           <div className="flex gap-4">
             <a href="#" className="hover:text-white">Privacy</a>
@@ -1676,6 +1667,7 @@ function Footer() {
           </div>
         </div>
       </div>
+
     </footer>
   );
 }
