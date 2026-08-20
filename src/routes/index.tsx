@@ -21,6 +21,8 @@ import {
   CreditCard,
 } from "lucide-react";
 import logoImg from "@/assets/logo-header.webp";
+import logoFooterImg from "@/assets/logo-footer.webp";
+
 import heroVideoAsset from "@/assets/texas-bath-solutions-hero.mp4.asset.json";
 import heroPoster from "@/assets/hero-video-poster.webp";
 
@@ -88,7 +90,7 @@ export const Route = createFileRoute("/")({
           "@type": "LocalBusiness",
           name: "Texas Bath Solutions",
           description:
-            "Family-owned San Antonio bathroom remodeler specializing in Bella Stone acrylic showers and tub-to-shower conversions. Trusted Shower Experts.",
+            "Family-owned San Antonio bathroom remodeler specializing in acrylic showers and tub-to-shower conversions. Trusted Shower Experts.",
           telephone: "+1-210-702-0753",
           areaServed: "San Antonio, TX",
           address: { "@type": "PostalAddress", addressLocality: "San Antonio", addressRegion: "TX", addressCountry: "US" },
@@ -108,25 +110,30 @@ function Logo({
   className,
   size = "default",
   dark,
+  variant = "header",
 }: {
   className?: string;
   size?: "default" | "sm";
   dark?: boolean;
+  variant?: "header" | "footer";
 }) {
+  const isFooter = variant === "footer";
   return (
     <a href="#top" className={cn("flex flex-row items-center gap-3 group", className)}>
       <img
-        src={logoImg}
+        src={isFooter ? logoFooterImg : logoImg}
         alt="Texas Bath Solutions"
-        width={758}
-        height={609}
-        fetchPriority="high"
+        width={isFooter ? 1200 : 900}
+        height={isFooter ? 449 : 669}
+        fetchPriority={isFooter ? "low" : "high"}
         decoding="async"
+        loading={isFooter ? "lazy" : "eager"}
         className={cn(
           "w-auto object-contain",
-          size === "sm" ? "h-30 md:h-36" : "h-60 md:h-72",
+          isFooter ? "h-20 md:h-24" : size === "sm" ? "h-30 md:h-36" : "h-60 md:h-72",
         )}
       />
+
       <div className="hidden sm:flex flex-col leading-tight">
         <span
           className={cn(
@@ -392,7 +399,7 @@ function HeroVideo() {
 
 /* ---------------- BEFORE/AFTER REEL (auto-play) ---------------- */
 const REEL_PAIRS = [
-  { before: beforeFiberglass, after: afterMarble, label: "Fiberglass → Bella Stone Marble" },
+  { before: beforeFiberglass, after: afterMarble, label: "Fiberglass → Marble" },
   { before: beforePink, after: afterSubway, label: "Dated Tile → Modern Subway" },
   { before: beforeBeige, after: afterVenatino, label: "Beige Tub → Venatino Walk-In" },
   { before: beforeWhiteTile, after: afterModern, label: "Tired Tile → Modern Spa" },
@@ -452,7 +459,7 @@ function BeforeAfterReel() {
         <div className="flex items-end justify-between gap-4 flex-wrap">
           <div>
             <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-teal-foreground/90 text-white/80">
-              Bella Stone Acrylic Shower Remodel
+              Acrylic Shower Remodel
             </div>
             <div className="mt-1 font-display text-2xl md:text-3xl font-bold leading-tight">
               Starting at <span className="text-gold">$8,477</span>
@@ -863,7 +870,7 @@ const OFFERS: Offer[] = [
     headline: "Teachers & First Responders",
     sub: "Educators, police, fire, EMS & nurses",
     detail:
-      "Our biggest thank-you goes to the people who teach and protect San Antonio. Teachers, school staff, police officers, firefighters, EMS, and nurses save $1,000 on a complete Bella Stone shower or bath remodel. Just show your school, department, or hospital ID at your Free Estimate.",
+      "Our biggest thank-you goes to the people who teach and protect San Antonio. Teachers, school staff, police officers, firefighters, EMS, and nurses save $1,000 on a complete shower or bath remodel. Just show your school, department, or hospital ID at your Free Estimate.",
     image: offerTeachers,
     badge: "Most Popular",
   },
@@ -888,9 +895,9 @@ const OFFERS: Offer[] = [
   {
     amount: "$500 Off",
     headline: "Summer Sale",
-    sub: "Limited-time savings on any Bella Stone shower remodel",
+    sub: "Limited-time savings on any shower remodel",
     detail:
-      "Beat the San Antonio heat with a brand-new shower. Save $500 on any complete Bella Stone acrylic shower remodel booked during our Summer Sale — light marble walls, rain shower head, and matte black glass barn doors available.",
+      "Beat the San Antonio heat with a brand-new shower. Save $500 on any complete acrylic shower remodel booked during our Summer Sale — light marble walls, rain shower head, and matte black glass barn doors available.",
     image: offerSummer,
     badge: "Limited Time",
   },
@@ -1339,18 +1346,6 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
               </li>
             ))}
           </ul>
-          <a
-            href={PHONE_TEL}
-            className="mt-8 inline-flex items-center gap-3 rounded-xl bg-card border border-border px-4 py-3 shadow-card"
-          >
-            <span className="grid h-10 w-10 place-items-center rounded-lg bg-navy text-navy-foreground">
-              <Phone className="h-5 w-5" />
-            </span>
-            <span>
-              <span className="block text-xs text-muted-foreground">Prefer to call?</span>
-              <span className="block font-semibold text-navy">{PHONE_DISPLAY}</span>
-            </span>
-          </a>
         </div>
 
         <div className="lg:col-span-3">
@@ -1633,7 +1628,8 @@ function Footer() {
       <div className="container-x py-14 grid gap-10 md:grid-cols-3">
         <div>
           <div className="inline-flex items-center bg-white rounded-xl px-4 py-3 shadow-sm">
-            <Logo size="sm" />
+            <Logo size="sm" variant="footer" />
+
           </div>
           <p className="mt-5 text-navy-foreground/70 text-sm max-w-xs">
             Family-owned bathroom remodeling. Beautiful showers, fast installs, zero hassle.
@@ -1644,9 +1640,6 @@ function Footer() {
         </div>
         <div>
           <h4 className="font-semibold text-navy-foreground">Get In Touch</h4>
-          <a href={PHONE_TEL} className="mt-3 flex items-center gap-2 text-lg font-semibold hover:text-white">
-            <Phone className="h-4 w-4" /> {PHONE_DISPLAY}
-          </a>
           <a href="#book" className="mt-3 inline-block text-navy-foreground/80 hover:text-white">
             Book a Free Hassle-Free Estimate →
           </a>
@@ -1670,7 +1663,7 @@ function Footer() {
             </span>
           </div>
           <p className="mt-4 text-xs text-navy-foreground/60">
-            Quality acrylic shower systems featuring styles similar to Bella Stone Systems.
+            Quality acrylic shower systems featuring premium finishes and lifetime durability.
           </p>
         </div>
       </div>

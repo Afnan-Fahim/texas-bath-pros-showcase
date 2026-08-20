@@ -81,14 +81,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "San Antonio's Trusted Shower Experts. Bella Stone acrylic shower remodels starting at $8,477. Free hassle-free estimates, $0 down financing, A+ BBB rated.",
+          "San Antonio's Trusted Shower Experts. acrylic shower remodels starting at $8,477. Free hassle-free estimates, $0 down financing, A+ BBB rated.",
       },
       { name: "author", content: "Texas Bath Solutions" },
       { property: "og:site_name", content: "Texas Bath Solutions" },
       { property: "og:title", content: "Texas Bath Solutions | San Antonio Bathroom Remodeling" },
       {
         property: "og:description",
-        content: "Bella Stone acrylic showers from $8,477. Fast, clean installs. Free hassle-free estimates in San Antonio.",
+        content: "acrylic showers from $8,477. Fast, clean installs. Free hassle-free estimates in San Antonio.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
