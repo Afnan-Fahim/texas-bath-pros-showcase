@@ -953,7 +953,17 @@ function Offers({ onBook }: { onBook: () => void }) {
           {OFFERS.map((o) => (
             <article
               key={o.headline}
-              className="group overflow-hidden rounded-2xl border border-border bg-card shadow-card hover:shadow-elegant transition-shadow flex flex-col"
+              role="button"
+              tabIndex={0}
+              onClick={() => open(o)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  open(o);
+                }
+              }}
+              aria-label={`Claim ${o.amount} — ${o.headline}`}
+              className="group cursor-pointer overflow-hidden rounded-2xl border border-border bg-card shadow-card hover:shadow-elegant transition-shadow flex flex-col focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               <div className="relative aspect-[4/3] overflow-hidden">
                 <img
