@@ -325,19 +325,52 @@ function Hero({ onBook }: { onBook: () => void }) {
 
 /* ---------------- HERO VIDEO (auto-play) ---------------- */
 function HeroVideo() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [muted, setMuted] = useState(true);
+
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    // Try to start with sound; browsers may block it, then fall back to muted autoplay.
+    v.muted = false;
+    v.play()
+      .then(() => setMuted(false))
+      .catch(() => {
+        v.muted = true;
+        setMuted(true);
+        v.play().catch(() => {});
+      });
+  }, []);
+
+  const toggleSound = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.muted = !v.muted;
+    if (!v.muted) v.volume = 1;
+    setMuted(v.muted);
+  };
+
   return (
-    <div className="relative overflow-hidden rounded-2xl shadow-elegant ring-1 ring-black/5 aspect-[4/3] bg-navy">
+    <div className="relative mx-auto w-full max-w-sm overflow-hidden rounded-2xl shadow-elegant ring-1 ring-black/5 bg-navy">
       <video
-        className="absolute inset-0 h-full w-full object-cover"
+        ref={videoRef}
+        className="block h-auto w-full"
         src={heroVideoAsset.url}
-        poster={heroShower}
         autoPlay
-        muted
         loop
         playsInline
+        controls
         preload="auto"
         aria-label="Texas Bath Solutions shower remodel walkthrough video"
       />
+      <button
+        type="button"
+        onClick={toggleSound}
+        className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur hover:bg-black/75"
+        aria-label={muted ? "Unmute video" : "Mute video"}
+      >
+        {muted ? "🔇 Tap for sound" : "🔊 Sound on"}
+      </button>
     </div>
   );
 }
