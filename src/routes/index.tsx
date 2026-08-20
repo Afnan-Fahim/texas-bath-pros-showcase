@@ -36,7 +36,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
+import { LazyCalendar } from "@/components/LazyCalendar";
 import {
   Dialog,
   DialogContent,
@@ -1474,7 +1474,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
+                        <LazyCalendar
                           mode="single"
                           selected={state.date}
                           onSelect={(d) => update("date", d)}
