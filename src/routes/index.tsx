@@ -1351,14 +1351,14 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
             Ready to see your new shower? Schedule your free, no-obligation estimate.
           </h2>
           <p className="mt-5 text-lg text-muted-foreground">
-            Same-day appointments often available. We'll call to confirm within 1 hour.
+            Hassle-free appointments often available. We'll call to confirm within 1 hour.
           </p>
           <ul className="mt-6 space-y-3">
             {[
               "No pressure. No obligation.",
               "$0 down financing — up to 12 months no payments, no interest",
               "Soft credit check only — won't affect your score",
-              "Same-day estimates for most San Antonio homes",
+              "Hassle-free estimates for most San Antonio homes",
               "Honest, upfront pricing — no surprises",
               "A+ BBB rated with zero complaints",
             ].map((b) => (
@@ -1615,8 +1615,8 @@ function FAQ() {
       a: "Most acrylic shower installations are completed in a single day. Larger remodels or tub-to-shower conversions may take 1–2 days depending on plumbing and prep work.",
     },
     {
-      q: "Do you really offer same-day estimates?",
-      a: "Yes! Call us in the morning and we can often come by that same afternoon. We'll call within 1 hour to confirm your appointment window.",
+      q: "Do you really offer hassle-free estimates?",
+      a: "Yes! We work around your schedule and can often come by within a day or two. We'll call within 1 hour to confirm your appointment window.",
     },
     {
       q: "What do your acrylic shower systems cost?",
@@ -1679,7 +1679,7 @@ function Footer() {
             <Phone className="h-4 w-4" /> {PHONE_DISPLAY}
           </a>
           <a href="#book" className="mt-3 inline-block text-navy-foreground/80 hover:text-white">
-            Book a Free Same-Day Estimate →
+            Book a Free Hassle-Free Estimate →
           </a>
         </div>
         <div>
