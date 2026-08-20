@@ -22,6 +22,8 @@ import {
 } from "lucide-react";
 import logoAsset from "@/assets/texas-bath-solutions-logo-transparent.png.asset.json";
 import heroVideoAsset from "@/assets/texas-bath-solutions-hero.mp4.asset.json";
+import heroPoster from "@/assets/hero-video-poster.jpg";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -342,15 +344,9 @@ function HeroVideo() {
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
-    // Try to start with sound; browsers may block it, then fall back to muted autoplay.
-    v.muted = false;
-    v.play()
-      .then(() => setMuted(false))
-      .catch(() => {
-        v.muted = true;
-        setMuted(true);
-        v.play().catch(() => {});
-      });
+    // Start muted so playback begins instantly (browsers always allow muted autoplay).
+    v.muted = true;
+    v.play().catch(() => {});
   }, []);
 
   const toggleSound = () => {
@@ -367,13 +363,18 @@ function HeroVideo() {
         ref={videoRef}
         className="block h-auto w-full"
         src={heroVideoAsset.url}
+        poster={heroPoster}
+        width={720}
+        height={1280}
         autoPlay
+        muted
         loop
         playsInline
         controls
-        preload="auto"
+        preload="metadata"
         aria-label="Texas Bath Solutions shower remodel walkthrough video"
       />
+
       <button
         type="button"
         onClick={toggleSound}
