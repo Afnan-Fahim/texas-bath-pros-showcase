@@ -88,7 +88,7 @@ export const Route = createFileRoute("/")({
           "@type": "LocalBusiness",
           name: "Texas Bath Solutions",
           description:
-            "Family-owned San Antonio bathroom remodeler specializing in Bella Stone acrylic showers and tub-to-shower conversions. Trusted Shower Experts.",
+            "Family-owned San Antonio bathroom remodeler specializing in acrylic showers and tub-to-shower conversions. Trusted Shower Experts.",
           telephone: "+1-210-702-0753",
           areaServed: "San Antonio, TX",
           address: { "@type": "PostalAddress", addressLocality: "San Antonio", addressRegion: "TX", addressCountry: "US" },
@@ -392,7 +392,7 @@ function HeroVideo() {
 
 /* ---------------- BEFORE/AFTER REEL (auto-play) ---------------- */
 const REEL_PAIRS = [
-  { before: beforeFiberglass, after: afterMarble, label: "Fiberglass → Bella Stone Marble" },
+  { before: beforeFiberglass, after: afterMarble, label: "Fiberglass → Marble" },
   { before: beforePink, after: afterSubway, label: "Dated Tile → Modern Subway" },
   { before: beforeBeige, after: afterVenatino, label: "Beige Tub → Venatino Walk-In" },
   { before: beforeWhiteTile, after: afterModern, label: "Tired Tile → Modern Spa" },
@@ -452,7 +452,7 @@ function BeforeAfterReel() {
         <div className="flex items-end justify-between gap-4 flex-wrap">
           <div>
             <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-teal-foreground/90 text-white/80">
-              Bella Stone Acrylic Shower Remodel
+              Acrylic Shower Remodel
             </div>
             <div className="mt-1 font-display text-2xl md:text-3xl font-bold leading-tight">
               Starting at <span className="text-gold">$8,477</span>
@@ -863,7 +863,7 @@ const OFFERS: Offer[] = [
     headline: "Teachers & First Responders",
     sub: "Educators, police, fire, EMS & nurses",
     detail:
-      "Our biggest thank-you goes to the people who teach and protect San Antonio. Teachers, school staff, police officers, firefighters, EMS, and nurses save $1,000 on a complete Bella Stone shower or bath remodel. Just show your school, department, or hospital ID at your Free Estimate.",
+      "Our biggest thank-you goes to the people who teach and protect San Antonio. Teachers, school staff, police officers, firefighters, EMS, and nurses save $1,000 on a complete shower or bath remodel. Just show your school, department, or hospital ID at your Free Estimate.",
     image: offerTeachers,
     badge: "Most Popular",
   },
@@ -888,9 +888,9 @@ const OFFERS: Offer[] = [
   {
     amount: "$500 Off",
     headline: "Summer Sale",
-    sub: "Limited-time savings on any Bella Stone shower remodel",
+    sub: "Limited-time savings on any shower remodel",
     detail:
-      "Beat the San Antonio heat with a brand-new shower. Save $500 on any complete Bella Stone acrylic shower remodel booked during our Summer Sale — light marble walls, rain shower head, and matte black glass barn doors available.",
+      "Beat the San Antonio heat with a brand-new shower. Save $500 on any complete acrylic shower remodel booked during our Summer Sale — light marble walls, rain shower head, and matte black glass barn doors available.",
     image: offerSummer,
     badge: "Limited Time",
   },
@@ -1670,7 +1670,7 @@ function Footer() {
             </span>
           </div>
           <p className="mt-4 text-xs text-navy-foreground/60">
-            Quality acrylic shower systems featuring styles similar to Bella Stone Systems.
+            Quality acrylic shower systems featuring premium finishes and lifetime durability.
           </p>
         </div>
       </div>
