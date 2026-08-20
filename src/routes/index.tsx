@@ -61,6 +61,9 @@ import afterModern from "@/assets/after-modern.jpg";
 import afterModern2 from "@/assets/after-modern-2.jpg";
 import afterModern3 from "@/assets/after-modern-3.jpg";
 import afterVenatino from "@/assets/after-venatino.jpg";
+import offerTeachers from "@/assets/offer-teachers-first-responders.jpg";
+import offerMilitary from "@/assets/offer-military-veterans.jpg";
+import offerSeniors from "@/assets/offer-seniors.jpg";
 import beforeBeige from "@/assets/before-beige.jpg";
 import beforeFiberglass from "@/assets/before-fiberglass.jpg";
 import beforePink from "@/assets/before-pink.jpg";
@@ -879,38 +882,29 @@ type Offer = {
 const OFFERS: Offer[] = [
   {
     amount: "$1,000 Off",
-    headline: "Teacher Appreciation",
-    sub: "For San Antonio educators & school staff",
+    headline: "Teachers & First Responders",
+    sub: "Educators, police, fire, EMS & nurses",
     detail:
-      "Our biggest thank-you goes to the teachers, aides, and school staff who shape our city. Show a valid school ID or district pay stub and we'll take $1,000 off your complete Bella Stone shower or bath remodel.",
-    image: afterMarble,
+      "Our biggest thank-you goes to the people who teach and protect San Antonio. Teachers, school staff, police officers, firefighters, EMS, and nurses save $1,000 on a complete Bella Stone shower or bath remodel. Just show your school, department, or hospital ID at your Free Estimate.",
+    image: offerTeachers,
     badge: "Most Popular",
   },
   {
     amount: "$1,000 Off",
     headline: "Military & Veterans",
-    sub: "Active duty, Guard, Reserve & Veterans",
+    sub: "Active duty, Guard, Reserve, retirees & Veterans",
     detail:
-      "San Antonio is Military City USA. Active duty, Guard, Reserve, retirees, and Veterans receive $1,000 off any complete remodel with a valid military or VA ID.",
-    image: afterSubway,
+      "San Antonio is Military City USA. Active duty, Guard, Reserve, retirees, and Veterans receive $1,000 off any complete remodel with a valid military or VA ID — plus priority scheduling around duty hours.",
+    image: offerMilitary,
     badge: "Military City USA",
   },
   {
-    amount: "$850 Off",
-    headline: "First Responders & Nurses",
-    sub: "Police, fire, EMS & healthcare heroes",
+    amount: "$750 Off",
+    headline: "Senior Citizens (60+)",
+    sub: "Free grab bar & built-in safety seat upgrade",
     detail:
-      "Police, firefighters, EMS, and nurses save $850 on a tub-to-shower conversion or full shower update. Just show your department or hospital badge at your Free Estimate.",
-    image: afterModern,
-    badge: "Thank You",
-  },
-  {
-    amount: "$500 Off",
-    headline: "Seniors (60+) & New Customers",
-    sub: "Includes free grab bar & safety seat upgrade",
-    detail:
-      "Homeowners 60 and older save $500 and receive a complimentary grab bar plus built-in safety seat upgrade on any walk-in shower conversion. First-time customers qualify too.",
-    image: afterVenatino,
+      "Homeowners 60 and older save $750 on a walk-in shower conversion and receive a complimentary grab bar plus built-in safety seat upgrade. Low-threshold bases and glass doors make daily bathing safer and easier.",
+    image: offerSeniors,
     badge: "Safety Upgrade",
   },
 ];
@@ -918,12 +912,12 @@ const OFFERS: Offer[] = [
 function Offers({ onBook }: { onBook: () => void }) {
   const [active, setActive] = useState<Offer | null>(null);
   const [claimed, setClaimed] = useState(false);
-  const [form, setForm] = useState({ name: "", phone: "", email: "" });
+  const [form, setForm] = useState({ name: "", phone: "", email: "", date: "", time: "Morning (8am–12pm)" });
 
   const open = (o: Offer) => {
     setActive(o);
     setClaimed(false);
-    setForm({ name: "", phone: "", email: "" });
+    setForm({ name: "", phone: "", email: "", date: "", time: "Morning (8am–12pm)" });
   };
 
   return (
@@ -937,12 +931,15 @@ function Offers({ onBook }: { onBook: () => void }) {
             San Antonio, TX Bathroom Remodel Offers &amp; Discounts
           </h2>
           <p className="mt-4 text-muted-foreground">
-            We save our best pricing for the people who serve San Antonio every day. Offers stack with
-            $0 down financing and up to 12 months no payments, no interest.
+            We save our best pricing for the people who serve San Antonio every day.
+          </p>
+          <p className="mt-4 inline-flex flex-wrap items-center justify-center gap-2 rounded-xl border border-navy/15 bg-card px-4 py-3 text-sm font-semibold text-navy shadow-card">
+            One offer can be stacked with $0 down financing, up to 12 months no payments &amp; no
+            interest, and a hassle-free soft credit check.
           </p>
         </div>
 
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {OFFERS.map((o) => (
             <article
               key={o.headline}
@@ -953,6 +950,8 @@ function Offers({ onBook }: { onBook: () => void }) {
                   src={o.image}
                   alt={`${o.headline} bathroom remodel discount in San Antonio, TX`}
                   loading="lazy"
+                  width={1024}
+                  height={768}
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <span className="absolute left-3 top-3 rounded-full bg-navy/90 px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-wide text-navy-foreground">
@@ -972,20 +971,22 @@ function Offers({ onBook }: { onBook: () => void }) {
         </div>
 
         <p className="mt-6 text-center text-xs text-muted-foreground">
-          One discount per household. Cannot be combined with other offers. Valid on new contracts only —
-          mention your offer at your Free Estimate.
+          One discount per household. Cannot be combined with other discounts. Valid on new contracts
+          only — mention your offer at your Free Estimate.
         </p>
       </div>
 
       <Dialog open={!!active} onOpenChange={(v) => !v && setActive(null)}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
           {active && !claimed && (
             <>
               <DialogHeader>
                 <DialogTitle className="text-2xl text-navy">
-                  {active.amount} — {active.headline}
+                  Claim {active.amount} — {active.headline}
                 </DialogTitle>
-                <DialogDescription>{active.detail}</DialogDescription>
+                <DialogDescription>
+                  {active.detail} Book your Free Estimate below to lock in this offer.
+                </DialogDescription>
               </DialogHeader>
               <form
                 className="mt-2 space-y-3"
@@ -1026,11 +1027,37 @@ function Offers({ onBook }: { onBook: () => void }) {
                     placeholder="you@email.com"
                   />
                 </div>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div className="space-y-1.5">
+                    <Label htmlFor="offer-date">Preferred date</Label>
+                    <Input
+                      id="offer-date"
+                      required
+                      type="date"
+                      value={form.date}
+                      onChange={(e) => setForm({ ...form, date: e.target.value })}
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label htmlFor="offer-time">Preferred time</Label>
+                    <select
+                      id="offer-time"
+                      value={form.time}
+                      onChange={(e) => setForm({ ...form, time: e.target.value })}
+                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                    >
+                      <option>Morning (8am–12pm)</option>
+                      <option>Afternoon (12pm–4pm)</option>
+                      <option>Evening (4pm–7pm)</option>
+                    </select>
+                  </div>
+                </div>
                 <Button type="submit" className="w-full">
-                  Lock In My {active.amount}
+                  Claim My {active.amount} &amp; Book Free Estimate
                 </Button>
                 <p className="text-center text-xs text-muted-foreground">
-                  Soft credit check only · $0 down financing available
+                  Stackable with $0 down financing · Soft credit check only · No payments &amp; no
+                  interest for up to 12 months
                 </p>
               </form>
             </>
@@ -1044,7 +1071,7 @@ function Offers({ onBook }: { onBook: () => void }) {
                 Your {active.amount} is reserved!
               </DialogTitle>
               <DialogDescription className="mt-2">
-                We'll call you shortly to schedule your Free Estimate. Want it faster? Call us at{" "}
+                We'll confirm your Free Estimate appointment shortly. Want it faster? Call us at{" "}
                 {PHONE_DISPLAY}.
               </DialogDescription>
               <div className="mt-5 grid gap-2">
