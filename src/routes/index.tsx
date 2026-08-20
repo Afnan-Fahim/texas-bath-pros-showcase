@@ -254,15 +254,15 @@ function Navbar({ onBook }: { onBook: () => void }) {
   );
 }
 
-/* ---------------- FLOATING MOBILE PHONE CTA ---------------- */
+/* ---------------- FLOATING MOBILE BOOK CTA ---------------- */
 function MobilePhoneCTA() {
   return (
     <a
-      href={PHONE_TEL}
+      href="#book"
       className="lg:hidden fixed bottom-4 right-4 z-40 flex items-center gap-2 rounded-full bg-navy px-5 py-3.5 text-navy-foreground shadow-elegant"
     >
-      <Phone className="h-5 w-5" />
-      <span className="font-semibold">Call Now</span>
+      <CalendarDays className="h-5 w-5" />
+      <span className="font-semibold">Book Now</span>
     </a>
   );
 }
