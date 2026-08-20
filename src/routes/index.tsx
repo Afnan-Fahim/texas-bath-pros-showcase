@@ -621,13 +621,6 @@ const GALLERY: GalleryItem[] = [
     location: "Helotes",
   },
   {
-    id: "7",
-    category: "marble",
-    after: afterMarble,
-    title: "Calcutta Marble Look — Moen Gibson Fixtures",
-    location: "The Dominion",
-  },
-  {
     id: "9",
     category: "subway",
     after: afterSubway2,
