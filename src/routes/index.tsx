@@ -323,6 +323,25 @@ function Hero({ onBook }: { onBook: () => void }) {
   );
 }
 
+/* ---------------- HERO VIDEO (auto-play) ---------------- */
+function HeroVideo() {
+  return (
+    <div className="relative overflow-hidden rounded-2xl shadow-elegant ring-1 ring-black/5 aspect-[4/3] bg-navy">
+      <video
+        className="absolute inset-0 h-full w-full object-cover"
+        src={heroVideoAsset.url}
+        poster={heroShower}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        aria-label="Texas Bath Solutions shower remodel walkthrough video"
+      />
+    </div>
+  );
+}
+
 /* ---------------- BEFORE/AFTER REEL (auto-play) ---------------- */
 const REEL_PAIRS = [
   { before: beforeFiberglass, after: afterMarble, label: "Fiberglass → Bella Stone Marble" },
