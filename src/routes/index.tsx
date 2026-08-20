@@ -21,6 +21,7 @@ import {
   CreditCard,
 } from "lucide-react";
 import logoAsset from "@/assets/texas-bath-solutions-logo-transparent.png.asset.json";
+import heroVideoAsset from "@/assets/texas-bath-solutions-hero.mp4.asset.json";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -304,7 +305,7 @@ function Hero({ onBook }: { onBook: () => void }) {
         </div>
         <div className="relative animate-fade-up">
           <div className="absolute -inset-6 -z-10 rounded-[2rem] bg-gradient-to-br from-teal/25 via-transparent to-navy/20 blur-2xl" />
-          <BeforeAfterReel />
+          <HeroVideo />
           <div className="absolute -bottom-6 -left-6 hidden md:flex items-center gap-3 rounded-xl bg-card px-4 py-3 shadow-card ring-1 ring-border">
             <div className="flex -space-x-1">
               {[0, 1, 2, 3, 4].map((i) => (
@@ -319,6 +320,25 @@ function Hero({ onBook }: { onBook: () => void }) {
         </div>
       </div>
     </section>
+  );
+}
+
+/* ---------------- HERO VIDEO (auto-play) ---------------- */
+function HeroVideo() {
+  return (
+    <div className="relative overflow-hidden rounded-2xl shadow-elegant ring-1 ring-black/5 aspect-[4/3] bg-navy">
+      <video
+        className="absolute inset-0 h-full w-full object-cover"
+        src={heroVideoAsset.url}
+        poster={heroShower}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        aria-label="Texas Bath Solutions shower remodel walkthrough video"
+      />
+    </div>
   );
 }
 
@@ -672,6 +692,10 @@ function Gallery() {
           <p className="mt-4 text-lg text-muted-foreground text-balance">
             Every project starts with a free same-day estimate. Here's what we deliver.
           </p>
+        </div>
+
+        <div className="mt-10 mx-auto max-w-3xl">
+          <BeforeAfterReel />
         </div>
 
         <div className="mt-8 flex flex-wrap justify-center gap-2">
