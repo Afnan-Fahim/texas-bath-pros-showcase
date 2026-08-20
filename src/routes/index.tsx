@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 import logoAsset from "@/assets/texas-bath-solutions-logo-transparent.png.asset.json";
 import heroVideoAsset from "@/assets/texas-bath-solutions-hero.mp4.asset.json";
-import heroPoster from "@/assets/hero-video-poster.jpg";
+import heroPoster from "@/assets/hero-video-poster.webp";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -52,25 +52,25 @@ import {
 } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
 
-import heroShower from "@/assets/hero-shower.jpg";
-import afterSubway from "@/assets/after-subway.jpg";
-import afterSubway2 from "@/assets/after-subway-2.jpg";
-import afterSubway3 from "@/assets/after-subway-3.jpg";
-import afterMarble from "@/assets/after-marble.jpg";
-import afterMarble2 from "@/assets/after-marble-2.jpg";
-import afterMarble3 from "@/assets/after-marble-3.jpg";
-import afterModern from "@/assets/after-modern.jpg";
-import afterModern2 from "@/assets/after-modern-2.jpg";
-import afterModern3 from "@/assets/after-modern-3.jpg";
-import afterVenatino from "@/assets/after-venatino.jpg";
-import offerTeachers from "@/assets/offer-teachers-first-responders.jpg";
-import offerMilitary from "@/assets/offer-military-veterans.jpg";
-import offerSeniors from "@/assets/offer-seniors.jpg";
-import offerSummer from "@/assets/offer-summer-sale.jpg";
-import beforeBeige from "@/assets/before-beige.jpg";
-import beforeFiberglass from "@/assets/before-fiberglass.jpg";
-import beforePink from "@/assets/before-pink.jpg";
-import beforeWhiteTile from "@/assets/before-white-tile.jpg";
+import heroShower from "@/assets/hero-shower.webp";
+import afterSubway from "@/assets/after-subway.webp";
+import afterSubway2 from "@/assets/after-subway-2.webp";
+import afterSubway3 from "@/assets/after-subway-3.webp";
+import afterMarble from "@/assets/after-marble.webp";
+import afterMarble2 from "@/assets/after-marble-2.webp";
+import afterMarble3 from "@/assets/after-marble-3.webp";
+import afterModern from "@/assets/after-modern.webp";
+import afterModern2 from "@/assets/after-modern-2.webp";
+import afterModern3 from "@/assets/after-modern-3.webp";
+import afterVenatino from "@/assets/after-venatino.webp";
+import offerTeachers from "@/assets/offer-teachers-first-responders.webp";
+import offerMilitary from "@/assets/offer-military-veterans.webp";
+import offerSeniors from "@/assets/offer-seniors.webp";
+import offerSummer from "@/assets/offer-summer-sale.webp";
+import beforeBeige from "@/assets/before-beige.webp";
+import beforeFiberglass from "@/assets/before-fiberglass.webp";
+import beforePink from "@/assets/before-pink.webp";
+import beforeWhiteTile from "@/assets/before-white-tile.webp";
 
 export const Route = createFileRoute("/")({
   head: () => ({
