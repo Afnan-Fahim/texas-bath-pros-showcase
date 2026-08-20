@@ -64,6 +64,7 @@ import afterVenatino from "@/assets/after-venatino.jpg";
 import offerTeachers from "@/assets/offer-teachers-first-responders.jpg";
 import offerMilitary from "@/assets/offer-military-veterans.jpg";
 import offerSeniors from "@/assets/offer-seniors.jpg";
+import offerSummer from "@/assets/offer-summer-sale.jpg";
 import beforeBeige from "@/assets/before-beige.jpg";
 import beforeFiberglass from "@/assets/before-fiberglass.jpg";
 import beforePink from "@/assets/before-pink.jpg";
