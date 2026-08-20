@@ -135,14 +135,7 @@ function Logo({
       />
 
       <div className="hidden sm:flex flex-col leading-tight">
-        <span
-          className={cn(
-            "text-[0.975rem] md:text-[1.17rem] font-semibold tracking-wide",
-            dark ? "text-white" : "text-navy",
-          )}
-        >
-          Trusted Shower Experts
-        </span>
+
         <span
           className={cn(
             "text-[0.78rem] md:text-[0.8775rem] font-medium tracking-wide",
