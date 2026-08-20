@@ -1346,18 +1346,6 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
               </li>
             ))}
           </ul>
-          <a
-            href={PHONE_TEL}
-            className="mt-8 inline-flex items-center gap-3 rounded-xl bg-card border border-border px-4 py-3 shadow-card"
-          >
-            <span className="grid h-10 w-10 place-items-center rounded-lg bg-navy text-navy-foreground">
-              <Phone className="h-5 w-5" />
-            </span>
-            <span>
-              <span className="block text-xs text-muted-foreground">Prefer to call?</span>
-              <span className="block font-semibold text-navy">{PHONE_DISPLAY}</span>
-            </span>
-          </a>
         </div>
 
         <div className="lg:col-span-3">
@@ -1640,7 +1628,8 @@ function Footer() {
       <div className="container-x py-14 grid gap-10 md:grid-cols-3">
         <div>
           <div className="inline-flex items-center bg-white rounded-xl px-4 py-3 shadow-sm">
-            <Logo size="sm" />
+            <Logo size="sm" variant="footer" />
+
           </div>
           <p className="mt-5 text-navy-foreground/70 text-sm max-w-xs">
             Family-owned bathroom remodeling. Beautiful showers, fast installs, zero hassle.
