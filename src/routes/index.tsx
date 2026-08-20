@@ -21,6 +21,8 @@ import {
   CreditCard,
 } from "lucide-react";
 import logoImg from "@/assets/logo-header.webp";
+import logoFooterImg from "@/assets/logo-footer.webp";
+
 import heroVideoAsset from "@/assets/texas-bath-solutions-hero.mp4.asset.json";
 import heroPoster from "@/assets/hero-video-poster.webp";
 
@@ -108,25 +110,30 @@ function Logo({
   className,
   size = "default",
   dark,
+  variant = "header",
 }: {
   className?: string;
   size?: "default" | "sm";
   dark?: boolean;
+  variant?: "header" | "footer";
 }) {
+  const isFooter = variant === "footer";
   return (
     <a href="#top" className={cn("flex flex-row items-center gap-3 group", className)}>
       <img
-        src={logoImg}
+        src={isFooter ? logoFooterImg : logoImg}
         alt="Texas Bath Solutions"
-        width={758}
-        height={609}
-        fetchPriority="high"
+        width={isFooter ? 1200 : 900}
+        height={isFooter ? 449 : 669}
+        fetchPriority={isFooter ? "low" : "high"}
         decoding="async"
+        loading={isFooter ? "lazy" : "eager"}
         className={cn(
           "w-auto object-contain",
-          size === "sm" ? "h-30 md:h-36" : "h-60 md:h-72",
+          isFooter ? "h-20 md:h-24" : size === "sm" ? "h-30 md:h-36" : "h-60 md:h-72",
         )}
       />
+
       <div className="hidden sm:flex flex-col leading-tight">
         <span
           className={cn(
