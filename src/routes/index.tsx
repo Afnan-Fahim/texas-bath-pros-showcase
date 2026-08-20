@@ -902,11 +902,20 @@ const OFFERS: Offer[] = [
   {
     amount: "$750 Off",
     headline: "Senior Citizens (60+)",
-    sub: "Free grab bar & built-in safety seat upgrade",
+    sub: "Free grab bar & fold-down safety seat upgrade",
     detail:
-      "Homeowners 60 and older save $750 on a walk-in shower conversion and receive a complimentary grab bar plus built-in safety seat upgrade. Low-threshold bases and glass doors make daily bathing safer and easier.",
+      "Homeowners 60 and older save $750 on a walk-in shower conversion and receive a complimentary grab bar plus fold-down safety seat upgrade. Low-threshold bases and glass doors make daily bathing safer and easier.",
     image: offerSeniors,
     badge: "Safety Upgrade",
+  },
+  {
+    amount: "$500 Off",
+    headline: "Summer Sale",
+    sub: "Limited-time savings on any Bella Stone shower remodel",
+    detail:
+      "Beat the San Antonio heat with a brand-new shower. Save $500 on any complete Bella Stone acrylic shower remodel booked during our Summer Sale — light marble walls, rain shower head, and matte black glass barn doors available.",
+    image: offerSummer,
+    badge: "Limited Time",
   },
 ];
 
