@@ -207,12 +207,14 @@ function Navbar({ onBook, onContact }: { onBook: () => void; onContact: () => vo
           <div className="hidden sm:flex flex-col items-center gap-1.5">
             <Button
               onClick={onBook}
+              size="default"
               className="bg-navy text-navy-foreground hover:bg-navy/90 shadow-sm"
             >
               Book Free Estimate
             </Button>
             <Button
               onClick={onContact}
+              size="default"
               variant="outline"
               className="border-navy/25 text-navy hover:bg-navy/5 hover:text-navy"
             >
