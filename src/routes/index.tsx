@@ -1357,40 +1357,35 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
                       autoComplete="email"
                     />
                   </Field>
-                  <Field label="Service Address or ZIP" error={errors.address} required>
+                  <Field label="Service Address" error={errors.address} required>
                     <Input
                       value={state.address}
                       onChange={(e) => update("address", e.target.value)}
-                      placeholder="78209"
-                      autoComplete="postal-code"
+                      placeholder="123 Main St, San Antonio"
+                      autoComplete="street-address"
                     />
                   </Field>
                 </div>
 
-                <Field label="What best describes your project?" error={errors.project} required>
-                  <div className="grid gap-2 sm:grid-cols-2">
-                    {[
-                      "Tub-to-Shower Conversion",
-                      "Full Shower Remodel",
-                      "Shower Refresh / Update",
-                      "Other",
-                    ].map((p) => (
-                      <button
-                        type="button"
-                        key={p}
-                        onClick={() => update("project", p)}
-                        className={cn(
-                          "rounded-lg border px-4 py-3 text-sm text-left transition-colors",
-                          state.project === p
-                            ? "border-navy bg-navy/5 text-navy font-semibold"
-                            : "border-border bg-card hover:border-navy/40",
-                        )}
-                      >
-                        {p}
-                      </button>
-                    ))}
-                  </div>
+                <Field
+                  label="How soon are you wanting to enjoy your New Bathroom?"
+                  error={errors.project}
+                  required
+                >
+                  <Select value={state.project} onValueChange={(v) => update("project", v)}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select a timeframe" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {["Immediately", "Within One Month", "More than 3 Months"].map((p) => (
+                        <SelectItem key={p} value={p}>
+                          {p}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </Field>
+
 
                 <Field label="Tell us about your current bathroom (optional)">
                   <Textarea
