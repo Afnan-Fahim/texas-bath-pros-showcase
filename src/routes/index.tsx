@@ -1316,6 +1316,9 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
         </div>
 
         <div className="lg:col-span-3">
+          {USE_CALENDLY ? (
+            <CalendlyEmbed />
+          ) : (
           <div className="rounded-3xl bg-card border border-border shadow-elegant p-6 md:p-8">
             {submitted ? (
               <ConfirmationScreen state={state} onReset={() => {
