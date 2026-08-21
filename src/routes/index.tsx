@@ -1244,12 +1244,10 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
     email: "",
     address: "",
     project: "",
-    date: undefined as Date | undefined,
-    time: "",
     notes: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [submitted, setSubmitted] = useState(false);
+  const [step, setStep] = useState<"form" | "schedule" | "done">("form");
 
   const update = <K extends keyof typeof state>(k: K, v: (typeof state)[K]) =>
     setState((s) => ({ ...s, [k]: v }));
@@ -1258,11 +1256,10 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
     const e: Record<string, string> = {};
     if (!state.name.trim()) e.name = "Please enter your name";
     if (state.phone.replace(/\D/g, "").length !== 10) e.phone = "Enter a valid 10-digit phone";
+    if (!state.email.trim()) e.email = "Email is required for your confirmation";
+    else if (!/^\S+@\S+\.\S+$/.test(state.email)) e.email = "Invalid email";
     if (!state.address.trim()) e.address = "Address or ZIP code required";
     if (!state.project) e.project = "Please select a project type";
-    if (!state.date) e.date = "Choose a preferred date";
-    if (!state.time) e.time = "Choose a preferred time";
-    if (state.email && !/^\S+@\S+\.\S+$/.test(state.email)) e.email = "Invalid email";
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -1270,14 +1267,15 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
-    setSubmitted(true);
+    setStep("schedule");
+    requestAnimationFrame(() => formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
   };
 
-  // Suggested dates: next 14 days, exclude Sundays
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const maxDate = new Date(today);
-  maxDate.setDate(maxDate.getDate() + 45);
+  const reset = () => {
+    setStep("form");
+    setState({ name: "", phone: "", email: "", address: "", project: "", notes: "" });
+  };
+
 
   return (
     <section
@@ -1294,8 +1292,10 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
             Ready to see your new shower? Schedule your free, no-obligation estimate.
           </h2>
           <p className="mt-5 text-lg text-muted-foreground">
-            Hassle-free appointments often available. We'll call to confirm within 1 hour.
+            Tell us about your project, then pick the exact time that works for you. You'll get an
+            instant confirmation plus automatic text and email reminders.
           </p>
+
           <ul className="mt-6 space-y-3">
             {[
               "No pressure. No obligation.",
@@ -1316,16 +1316,17 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
         </div>
 
         <div className="lg:col-span-3">
-          {USE_CALENDLY ? (
-            <CalendlyEmbed />
-          ) : (
           <div className="rounded-3xl bg-card border border-border shadow-elegant p-6 md:p-8">
-            {submitted ? (
-              <ConfirmationScreen state={state} onReset={() => {
-                setSubmitted(false);
-                setState({ name: "", phone: "", email: "", address: "", project: "", date: undefined, time: "", notes: "" });
-              }} />
+            {step === "done" ? (
+              <ConfirmationScreen state={state} onReset={reset} />
+            ) : step === "schedule" ? (
+              <CalendlyEmbed
+                prefill={state}
+                onBack={() => setStep("form")}
+                onScheduled={() => setStep("done")}
+              />
             ) : (
+
               <form onSubmit={submit} className="space-y-5" noValidate>
                 <div className="grid gap-5 sm:grid-cols-2">
                   <Field label="Full Name" error={errors.name} required>
@@ -1347,7 +1348,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
                   </Field>
                 </div>
                 <div className="grid gap-5 sm:grid-cols-2">
-                  <Field label="Email (optional)" error={errors.email}>
+                  <Field label="Email" error={errors.email} required>
                     <Input
                       type="email"
                       value={state.email}
@@ -1391,48 +1392,6 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
                   </div>
                 </Field>
 
-                <div className="grid gap-5 sm:grid-cols-2">
-                  <Field label="Preferred Date" error={errors.date} required>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          type="button"
-                          variant="outline"
-                          className={cn(
-                            "w-full justify-start text-left font-normal h-10",
-                            !state.date && "text-muted-foreground",
-                          )}
-                        >
-                          <CalendarDays className="mr-2 h-4 w-4" />
-                          {state.date ? format(state.date, "EEE, MMM d") : "Pick a date"}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <LazyCalendar
-                          mode="single"
-                          selected={state.date}
-                          onSelect={(d) => update("date", d)}
-                          disabled={(d) => d < today || d > maxDate || d.getDay() === 0}
-                          initialFocus
-                          className={cn("p-3 pointer-events-auto")}
-                        />
-                      </PopoverContent>
-                    </Popover>
-                  </Field>
-                  <Field label="Preferred Time" error={errors.time} required>
-                    <Select value={state.time} onValueChange={(v) => update("time", v)}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Choose a time window" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Morning (8am–12pm)">Morning (8am–12pm)</SelectItem>
-                        <SelectItem value="Afternoon (12pm–5pm)">Afternoon (12pm–5pm)</SelectItem>
-                        <SelectItem value="I'm flexible">I'm flexible</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </Field>
-                </div>
-
                 <Field label="Tell us about your current bathroom (optional)">
                   <Textarea
                     value={state.notes}
@@ -1447,42 +1406,108 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
                   size="lg"
                   className="w-full h-12 bg-navy text-navy-foreground hover:bg-navy/90 text-base font-semibold shadow-elegant"
                 >
-                  Request My Free Estimate
+                  Continue — Pick My Appointment Time
                 </Button>
                 <p className="text-center text-xs text-muted-foreground">
-                  We'll call within 1 hour to confirm. No obligation.
+                  Next: choose your time. Instant confirmation + automatic reminders. No obligation.
                 </p>
               </form>
             )}
           </div>
-          )}
+
         </div>
       </div>
     </section>
   );
 }
 
-const USE_CALENDLY = false;
 const CALENDLY_URL = "https://calendly.com/rugsafari/texas-bath-solutions";
 
-function CalendlyEmbed() {
+type Prefill = {
+  name: string;
+  phone: string;
+  email: string;
+  address: string;
+  project: string;
+  notes: string;
+};
+
+function CalendlyEmbed({
+  prefill,
+  onBack,
+  onScheduled,
+}: {
+  prefill: Prefill;
+  onBack: () => void;
+  onScheduled: () => void;
+}) {
   useEffect(() => {
     const id = "calendly-widget-script";
-    if (document.getElementById(id)) return;
-    const s = document.createElement("script");
-    s.id = id;
-    s.src = "https://assets.calendly.com/assets/external/widget.js";
-    s.async = true;
-    document.body.appendChild(s);
-  }, []);
+    if (!document.getElementById(id)) {
+      const s = document.createElement("script");
+      s.id = id;
+      s.src = "https://assets.calendly.com/assets/external/widget.js";
+      s.async = true;
+      document.body.appendChild(s);
+    }
+    const onMessage = (e: MessageEvent) => {
+      if (
+        typeof e.origin === "string" &&
+        e.origin.includes("calendly.com") &&
+        e.data?.event === "calendly.event_scheduled"
+      ) {
+        onScheduled();
+      }
+    };
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, [onScheduled]);
+
+  const details = [
+    `Project: ${prefill.project}`,
+    `Service address / ZIP: ${prefill.address}`,
+    `Phone: ${prefill.phone}`,
+    prefill.notes ? `Notes: ${prefill.notes}` : "",
+  ]
+    .filter(Boolean)
+    .join("\n");
+
+  const params = new URLSearchParams({
+    hide_gdpr_banner: "1",
+    primary_color: "0D3B66",
+    name: prefill.name,
+    email: prefill.email,
+    // Calendly invitee question prefills (a1 = first question, a2 = second, ...)
+    a1: prefill.phone,
+    a2: details,
+    location: prefill.phone,
+  });
+
+  const url = `${CALENDLY_URL}?${params.toString()}`;
 
   return (
-    <div className="rounded-3xl bg-card border border-border shadow-elegant overflow-hidden p-2 md:p-3">
-      <div
-        className="calendly-inline-widget"
-        data-url={`${CALENDLY_URL}?hide_gdpr_banner=1&primary_color=0D3B66`}
-        style={{ minWidth: "320px", height: "760px" }}
-      />
+    <div>
+      <div className="flex items-center justify-between gap-3">
+        <div>
+          <h3 className="text-xl font-display font-semibold text-navy">
+            Almost done, {prefill.name.split(" ")[0]} — pick your time
+          </h3>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Choose any open slot. You'll get an instant confirmation plus automatic text and email
+            reminders.
+          </p>
+        </div>
+        <Button type="button" variant="outline" className="shrink-0 border-navy/25 text-navy" onClick={onBack}>
+          Back
+        </Button>
+      </div>
+      <div className="mt-4 overflow-hidden rounded-2xl border border-border">
+        <div
+          className="calendly-inline-widget"
+          data-url={url}
+          style={{ minWidth: "300px", height: "760px" }}
+        />
+      </div>
       <noscript>
         <a href={CALENDLY_URL} target="_blank" rel="noreferrer">
           Book your free estimate
@@ -1491,6 +1516,7 @@ function CalendlyEmbed() {
     </div>
   );
 }
+
 
 function Field({
 
@@ -1522,9 +1548,8 @@ function ConfirmationScreen({
   state: {
     name: string;
     phone: string;
+    email: string;
     project: string;
-    date: Date | undefined;
-    time: string;
     address: string;
   };
   onReset: () => void;
@@ -1534,10 +1559,12 @@ function ConfirmationScreen({
       <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-navy text-navy-foreground">
         <Check className="h-8 w-8" strokeWidth={3} />
       </div>
-      <h3 className="mt-5 text-2xl font-display font-semibold text-navy">Thank you, {state.name.split(" ")[0]}!</h3>
+      <h3 className="mt-5 text-2xl font-display font-semibold text-navy">You're booked, {state.name.split(" ")[0]}!</h3>
       <p className="mt-2 text-muted-foreground max-w-md mx-auto">
-        Your request has been received. A member of our team will call you shortly at{" "}
-        <span className="font-semibold text-foreground">{state.phone}</span> to confirm your appointment.
+        Your appointment is confirmed. A confirmation was sent to{" "}
+        <span className="font-semibold text-foreground">{state.email}</span>, and you'll get automatic
+        text reminders at <span className="font-semibold text-foreground">{state.phone}</span> before
+        your visit.
       </p>
       <dl className="mt-6 grid gap-3 sm:grid-cols-2 text-left max-w-md mx-auto bg-secondary/60 rounded-xl p-5">
         <div>
@@ -1548,27 +1575,13 @@ function ConfirmationScreen({
           <dt className="text-xs uppercase tracking-wider text-muted-foreground">Location</dt>
           <dd className="font-medium text-navy">{state.address}</dd>
         </div>
-        <div>
-          <dt className="text-xs uppercase tracking-wider text-muted-foreground">Date</dt>
-          <dd className="font-medium text-navy">
-            {state.date ? format(state.date, "EEEE, MMM d") : ""}
-          </dd>
-        </div>
-        <div>
-          <dt className="text-xs uppercase tracking-wider text-muted-foreground">Time</dt>
-          <dd className="font-medium text-navy">{state.time}</dd>
-        </div>
       </dl>
       <div className="mt-6 flex flex-wrap justify-center gap-3">
-        <a href={PHONE_TEL}>
-          <Button variant="outline" className="border-navy/25 text-navy">
-            <Phone className="mr-2 h-4 w-4" /> {PHONE_DISPLAY}
-          </Button>
-        </a>
         <Button onClick={onReset} className="bg-navy text-navy-foreground hover:bg-navy/90">
-          Submit another request
+          Book another appointment
         </Button>
       </div>
+
     </div>
   );
 }
