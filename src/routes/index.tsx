@@ -1316,6 +1316,9 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
         </div>
 
         <div className="lg:col-span-3">
+          {USE_CALENDLY ? (
+            <CalendlyEmbed />
+          ) : (
           <div className="rounded-3xl bg-card border border-border shadow-elegant p-6 md:p-8">
             {submitted ? (
               <ConfirmationScreen state={state} onReset={() => {
@@ -1452,13 +1455,45 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
               </form>
             )}
           </div>
+          )}
         </div>
       </div>
     </section>
   );
 }
 
+const USE_CALENDLY = true;
+const CALENDLY_URL = "https://calendly.com/rugsafari/texas-bath-solutions";
+
+function CalendlyEmbed() {
+  useEffect(() => {
+    const id = "calendly-widget-script";
+    if (document.getElementById(id)) return;
+    const s = document.createElement("script");
+    s.id = id;
+    s.src = "https://assets.calendly.com/assets/external/widget.js";
+    s.async = true;
+    document.body.appendChild(s);
+  }, []);
+
+  return (
+    <div className="rounded-3xl bg-card border border-border shadow-elegant overflow-hidden p-2 md:p-3">
+      <div
+        className="calendly-inline-widget"
+        data-url={`${CALENDLY_URL}?hide_gdpr_banner=1&primary_color=0D3B66`}
+        style={{ minWidth: "320px", height: "760px" }}
+      />
+      <noscript>
+        <a href={CALENDLY_URL} target="_blank" rel="noreferrer">
+          Book your free estimate
+        </a>
+      </noscript>
+    </div>
+  );
+}
+
 function Field({
+
   label,
   error,
   required,
