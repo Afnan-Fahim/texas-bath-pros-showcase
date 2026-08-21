@@ -207,12 +207,14 @@ function Navbar({ onBook, onContact }: { onBook: () => void; onContact: () => vo
           <div className="hidden sm:flex flex-col items-center gap-1.5">
             <Button
               onClick={onBook}
+              size="default"
               className="bg-navy text-navy-foreground hover:bg-navy/90 shadow-sm"
             >
               Book Free Estimate
             </Button>
             <Button
               onClick={onContact}
+              size="default"
               variant="outline"
               className="border-navy/25 text-navy hover:bg-navy/5 hover:text-navy"
             >
@@ -1736,7 +1738,7 @@ function ContactUsDialog({ open, onOpenChange }: { open: boolean; onOpenChange: 
     const body = encodeURIComponent(
       `Name: ${state.name}\nPhone: ${state.phone}\nEmail: ${state.email}\n\nMessage:\n${state.message}`,
     );
-    window.location.href = `mailto:contact@texasbathsolutions.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:Contact@TexasBathSolutions.com?subject=${subject}&body=${body}`;
     setSubmitted(true);
   };
 
@@ -1753,8 +1755,8 @@ function ContactUsDialog({ open, onOpenChange }: { open: boolean; onOpenChange: 
           <DialogTitle className="text-2xl text-navy">Contact Us</DialogTitle>
           <DialogDescription>
             Send a message to{" "}
-            <a href="mailto:contact@texasbathsolutions.com" className="font-semibold text-navy hover:underline">
-              contact@texasbathsolutions.com
+            <a href="mailto:Contact@TexasBathSolutions.com" className="font-semibold text-navy hover:underline">
+              Contact@TexasBathSolutions.com
             </a>
             . We typically reply within one business day.
           </DialogDescription>
@@ -1766,7 +1768,7 @@ function ContactUsDialog({ open, onOpenChange }: { open: boolean; onOpenChange: 
             </div>
             <h3 className="text-xl font-semibold text-navy">Message ready to send</h3>
             <p className="text-muted-foreground">
-              Your email app should open with the message addressed to contact@texasbathsolutions.com.
+              Your email app should open with the message addressed to Contact@TexasBathSolutions.com.
             </p>
             <Button onClick={reset} variant="outline" className="border-navy/25 text-navy hover:bg-navy/5">
               Send another message
@@ -1811,7 +1813,7 @@ function ContactUsDialog({ open, onOpenChange }: { open: boolean; onOpenChange: 
               />
             </Field>
             <div className="rounded-lg bg-secondary p-3 text-sm text-muted-foreground">
-              Recipient: <span className="font-medium text-foreground">contact@texasbathsolutions.com</span>
+              Recipient: <span className="font-medium text-foreground">Contact@TexasBathSolutions.com</span>
             </div>
             <Button
               type="submit"
