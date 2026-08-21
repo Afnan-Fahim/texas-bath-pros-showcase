@@ -1548,9 +1548,8 @@ function ConfirmationScreen({
   state: {
     name: string;
     phone: string;
+    email: string;
     project: string;
-    date: Date | undefined;
-    time: string;
     address: string;
   };
   onReset: () => void;
@@ -1560,10 +1559,12 @@ function ConfirmationScreen({
       <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-navy text-navy-foreground">
         <Check className="h-8 w-8" strokeWidth={3} />
       </div>
-      <h3 className="mt-5 text-2xl font-display font-semibold text-navy">Thank you, {state.name.split(" ")[0]}!</h3>
+      <h3 className="mt-5 text-2xl font-display font-semibold text-navy">You're booked, {state.name.split(" ")[0]}!</h3>
       <p className="mt-2 text-muted-foreground max-w-md mx-auto">
-        Your request has been received. A member of our team will call you shortly at{" "}
-        <span className="font-semibold text-foreground">{state.phone}</span> to confirm your appointment.
+        Your appointment is confirmed. A confirmation was sent to{" "}
+        <span className="font-semibold text-foreground">{state.email}</span>, and you'll get automatic
+        text reminders at <span className="font-semibold text-foreground">{state.phone}</span> before
+        your visit.
       </p>
       <dl className="mt-6 grid gap-3 sm:grid-cols-2 text-left max-w-md mx-auto bg-secondary/60 rounded-xl p-5">
         <div>
@@ -1574,14 +1575,8 @@ function ConfirmationScreen({
           <dt className="text-xs uppercase tracking-wider text-muted-foreground">Location</dt>
           <dd className="font-medium text-navy">{state.address}</dd>
         </div>
-        <div>
-          <dt className="text-xs uppercase tracking-wider text-muted-foreground">Date</dt>
-          <dd className="font-medium text-navy">
-            {state.date ? format(state.date, "EEEE, MMM d") : ""}
-          </dd>
-        </div>
-        <div>
-          <dt className="text-xs uppercase tracking-wider text-muted-foreground">Time</dt>
+      </dl>
+
           <dd className="font-medium text-navy">{state.time}</dd>
         </div>
       </dl>
