@@ -1316,16 +1316,17 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
         </div>
 
         <div className="lg:col-span-3">
-          {USE_CALENDLY ? (
-            <CalendlyEmbed />
-          ) : (
           <div className="rounded-3xl bg-card border border-border shadow-elegant p-6 md:p-8">
-            {submitted ? (
-              <ConfirmationScreen state={state} onReset={() => {
-                setSubmitted(false);
-                setState({ name: "", phone: "", email: "", address: "", project: "", date: undefined, time: "", notes: "" });
-              }} />
+            {step === "done" ? (
+              <ConfirmationScreen state={state} onReset={reset} />
+            ) : step === "schedule" ? (
+              <CalendlyEmbed
+                prefill={state}
+                onBack={() => setStep("form")}
+                onScheduled={() => setStep("done")}
+              />
             ) : (
+
               <form onSubmit={submit} className="space-y-5" noValidate>
                 <div className="grid gap-5 sm:grid-cols-2">
                   <Field label="Full Name" error={errors.name} required>
