@@ -1392,48 +1392,6 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
                   </div>
                 </Field>
 
-                <div className="grid gap-5 sm:grid-cols-2">
-                  <Field label="Preferred Date" error={errors.date} required>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          type="button"
-                          variant="outline"
-                          className={cn(
-                            "w-full justify-start text-left font-normal h-10",
-                            !state.date && "text-muted-foreground",
-                          )}
-                        >
-                          <CalendarDays className="mr-2 h-4 w-4" />
-                          {state.date ? format(state.date, "EEE, MMM d") : "Pick a date"}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <LazyCalendar
-                          mode="single"
-                          selected={state.date}
-                          onSelect={(d) => update("date", d)}
-                          disabled={(d) => d < today || d > maxDate || d.getDay() === 0}
-                          initialFocus
-                          className={cn("p-3 pointer-events-auto")}
-                        />
-                      </PopoverContent>
-                    </Popover>
-                  </Field>
-                  <Field label="Preferred Time" error={errors.time} required>
-                    <Select value={state.time} onValueChange={(v) => update("time", v)}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Choose a time window" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Morning (8am–12pm)">Morning (8am–12pm)</SelectItem>
-                        <SelectItem value="Afternoon (12pm–5pm)">Afternoon (12pm–5pm)</SelectItem>
-                        <SelectItem value="I'm flexible">I'm flexible</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </Field>
-                </div>
-
                 <Field label="Tell us about your current bathroom (optional)">
                   <Textarea
                     value={state.notes}
@@ -1448,15 +1406,15 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
                   size="lg"
                   className="w-full h-12 bg-navy text-navy-foreground hover:bg-navy/90 text-base font-semibold shadow-elegant"
                 >
-                  Request My Free Estimate
+                  Continue — Pick My Appointment Time
                 </Button>
                 <p className="text-center text-xs text-muted-foreground">
-                  We'll call within 1 hour to confirm. No obligation.
+                  Next: choose your time. Instant confirmation + automatic reminders. No obligation.
                 </p>
               </form>
             )}
           </div>
-          )}
+
         </div>
       </div>
     </section>
