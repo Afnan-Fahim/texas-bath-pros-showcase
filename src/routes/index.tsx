@@ -1707,8 +1707,129 @@ function Footer() {
 }
 
 /* ---------------- PAGE ---------------- */
+/* ---------------- CONTACT US DIALOG ---------------- */
+function ContactUsDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v: boolean) => void }) {
+  const [state, setState] = useState({ name: "", email: "", phone: "", message: "" });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [submitted, setSubmitted] = useState(false);
+
+  const update = <K extends keyof typeof state>(k: K, v: (typeof state)[K]) => {
+    setState((s) => ({ ...s, [k]: v }));
+    if (errors[k]) setErrors((e) => ({ ...e, [k]: "" }));
+  };
+
+  const validate = () => {
+    const e: Record<string, string> = {};
+    if (!state.name.trim()) e.name = "Please enter your name";
+    if (state.phone.replace(/\D/g, "").length !== 10) e.phone = "Enter a valid 10-digit phone";
+    if (!state.email.trim()) e.email = "Email is required";
+    else if (!/^\S+@\S+\.\S+$/.test(state.email)) e.email = "Invalid email";
+    if (!state.message.trim()) e.message = "Please enter a message";
+    setErrors(e);
+    return Object.keys(e).length === 0;
+  };
+
+  const submit = (ev: React.FormEvent) => {
+    ev.preventDefault();
+    if (!validate()) return;
+    const subject = encodeURIComponent(`Contact form from ${state.name}`);
+    const body = encodeURIComponent(
+      `Name: ${state.name}\nPhone: ${state.phone}\nEmail: ${state.email}\n\nMessage:\n${state.message}`,
+    );
+    window.location.href = `mailto:contact@texasbathsolutions.com?subject=${subject}&body=${body}`;
+    setSubmitted(true);
+  };
+
+  const reset = () => {
+    setState({ name: "", email: "", phone: "", message: "" });
+    setErrors({});
+    setSubmitted(false);
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-lg">
+        <DialogHeader>
+          <DialogTitle className="text-2xl text-navy">Contact Us</DialogTitle>
+          <DialogDescription>
+            Send a message to{" "}
+            <a href="mailto:contact@texasbathsolutions.com" className="font-semibold text-navy hover:underline">
+              contact@texasbathsolutions.com
+            </a>
+            . We typically reply within one business day.
+          </DialogDescription>
+        </DialogHeader>
+        {submitted ? (
+          <div className="py-8 text-center space-y-4">
+            <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-navy text-navy-foreground">
+              <Check className="h-7 w-7" strokeWidth={3} />
+            </div>
+            <h3 className="text-xl font-semibold text-navy">Message ready to send</h3>
+            <p className="text-muted-foreground">
+              Your email app should open with the message addressed to contact@texasbathsolutions.com.
+            </p>
+            <Button onClick={reset} variant="outline" className="border-navy/25 text-navy hover:bg-navy/5">
+              Send another message
+            </Button>
+          </div>
+        ) : (
+          <form onSubmit={submit} className="space-y-4" noValidate>
+            <Field label="Full Name" error={errors.name} required>
+              <Input
+                value={state.name}
+                onChange={(e) => update("name", e.target.value)}
+                placeholder="Jane Smith"
+                autoComplete="name"
+              />
+            </Field>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Field label="Email" error={errors.email} required>
+                <Input
+                  type="email"
+                  value={state.email}
+                  onChange={(e) => update("email", e.target.value)}
+                  placeholder="you@email.com"
+                  autoComplete="email"
+                />
+              </Field>
+              <Field label="Phone Number" error={errors.phone} required>
+                <Input
+                  value={state.phone}
+                  onChange={(e) => update("phone", formatPhone(e.target.value))}
+                  placeholder="(210) 555-0123"
+                  inputMode="tel"
+                  autoComplete="tel"
+                />
+              </Field>
+            </div>
+            <Field label="Message" error={errors.message} required>
+              <Textarea
+                value={state.message}
+                onChange={(e) => update("message", e.target.value)}
+                placeholder="How can we help with your bathroom project?"
+                rows={4}
+              />
+            </Field>
+            <div className="rounded-lg bg-secondary p-3 text-sm text-muted-foreground">
+              Recipient: <span className="font-medium text-foreground">contact@texasbathsolutions.com</span>
+            </div>
+            <Button
+              type="submit"
+              size="lg"
+              className="w-full h-12 bg-navy text-navy-foreground hover:bg-navy/90 text-base font-semibold shadow-elegant"
+            >
+              Send Message
+            </Button>
+          </form>
+        )}
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 function Index() {
   const formRef = useRef<HTMLElement | null>(null);
+  const [contactOpen, setContactOpen] = useState(false);
   const scrollToBook = () => {
     const el = document.getElementById("book");
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -1716,7 +1837,7 @@ function Index() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Navbar onBook={scrollToBook} />
+      <Navbar onBook={scrollToBook} onContact={() => setContactOpen(true)} />
       <main>
         <Hero onBook={scrollToBook} />
         <TrustBar />
@@ -1732,6 +1853,7 @@ function Index() {
       <FinancingBanner onBook={scrollToBook} />
       <Footer />
       <MobilePhoneCTA />
+      <ContactUsDialog open={contactOpen} onOpenChange={setContactOpen} />
     </div>
   );
 }
