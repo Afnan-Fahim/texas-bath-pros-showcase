@@ -1576,20 +1576,12 @@ function ConfirmationScreen({
           <dd className="font-medium text-navy">{state.address}</dd>
         </div>
       </dl>
-
-          <dd className="font-medium text-navy">{state.time}</dd>
-        </div>
-      </dl>
       <div className="mt-6 flex flex-wrap justify-center gap-3">
-        <a href={PHONE_TEL}>
-          <Button variant="outline" className="border-navy/25 text-navy">
-            <Phone className="mr-2 h-4 w-4" /> {PHONE_DISPLAY}
-          </Button>
-        </a>
         <Button onClick={onReset} className="bg-navy text-navy-foreground hover:bg-navy/90">
-          Submit another request
+          Book another appointment
         </Button>
       </div>
+
     </div>
   );
 }
