@@ -56,6 +56,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
+import { LegalTerms } from "@/components/LegalTerms";
 
 import heroShower from "@/assets/hero-shower.avif";
 import afterSubway from "@/assets/after-subway.avif";
@@ -1669,12 +1670,10 @@ function Footer() {
       <div className="border-t border-neutral-900/10">
         <div className="container-x py-5 flex flex-wrap items-center justify-between gap-3 text-xs text-neutral-600">
           <div>© {new Date().getFullYear()} Texas Bath Solutions. All rights reserved.</div>
-          <div className="flex gap-4">
-            <a href="#" className="hover:text-neutral-900">Privacy</a>
-            <a href="#" className="hover:text-neutral-900">Terms</a>
-          </div>
+          <div className="text-neutral-600">Licensed &amp; Insured · San Antonio, Texas</div>
         </div>
       </div>
+      <LegalTerms />
 
 
     </footer>
