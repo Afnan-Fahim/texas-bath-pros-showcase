@@ -1421,27 +1421,93 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
   );
 }
 
-const USE_CALENDLY = false;
 const CALENDLY_URL = "https://calendly.com/rugsafari/texas-bath-solutions";
 
-function CalendlyEmbed() {
+type Prefill = {
+  name: string;
+  phone: string;
+  email: string;
+  address: string;
+  project: string;
+  notes: string;
+};
+
+function CalendlyEmbed({
+  prefill,
+  onBack,
+  onScheduled,
+}: {
+  prefill: Prefill;
+  onBack: () => void;
+  onScheduled: () => void;
+}) {
   useEffect(() => {
     const id = "calendly-widget-script";
-    if (document.getElementById(id)) return;
-    const s = document.createElement("script");
-    s.id = id;
-    s.src = "https://assets.calendly.com/assets/external/widget.js";
-    s.async = true;
-    document.body.appendChild(s);
-  }, []);
+    if (!document.getElementById(id)) {
+      const s = document.createElement("script");
+      s.id = id;
+      s.src = "https://assets.calendly.com/assets/external/widget.js";
+      s.async = true;
+      document.body.appendChild(s);
+    }
+    const onMessage = (e: MessageEvent) => {
+      if (
+        typeof e.origin === "string" &&
+        e.origin.includes("calendly.com") &&
+        e.data?.event === "calendly.event_scheduled"
+      ) {
+        onScheduled();
+      }
+    };
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, [onScheduled]);
+
+  const details = [
+    `Project: ${prefill.project}`,
+    `Service address / ZIP: ${prefill.address}`,
+    `Phone: ${prefill.phone}`,
+    prefill.notes ? `Notes: ${prefill.notes}` : "",
+  ]
+    .filter(Boolean)
+    .join("\n");
+
+  const params = new URLSearchParams({
+    hide_gdpr_banner: "1",
+    primary_color: "0D3B66",
+    name: prefill.name,
+    email: prefill.email,
+    // Calendly invitee question prefills (a1 = first question, a2 = second, ...)
+    a1: prefill.phone,
+    a2: details,
+    location: prefill.phone,
+  });
+
+  const url = `${CALENDLY_URL}?${params.toString()}`;
 
   return (
-    <div className="rounded-3xl bg-card border border-border shadow-elegant overflow-hidden p-2 md:p-3">
-      <div
-        className="calendly-inline-widget"
-        data-url={`${CALENDLY_URL}?hide_gdpr_banner=1&primary_color=0D3B66`}
-        style={{ minWidth: "320px", height: "760px" }}
-      />
+    <div>
+      <div className="flex items-center justify-between gap-3">
+        <div>
+          <h3 className="text-xl font-display font-semibold text-navy">
+            Almost done, {prefill.name.split(" ")[0]} — pick your time
+          </h3>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Choose any open slot. You'll get an instant confirmation plus automatic text and email
+            reminders.
+          </p>
+        </div>
+        <Button type="button" variant="outline" className="shrink-0 border-navy/25 text-navy" onClick={onBack}>
+          Back
+        </Button>
+      </div>
+      <div className="mt-4 overflow-hidden rounded-2xl border border-border">
+        <div
+          className="calendly-inline-widget"
+          data-url={url}
+          style={{ minWidth: "300px", height: "760px" }}
+        />
+      </div>
       <noscript>
         <a href={CALENDLY_URL} target="_blank" rel="noreferrer">
           Book your free estimate
@@ -1450,6 +1516,7 @@ function CalendlyEmbed() {
     </div>
   );
 }
+
 
 function Field({
 
