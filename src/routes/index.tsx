@@ -1462,7 +1462,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
   );
 }
 
-const USE_CALENDLY = true;
+const USE_CALENDLY = false;
 const CALENDLY_URL = "https://calendly.com/rugsafari/texas-bath-solutions";
 
 function CalendlyEmbed() {
