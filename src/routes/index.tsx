@@ -1244,12 +1244,10 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
     email: "",
     address: "",
     project: "",
-    date: undefined as Date | undefined,
-    time: "",
     notes: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [submitted, setSubmitted] = useState(false);
+  const [step, setStep] = useState<"form" | "schedule" | "done">("form");
 
   const update = <K extends keyof typeof state>(k: K, v: (typeof state)[K]) =>
     setState((s) => ({ ...s, [k]: v }));
@@ -1258,11 +1256,10 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
     const e: Record<string, string> = {};
     if (!state.name.trim()) e.name = "Please enter your name";
     if (state.phone.replace(/\D/g, "").length !== 10) e.phone = "Enter a valid 10-digit phone";
+    if (!state.email.trim()) e.email = "Email is required for your confirmation";
+    else if (!/^\S+@\S+\.\S+$/.test(state.email)) e.email = "Invalid email";
     if (!state.address.trim()) e.address = "Address or ZIP code required";
     if (!state.project) e.project = "Please select a project type";
-    if (!state.date) e.date = "Choose a preferred date";
-    if (!state.time) e.time = "Choose a preferred time";
-    if (state.email && !/^\S+@\S+\.\S+$/.test(state.email)) e.email = "Invalid email";
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -1270,14 +1267,15 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
-    setSubmitted(true);
+    setStep("schedule");
+    requestAnimationFrame(() => formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
   };
 
-  // Suggested dates: next 14 days, exclude Sundays
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const maxDate = new Date(today);
-  maxDate.setDate(maxDate.getDate() + 45);
+  const reset = () => {
+    setStep("form");
+    setState({ name: "", phone: "", email: "", address: "", project: "", notes: "" });
+  };
+
 
   return (
     <section
