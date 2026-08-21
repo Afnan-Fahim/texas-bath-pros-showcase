@@ -1292,8 +1292,10 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
             Ready to see your new shower? Schedule your free, no-obligation estimate.
           </h2>
           <p className="mt-5 text-lg text-muted-foreground">
-            Hassle-free appointments often available. We'll call to confirm within 1 hour.
+            Tell us about your project, then pick the exact time that works for you. You'll get an
+            instant confirmation plus automatic text and email reminders.
           </p>
+
           <ul className="mt-6 space-y-3">
             {[
               "No pressure. No obligation.",
