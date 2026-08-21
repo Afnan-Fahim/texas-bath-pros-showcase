@@ -1258,8 +1258,8 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
     if (state.phone.replace(/\D/g, "").length !== 10) e.phone = "Enter a valid 10-digit phone";
     if (!state.email.trim()) e.email = "Email is required for your confirmation";
     else if (!/^\S+@\S+\.\S+$/.test(state.email)) e.email = "Invalid email";
-    if (!state.address.trim()) e.address = "Address or ZIP code required";
-    if (!state.project) e.project = "Please select a project type";
+    if (!state.address.trim()) e.address = "Service address required";
+    if (!state.project) e.project = "Please select a timeframe";
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -1292,8 +1292,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
             Ready to see your new shower? Schedule your free, no-obligation estimate.
           </h2>
           <p className="mt-5 text-lg text-muted-foreground">
-            Tell us about your project, then pick the exact time that works for you. You'll get an
-            instant confirmation plus automatic text and email reminders.
+            Tell us about your project, then pick the exact time that works for you.
           </p>
 
           <ul className="mt-6 space-y-3">
@@ -1459,8 +1458,8 @@ function CalendlyEmbed({
   }, [onScheduled]);
 
   const details = [
-    `Project: ${prefill.project}`,
-    `Service address / ZIP: ${prefill.address}`,
+    `Desired timeframe: ${prefill.project}`,
+    `Service address: ${prefill.address}`,
     `Phone: ${prefill.phone}`,
     prefill.notes ? `Notes: ${prefill.notes}` : "",
   ]
@@ -1488,8 +1487,7 @@ function CalendlyEmbed({
             Almost done, {prefill.name.split(" ")[0]} — pick your time
           </h3>
           <p className="mt-1 text-sm text-muted-foreground">
-            Choose any open slot. You'll get an instant confirmation plus automatic text and email
-            reminders.
+            Choose any open slot.
           </p>
         </div>
         <Button type="button" variant="outline" className="shrink-0 border-navy/25 text-navy" onClick={onBack}>
@@ -1590,7 +1588,7 @@ function FAQ() {
     },
     {
       q: "Do you really offer hassle-free estimates?",
-      a: "Yes! We work around your schedule and can often come by within a day or two. We'll send updates and reminders for your selected appointment time.",
+      a: "Yes! We work around your schedule and can often come by within a day or two. We'll send updates and reminders for your selected appointment time. We do not consider any portion of our process to be a \"Hassle\". Rather, it is our privilege to help with assisting others in completing their dream Bathroom.",
     },
     {
       q: "What do your acrylic and Onyx shower systems cost?",
