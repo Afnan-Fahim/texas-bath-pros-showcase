@@ -204,19 +204,21 @@ function Navbar({ onBook }: { onBook: () => void }) {
             <Phone className="h-4 w-4" />
             <span className="text-sm md:text-base">{PHONE_DISPLAY}</span>
           </a>
-          <a
-            href="mailto:Contact@TexasBathSolutions.com"
-            className="hidden md:flex items-center gap-2 text-navy font-semibold hover:text-teal transition-colors"
-          >
-            <Mail className="h-4 w-4" />
-            <span className="text-sm md:text-base">Contact@TexasBathSolutions.com</span>
-          </a>
-          <Button
-            onClick={onBook}
-            className="hidden sm:inline-flex bg-navy text-navy-foreground hover:bg-navy/90 shadow-sm"
-          >
-            Book Free Estimate
-          </Button>
+          <div className="hidden sm:flex flex-col items-center gap-1">
+            <Button
+              onClick={onBook}
+              className="bg-navy text-navy-foreground hover:bg-navy/90 shadow-sm"
+            >
+              Book Free Estimate
+            </Button>
+            <a
+              href="mailto:Contact@TexasBathSolutions.com"
+              className="flex items-center gap-1.5 text-navy font-semibold hover:text-teal transition-colors"
+            >
+              <Mail className="h-3.5 w-3.5" />
+              <span className="text-xs md:text-sm">Contact@TexasBathSolutions.com</span>
+            </a>
+          </div>
           <button
             onClick={() => setOpen((v) => !v)}
             className="lg:hidden grid h-10 w-10 place-items-center rounded-md border border-border"
