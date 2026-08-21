@@ -1348,7 +1348,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
                   </Field>
                 </div>
                 <div className="grid gap-5 sm:grid-cols-2">
-                  <Field label="Email (optional)" error={errors.email}>
+                  <Field label="Email" error={errors.email} required>
                     <Input
                       type="email"
                       value={state.email}
