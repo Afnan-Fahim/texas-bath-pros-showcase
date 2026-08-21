@@ -56,6 +56,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
+import { LegalTerms } from "@/components/LegalTerms";
 
 import heroShower from "@/assets/hero-shower.avif";
 import afterSubway from "@/assets/after-subway.avif";
@@ -1258,8 +1259,8 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
     if (state.phone.replace(/\D/g, "").length !== 10) e.phone = "Enter a valid 10-digit phone";
     if (!state.email.trim()) e.email = "Email is required for your confirmation";
     else if (!/^\S+@\S+\.\S+$/.test(state.email)) e.email = "Invalid email";
-    if (!state.address.trim()) e.address = "Address or ZIP code required";
-    if (!state.project) e.project = "Please select a project type";
+    if (!state.address.trim()) e.address = "Service address required";
+    if (!state.project) e.project = "Please select a timeframe";
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -1292,8 +1293,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
             Ready to see your new shower? Schedule your free, no-obligation estimate.
           </h2>
           <p className="mt-5 text-lg text-muted-foreground">
-            Tell us about your project, then pick the exact time that works for you. You'll get an
-            instant confirmation plus automatic text and email reminders.
+            Tell us about your project, then pick the exact time that works for you.
           </p>
 
           <ul className="mt-6 space-y-3">
@@ -1357,40 +1357,35 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
                       autoComplete="email"
                     />
                   </Field>
-                  <Field label="Service Address or ZIP" error={errors.address} required>
+                  <Field label="Service Address" error={errors.address} required>
                     <Input
                       value={state.address}
                       onChange={(e) => update("address", e.target.value)}
-                      placeholder="78209"
-                      autoComplete="postal-code"
+                      placeholder="123 Main St, San Antonio"
+                      autoComplete="street-address"
                     />
                   </Field>
                 </div>
 
-                <Field label="What best describes your project?" error={errors.project} required>
-                  <div className="grid gap-2 sm:grid-cols-2">
-                    {[
-                      "Tub-to-Shower Conversion",
-                      "Full Shower Remodel",
-                      "Shower Refresh / Update",
-                      "Other",
-                    ].map((p) => (
-                      <button
-                        type="button"
-                        key={p}
-                        onClick={() => update("project", p)}
-                        className={cn(
-                          "rounded-lg border px-4 py-3 text-sm text-left transition-colors",
-                          state.project === p
-                            ? "border-navy bg-navy/5 text-navy font-semibold"
-                            : "border-border bg-card hover:border-navy/40",
-                        )}
-                      >
-                        {p}
-                      </button>
-                    ))}
-                  </div>
+                <Field
+                  label="How soon are you wanting to enjoy your New Bathroom?"
+                  error={errors.project}
+                  required
+                >
+                  <Select value={state.project} onValueChange={(v) => update("project", v)}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select a timeframe" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {["Immediately", "Within One Month", "More than 3 Months"].map((p) => (
+                        <SelectItem key={p} value={p}>
+                          {p}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </Field>
+
 
                 <Field label="Tell us about your current bathroom (optional)">
                   <Textarea
@@ -1464,8 +1459,8 @@ function CalendlyEmbed({
   }, [onScheduled]);
 
   const details = [
-    `Project: ${prefill.project}`,
-    `Service address / ZIP: ${prefill.address}`,
+    `Desired timeframe: ${prefill.project}`,
+    `Service address: ${prefill.address}`,
     `Phone: ${prefill.phone}`,
     prefill.notes ? `Notes: ${prefill.notes}` : "",
   ]
@@ -1493,8 +1488,7 @@ function CalendlyEmbed({
             Almost done, {prefill.name.split(" ")[0]} — pick your time
           </h3>
           <p className="mt-1 text-sm text-muted-foreground">
-            Choose any open slot. You'll get an instant confirmation plus automatic text and email
-            reminders.
+            Choose any open slot.
           </p>
         </div>
         <Button type="button" variant="outline" className="shrink-0 border-navy/25 text-navy" onClick={onBack}>
@@ -1595,7 +1589,7 @@ function FAQ() {
     },
     {
       q: "Do you really offer hassle-free estimates?",
-      a: "Yes! We work around your schedule and can often come by within a day or two. We'll send updates and reminders for your selected appointment time.",
+      a: "Yes! We work around your schedule and can often come by within a day or two. We'll send updates and reminders for your selected appointment time. We do not consider any portion of our process to be a \"Hassle\". Rather, it is our privilege to help with assisting others in completing their dream Bathroom.",
     },
     {
       q: "What do your acrylic and Onyx shower systems cost?",
@@ -1676,12 +1670,10 @@ function Footer() {
       <div className="border-t border-neutral-900/10">
         <div className="container-x py-5 flex flex-wrap items-center justify-between gap-3 text-xs text-neutral-600">
           <div>© {new Date().getFullYear()} Texas Bath Solutions. All rights reserved.</div>
-          <div className="flex gap-4">
-            <a href="#" className="hover:text-neutral-900">Privacy</a>
-            <a href="#" className="hover:text-neutral-900">Terms</a>
-          </div>
+          <div className="text-neutral-600">Licensed &amp; Insured · San Antonio, Texas</div>
         </div>
       </div>
+      <LegalTerms />
 
 
     </footer>
