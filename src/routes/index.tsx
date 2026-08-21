@@ -155,7 +155,7 @@ function Logo({
 }
 
 /* ---------------- NAVBAR ---------------- */
-function Navbar({ onBook }: { onBook: () => void }) {
+function Navbar({ onBook, onContact }: { onBook: () => void; onContact: () => void }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -204,20 +204,20 @@ function Navbar({ onBook }: { onBook: () => void }) {
             <Phone className="h-4 w-4" />
             <span className="text-sm md:text-base">{PHONE_DISPLAY}</span>
           </a>
-          <div className="hidden sm:flex flex-col items-center gap-1">
+          <div className="hidden sm:flex flex-col items-center gap-1.5">
             <Button
               onClick={onBook}
               className="bg-navy text-navy-foreground hover:bg-navy/90 shadow-sm"
             >
               Book Free Estimate
             </Button>
-            <a
-              href="mailto:Contact@TexasBathSolutions.com"
-              className="flex items-center gap-1.5 text-navy font-semibold hover:text-teal transition-colors"
+            <Button
+              onClick={onContact}
+              variant="outline"
+              className="border-navy/25 text-navy hover:bg-navy/5 hover:text-navy"
             >
-              <Mail className="h-3.5 w-3.5" />
-              <span className="text-xs md:text-sm">Contact@TexasBathSolutions.com</span>
-            </a>
+              Contact Us
+            </Button>
           </div>
           <button
             onClick={() => setOpen((v) => !v)}
@@ -247,12 +247,6 @@ function Navbar({ onBook }: { onBook: () => void }) {
             >
               <Phone className="h-4 w-4" /> {PHONE_DISPLAY}
             </a>
-            <a
-              href="mailto:Contact@TexasBathSolutions.com"
-              className="flex items-center justify-center gap-2 rounded-md bg-secondary px-3 py-3 font-semibold text-navy"
-            >
-              <Mail className="h-4 w-4" /> Contact@TexasBathSolutions.com
-            </a>
             <Button
               onClick={() => {
                 setOpen(false);
@@ -261,6 +255,16 @@ function Navbar({ onBook }: { onBook: () => void }) {
               className="mt-2 bg-navy text-navy-foreground hover:bg-navy/90"
             >
               Book Free Estimate
+            </Button>
+            <Button
+              onClick={() => {
+                setOpen(false);
+                onContact();
+              }}
+              variant="outline"
+              className="border-navy/25 text-navy hover:bg-navy/5 hover:text-navy"
+            >
+              Contact Us
             </Button>
           </div>
         </div>
