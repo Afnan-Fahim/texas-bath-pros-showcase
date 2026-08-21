@@ -204,6 +204,13 @@ function Navbar({ onBook }: { onBook: () => void }) {
             <Phone className="h-4 w-4" />
             <span className="text-sm md:text-base">{PHONE_DISPLAY}</span>
           </a>
+          <a
+            href="mailto:Contact@TexasBathSolutions.com"
+            className="hidden md:flex items-center gap-2 text-navy font-semibold hover:text-teal transition-colors"
+          >
+            <Mail className="h-4 w-4" />
+            <span className="text-sm md:text-base">Contact@TexasBathSolutions.com</span>
+          </a>
           <Button
             onClick={onBook}
             className="hidden sm:inline-flex bg-navy text-navy-foreground hover:bg-navy/90 shadow-sm"
@@ -237,6 +244,12 @@ function Navbar({ onBook }: { onBook: () => void }) {
               className="mt-2 flex items-center justify-center gap-2 rounded-md bg-secondary px-3 py-3 font-semibold text-navy"
             >
               <Phone className="h-4 w-4" /> {PHONE_DISPLAY}
+            </a>
+            <a
+              href="mailto:Contact@TexasBathSolutions.com"
+              className="flex items-center justify-center gap-2 rounded-md bg-secondary px-3 py-3 font-semibold text-navy"
+            >
+              <Mail className="h-4 w-4" /> Contact@TexasBathSolutions.com
             </a>
             <Button
               onClick={() => {
@@ -1644,6 +1657,12 @@ function Footer() {
           <p className="mt-3 text-neutral-600 text-sm">
             Proudly serving San Antonio and surrounding areas.
           </p>
+          <a
+            href="mailto:Contact@TexasBathSolutions.com"
+            className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-navy hover:text-teal transition-colors"
+          >
+            <Mail className="h-4 w-4" /> Contact@TexasBathSolutions.com
+          </a>
         </div>
         <div className="md:justify-self-end">
           <h4 className="font-semibold text-neutral-900">Trust &amp; Credentials</h4>
