@@ -1454,7 +1454,6 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
                 </p>
               </form>
             )}
-            )}
           </div>
           )}
         </div>
