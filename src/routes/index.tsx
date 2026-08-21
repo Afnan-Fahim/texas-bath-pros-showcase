@@ -22,6 +22,7 @@ import {
   ClipboardCheck,
   Ruler,
   ShowerHead,
+  Mail,
 } from "lucide-react";
 import logoImg from "@/assets/logo-header.webp";
 import logoFooterImg from "@/assets/logo-footer.webp";
@@ -450,7 +451,7 @@ function BeforeAfterReel() {
         <div className="flex items-end justify-between gap-4 flex-wrap">
           <div>
             <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-teal-foreground/90 text-white/80">
-              Acrylic & Onyx Shower Remodel
+              Acrylic Shower Remodel
             </div>
             <div className="mt-1 font-display text-2xl md:text-3xl font-bold leading-tight">
               Starting at <span className="text-gold">$8,477</span>
@@ -461,7 +462,7 @@ function BeforeAfterReel() {
           </div>
           <ul className="grid grid-cols-1 gap-1 text-xs md:text-sm text-white/90">
             <li className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-teal" /> Lifetime warranty</li>
-            <li className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-teal" /> Mold &amp; leak-proof</li>
+            <li className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-teal" /> Mold Resistant</li>
             <li className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-teal" /> $0 down financing</li>
           </ul>
         </div>
@@ -487,7 +488,7 @@ function TrustBar() {
   const items = [
     { icon: Award, label: "A+ BBB Rating", sub: "Zero Complaints" },
     { icon: Home, label: "Family Owned", sub: "San Antonio, TX" },
-    { icon: Clock, label: "Free Hassle-Free", sub: "Estimates" },
+    { icon: Clock, label: "Hassle-Free", sub: "Estimates" },
     { icon: Droplets, label: "Acrylic & Onyx", sub: "Fast & Leak-Proof" },
     { icon: MapPin, label: "Local Service", sub: "San Antonio Area" },
   ];
@@ -1065,7 +1066,7 @@ function WhyUs() {
   const items = [
     {
       icon: Clock,
-      title: "Free Hassle-Free Estimates",
+      title: "Hassle-Free Estimates",
       body: "No obligation, no pressure. We come to you and give you an honest quote at a time that works for you.",
     },
     {
@@ -1076,7 +1077,7 @@ function WhyUs() {
     {
       icon: Droplets,
       title: "Fast, Clean Installations",
-      body: "Most showers completed in a single day with careful protection of your home and minimal disruption.",
+      body: "Most showers completed in two or three days with careful protection of your home and minimal disruption.",
     },
     {
       icon: Home,
@@ -1259,7 +1260,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
     if (state.phone.replace(/\D/g, "").length !== 10) e.phone = "Enter a valid 10-digit phone";
     if (!state.email.trim()) e.email = "Email is required for your confirmation";
     else if (!/^\S+@\S+\.\S+$/.test(state.email)) e.email = "Invalid email";
-    if (!state.address.trim()) e.address = "Service address required";
+    if (!state.address.trim()) e.address = "Address required";
     if (!state.project) e.project = "Please select a timeframe";
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -1357,7 +1358,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
                       autoComplete="email"
                     />
                   </Field>
-                  <Field label="Service Address" error={errors.address} required>
+                  <Field label="Address" error={errors.address} required>
                     <Input
                       value={state.address}
                       onChange={(e) => update("address", e.target.value)}
@@ -1401,7 +1402,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
                   size="lg"
                   className="w-full h-12 bg-navy text-navy-foreground hover:bg-navy/90 text-base font-semibold shadow-elegant"
                 >
-                  Continue — Pick My Appointment Time
+                  Final Step -- Pick My Appointment Time
                 </Button>
                 <p className="text-center text-xs text-muted-foreground">
                   Next: choose your time. Instant confirmation + automatic reminders. No obligation.
