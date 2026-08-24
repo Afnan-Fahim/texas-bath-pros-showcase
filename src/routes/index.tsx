@@ -2098,6 +2098,27 @@ function Index() {
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
+  // Add the telephone to structured data only in the browser, so it is not in
+  // the raw HTML source for scrapers (search engines execute JS and still see it).
+  useEffect(() => {
+    const phone = decodePhone();
+    if (!phone) return;
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      name: "Texas Bath Solutions",
+      telephone: `+1${phone.display.replace(/\D/g, "")}`,
+      url: "https://www.texasbathsolutions.com",
+    });
+    document.head.appendChild(script);
+    return () => {
+      script.remove();
+    };
+  }, []);
+
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar onBook={scrollToBook} onContact={() => setContactOpen(true)} />
