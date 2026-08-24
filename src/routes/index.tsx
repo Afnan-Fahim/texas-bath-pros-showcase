@@ -291,12 +291,13 @@ function Navbar({ onBook, onContact }: { onBook: () => void; onContact: () => vo
                 {l.label}
               </a>
             ))}
-            <a
-              href={PHONE_TEL}
-              className="mt-2 flex items-center justify-center gap-2 rounded-md bg-secondary px-3 py-3 font-semibold text-navy"
-            >
-              <Phone className="h-4 w-4" /> {PHONE_DISPLAY}
-            </a>
+            <PhoneLink className="mt-2 flex items-center justify-center gap-2 rounded-md bg-secondary px-3 py-3 font-semibold text-navy">
+              {(display) => (
+                <>
+                  <Phone className="h-4 w-4" /> {display}
+                </>
+              )}
+            </PhoneLink>
             <Button
               onClick={() => {
                 setOpen(false);
