@@ -1579,6 +1579,25 @@ function CalendlyEmbed({
 
   const url = `${CALENDLY_URL}?${params.toString()}`;
 
+  useEffect(() => {
+    let cancelled = false;
+    const tryInit = () => {
+      if (cancelled) return;
+      const host = hostRef.current;
+      const C = (window as unknown as { Calendly?: { initInlineWidget: (o: Record<string, unknown>) => void } })
+        .Calendly;
+      if (host && C) {
+        host.innerHTML = "";
+        C.initInlineWidget({ url, parentElement: host });
+      } else {
+        setTimeout(tryInit, 200);
+      }
+    };
+    tryInit();
+    return () => {
+      cancelled = true;
+    };
+  }, [url]);
 
   return (
     <div>
@@ -1597,12 +1616,9 @@ function CalendlyEmbed({
       </div>
 
       <div className="mt-4 overflow-hidden rounded-2xl border border-border">
-        <div
-          className="calendly-inline-widget"
-          data-url={url}
-          style={{ minWidth: "300px", height: "760px" }}
-        />
+        <div ref={hostRef} style={{ minWidth: "300px", height: "760px" }} />
       </div>
+
       <noscript>
         <a href={CALENDLY_URL} target="_blank" rel="noreferrer">
           Book your free estimate
