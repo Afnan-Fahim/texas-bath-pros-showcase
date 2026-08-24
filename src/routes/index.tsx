@@ -764,8 +764,8 @@ function About() {
         </h2>
         <p className="mt-5 text-lg text-muted-foreground text-balance">
           We're a family business dedicated to turning outdated bathrooms into beautiful,
-          functional spaces. We believe in honest pricing, hassle-free estimates, and doing the
-          job right the first time.
+          functional spaces. We believe in clean, honest, upfront pricing and doing the job right
+          the first time.
         </p>
       </div>
     </section>
