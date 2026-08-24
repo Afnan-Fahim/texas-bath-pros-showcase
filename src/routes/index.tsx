@@ -205,11 +205,11 @@ function Navbar({ onBook, onContact }: { onBook: () => void; onContact: () => vo
             <Phone className="h-4 w-4" />
             <span className="text-sm md:text-base">{PHONE_DISPLAY}</span>
           </a>
-          <div className="hidden sm:flex flex-col items-center gap-1.5">
+          <div className="flex flex-col items-stretch gap-1.5">
             <Button
               onClick={onBook}
               size="default"
-              className="bg-navy text-navy-foreground hover:bg-navy/90 shadow-sm"
+              className="h-9 px-3 text-xs sm:h-10 sm:px-4 sm:text-sm bg-navy text-navy-foreground hover:bg-navy/90 shadow-sm"
             >
               Book Free Estimate
             </Button>
@@ -217,7 +217,7 @@ function Navbar({ onBook, onContact }: { onBook: () => void; onContact: () => vo
               onClick={onContact}
               size="default"
               variant="outline"
-              className="border-navy/25 text-navy hover:bg-navy/5 hover:text-navy"
+              className="h-9 px-3 text-xs sm:h-10 sm:px-4 sm:text-sm border-navy/25 text-navy hover:bg-navy/5 hover:text-navy"
             >
               Contact Us
             </Button>
