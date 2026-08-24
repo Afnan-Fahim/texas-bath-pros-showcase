@@ -1530,6 +1530,7 @@ function CalendlyEmbed({
   title?: string;
   subtitle?: string;
 }) {
+  const hostRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const id = "calendly-widget-script";
     if (!document.getElementById(id)) {
