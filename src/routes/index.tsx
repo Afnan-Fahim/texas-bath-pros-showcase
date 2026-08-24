@@ -95,7 +95,7 @@ export const Route = createFileRoute("/")({
           name: "Texas Bath Solutions",
           description:
             "Family-owned San Antonio bathroom remodeler specializing in acrylic and Onyx shower systems and tub-to-shower conversions. Trusted Shower Experts.",
-          telephone: "+1-210-702-0753",
+          
           areaServed: "San Antonio, TX",
           address: { "@type": "PostalAddress", addressLocality: "San Antonio", addressRegion: "TX", addressCountry: "US" },
           url: "https://www.texasbathsolutions.com",
@@ -106,8 +106,54 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const PHONE_DISPLAY = "(210) 702-0753";
-const PHONE_TEL = "tel:+12107020753";
+/* Phone is stored encoded so it never appears in the raw HTML/JS source as a
+   harvestable string; it is decoded in the browser after hydration. */
+const PHONE_B64 = "KDIxMCkgNzAyLTA3NTM=";
+
+function decodePhone() {
+  if (typeof window === "undefined") return null;
+  try {
+    const display = window.atob(PHONE_B64);
+    return { display, tel: `tel:+1${display.replace(/\D/g, "")}` };
+  } catch {
+    return null;
+  }
+}
+
+function usePhone() {
+  const [phone, setPhone] = useState<{ display: string; tel: string } | null>(null);
+  useEffect(() => {
+    setPhone(decodePhone());
+  }, []);
+  return phone;
+}
+
+/** Renders the phone link with identical styling; number injected client-side. */
+function PhoneLink({
+  className,
+  children,
+}: {
+  className?: string;
+  children: (display: string) => React.ReactNode;
+}) {
+  const phone = usePhone();
+  return (
+    <a
+      href={phone?.tel}
+      className={className}
+      aria-label="Call Texas Bath Solutions"
+      onClick={(e) => {
+        if (!phone) {
+          e.preventDefault();
+          const p = decodePhone();
+          if (p) window.location.href = p.tel;
+        }
+      }}
+    >
+      {children(phone?.display ?? "")}
+    </a>
+  );
+}
 
 /* ---------------- LOGO ---------------- */
 function Logo({
@@ -198,13 +244,14 @@ function Navbar({ onBook, onContact }: { onBook: () => void; onContact: () => vo
           ))}
         </nav>
         <div className="ml-auto lg:ml-6 flex items-center gap-2 md:gap-3">
-          <a
-            href={PHONE_TEL}
-            className="hidden md:flex items-center gap-2 text-navy font-semibold hover:text-teal transition-colors"
-          >
-            <Phone className="h-4 w-4" />
-            <span className="text-sm md:text-base">{PHONE_DISPLAY}</span>
-          </a>
+          <PhoneLink className="hidden md:flex items-center gap-2 text-navy font-semibold hover:text-teal transition-colors">
+            {(display) => (
+              <>
+                <Phone className="h-4 w-4" />
+                <span className="text-sm md:text-base">{display}</span>
+              </>
+            )}
+          </PhoneLink>
           <div className="flex flex-col items-stretch gap-1.5">
             <Button
               onClick={onBook}
@@ -244,12 +291,13 @@ function Navbar({ onBook, onContact }: { onBook: () => void; onContact: () => vo
                 {l.label}
               </a>
             ))}
-            <a
-              href={PHONE_TEL}
-              className="mt-2 flex items-center justify-center gap-2 rounded-md bg-secondary px-3 py-3 font-semibold text-navy"
-            >
-              <Phone className="h-4 w-4" /> {PHONE_DISPLAY}
-            </a>
+            <PhoneLink className="mt-2 flex items-center justify-center gap-2 rounded-md bg-secondary px-3 py-3 font-semibold text-navy">
+              {(display) => (
+                <>
+                  <Phone className="h-4 w-4" /> {display}
+                </>
+              )}
+            </PhoneLink>
             <Button
               onClick={() => {
                 setOpen(false);
@@ -345,7 +393,7 @@ function Hero({ onBook }: { onBook: () => void }) {
         <div className="relative animate-fade-up">
           <div className="absolute -inset-6 -z-10 rounded-[2rem] bg-gradient-to-br from-teal/25 via-transparent to-navy/20 blur-2xl" />
           <HeroVideo />
-          <div className="absolute -bottom-6 -left-6 hidden md:flex items-center gap-3 rounded-xl bg-card px-4 py-3 shadow-card ring-1 ring-border">
+          <div className="mt-4 mx-auto w-fit max-w-full flex md:mt-0 md:mx-0 md:w-auto md:absolute md:-bottom-6 md:-left-6 items-center gap-2.5 md:gap-3 rounded-xl bg-card px-3 py-2.5 md:px-4 md:py-3 shadow-card ring-1 ring-border">
             <svg className="h-6 w-6 shrink-0" viewBox="0 0 48 48" aria-hidden="true">
               <path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z" />
               <path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z" />
@@ -542,6 +590,10 @@ function BeforeAfterReel() {
           <img
             src={p.before}
             alt={`${p.label} — before`}
+            loading="lazy"
+            decoding="async"
+            width={1200}
+            height={900}
             className={cn(
               "absolute inset-0 h-full w-full object-cover transition-opacity duration-700",
               idx === i && phase === "before" ? "opacity-100" : "opacity-0",
@@ -550,6 +602,10 @@ function BeforeAfterReel() {
           <img
             src={p.after}
             alt={`${p.label} — after`}
+            loading="lazy"
+            decoding="async"
+            width={1200}
+            height={900}
             className={cn(
               "absolute inset-0 h-full w-full object-cover transition-opacity duration-700",
               idx === i && phase === "after" ? "opacity-100" : "opacity-0",
@@ -894,7 +950,7 @@ function Gallery() {
                     setSliderPos(Math.max(0, Math.min(100, (x / r.width) * 100)));
                   }}
                 >
-                  <img src={active.after} alt="After" className="absolute inset-0 h-full w-full object-cover" />
+                  <img src={active.after} alt="After" decoding="async" width={1200} height={1200} className="absolute inset-0 h-full w-full object-cover" />
                   <div
                     className="absolute inset-0 overflow-hidden"
                     style={{ width: `${sliderPos}%` }}
@@ -902,6 +958,9 @@ function Gallery() {
                     <img
                       src={active.before}
                       alt="Before"
+                      decoding="async"
+                      width={1200}
+                      height={1200}
                       className="absolute inset-0 h-full object-cover"
                       style={{ width: `${100 / (sliderPos / 100 || 0.001)}%`, maxWidth: "none" }}
                     />
@@ -922,7 +981,7 @@ function Gallery() {
                   </span>
                 </div>
               ) : (
-                <img src={active.after} alt={active.title} className="w-full h-auto" />
+                <img src={active.after} alt={active.title} decoding="async" width={1200} height={1200} className="w-full h-auto" />
               )}
               <div className="flex items-center justify-between p-5 border-t border-border">
                 <div>
@@ -2049,6 +2108,27 @@ function Index() {
     const el = document.getElementById("book");
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   };
+
+  // Add the telephone to structured data only in the browser, so it is not in
+  // the raw HTML source for scrapers (search engines execute JS and still see it).
+  useEffect(() => {
+    const phone = decodePhone();
+    if (!phone) return;
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      name: "Texas Bath Solutions",
+      telephone: `+1${phone.display.replace(/\D/g, "")}`,
+      url: "https://www.texasbathsolutions.com",
+    });
+    document.head.appendChild(script);
+    return () => {
+      script.remove();
+    };
+  }, []);
+
 
   return (
     <div className="min-h-screen bg-background text-foreground">
