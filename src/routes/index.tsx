@@ -95,7 +95,7 @@ export const Route = createFileRoute("/")({
           name: "Texas Bath Solutions",
           description:
             "Family-owned San Antonio bathroom remodeler specializing in acrylic and Onyx shower systems and tub-to-shower conversions. Trusted Shower Experts.",
-          telephone: "+1-210-702-0753",
+          
           areaServed: "San Antonio, TX",
           address: { "@type": "PostalAddress", addressLocality: "San Antonio", addressRegion: "TX", addressCountry: "US" },
           url: "https://www.texasbathsolutions.com",
