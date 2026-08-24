@@ -363,7 +363,7 @@ function Hero({ onBook }: { onBook: () => void }) {
               onClick={onBook}
               className="bg-navy text-navy-foreground hover:bg-navy/90 shadow-elegant text-base h-12 px-6"
             >
-              Book Your Free Estimate
+              Book Your Hassle-Free Estimate
             </Button>
             <a href="#work">
               <Button
