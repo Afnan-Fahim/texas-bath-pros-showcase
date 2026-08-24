@@ -765,7 +765,7 @@ function About() {
         <p className="mt-5 text-lg text-muted-foreground text-balance">
           We're a family business dedicated to turning outdated bathrooms into beautiful,
           functional spaces. We believe in honest pricing, hassle-free estimates, and doing the
-          job right the first time — no pressure, no surprises, no hassle.
+          job right the first time.
         </p>
       </div>
     </section>
@@ -1264,7 +1264,7 @@ function WhyUs() {
   const items = [
     {
       icon: Clock,
-      title: "Hassle-Free Estimates",
+      title: "Free Estimates",
       body: "No obligation, no pressure. We come to you and give you an honest quote at a time that works for you.",
     },
     {
@@ -1332,11 +1332,8 @@ function Process() {
     <section id="process" className="cv-auto py-5 md:py-8 bg-gradient-to-b from-navy to-navy/95 text-navy-foreground">
       <div className="container-x">
         <div className="max-w-2xl mx-auto text-center">
-          <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-2 py-0.5 text-[8px] font-semibold uppercase tracking-wider text-navy-foreground/90">
-            The Process
-          </span>
-          <h2 className="mt-2 text-lg md:text-2xl text-navy-foreground text-balance">
-            Simple, honest, and hassle-free from day one.
+          <h2 className="text-3xl md:text-4xl text-navy-foreground text-balance">
+            Our Process
           </h2>
         </div>
         <ol className="mt-4 grid gap-3 grid-cols-3">
