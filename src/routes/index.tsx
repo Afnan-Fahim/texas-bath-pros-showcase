@@ -885,7 +885,7 @@ const OFFERS: Offer[] = [
   },
 ];
 
-function Offers({ onBook }: { onBook: () => void }) {
+function Offers() {
   const [active, setActive] = useState<Offer | null>(null);
   const [claimed, setClaimed] = useState(false);
   const [scheduling, setScheduling] = useState(false);
@@ -1944,7 +1944,7 @@ function Index() {
         <About />
         <BookingForm formRef={formRef} />
         <Gallery />
-        <Offers onBook={scrollToBook} />
+        <Offers />
         <WhyUs />
         <Process />
         <FAQ />
