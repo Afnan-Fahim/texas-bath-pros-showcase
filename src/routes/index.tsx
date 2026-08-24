@@ -830,6 +830,21 @@ const GALLERY: GalleryItem[] = [
     title: "Vertical Subway with Bench",
     location: "Schertz",
   },
+  {
+    id: "11",
+    category: "modern",
+    before: beforeWhiteTile,
+    after: afterModern,
+    title: "Modern Minimal Walk-In",
+    location: "Boerne",
+  },
+  {
+    id: "12",
+    category: "modern",
+    after: afterModern2,
+    title: "Seamless White Shower Conversion",
+    location: "Converse",
+  },
 ];
 
 const FILTERS = [
