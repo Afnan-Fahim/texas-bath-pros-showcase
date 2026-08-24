@@ -537,7 +537,7 @@ function TrustBar() {
 /* ---------------- FINANCING BANNER ---------------- */
 function FinancingBanner({ onBook }: { onBook: () => void }) {
   const perks = [
-    { icon: CreditCard, title: "$0 Down", copy: "Start your remodel without paying anything upfront." },
+    { icon: CreditCard, title: "$0 Down", copy: "Start your remodel with payments as low as $115 a month." },
     { icon: CalendarDays, title: "Up to 12 Months No Payments", copy: "Enjoy your new shower before the first bill." },
     { icon: ShieldCheck, title: "Soft Credit Check", copy: "Prequalify in minutes — won't affect your score." },
   ];
