@@ -555,11 +555,13 @@ function FinancingBanner({ onBook }: { onBook: () => void }) {
                 Flexible Financing
               </span>
               <h3 className="mt-3 font-display text-2xl md:text-3xl font-semibold text-navy-foreground text-balance">
-                Zero money down. Up to 12 months no payments.
+                Zero money down. Payments as low as $115 a month.
               </h3>
               <p className="mt-2 text-sm md:text-base text-navy-foreground/75 text-balance">
-                Approved homeowners can start their remodel now and pay later — with no upfront cost.
+                Approved homeowners can start their remodel now and pay later — up to 12 months no payments, with no
+                upfront cost.
               </p>
+
             </div>
 
             <div className="mt-7 grid gap-3 sm:grid-cols-3">
