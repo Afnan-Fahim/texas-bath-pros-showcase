@@ -1584,16 +1584,17 @@ function CalendlyEmbed({
       <div className="flex items-center justify-between gap-3">
         <div>
           <h3 className="text-xl font-display font-semibold text-navy">
-            Almost done, {prefill.name.split(" ")[0]} — pick your time
+            {title ?? `Almost done, ${prefill.name.split(" ")[0]} — pick your time`}
           </h3>
           <p className="mt-1 text-sm text-muted-foreground">
-            Choose any open slot.
+            {subtitle ?? "Choose any open slot."}
           </p>
         </div>
         <Button type="button" variant="outline" className="shrink-0 border-navy/25 text-navy" onClick={onBack}>
           Back
         </Button>
       </div>
+
       <div className="mt-4 overflow-hidden rounded-2xl border border-border">
         <div
           className="calendly-inline-widget"
