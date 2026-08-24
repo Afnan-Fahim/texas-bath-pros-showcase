@@ -334,7 +334,7 @@ function Hero({ onBook }: { onBook: () => void }) {
               <div className="font-semibold text-navy">$0 Down Financing Available</div>
               <p className="mt-0.5 text-foreground/75">
                 Hassle-free <span className="font-semibold text-navy">soft credit check</span> — won't affect your score.
-                Qualify for <span className="font-semibold text-navy">up to 12 months no payments</span>, with payments as
+                Qualify for <span className="font-semibold text-navy">up to 12 months no interest</span>, &amp; payments as
                 low as <span className="font-semibold text-navy">$115 a month</span>.
               </p>
 
