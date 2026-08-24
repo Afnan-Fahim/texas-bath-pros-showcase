@@ -396,14 +396,19 @@ function HeroVideo() {
   };
 
   return (
-    <div className="relative mx-auto w-full max-w-sm overflow-hidden rounded-2xl shadow-elegant ring-1 ring-black/5 bg-navy">
+    <div
+      className={`relative mx-auto w-full overflow-hidden rounded-2xl shadow-elegant ring-1 ring-black/5 bg-navy ${
+        wide ? "max-w-none" : "max-w-sm"
+      }`}
+    >
       <video
         ref={videoRef}
+        key={wide ? "wide" : "portrait"}
         className="block h-auto w-full"
-        src={heroVideoAsset.url}
-        poster={heroPoster}
-        width={720}
-        height={1280}
+        src={wide ? heroVideoWideAsset.url : heroVideoAsset.url}
+        poster={wide ? undefined : heroPoster}
+        width={wide ? 1880 : 720}
+        height={wide ? 1080 : 1280}
         autoPlay
         muted
         loop
