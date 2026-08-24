@@ -393,7 +393,7 @@ function Hero({ onBook }: { onBook: () => void }) {
         <div className="relative animate-fade-up">
           <div className="absolute -inset-6 -z-10 rounded-[2rem] bg-gradient-to-br from-teal/25 via-transparent to-navy/20 blur-2xl" />
           <HeroVideo />
-          <div className="absolute -bottom-6 -left-6 hidden md:flex items-center gap-3 rounded-xl bg-card px-4 py-3 shadow-card ring-1 ring-border">
+          <div className="mt-4 mx-auto w-fit max-w-full flex md:mt-0 md:mx-0 md:w-auto md:absolute md:-bottom-6 md:-left-6 items-center gap-2.5 md:gap-3 rounded-xl bg-card px-3 py-2.5 md:px-4 md:py-3 shadow-card ring-1 ring-border">
             <svg className="h-6 w-6 shrink-0" viewBox="0 0 48 48" aria-hidden="true">
               <path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z" />
               <path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z" />
