@@ -888,13 +888,16 @@ const OFFERS: Offer[] = [
 function Offers({ onBook }: { onBook: () => void }) {
   const [active, setActive] = useState<Offer | null>(null);
   const [claimed, setClaimed] = useState(false);
-  const [form, setForm] = useState({ name: "", phone: "", email: "", date: "", time: "Morning (8am–12pm)" });
+  const [scheduling, setScheduling] = useState(false);
+  const [form, setForm] = useState({ name: "", phone: "", email: "", address: "" });
 
   const open = (o: Offer) => {
     setActive(o);
     setClaimed(false);
-    setForm({ name: "", phone: "", email: "", date: "", time: "Morning (8am–12pm)" });
+    setScheduling(false);
+    setForm({ name: "", phone: "", email: "", address: "" });
   };
+
 
   return (
     <section id="offers" className="py-12 md:py-16 bg-secondary/40">
