@@ -967,8 +967,14 @@ function Offers({ onBook }: { onBook: () => void }) {
       </div>
 
       <Dialog open={!!active} onOpenChange={(v) => !v && setActive(null)}>
-        <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
-          {active && !claimed && (
+        <DialogContent
+          className={
+            scheduling && !claimed
+              ? "sm:max-w-3xl max-h-[92vh] overflow-y-auto"
+              : "sm:max-w-md max-h-[90vh] overflow-y-auto"
+          }
+        >
+          {active && !claimed && !scheduling && (
             <>
               <DialogHeader>
                 <DialogTitle className="text-2xl text-navy">
@@ -982,7 +988,7 @@ function Offers({ onBook }: { onBook: () => void }) {
                 className="mt-2 space-y-3"
                 onSubmit={(e) => {
                   e.preventDefault();
-                  setClaimed(true);
+                  setScheduling(true);
                 }}
               >
                 <div className="space-y-1.5">
@@ -1017,39 +1023,42 @@ function Offers({ onBook }: { onBook: () => void }) {
                     placeholder="you@email.com"
                   />
                 </div>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <div className="space-y-1.5">
-                    <Label htmlFor="offer-date">Preferred date</Label>
-                    <Input
-                      id="offer-date"
-                      required
-                      type="date"
-                      value={form.date}
-                      onChange={(e) => setForm({ ...form, date: e.target.value })}
-                    />
-                  </div>
-                  <div className="space-y-1.5">
-                    <Label htmlFor="offer-time">Preferred time</Label>
-                    <select
-                      id="offer-time"
-                      value={form.time}
-                      onChange={(e) => setForm({ ...form, time: e.target.value })}
-                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                    >
-                      <option>Morning (8am–12pm)</option>
-                      <option>Afternoon (12pm–4pm)</option>
-                      <option>Evening (4pm–7pm)</option>
-                    </select>
-                  </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="offer-address">Address</Label>
+                  <Input
+                    id="offer-address"
+                    required
+                    value={form.address}
+                    onChange={(e) => setForm({ ...form, address: e.target.value })}
+                    placeholder="123 Main St, San Antonio"
+                    autoComplete="street-address"
+                  />
                 </div>
                 <Button type="submit" className="w-full">
                   Claim My {active.amount} &amp; Book Free Estimate
                 </Button>
                 <p className="text-center text-xs text-muted-foreground">
-                  Stackable with $0 down financing · Soft credit check only · No payments &amp; no
-                  interest for up to 12 months
+                  Stackable with $0 down financing · Soft credit check only · No payments for up to
+                  12 months
                 </p>
               </form>
+            </>
+          )}
+          {active && !claimed && scheduling && (
+            <>
+              <DialogHeader className="sr-only">
+                <DialogTitle>
+                  Claim {active.amount} — {active.headline}
+                </DialogTitle>
+                <DialogDescription>Pick your Free Estimate appointment time.</DialogDescription>
+              </DialogHeader>
+              <CalendlyEmbed
+                prefill={{ ...form, offer: `${active.amount} — ${active.headline}` }}
+                title={`Pick your time to lock in ${active.amount}`}
+                subtitle={`Your ${active.headline} discount is attached to this appointment.`}
+                onBack={() => setScheduling(false)}
+                onScheduled={() => setClaimed(true)}
+              />
             </>
           )}
           {active && claimed && (
@@ -1061,24 +1070,15 @@ function Offers({ onBook }: { onBook: () => void }) {
                 Your {active.amount} is reserved!
               </DialogTitle>
               <DialogDescription className="mt-2">
-                We'll confirm your Free Estimate appointment shortly. Want it faster? Call us at{" "}
-                {PHONE_DISPLAY}.
+                Your Free Estimate is booked and your {active.headline} discount is attached. Watch
+                for your confirmation text and email.
               </DialogDescription>
               <div className="mt-5 grid gap-2">
-                <Button
-                  onClick={() => {
-                    setActive(null);
-                    onBook();
-                  }}
-                >
-                  Pick My Estimate Time
-                </Button>
-                <Button variant="outline" asChild>
-                  <a href={PHONE_TEL}>Call {PHONE_DISPLAY}</a>
-                </Button>
+                <Button onClick={() => setActive(null)}>Done</Button>
               </div>
             </div>
           )}
+
         </DialogContent>
       </Dialog>
     </section>
