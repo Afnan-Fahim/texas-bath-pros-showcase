@@ -534,43 +534,58 @@ function TrustBar() {
 
 /* ---------------- FINANCING BANNER ---------------- */
 function FinancingBanner({ onBook }: { onBook: () => void }) {
+  const perks = [
+    { icon: CreditCard, title: "$0 Down", copy: "Start your remodel without paying anything upfront." },
+    { icon: CalendarDays, title: "Up to 12 Months No Payments", copy: "Enjoy your new shower before the first bill." },
+    { icon: ShieldCheck, title: "Soft Credit Check", copy: "Prequalify in minutes — won't affect your score." },
+  ];
+
   return (
-    <section className="py-4 md:py-5">
+    <section className="py-8 md:py-12">
       <div className="container-x">
-        <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-navy to-navy/90 text-navy-foreground shadow-elegant">
-          <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-teal/25 blur-2xl" aria-hidden />
-          <div className="absolute -left-6 -bottom-10 h-32 w-32 rounded-full bg-teal/15 blur-2xl" aria-hidden />
-          <div className="relative grid gap-4 p-4 md:p-5 lg:grid-cols-[auto_1fr_auto] lg:items-center">
-            <div className="grid h-10 w-10 place-items-center rounded-lg bg-white/10 text-navy-foreground">
-              <CreditCard className="h-5 w-5" />
-            </div>
-            <div>
-              <div className="text-[10px] font-semibold uppercase tracking-[0.15em] text-teal">
-                $0 Down Financing
-              </div>
-              <h3 className="mt-0.5 font-display text-base md:text-lg font-semibold text-navy-foreground text-balance">
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-navy via-navy to-navy/85 text-navy-foreground shadow-elegant ring-1 ring-white/10">
+          <div className="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-teal/25 blur-3xl" aria-hidden />
+          <div className="absolute -left-12 -bottom-16 h-48 w-48 rounded-full bg-teal/15 blur-3xl" aria-hidden />
+
+          <div className="relative p-6 md:p-10">
+            <div className="text-center max-w-2xl mx-auto">
+              <span className="inline-flex items-center gap-2 rounded-full border border-teal/40 bg-white/5 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-teal">
+                Flexible Financing
+              </span>
+              <h3 className="mt-3 font-display text-2xl md:text-3xl font-semibold text-navy-foreground text-balance">
                 Zero money down. Up to 12 months no payments.
               </h3>
-              <p className="mt-0.5 text-sm text-navy-foreground/80 max-w-2xl">
-                Prequalify with a <span className="font-semibold text-white">soft credit check</span> — won't affect your score.
+              <p className="mt-2 text-sm md:text-base text-navy-foreground/75 text-balance">
+                Approved homeowners can start their remodel now and pay later — with no upfront cost.
               </p>
             </div>
-            <div className="flex flex-wrap gap-2 lg:justify-end">
+
+            <div className="mt-7 grid gap-3 sm:grid-cols-3">
+              {perks.map((p) => (
+                <div
+                  key={p.title}
+                  className="rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm"
+                >
+                  <div className="grid h-9 w-9 place-items-center rounded-lg bg-teal/20 text-teal">
+                    <p.icon className="h-4.5 w-4.5" />
+                  </div>
+                  <div className="mt-3 font-semibold text-sm text-navy-foreground">{p.title}</div>
+                  <p className="mt-1 text-xs leading-relaxed text-navy-foreground/70">{p.copy}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-7 flex flex-col items-center gap-2">
               <Button
                 onClick={onBook}
-                className="bg-white text-navy hover:bg-white/90 h-9 px-4 text-sm font-semibold shadow-sm"
+                size="lg"
+                className="bg-white text-navy hover:bg-white/90 font-semibold shadow-sm w-full sm:w-auto px-8"
               >
                 See If I Prequalify
               </Button>
-              <a href={PHONE_TEL}>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="border-white/40 bg-transparent text-navy-foreground hover:bg-white/10 h-9 px-4"
-                >
-                  <Phone className="h-3.5 w-3.5 mr-1.5" /> {PHONE_DISPLAY}
-                </Button>
-              </a>
+              <p className="text-[11px] text-navy-foreground/60">
+                Subject to credit approval. Terms may vary by lender.
+              </p>
             </div>
           </div>
         </div>
@@ -578,6 +593,7 @@ function FinancingBanner({ onBook }: { onBook: () => void }) {
     </section>
   );
 }
+
 
 
 /* ---------------- ABOUT ---------------- */
