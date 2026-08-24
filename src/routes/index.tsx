@@ -870,7 +870,7 @@ function Gallery() {
             See the Difference — Real San Antonio Bathroom Transformations
           </h2>
           <p className="mt-4 text-lg text-muted-foreground text-balance">
-            Every project starts with a free hassle-free estimate. Here's what we deliver.
+            Every project starts with a Free Estimate. Here's what we deliver.
           </p>
         </div>
 
@@ -929,7 +929,7 @@ function Gallery() {
         </div>
 
         <p className="mt-10 text-center text-sm text-muted-foreground max-w-2xl mx-auto">
-          All showers feature durable, leak-resistant premium acrylic or Onyx shower systems — installed quickly and cleanly.
+          All showers feature durable, leak-resistant premium acrylic or Onyx shower systems — Professionally Installed.
         </p>
       </div>
 
