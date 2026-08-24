@@ -590,6 +590,10 @@ function BeforeAfterReel() {
           <img
             src={p.before}
             alt={`${p.label} — before`}
+            loading="lazy"
+            decoding="async"
+            width={1200}
+            height={900}
             className={cn(
               "absolute inset-0 h-full w-full object-cover transition-opacity duration-700",
               idx === i && phase === "before" ? "opacity-100" : "opacity-0",
@@ -598,6 +602,10 @@ function BeforeAfterReel() {
           <img
             src={p.after}
             alt={`${p.label} — after`}
+            loading="lazy"
+            decoding="async"
+            width={1200}
+            height={900}
             className={cn(
               "absolute inset-0 h-full w-full object-cover transition-opacity duration-700",
               idx === i && phase === "after" ? "opacity-100" : "opacity-0",
@@ -942,7 +950,7 @@ function Gallery() {
                     setSliderPos(Math.max(0, Math.min(100, (x / r.width) * 100)));
                   }}
                 >
-                  <img src={active.after} alt="After" className="absolute inset-0 h-full w-full object-cover" />
+                  <img src={active.after} alt="After" decoding="async" width={1200} height={1200} className="absolute inset-0 h-full w-full object-cover" />
                   <div
                     className="absolute inset-0 overflow-hidden"
                     style={{ width: `${sliderPos}%` }}
@@ -950,6 +958,9 @@ function Gallery() {
                     <img
                       src={active.before}
                       alt="Before"
+                      decoding="async"
+                      width={1200}
+                      height={1200}
                       className="absolute inset-0 h-full object-cover"
                       style={{ width: `${100 / (sliderPos / 100 || 0.001)}%`, maxWidth: "none" }}
                     />
@@ -970,7 +981,7 @@ function Gallery() {
                   </span>
                 </div>
               ) : (
-                <img src={active.after} alt={active.title} className="w-full h-auto" />
+                <img src={active.after} alt={active.title} decoding="async" width={1200} height={1200} className="w-full h-auto" />
               )}
               <div className="flex items-center justify-between p-5 border-t border-border">
                 <div>
