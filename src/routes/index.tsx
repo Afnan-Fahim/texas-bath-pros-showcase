@@ -28,6 +28,7 @@ import logoImg from "@/assets/logo-header.webp";
 import logoFooterImg from "@/assets/logo-footer.webp";
 
 import heroVideoAsset from "@/assets/texas-bath-solutions-hero.mp4.asset.json";
+import heroVideoWideAsset from "@/assets/texas-bath-solutions-hero-wide.mp4.asset.json";
 import heroPoster from "@/assets/hero-video-poster.avif";
 
 import { Button } from "@/components/ui/button";
@@ -365,6 +366,17 @@ function Hero({ onBook }: { onBook: () => void }) {
 function HeroVideo() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
+  // Desktop (and large tablets in landscape) get the widescreen cut so it fills
+  // the space; phones/tablets keep the original portrait video.
+  const [wide, setWide] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const apply = () => setWide(mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
 
   useEffect(() => {
     const v = videoRef.current;
@@ -372,7 +384,8 @@ function HeroVideo() {
     // Start muted so playback begins instantly (browsers always allow muted autoplay).
     v.muted = true;
     v.play().catch(() => {});
-  }, []);
+  }, [wide]);
+
 
   const toggleSound = () => {
     const v = videoRef.current;
@@ -383,14 +396,19 @@ function HeroVideo() {
   };
 
   return (
-    <div className="relative mx-auto w-full max-w-sm overflow-hidden rounded-2xl shadow-elegant ring-1 ring-black/5 bg-navy">
+    <div
+      className={`relative mx-auto w-full overflow-hidden rounded-2xl shadow-elegant ring-1 ring-black/5 bg-navy ${
+        wide ? "max-w-none" : "max-w-sm"
+      }`}
+    >
       <video
         ref={videoRef}
+        key={wide ? "wide" : "portrait"}
         className="block h-auto w-full"
-        src={heroVideoAsset.url}
-        poster={heroPoster}
-        width={720}
-        height={1280}
+        src={wide ? heroVideoWideAsset.url : heroVideoAsset.url}
+        poster={wide ? undefined : heroPoster}
+        width={wide ? 1880 : 720}
+        height={wide ? 1080 : 1280}
         autoPlay
         muted
         loop
