@@ -1511,19 +1511,24 @@ type Prefill = {
   name: string;
   phone: string;
   email: string;
-  address: string;
-  project: string;
-  notes: string;
+  address?: string;
+  project?: string;
+  notes?: string;
+  offer?: string;
 };
 
 function CalendlyEmbed({
   prefill,
   onBack,
   onScheduled,
+  title,
+  subtitle,
 }: {
   prefill: Prefill;
   onBack: () => void;
   onScheduled: () => void;
+  title?: string;
+  subtitle?: string;
 }) {
   useEffect(() => {
     const id = "calendly-widget-script";
@@ -1548,8 +1553,9 @@ function CalendlyEmbed({
   }, [onScheduled]);
 
   const details = [
-    `Desired timeframe: ${prefill.project}`,
-    `Service address: ${prefill.address}`,
+    prefill.offer ? `Offer claimed: ${prefill.offer}` : "",
+    prefill.project ? `Desired timeframe: ${prefill.project}` : "",
+    prefill.address ? `Address: ${prefill.address}` : "",
     `Phone: ${prefill.phone}`,
     prefill.notes ? `Notes: ${prefill.notes}` : "",
   ]
@@ -1565,9 +1571,13 @@ function CalendlyEmbed({
     a1: prefill.phone,
     a2: details,
     location: prefill.phone,
+    utm_campaign: prefill.offer ?? "Website Estimate",
+    utm_source: "texasbathsolutions.com",
+    utm_medium: prefill.offer ? "offer-claim" : "main-form",
   });
 
   const url = `${CALENDLY_URL}?${params.toString()}`;
+
 
   return (
     <div>
