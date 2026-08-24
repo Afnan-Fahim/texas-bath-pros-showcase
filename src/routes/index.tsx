@@ -244,13 +244,14 @@ function Navbar({ onBook, onContact }: { onBook: () => void; onContact: () => vo
           ))}
         </nav>
         <div className="ml-auto lg:ml-6 flex items-center gap-2 md:gap-3">
-          <a
-            href={PHONE_TEL}
-            className="hidden md:flex items-center gap-2 text-navy font-semibold hover:text-teal transition-colors"
-          >
-            <Phone className="h-4 w-4" />
-            <span className="text-sm md:text-base">{PHONE_DISPLAY}</span>
-          </a>
+          <PhoneLink className="hidden md:flex items-center gap-2 text-navy font-semibold hover:text-teal transition-colors">
+            {(display) => (
+              <>
+                <Phone className="h-4 w-4" />
+                <span className="text-sm md:text-base">{display}</span>
+              </>
+            )}
+          </PhoneLink>
           <div className="flex flex-col items-stretch gap-1.5">
             <Button
               onClick={onBook}
