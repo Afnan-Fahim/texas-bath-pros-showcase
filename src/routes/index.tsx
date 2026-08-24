@@ -28,6 +28,7 @@ import logoImg from "@/assets/logo-header.webp";
 import logoFooterImg from "@/assets/logo-footer.webp";
 
 import heroVideoAsset from "@/assets/texas-bath-solutions-hero.mp4.asset.json";
+import heroVideoWideAsset from "@/assets/texas-bath-solutions-hero-wide.mp4.asset.json";
 import heroPoster from "@/assets/hero-video-poster.avif";
 
 import { Button } from "@/components/ui/button";
