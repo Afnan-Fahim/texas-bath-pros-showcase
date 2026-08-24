@@ -374,7 +374,9 @@ function Hero({ onBook }: { onBook: () => void }) {
 /* ---------------- HERO VIDEO (auto-play) ---------------- */
 function HeroVideo() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [muted, setMuted] = useState(true);
+  const [muted, setMuted] = useState(false);
+  const [finished, setFinished] = useState(false);
+  const playsRef = useRef(0);
   // Desktop (and large tablets in landscape) get the widescreen cut so it fills
   // the space; phones/tablets keep the original portrait video.
   const [wide, setWide] = useState(false);
@@ -390,11 +392,34 @@ function HeroVideo() {
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
-    // Start muted so playback begins instantly (browsers always allow muted autoplay).
-    v.muted = true;
-    v.play().catch(() => {});
+    playsRef.current = 0;
+    setFinished(false);
+    // First play: with sound. If the browser blocks unmuted autoplay, fall back
+    // to muted playback so the video still starts.
+    v.muted = false;
+    setMuted(false);
+    v.play().catch(() => {
+      v.muted = true;
+      setMuted(true);
+      v.play().catch(() => {});
+    });
   }, [wide]);
 
+  const handleEnded = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    playsRef.current += 1;
+    if (playsRef.current === 1) {
+      // Second pass plays muted — the customer chooses to unmute.
+      v.muted = true;
+      setMuted(true);
+      v.currentTime = 0;
+      v.play().catch(() => {});
+    } else {
+      // Stop after the second play and hold on the final frame.
+      setFinished(true);
+    }
+  };
 
   const toggleSound = () => {
     const v = videoRef.current;
@@ -402,6 +427,14 @@ function HeroVideo() {
     v.muted = !v.muted;
     if (!v.muted) v.volume = 1;
     setMuted(v.muted);
+  };
+
+  const replay = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    setFinished(false);
+    v.currentTime = 0;
+    v.play().catch(() => {});
   };
 
   return (
@@ -419,11 +452,10 @@ function HeroVideo() {
         width={wide ? 1880 : 720}
         height={wide ? 1080 : 1280}
         autoPlay
-        muted
-        loop
         playsInline
         controls
         preload="metadata"
+        onEnded={handleEnded}
         aria-label="Texas Bath Solutions shower remodel walkthrough video"
       />
 
@@ -435,6 +467,21 @@ function HeroVideo() {
       >
         {muted ? "🔇 Tap for sound" : "🔊 Sound on"}
       </button>
+
+      {finished && (
+        <button
+          type="button"
+          onClick={replay}
+          className="absolute inset-0 flex items-center justify-center bg-black/20 transition-colors hover:bg-black/30"
+          aria-label="Play video again"
+        >
+          <span className="flex h-16 w-16 items-center justify-center rounded-full bg-white/90 shadow-elegant">
+            <svg viewBox="0 0 24 24" className="ml-1 h-7 w-7 fill-navy" aria-hidden="true">
+              <path d="M8 5v14l11-7z" />
+            </svg>
+          </span>
+        </button>
+      )}
     </div>
   );
 }
