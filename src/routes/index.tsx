@@ -351,10 +351,10 @@ function Hero({ onBook }: { onBook: () => void }) {
             San Antonio's Trusted Bathroom Remodel Experts
           </h1>
           <p className="mt-5 text-lg md:text-xl text-muted-foreground text-balance max-w-xl">
-            Beautiful showers. Fast, clean installs. Zero hassle.
+            Beautiful showers. Fast, clean installs.
           </p>
           <p className="mt-3 text-sm md:text-base font-medium text-foreground/80">
-            Family-Owned <span className="text-muted-foreground">•</span> Free No Hassle Estimates{" "}
+            Family-Owned <span className="text-muted-foreground">•</span> Free Estimates{" "}
             <span className="text-muted-foreground">•</span> A+ BBB Rated — Zero Complaints
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
