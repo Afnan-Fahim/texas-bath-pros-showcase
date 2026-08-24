@@ -885,16 +885,19 @@ const OFFERS: Offer[] = [
   },
 ];
 
-function Offers({ onBook }: { onBook: () => void }) {
+function Offers() {
   const [active, setActive] = useState<Offer | null>(null);
   const [claimed, setClaimed] = useState(false);
-  const [form, setForm] = useState({ name: "", phone: "", email: "", date: "", time: "Morning (8am–12pm)" });
+  const [scheduling, setScheduling] = useState(false);
+  const [form, setForm] = useState({ name: "", phone: "", email: "", address: "" });
 
   const open = (o: Offer) => {
     setActive(o);
     setClaimed(false);
-    setForm({ name: "", phone: "", email: "", date: "", time: "Morning (8am–12pm)" });
+    setScheduling(false);
+    setForm({ name: "", phone: "", email: "", address: "" });
   };
+
 
   return (
     <section id="offers" className="py-12 md:py-16 bg-secondary/40">
@@ -964,8 +967,14 @@ function Offers({ onBook }: { onBook: () => void }) {
       </div>
 
       <Dialog open={!!active} onOpenChange={(v) => !v && setActive(null)}>
-        <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
-          {active && !claimed && (
+        <DialogContent
+          className={
+            scheduling && !claimed
+              ? "sm:max-w-3xl max-h-[92vh] overflow-y-auto"
+              : "sm:max-w-md max-h-[90vh] overflow-y-auto"
+          }
+        >
+          {active && !claimed && !scheduling && (
             <>
               <DialogHeader>
                 <DialogTitle className="text-2xl text-navy">
@@ -979,7 +988,7 @@ function Offers({ onBook }: { onBook: () => void }) {
                 className="mt-2 space-y-3"
                 onSubmit={(e) => {
                   e.preventDefault();
-                  setClaimed(true);
+                  setScheduling(true);
                 }}
               >
                 <div className="space-y-1.5">
@@ -1014,39 +1023,42 @@ function Offers({ onBook }: { onBook: () => void }) {
                     placeholder="you@email.com"
                   />
                 </div>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <div className="space-y-1.5">
-                    <Label htmlFor="offer-date">Preferred date</Label>
-                    <Input
-                      id="offer-date"
-                      required
-                      type="date"
-                      value={form.date}
-                      onChange={(e) => setForm({ ...form, date: e.target.value })}
-                    />
-                  </div>
-                  <div className="space-y-1.5">
-                    <Label htmlFor="offer-time">Preferred time</Label>
-                    <select
-                      id="offer-time"
-                      value={form.time}
-                      onChange={(e) => setForm({ ...form, time: e.target.value })}
-                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                    >
-                      <option>Morning (8am–12pm)</option>
-                      <option>Afternoon (12pm–4pm)</option>
-                      <option>Evening (4pm–7pm)</option>
-                    </select>
-                  </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="offer-address">Address</Label>
+                  <Input
+                    id="offer-address"
+                    required
+                    value={form.address}
+                    onChange={(e) => setForm({ ...form, address: e.target.value })}
+                    placeholder="123 Main St, San Antonio"
+                    autoComplete="street-address"
+                  />
                 </div>
                 <Button type="submit" className="w-full">
                   Claim My {active.amount} &amp; Book Free Estimate
                 </Button>
                 <p className="text-center text-xs text-muted-foreground">
-                  Stackable with $0 down financing · Soft credit check only · No payments &amp; no
-                  interest for up to 12 months
+                  Stackable with $0 down financing · Soft credit check only · No payments for up to
+                  12 months
                 </p>
               </form>
+            </>
+          )}
+          {active && !claimed && scheduling && (
+            <>
+              <DialogHeader className="sr-only">
+                <DialogTitle>
+                  Claim {active.amount} — {active.headline}
+                </DialogTitle>
+                <DialogDescription>Pick your Free Estimate appointment time.</DialogDescription>
+              </DialogHeader>
+              <CalendlyEmbed
+                prefill={{ ...form, offer: `${active.amount} — ${active.headline}` }}
+                title={`Pick your time to lock in ${active.amount}`}
+                subtitle={`Your ${active.headline} discount is attached to this appointment.`}
+                onBack={() => setScheduling(false)}
+                onScheduled={() => setClaimed(true)}
+              />
             </>
           )}
           {active && claimed && (
@@ -1058,24 +1070,15 @@ function Offers({ onBook }: { onBook: () => void }) {
                 Your {active.amount} is reserved!
               </DialogTitle>
               <DialogDescription className="mt-2">
-                We'll confirm your Free Estimate appointment shortly. Want it faster? Call us at{" "}
-                {PHONE_DISPLAY}.
+                Your Free Estimate is booked and your {active.headline} discount is attached. Watch
+                for your confirmation text and email.
               </DialogDescription>
               <div className="mt-5 grid gap-2">
-                <Button
-                  onClick={() => {
-                    setActive(null);
-                    onBook();
-                  }}
-                >
-                  Pick My Estimate Time
-                </Button>
-                <Button variant="outline" asChild>
-                  <a href={PHONE_TEL}>Call {PHONE_DISPLAY}</a>
-                </Button>
+                <Button onClick={() => setActive(null)}>Done</Button>
               </div>
             </div>
           )}
+
         </DialogContent>
       </Dialog>
     </section>
@@ -1511,20 +1514,26 @@ type Prefill = {
   name: string;
   phone: string;
   email: string;
-  address: string;
-  project: string;
-  notes: string;
+  address?: string;
+  project?: string;
+  notes?: string;
+  offer?: string;
 };
 
 function CalendlyEmbed({
   prefill,
   onBack,
   onScheduled,
+  title,
+  subtitle,
 }: {
   prefill: Prefill;
   onBack: () => void;
   onScheduled: () => void;
+  title?: string;
+  subtitle?: string;
 }) {
+  const hostRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const id = "calendly-widget-script";
     if (!document.getElementById(id)) {
@@ -1548,8 +1557,9 @@ function CalendlyEmbed({
   }, [onScheduled]);
 
   const details = [
-    `Desired timeframe: ${prefill.project}`,
-    `Service address: ${prefill.address}`,
+    prefill.offer ? `Offer claimed: ${prefill.offer}` : "",
+    prefill.project ? `Desired timeframe: ${prefill.project}` : "",
+    prefill.address ? `Address: ${prefill.address}` : "",
     `Phone: ${prefill.phone}`,
     prefill.notes ? `Notes: ${prefill.notes}` : "",
   ]
@@ -1565,32 +1575,53 @@ function CalendlyEmbed({
     a1: prefill.phone,
     a2: details,
     location: prefill.phone,
+    utm_campaign: prefill.offer ?? "Website Estimate",
+    utm_source: "texasbathsolutions.com",
+    utm_medium: prefill.offer ? "offer-claim" : "main-form",
   });
 
   const url = `${CALENDLY_URL}?${params.toString()}`;
+
+  useEffect(() => {
+    let cancelled = false;
+    const tryInit = () => {
+      if (cancelled) return;
+      const host = hostRef.current;
+      const C = (window as unknown as { Calendly?: { initInlineWidget: (o: Record<string, unknown>) => void } })
+        .Calendly;
+      if (host && C) {
+        host.innerHTML = "";
+        C.initInlineWidget({ url, parentElement: host });
+      } else {
+        setTimeout(tryInit, 200);
+      }
+    };
+    tryInit();
+    return () => {
+      cancelled = true;
+    };
+  }, [url]);
 
   return (
     <div>
       <div className="flex items-center justify-between gap-3">
         <div>
           <h3 className="text-xl font-display font-semibold text-navy">
-            Almost done, {prefill.name.split(" ")[0]} — pick your time
+            {title ?? `Almost done, ${prefill.name.split(" ")[0]} — pick your time`}
           </h3>
           <p className="mt-1 text-sm text-muted-foreground">
-            Choose any open slot.
+            {subtitle ?? "Choose any open slot."}
           </p>
         </div>
         <Button type="button" variant="outline" className="shrink-0 border-navy/25 text-navy" onClick={onBack}>
           Back
         </Button>
       </div>
+
       <div className="mt-4 overflow-hidden rounded-2xl border border-border">
-        <div
-          className="calendly-inline-widget"
-          data-url={url}
-          style={{ minWidth: "300px", height: "760px" }}
-        />
+        <div ref={hostRef} style={{ minWidth: "300px", height: "760px" }} />
       </div>
+
       <noscript>
         <a href={CALENDLY_URL} target="_blank" rel="noreferrer">
           Book your free estimate
@@ -1913,7 +1944,7 @@ function Index() {
         <About />
         <BookingForm formRef={formRef} />
         <Gallery />
-        <Offers onBook={scrollToBook} />
+        <Offers />
         <WhyUs />
         <Process />
         <FAQ />
