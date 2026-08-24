@@ -106,8 +106,54 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const PHONE_DISPLAY = "(210) 702-0753";
-const PHONE_TEL = "tel:+12107020753";
+/* Phone is stored encoded so it never appears in the raw HTML/JS source as a
+   harvestable string; it is decoded in the browser after hydration. */
+const PHONE_B64 = "KDIxMCkgNzAyLTA3NTM=";
+
+function decodePhone() {
+  if (typeof window === "undefined") return null;
+  try {
+    const display = window.atob(PHONE_B64);
+    return { display, tel: `tel:+1${display.replace(/\D/g, "")}` };
+  } catch {
+    return null;
+  }
+}
+
+function usePhone() {
+  const [phone, setPhone] = useState<{ display: string; tel: string } | null>(null);
+  useEffect(() => {
+    setPhone(decodePhone());
+  }, []);
+  return phone;
+}
+
+/** Renders the phone link with identical styling; number injected client-side. */
+function PhoneLink({
+  className,
+  children,
+}: {
+  className?: string;
+  children: (display: string) => React.ReactNode;
+}) {
+  const phone = usePhone();
+  return (
+    <a
+      href={phone?.tel}
+      className={className}
+      aria-label="Call Texas Bath Solutions"
+      onClick={(e) => {
+        if (!phone) {
+          e.preventDefault();
+          const p = decodePhone();
+          if (p) window.location.href = p.tel;
+        }
+      }}
+    >
+      {children(phone?.display ?? "")}
+    </a>
+  );
+}
 
 /* ---------------- LOGO ---------------- */
 function Logo({
