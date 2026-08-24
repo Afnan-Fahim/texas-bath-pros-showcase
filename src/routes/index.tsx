@@ -366,6 +366,17 @@ function Hero({ onBook }: { onBook: () => void }) {
 function HeroVideo() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
+  // Desktop (and large tablets in landscape) get the widescreen cut so it fills
+  // the space; phones/tablets keep the original portrait video.
+  const [wide, setWide] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const apply = () => setWide(mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
 
   useEffect(() => {
     const v = videoRef.current;
@@ -373,7 +384,8 @@ function HeroVideo() {
     // Start muted so playback begins instantly (browsers always allow muted autoplay).
     v.muted = true;
     v.play().catch(() => {});
-  }, []);
+  }, [wide]);
+
 
   const toggleSound = () => {
     const v = videoRef.current;
