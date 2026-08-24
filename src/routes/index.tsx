@@ -1215,6 +1215,17 @@ function Testimonials() {
       body: "Clean, fast, and stunning results. I've already recommended them to two neighbors. The A+ BBB rating is well-earned.",
     },
   ];
+  const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const count = items.length;
+  const go = (dir: number) => setIndex((i) => (i + dir + count) % count);
+
+  useEffect(() => {
+    if (paused) return;
+    const id = setInterval(() => setIndex((i) => (i + 1) % count), 6000);
+    return () => clearInterval(id);
+  }, [paused, count]);
+
   return (
     <section className="cv-auto py-12 md:py-16">
       <div className="container-x">
@@ -1226,25 +1237,81 @@ function Testimonials() {
             What our San Antonio neighbors say
           </h2>
         </div>
-        <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {items.map((t) => (
-            <figure
-              key={t.name}
-              className="rounded-2xl border border-border bg-card p-6 shadow-card"
+
+        <div
+          className="relative mt-10 md:mt-12"
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+        >
+          {/* Peek-style track */}
+          <div className="overflow-hidden px-[6%] md:px-[18%]">
+            <div
+              className="flex transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
+              style={{ transform: `translateX(-${index * 100}%)` }}
             >
-              <div className="flex gap-0.5">
-                {[0, 1, 2, 3, 4].map((i) => (
-                  <Star key={i} className="h-4 w-4 fill-gold text-gold" />
-                ))}
-              </div>
-              <blockquote className="mt-4 text-foreground/90 leading-relaxed">
-                "{t.body}"
-              </blockquote>
-              <figcaption className="mt-5 text-sm">
-                <div className="font-semibold text-navy">{t.name}</div>
-                <div className="text-muted-foreground">{t.area}</div>
-              </figcaption>
-            </figure>
+              {items.map((t, i) => {
+                const active = i === index;
+                return (
+                  <figure
+                    key={t.name}
+                    aria-hidden={!active}
+                    className={`w-full shrink-0 px-2 md:px-4 transition-all duration-700 ${
+                      active ? "opacity-100 scale-100" : "opacity-40 scale-[0.92]"
+                    }`}
+                  >
+                    <div className="h-full rounded-2xl border border-border bg-card p-6 md:p-8 shadow-card">
+                      <div className="flex gap-0.5">
+                        {[0, 1, 2, 3, 4].map((s) => (
+                          <Star key={s} className="h-4 w-4 fill-gold text-gold" />
+                        ))}
+                      </div>
+                      <blockquote className="mt-4 text-foreground/90 leading-relaxed md:text-lg">
+                        "{t.body}"
+                      </blockquote>
+                      <figcaption className="mt-5 text-sm">
+                        <div className="font-semibold text-navy">{t.name}</div>
+                        <div className="text-muted-foreground">{t.area}</div>
+                      </figcaption>
+                    </div>
+                  </figure>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Soft edge fades */}
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-[8%] bg-gradient-to-r from-background to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-[8%] bg-gradient-to-l from-background to-transparent" />
+
+          <button
+            type="button"
+            aria-label="Previous review"
+            onClick={() => go(-1)}
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 grid h-10 w-10 place-items-center rounded-full border border-border bg-card/90 text-navy shadow-card backdrop-blur transition hover:bg-card"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </button>
+          <button
+            type="button"
+            aria-label="Next review"
+            onClick={() => go(1)}
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 grid h-10 w-10 place-items-center rounded-full border border-border bg-card/90 text-navy shadow-card backdrop-blur transition hover:bg-card"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </button>
+        </div>
+
+        <div className="mt-6 flex justify-center gap-2">
+          {items.map((t, i) => (
+            <button
+              key={t.name}
+              type="button"
+              aria-label={`Go to review ${i + 1}`}
+              onClick={() => setIndex(i)}
+              className={`h-1.5 rounded-full transition-all ${
+                i === index ? "w-7 bg-navy" : "w-2.5 bg-navy/25 hover:bg-navy/40"
+              }`}
+            />
           ))}
         </div>
       </div>
