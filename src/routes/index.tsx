@@ -1370,6 +1370,7 @@ function Offers() {
 
 /* ---------------- WHY US ---------------- */
 function WhyUs() {
+  const whyRef = useViewContentTracking("Why Choose Us");
   const items = [
     {
       icon: Clock,
@@ -1398,7 +1399,7 @@ function WhyUs() {
     },
   ];
   return (
-    <section id="why" className="cv-auto py-12 md:py-16">
+    <section ref={whyRef} id="why" className="cv-auto py-12 md:py-16">
       <div className="container-x">
         <div className="max-w-3xl mx-auto text-center">
           <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-navy">
