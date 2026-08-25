@@ -2116,23 +2116,30 @@ function Field({
   label,
   error,
   required,
+  htmlFor,
   children,
 }: {
   label: string;
   error?: string;
   required?: boolean;
+  htmlFor?: string;
   children: React.ReactNode;
 }) {
   return (
     <div className="space-y-1.5">
-      <Label className="text-sm font-medium text-foreground">
+      <Label htmlFor={htmlFor} className="text-sm font-medium text-foreground">
         {label} {required && <span className="text-destructive">*</span>}
       </Label>
       {children}
-      {error && <p className="text-xs text-destructive">{error}</p>}
+      {error && (
+        <p id={htmlFor ? `${htmlFor}-error` : undefined} className="text-xs text-destructive">
+          {error}
+        </p>
+      )}
     </div>
   );
 }
+
 
 function ConfirmationScreen({
   state,
