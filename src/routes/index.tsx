@@ -1823,6 +1823,29 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
 
         <div className="lg:col-span-3">
           <div className="rounded-3xl bg-card border border-border shadow-elegant p-6 md:p-8">
+            <ol className="mb-6 flex items-center gap-2" aria-label="Booking progress">
+              {["Your details", "Pick a time", "Confirmed"].map((label, i) => (
+                <li key={label} className="flex flex-1 items-center gap-2 min-w-0">
+                  <span
+                    aria-current={i === stepIndex ? "step" : undefined}
+                    className={`grid h-6 w-6 shrink-0 place-items-center rounded-full text-xs font-semibold ${
+                      i <= stepIndex
+                        ? "bg-navy text-navy-foreground"
+                        : "bg-secondary text-muted-foreground"
+                    }`}
+                  >
+                    {i < stepIndex ? <Check className="h-3 w-3" strokeWidth={3} /> : i + 1}
+                  </span>
+                  <span
+                    className={`truncate text-xs font-medium ${
+                      i <= stepIndex ? "text-navy" : "text-muted-foreground"
+                    }`}
+                  >
+                    {label}
+                  </span>
+                </li>
+              ))}
+            </ol>
             {step === "done" ? (
               <ConfirmationScreen state={state} onReset={reset} />
             ) : step === "schedule" ? (
@@ -1835,40 +1858,61 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
 
               <form onSubmit={submit} className="space-y-5" noValidate>
                 <div className="grid gap-5 sm:grid-cols-2">
-                  <Field label="Full Name" error={errors.name} required>
+                  <Field label="Full Name" error={errors.name} required htmlFor="book-name">
                     <Input
+                      id="book-name"
+                      className="h-12 text-base"
                       value={state.name}
                       onChange={(e) => update("name", e.target.value)}
+                      onBlur={() => blur("name")}
                       placeholder="Jane Smith"
                       autoComplete="name"
+                      aria-invalid={!!errors.name}
+                      aria-describedby={errors.name ? "book-name-error" : undefined}
                     />
                   </Field>
-                  <Field label="Phone Number" error={errors.phone} required>
+                  <Field label="Phone Number" error={errors.phone} required htmlFor="book-phone">
                     <Input
+                      id="book-phone"
+                      className="h-12 text-base"
                       value={state.phone}
                       onChange={(e) => update("phone", formatPhone(e.target.value))}
+                      onBlur={() => blur("phone")}
                       placeholder="(210) 555-0123"
                       inputMode="tel"
                       autoComplete="tel"
+                      aria-invalid={!!errors.phone}
+                      aria-describedby={errors.phone ? "book-phone-error" : undefined}
                     />
                   </Field>
                 </div>
                 <div className="grid gap-5 sm:grid-cols-2">
-                  <Field label="Email" error={errors.email} required>
+                  <Field label="Email" error={errors.email} required htmlFor="book-email">
                     <Input
+                      id="book-email"
+                      className="h-12 text-base"
                       type="email"
                       value={state.email}
                       onChange={(e) => update("email", e.target.value)}
+                      onBlur={() => blur("email")}
                       placeholder="you@email.com"
+                      inputMode="email"
                       autoComplete="email"
+                      aria-invalid={!!errors.email}
+                      aria-describedby={errors.email ? "book-email-error" : undefined}
                     />
                   </Field>
-                  <Field label="Address" error={errors.address} required>
+                  <Field label="Address" error={errors.address} required htmlFor="book-address">
                     <Input
+                      id="book-address"
+                      className="h-12 text-base"
                       value={state.address}
                       onChange={(e) => update("address", e.target.value)}
+                      onBlur={() => blur("address")}
                       placeholder="123 Main St, San Antonio"
                       autoComplete="street-address"
+                      aria-invalid={!!errors.address}
+                      aria-describedby={errors.address ? "book-address-error" : undefined}
                     />
                   </Field>
                 </div>
@@ -1877,9 +1921,21 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
                   label="How soon are you wanting to enjoy your New Bathroom?"
                   error={errors.project}
                   required
+                  htmlFor="book-project"
                 >
-                  <Select value={state.project} onValueChange={(v) => update("project", v)}>
-                    <SelectTrigger className="w-full">
+                  <Select
+                    value={state.project}
+                    onValueChange={(v) => {
+                      update("project", v);
+                      setTouched((t) => ({ ...t, project: true }));
+                    }}
+                  >
+                    <SelectTrigger
+                      id="book-project"
+                      className="w-full h-12 text-base"
+                      aria-invalid={!!errors.project}
+                      aria-describedby={errors.project ? "book-project-error" : undefined}
+                    >
                       <SelectValue placeholder="Select a timeframe" />
                     </SelectTrigger>
                     <SelectContent>
@@ -1899,8 +1955,15 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
                     onChange={(e) => update("notes", e.target.value)}
                     placeholder="Size, age, style you're going for, any concerns…"
                     rows={4}
+                    className="text-base"
                   />
                 </Field>
+
+                {Object.keys(errors).length > 0 && (
+                  <p role="alert" className="text-sm text-destructive">
+                    Please fix the highlighted {Object.keys(errors).length === 1 ? "field" : "fields"} above to continue.
+                  </p>
+                )}
 
                 <Button
                   type="submit"
@@ -1915,6 +1978,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
               </form>
             )}
           </div>
+
 
         </div>
       </div>
