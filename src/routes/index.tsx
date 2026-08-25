@@ -115,6 +115,44 @@ function LeadEventTracker() {
   return null;
 }
 
+function trackViewContent(contentName: string) {
+  if (typeof window === "undefined") return;
+  const w = window as unknown as { fbq?: (...args: unknown[]) => void };
+  if (w.fbq) {
+    w.fbq("track", "ViewContent", {
+      content_name: contentName,
+      content_category: "Bathroom Remodel",
+    });
+  }
+}
+
+function useViewContentTracking(contentName: string) {
+  const ref = useRef<HTMLElement>(null);
+  const tracked = useRef(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || tracked.current) return;
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !tracked.current) {
+          tracked.current = true;
+          trackViewContent(contentName);
+        }
+      },
+      { threshold: 0.5 },
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [contentName]);
+
+  return ref;
+}
+
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -729,6 +767,7 @@ function TrustBar() {
 
 /* ---------------- FINANCING BANNER ---------------- */
 function FinancingBanner({ onBook }: { onBook: () => void }) {
+  const financingRef = useViewContentTracking("Financing Options");
   const perks = [
     { icon: CreditCard, title: "$0 Down", copy: "Start your remodel with payments as low as $115 a month." },
     { icon: CalendarDays, title: "Up to 12 Months No Interest", copy: "Enjoy your New Bathroom with No Interest for a Full Year." },
@@ -736,7 +775,7 @@ function FinancingBanner({ onBook }: { onBook: () => void }) {
   ];
 
   return (
-    <section className="py-8 md:py-12">
+    <section ref={financingRef} className="py-8 md:py-12">
       <div className="container-x">
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-navy via-navy to-navy/85 text-navy-foreground shadow-elegant ring-1 ring-white/10">
           <div className="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-teal/25 blur-3xl" aria-hidden />
@@ -896,6 +935,7 @@ const FILTERS = [
 
 
 function Gallery() {
+  const galleryRef = useViewContentTracking("Bathroom Transformations");
   const [filter, setFilter] = useState<(typeof FILTERS)[number]["id"]>("all");
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
   const [sliderPos, setSliderPos] = useState(50);
@@ -917,7 +957,7 @@ function Gallery() {
     setActiveIdx((i) => (i === null ? 0 : (i - 1 + items.length) % items.length));
 
   return (
-    <section id="work" className="pt-8 pb-12 md:pt-12 md:pb-16 bg-gradient-to-b from-secondary/40 to-background">
+    <section ref={galleryRef} id="work" className="pt-8 pb-12 md:pt-12 md:pb-16 bg-gradient-to-b from-secondary/40 to-background">
       <div className="container-x">
         <div className="max-w-3xl mx-auto text-center">
           <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-navy">
@@ -1117,6 +1157,7 @@ const OFFERS: Offer[] = [
 ];
 
 function Offers() {
+  const offersRef = useViewContentTracking("Offers & Discounts");
   const [active, setActive] = useState<Offer | null>(null);
   const [claimed, setClaimed] = useState(false);
   const [scheduling, setScheduling] = useState(false);
@@ -1131,7 +1172,7 @@ function Offers() {
 
 
   return (
-    <section id="offers" className="py-12 md:py-16 bg-secondary/40">
+    <section ref={offersRef} id="offers" className="py-12 md:py-16 bg-secondary/40">
       <div className="container-x">
         <div className="max-w-3xl mx-auto text-center">
           <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-navy">
@@ -1330,6 +1371,7 @@ function Offers() {
 
 /* ---------------- WHY US ---------------- */
 function WhyUs() {
+  const whyRef = useViewContentTracking("Why Choose Us");
   const items = [
     {
       icon: Clock,
@@ -1358,7 +1400,7 @@ function WhyUs() {
     },
   ];
   return (
-    <section id="why" className="cv-auto py-12 md:py-16">
+    <section ref={whyRef} id="why" className="cv-auto py-12 md:py-16">
       <div className="container-x">
         <div className="max-w-3xl mx-auto text-center">
           <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-navy">
@@ -1392,13 +1434,14 @@ function WhyUs() {
 
 /* ---------------- PROCESS ---------------- */
 function Process() {
+  const processRef = useViewContentTracking("Our Process");
   const steps = [
     { n: "1", Icon: ClipboardCheck, title: "Book Your Free Estimate", body: "Call or fill out the form — same day or next day appointments are often available." },
     { n: "2", Icon: Ruler, title: "We Visit, Measure & Design", body: "A friendly, no-obligation home visit with an honest, upfront quote — then we walk you through beautiful acrylic and Onyx tile, marble, and stone options." },
     { n: "3", Icon: ShowerHead, title: "Professional Installation", body: "Fast, clean installation — and we provide Post-Care for Peace of Mind." },
   ];
   return (
-    <section id="process" className="cv-auto py-5 md:py-8 bg-gradient-to-b from-navy to-navy/95 text-navy-foreground">
+    <section ref={processRef} id="process" className="cv-auto py-5 md:py-8 bg-gradient-to-b from-navy to-navy/95 text-navy-foreground">
       <div className="container-x">
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl text-navy-foreground text-balance">
