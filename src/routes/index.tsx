@@ -98,12 +98,23 @@ function trackContactEvent() {
   }
 }
 
+function trackScheduleEvent() {
+  if (typeof window === "undefined") return;
+  const w = window as unknown as { fbq?: (...args: unknown[]) => void };
+  if (w.fbq) {
+    w.fbq("track", "Schedule", {
+      content_name: "Estimate Appointment",
+    });
+  }
+}
+
 function LeadEventTracker() {
   useEffect(() => {
     trackLeadEvent();
   }, []);
   return null;
 }
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -1789,6 +1800,7 @@ function CalendlyEmbed({
         e.origin.includes("calendly.com") &&
         e.data?.event === "calendly.event_scheduled"
       ) {
+        trackScheduleEvent();
         onScheduled();
       }
     };
