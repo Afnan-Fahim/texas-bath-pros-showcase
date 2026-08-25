@@ -173,6 +173,7 @@ function PhoneLink({
       className={className}
       aria-label="Call Texas Bath Solutions"
       onClick={(e) => {
+        trackContactEvent();
         if (!phone) {
           e.preventDefault();
           const p = decodePhone();
