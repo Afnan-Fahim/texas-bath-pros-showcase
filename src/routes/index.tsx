@@ -1669,6 +1669,30 @@ function formatPhone(input: string) {
   return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
 }
 
+type BookingFields = "name" | "phone" | "email" | "address" | "project";
+
+function validateBookingField(k: BookingFields, v: string): string {
+  switch (k) {
+    case "name":
+      return v.trim().length < 2 ? "Please enter your full name" : "";
+    case "phone":
+      return v.replace(/\D/g, "").length !== 10
+        ? "Enter a 10-digit phone number, e.g. (210) 555-0123"
+        : "";
+    case "email":
+      if (!v.trim()) return "We need your email to send the confirmation";
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim())
+        ? ""
+        : "That email looks incomplete — check for typos";
+    case "address":
+      return v.trim().length < 5
+        ? "Enter the street address where the work will be done"
+        : "";
+    case "project":
+      return v ? "" : "Choose when you'd like your new bathroom";
+  }
+}
+
 function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null> }) {
   const [state, setState] = useState({
     name: "",
@@ -1679,26 +1703,60 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
     notes: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+  const [submitting, setSubmitting] = useState(false);
   const [step, setStep] = useState<"form" | "schedule" | "done">("form");
 
-  const update = <K extends keyof typeof state>(k: K, v: (typeof state)[K]) =>
+  useEffect(() => {
+    captureAttribution();
+  }, []);
+
+  const update = <K extends keyof typeof state>(k: K, v: (typeof state)[K]) => {
     setState((s) => ({ ...s, [k]: v }));
+    setErrors((prev) => {
+      if (!prev[k]) return prev;
+      const next = { ...prev };
+      delete next[k];
+      return next;
+    });
+  };
+
+  const blur = (k: BookingFields) => {
+    setTouched((t) => ({ ...t, [k]: true }));
+    const msg = validateBookingField(k, state[k]);
+    setErrors((prev) => {
+      const next = { ...prev };
+      if (msg) next[k] = msg;
+      else delete next[k];
+      return next;
+    });
+  };
 
   const validate = () => {
+    const fields: BookingFields[] = ["name", "phone", "email", "address", "project"];
     const e: Record<string, string> = {};
-    if (!state.name.trim()) e.name = "Please enter your name";
-    if (state.phone.replace(/\D/g, "").length !== 10) e.phone = "Enter a valid 10-digit phone";
-    if (!state.email.trim()) e.email = "Email is required for your confirmation";
-    else if (!/^\S+@\S+\.\S+$/.test(state.email)) e.email = "Invalid email";
-    if (!state.address.trim()) e.address = "Address required";
-    if (!state.project) e.project = "Please select a timeframe";
+    for (const f of fields) {
+      const msg = validateBookingField(f, state[f]);
+      if (msg) e[f] = msg;
+    }
     setErrors(e);
+    setTouched(Object.fromEntries(fields.map((f) => [f, true])));
+    const first = fields.find((f) => e[f]);
+    if (first) {
+      requestAnimationFrame(() => {
+        const el = document.getElementById(`book-${first}`);
+        el?.scrollIntoView({ behavior: "smooth", block: "center" });
+        el?.focus({ preventScroll: true });
+      });
+    }
     return Object.keys(e).length === 0;
   };
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (submitting) return;
     if (!validate()) return;
+    setSubmitting(true);
     void submitLead({
       data: {
         name: state.name,
@@ -1706,26 +1764,32 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
         email: state.email,
         address: state.address,
         timeframe: state.project,
-        notes: state.notes,
+        notes: state.notes + attributionNote(),
         source: "Website booking form",
       },
-    }).catch((err: unknown) => console.error("Lead notification failed", err));
+    })
+      .catch((err: unknown) => console.error("Lead notification failed", err))
+      .finally(() => setSubmitting(false));
     setStep("schedule");
     requestAnimationFrame(() => formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
   };
 
   const reset = () => {
     setStep("form");
+    setErrors({});
+    setTouched({});
     setState({ name: "", phone: "", email: "", address: "", project: "", notes: "" });
   };
 
+  const stepIndex = step === "form" ? 0 : step === "schedule" ? 1 : 2;
 
   return (
     <section
       id="book"
       ref={formRef as React.RefObject<HTMLElement>}
-      className="py-12 md:py-16 bg-gradient-to-b from-background to-secondary/60"
+      className="scroll-mt-24 py-12 md:py-16 bg-gradient-to-b from-background to-secondary/60"
     >
+
       <div className="container-x grid gap-10 lg:grid-cols-5 items-start">
         <div className="lg:col-span-2 lg:sticky lg:top-28">
           <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold normal-case tracking-wide text-navy">
