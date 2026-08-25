@@ -90,6 +90,14 @@ function trackLeadEvent() {
   }
 }
 
+function trackContactEvent() {
+  if (typeof window === "undefined") return;
+  const w = window as unknown as { fbq?: (...args: unknown[]) => void };
+  if (w.fbq) {
+    w.fbq("track", "Contact");
+  }
+}
+
 function LeadEventTracker() {
   useEffect(() => {
     trackLeadEvent();
