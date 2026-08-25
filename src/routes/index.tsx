@@ -2568,6 +2568,8 @@ function ContactUsDialog({ open, onOpenChange }: { open: boolean; onOpenChange: 
 
 function Index() {
   const formRef = useRef<HTMLElement | null>(null);
+  // TEMP (QA): logs "[TBS Pixel] ✅ Meta Pixel initialized" once fbq is on window.
+  usePixelInitCheck();
   // Capture fbclid / UTM params on landing, before any in-page navigation.
   useEffect(() => {
     captureAttribution();
