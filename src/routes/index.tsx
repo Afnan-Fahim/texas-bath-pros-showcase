@@ -1453,7 +1453,7 @@ function Offers() {
           )}
           {active && claimed && (
             <div className="py-4 text-center">
-              <LeadEventTracker />
+              <LeadEventTracker dedupeKey="offer-claim" />
               <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-navy text-navy-foreground">
                 <Check className="h-7 w-7" />
               </div>
@@ -2419,7 +2419,7 @@ function ContactUsDialog({ open, onOpenChange }: { open: boolean; onOpenChange: 
         </DialogHeader>
         {submitted ? (
           <div className="py-8 text-center space-y-4">
-            <LeadEventTracker />
+            <LeadEventTracker dedupeKey="contact-form" />
             <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-navy text-navy-foreground">
               <Check className="h-7 w-7" strokeWidth={3} />
             </div>
