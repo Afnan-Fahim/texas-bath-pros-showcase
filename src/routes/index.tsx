@@ -90,6 +90,14 @@ function trackLeadEvent() {
   }
 }
 
+function trackContactEvent() {
+  if (typeof window === "undefined") return;
+  const w = window as unknown as { fbq?: (...args: unknown[]) => void };
+  if (w.fbq) {
+    w.fbq("track", "Contact");
+  }
+}
+
 function LeadEventTracker() {
   useEffect(() => {
     trackLeadEvent();
@@ -165,6 +173,7 @@ function PhoneLink({
       className={className}
       aria-label="Call Texas Bath Solutions"
       onClick={(e) => {
+        trackContactEvent();
         if (!phone) {
           e.preventDefault();
           const p = decodePhone();
