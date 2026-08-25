@@ -108,12 +108,68 @@ function trackScheduleEvent() {
   }
 }
 
+/* ---------------- Ad attribution (UTM / fbclid) ---------------- */
+const ATTRIBUTION_KEYS = [
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "utm_content",
+  "utm_term",
+  "fbclid",
+  "gclid",
+] as const;
+
+const ATTRIBUTION_STORAGE_KEY = "tbs_attribution";
+
+/** Captures ad params on first landing so they survive in-page navigation. */
+function captureAttribution() {
+  if (typeof window === "undefined") return;
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const found: Record<string, string> = {};
+    for (const k of ATTRIBUTION_KEYS) {
+      const v = params.get(k);
+      if (v) found[k] = v;
+    }
+    if (Object.keys(found).length === 0) return;
+    const stored = window.sessionStorage.getItem(ATTRIBUTION_STORAGE_KEY);
+    const merged = { ...(stored ? JSON.parse(stored) : {}), ...found };
+    window.sessionStorage.setItem(ATTRIBUTION_STORAGE_KEY, JSON.stringify(merged));
+  } catch {
+    /* storage unavailable — attribution is best-effort */
+  }
+}
+
+function getAttribution(): Record<string, string> {
+  if (typeof window === "undefined") return {};
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const stored = window.sessionStorage.getItem(ATTRIBUTION_STORAGE_KEY);
+    const out: Record<string, string> = stored ? JSON.parse(stored) : {};
+    for (const k of ATTRIBUTION_KEYS) {
+      const v = params.get(k);
+      if (v) out[k] = v;
+    }
+    return out;
+  } catch {
+    return {};
+  }
+}
+
+function attributionNote(): string {
+  const a = getAttribution();
+  const entries = Object.entries(a);
+  if (entries.length === 0) return "";
+  return `\n\nAd attribution: ${entries.map(([k, v]) => `${k}=${v}`).join(", ")}`;
+}
+
 function LeadEventTracker() {
   useEffect(() => {
     trackLeadEvent();
   }, []);
   return null;
 }
+
 
 function trackViewContent(contentName: string) {
   if (typeof window === "undefined") return;
