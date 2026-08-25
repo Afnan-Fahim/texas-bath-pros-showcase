@@ -2176,6 +2176,21 @@ function ConfirmationScreen({
           <dd className="font-medium text-navy">{state.address}</dd>
         </div>
       </dl>
+      <ol className="mt-5 grid gap-2 text-left max-w-md mx-auto text-sm text-muted-foreground">
+        {[
+          "Check your inbox — your confirmation email is on its way.",
+          "We'll text you a reminder before your appointment — no need to confirm with us.",
+          "A licensed installer arrives, measures, and gives you upfront pricing the same visit.",
+        ].map((s, i) => (
+          <li key={s} className="flex items-start gap-3">
+            <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-navy text-navy-foreground text-[11px] font-semibold">
+              {i + 1}
+            </span>
+            <span>{s}</span>
+          </li>
+        ))}
+      </ol>
+
       <div className="mt-6 flex flex-wrap justify-center gap-3">
         <Button onClick={onReset} className="bg-navy text-navy-foreground hover:bg-navy/90">
           Book another appointment
