@@ -2043,11 +2043,17 @@ function ContactUsDialog({ open, onOpenChange }: { open: boolean; onOpenChange: 
   const submit = (ev: React.FormEvent) => {
     ev.preventDefault();
     if (!validate()) return;
-    const subject = encodeURIComponent(`Contact form from ${state.name}`);
-    const body = encodeURIComponent(
-      `Name: ${state.name}\nPhone: ${state.phone}\nEmail: ${state.email}\n\nMessage:\n${state.message}`,
-    );
-    window.location.href = `mailto:Contact@TexasBathSolutions.com?subject=${subject}&body=${body}`;
+    void submitLead({
+      data: {
+        name: state.name,
+        phone: state.phone,
+        email: state.email,
+        address: "Not provided (Contact Us form)",
+        timeframe: "",
+        notes: state.message,
+        source: "Contact Us form",
+      },
+    }).catch((err: unknown) => console.error("Lead notification failed", err));
     setSubmitted(true);
   };
 
@@ -2075,9 +2081,9 @@ function ContactUsDialog({ open, onOpenChange }: { open: boolean; onOpenChange: 
             <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-navy text-navy-foreground">
               <Check className="h-7 w-7" strokeWidth={3} />
             </div>
-            <h3 className="text-xl font-semibold text-navy">Message ready to send</h3>
+            <h3 className="text-xl font-semibold text-navy">Message sent</h3>
             <p className="text-muted-foreground">
-              Your email app should open with the message addressed to Contact@TexasBathSolutions.com.
+              Thanks! Our team has your message and will reply within one business day.
             </p>
             <Button onClick={reset} variant="outline" className="border-navy/25 text-navy hover:bg-navy/5">
               Send another message
