@@ -170,10 +170,10 @@ function attributionNote(): string {
   return `\n\nAd attribution: ${entries.map(([k, v]) => `${k}=${v}`).join(", ")}`;
 }
 
-function LeadEventTracker() {
+function LeadEventTracker({ dedupeKey = "default" }: { dedupeKey?: string }) {
   useEffect(() => {
-    trackLeadEvent();
-  }, []);
+    trackLeadEvent(dedupeKey);
+  }, [dedupeKey]);
   return null;
 }
 
