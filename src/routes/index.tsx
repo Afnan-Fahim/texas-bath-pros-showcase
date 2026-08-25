@@ -2511,7 +2511,7 @@ function Index() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar onBook={scrollToBook} onContact={() => setContactOpen(true)} />
-      <main>
+      <main className="pb-[4.5rem] lg:pb-0">
         <Hero onBook={scrollToBook} />
         <TrustBar />
         <About />
