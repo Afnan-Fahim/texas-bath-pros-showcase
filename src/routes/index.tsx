@@ -2250,23 +2250,23 @@ function FAQ() {
   const items = [
     {
       q: "How long does a shower installation take?",
-      a: "Most acrylic and Onyx shower installations follow a 2–3 day process. Larger remodels are typically 3–5 days depending on plumbing and prep work.",
+      a: "Most acrylic and Onyx shower installations are completed in 2–3 days. Larger remodels or tub-to-shower conversions with plumbing moves typically take 3–5 days. We protect your floors, clean up daily, and keep your bathroom as usable as possible throughout the project.",
     },
     {
-      q: "Do you really offer hassle-free estimates?",
-      a: "Yes! We work around your schedule and can often come by within a day or two. We'll send updates and reminders for your selected appointment time. We do not consider any portion of our process to be a \"Hassle\". Rather, it is our privilege to help with assisting others in completing their dream Bathroom.",
+      q: "Do you really offer free, no-pressure estimates?",
+      a: "Yes. Your estimate is 100% free and comes with absolutely no pressure to buy. We'll measure your space, walk you through your options, and leave you with a clear written quote you can review on your own time. We respect your home and your decision.",
     },
     {
       q: "What do your acrylic and Onyx shower systems cost?",
-      a: "Every home is different, so we provide free, honest, no-pressure quotes tailored to your bathroom. Most tub-to-shower conversions land in a competitive, affordable range with financing options available.",
+      a: "Every bathroom is different, so we provide a free custom quote based on your exact measurements and needs. Many tub-to-shower conversions start around $8,477, and we offer flexible financing so you can enjoy your new bathroom now and pay over time.",
     },
     {
       q: "Are your acrylic and Onyx panels really as durable as tile?",
-      a: "Absolutely. Our premium acrylic and Onyx wall systems are non-porous, leak-resistant, easy to clean, and built to last a lifetime — with none of the grout maintenance real tile requires.",
+      a: "Yes — and in many ways they're better. Our premium acrylic and Onyx wall systems are non-porous, leak-resistant, and backed by a solid warranty. They won't crack, stain, or grow mold in grout lines like tile can, and they clean up in minutes with just a wipe.",
     },
     {
       q: "Do you serve all of San Antonio?",
-      a: "Yes — San Antonio, Alamo Heights, Stone Oak, Shavano Park, Boerne, Helotes, Fair Oaks Ranch, and surrounding areas.",
+      a: "Yes. We serve San Antonio and the surrounding areas, including Alamo Heights, Stone Oak, Shavano Park, Boerne, Helotes, Fair Oaks Ranch, and beyond. Because we're a local, family-owned company, we can respond quickly and stand behind every installation we complete.",
     },
   ];
   return (
