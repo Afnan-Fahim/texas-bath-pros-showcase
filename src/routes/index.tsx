@@ -1433,13 +1433,14 @@ function WhyUs() {
 
 /* ---------------- PROCESS ---------------- */
 function Process() {
+  const processRef = useViewContentTracking("Our Process");
   const steps = [
     { n: "1", Icon: ClipboardCheck, title: "Book Your Free Estimate", body: "Call or fill out the form — same day or next day appointments are often available." },
     { n: "2", Icon: Ruler, title: "We Visit, Measure & Design", body: "A friendly, no-obligation home visit with an honest, upfront quote — then we walk you through beautiful acrylic and Onyx tile, marble, and stone options." },
     { n: "3", Icon: ShowerHead, title: "Professional Installation", body: "Fast, clean installation — and we provide Post-Care for Peace of Mind." },
   ];
   return (
-    <section id="process" className="cv-auto py-5 md:py-8 bg-gradient-to-b from-navy to-navy/95 text-navy-foreground">
+    <section ref={processRef} id="process" className="cv-auto py-5 md:py-8 bg-gradient-to-b from-navy to-navy/95 text-navy-foreground">
       <div className="container-x">
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl text-navy-foreground text-balance">
