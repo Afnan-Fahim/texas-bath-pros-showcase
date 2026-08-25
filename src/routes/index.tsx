@@ -1353,7 +1353,7 @@ function WhyUs() {
 /* ---------------- PROCESS ---------------- */
 function Process() {
   const steps = [
-    { n: "1", Icon: ClipboardCheck, title: "Book Your Free Estimate", body: "Call or fill out the form — hassle-free appointments often available." },
+    { n: "1", Icon: ClipboardCheck, title: "Book Your Free Estimate", body: "Call or fill out the form — same day or next day appointments are often available." },
     { n: "2", Icon: Ruler, title: "We Visit, Measure & Design", body: "A friendly, no-obligation home visit with an honest, upfront quote — then we walk you through beautiful acrylic and Onyx tile, marble, and stone options." },
     { n: "3", Icon: ShowerHead, title: "Professional Installation", body: "Fast, clean installation — and we provide Post-Care for Peace of Mind." },
   ];
