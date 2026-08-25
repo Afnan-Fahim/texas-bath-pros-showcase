@@ -1180,6 +1180,17 @@ function Offers() {
                 className="mt-2 space-y-3"
                 onSubmit={(e) => {
                   e.preventDefault();
+                  void submitLead({
+                    data: {
+                      name: form.name,
+                      phone: form.phone,
+                      email: form.email,
+                      address: form.address,
+                      timeframe: "",
+                      notes: `Offer claimed: ${active.amount} — ${active.headline}`,
+                      source: "Offers & Discounts form",
+                    },
+                  }).catch((err: unknown) => console.error("Lead notification failed", err));
                   setScheduling(true);
                 }}
               >
