@@ -1559,7 +1559,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
         notes: state.notes,
         source: "Website booking form",
       },
-    }).catch((err) => console.error("Lead notification failed", err));
+    }).catch((err: unknown) => console.error("Lead notification failed", err));
     setStep("schedule");
     requestAnimationFrame(() => formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
   };
