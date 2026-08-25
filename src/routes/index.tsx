@@ -1323,7 +1323,7 @@ function Offers() {
                       email: form.email,
                       address: form.address,
                       timeframe: "",
-                      notes: `Offer claimed: ${active.amount} — ${active.headline}`,
+                      notes: `Offer claimed: ${active.amount} — ${active.headline}` + attributionNote(),
                       source: "Offers & Discounts form",
                     },
                   }).catch((err: unknown) => console.error("Lead notification failed", err));
@@ -2038,6 +2038,7 @@ function CalendlyEmbed({
     .filter(Boolean)
     .join("\n");
 
+  const attribution = getAttribution();
   const params = new URLSearchParams({
     hide_gdpr_banner: "1",
     primary_color: "0D3B66",
@@ -2047,9 +2048,11 @@ function CalendlyEmbed({
     a1: prefill.phone,
     a2: details,
     location: prefill.phone,
-    utm_campaign: prefill.offer ?? "Website Estimate",
-    utm_source: "texasbathsolutions.com",
-    utm_medium: prefill.offer ? "offer-claim" : "main-form",
+    utm_campaign: attribution.utm_campaign ?? prefill.offer ?? "Website Estimate",
+    utm_source: attribution.utm_source ?? "texasbathsolutions.com",
+    utm_medium: attribution.utm_medium ?? (prefill.offer ? "offer-claim" : "main-form"),
+    ...(attribution.utm_content ? { utm_content: attribution.utm_content } : {}),
+    ...(attribution.utm_term ? { utm_term: attribution.utm_term } : {}),
   });
 
   const url = `${CALENDLY_URL}?${params.toString()}`;
@@ -2322,7 +2325,7 @@ function ContactUsDialog({ open, onOpenChange }: { open: boolean; onOpenChange: 
         email: state.email,
         address: "Not provided (Contact Us form)",
         timeframe: "",
-        notes: state.message,
+        notes: state.message + attributionNote(),
         source: "Contact Us form",
       },
     }).catch((err: unknown) => console.error("Lead notification failed", err));
