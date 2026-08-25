@@ -90,6 +90,13 @@ function trackLeadEvent() {
   }
 }
 
+function LeadEventTracker() {
+  useEffect(() => {
+    trackLeadEvent();
+  }, []);
+  return null;
+}
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
