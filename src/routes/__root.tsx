@@ -103,6 +103,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "icon", type: "image/png", href: "/favicon.png" },
       { rel: "preconnect", href: "https://assets.calendly.com", crossOrigin: "anonymous" },
       { rel: "dns-prefetch", href: "https://calendly.com" },
+      { rel: "preconnect", href: "https://connect.facebook.net", crossOrigin: "anonymous" },
+      { rel: "dns-prefetch", href: "https://www.facebook.com" },
     ],
   }),
   shellComponent: RootShell,
