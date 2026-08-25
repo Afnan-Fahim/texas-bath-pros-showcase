@@ -108,12 +108,68 @@ function trackScheduleEvent() {
   }
 }
 
+/* ---------------- Ad attribution (UTM / fbclid) ---------------- */
+const ATTRIBUTION_KEYS = [
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "utm_content",
+  "utm_term",
+  "fbclid",
+  "gclid",
+] as const;
+
+const ATTRIBUTION_STORAGE_KEY = "tbs_attribution";
+
+/** Captures ad params on first landing so they survive in-page navigation. */
+function captureAttribution() {
+  if (typeof window === "undefined") return;
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const found: Record<string, string> = {};
+    for (const k of ATTRIBUTION_KEYS) {
+      const v = params.get(k);
+      if (v) found[k] = v;
+    }
+    if (Object.keys(found).length === 0) return;
+    const stored = window.sessionStorage.getItem(ATTRIBUTION_STORAGE_KEY);
+    const merged = { ...(stored ? JSON.parse(stored) : {}), ...found };
+    window.sessionStorage.setItem(ATTRIBUTION_STORAGE_KEY, JSON.stringify(merged));
+  } catch {
+    /* storage unavailable — attribution is best-effort */
+  }
+}
+
+function getAttribution(): Record<string, string> {
+  if (typeof window === "undefined") return {};
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const stored = window.sessionStorage.getItem(ATTRIBUTION_STORAGE_KEY);
+    const out: Record<string, string> = stored ? JSON.parse(stored) : {};
+    for (const k of ATTRIBUTION_KEYS) {
+      const v = params.get(k);
+      if (v) out[k] = v;
+    }
+    return out;
+  } catch {
+    return {};
+  }
+}
+
+function attributionNote(): string {
+  const a = getAttribution();
+  const entries = Object.entries(a);
+  if (entries.length === 0) return "";
+  return `\n\nAd attribution: ${entries.map(([k, v]) => `${k}=${v}`).join(", ")}`;
+}
+
 function LeadEventTracker() {
   useEffect(() => {
     trackLeadEvent();
   }, []);
   return null;
 }
+
 
 function trackViewContent(contentName: string) {
   if (typeof window === "undefined") return;
@@ -1267,7 +1323,7 @@ function Offers() {
                       email: form.email,
                       address: form.address,
                       timeframe: "",
-                      notes: `Offer claimed: ${active.amount} — ${active.headline}`,
+                      notes: `Offer claimed: ${active.amount} — ${active.headline}` + attributionNote(),
                       source: "Offers & Discounts form",
                     },
                   }).catch((err: unknown) => console.error("Lead notification failed", err));
@@ -1613,6 +1669,30 @@ function formatPhone(input: string) {
   return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
 }
 
+type BookingFields = "name" | "phone" | "email" | "address" | "project";
+
+function validateBookingField(k: BookingFields, v: string): string {
+  switch (k) {
+    case "name":
+      return v.trim().length < 2 ? "Please enter your full name" : "";
+    case "phone":
+      return v.replace(/\D/g, "").length !== 10
+        ? "Enter a 10-digit phone number, e.g. (210) 555-0123"
+        : "";
+    case "email":
+      if (!v.trim()) return "We need your email to send the confirmation";
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim())
+        ? ""
+        : "That email looks incomplete — check for typos";
+    case "address":
+      return v.trim().length < 5
+        ? "Enter the street address where the work will be done"
+        : "";
+    case "project":
+      return v ? "" : "Choose when you'd like your new bathroom";
+  }
+}
+
 function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null> }) {
   const [state, setState] = useState({
     name: "",
@@ -1623,26 +1703,57 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
     notes: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [submitting, setSubmitting] = useState(false);
   const [step, setStep] = useState<"form" | "schedule" | "done">("form");
 
-  const update = <K extends keyof typeof state>(k: K, v: (typeof state)[K]) =>
+  useEffect(() => {
+    captureAttribution();
+  }, []);
+
+  const update = <K extends keyof typeof state>(k: K, v: (typeof state)[K]) => {
     setState((s) => ({ ...s, [k]: v }));
+    setErrors((prev) => {
+      if (!prev[k]) return prev;
+      const next = { ...prev };
+      delete next[k];
+      return next;
+    });
+  };
+
+  const blur = (k: BookingFields) => {
+    const msg = validateBookingField(k, state[k]);
+    setErrors((prev) => {
+      const next = { ...prev };
+      if (msg) next[k] = msg;
+      else delete next[k];
+      return next;
+    });
+  };
 
   const validate = () => {
+    const fields: BookingFields[] = ["name", "phone", "email", "address", "project"];
     const e: Record<string, string> = {};
-    if (!state.name.trim()) e.name = "Please enter your name";
-    if (state.phone.replace(/\D/g, "").length !== 10) e.phone = "Enter a valid 10-digit phone";
-    if (!state.email.trim()) e.email = "Email is required for your confirmation";
-    else if (!/^\S+@\S+\.\S+$/.test(state.email)) e.email = "Invalid email";
-    if (!state.address.trim()) e.address = "Address required";
-    if (!state.project) e.project = "Please select a timeframe";
+    for (const f of fields) {
+      const msg = validateBookingField(f, state[f]);
+      if (msg) e[f] = msg;
+    }
     setErrors(e);
+    const first = fields.find((f) => e[f]);
+    if (first) {
+      requestAnimationFrame(() => {
+        const el = document.getElementById(`book-${first}`);
+        el?.scrollIntoView({ behavior: "smooth", block: "center" });
+        el?.focus({ preventScroll: true });
+      });
+    }
     return Object.keys(e).length === 0;
   };
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (submitting) return;
     if (!validate()) return;
+    setSubmitting(true);
     void submitLead({
       data: {
         name: state.name,
@@ -1650,26 +1761,31 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
         email: state.email,
         address: state.address,
         timeframe: state.project,
-        notes: state.notes,
+        notes: state.notes + attributionNote(),
         source: "Website booking form",
       },
-    }).catch((err: unknown) => console.error("Lead notification failed", err));
+    })
+      .catch((err: unknown) => console.error("Lead notification failed", err))
+      .finally(() => setSubmitting(false));
     setStep("schedule");
     requestAnimationFrame(() => formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
   };
 
   const reset = () => {
     setStep("form");
+    setErrors({});
     setState({ name: "", phone: "", email: "", address: "", project: "", notes: "" });
   };
 
+  const stepIndex = step === "form" ? 0 : step === "schedule" ? 1 : 2;
 
   return (
     <section
       id="book"
       ref={formRef as React.RefObject<HTMLElement>}
-      className="py-12 md:py-16 bg-gradient-to-b from-background to-secondary/60"
+      className="scroll-mt-24 py-12 md:py-16 bg-gradient-to-b from-background to-secondary/60"
     >
+
       <div className="container-x grid gap-10 lg:grid-cols-5 items-start">
         <div className="lg:col-span-2 lg:sticky lg:top-28">
           <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold normal-case tracking-wide text-navy">
@@ -1703,6 +1819,29 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
 
         <div className="lg:col-span-3">
           <div className="rounded-3xl bg-card border border-border shadow-elegant p-6 md:p-8">
+            <ol className="mb-6 flex items-center gap-2" aria-label="Booking progress">
+              {["Your details", "Pick a time", "Confirmed"].map((label, i) => (
+                <li key={label} className="flex flex-1 items-center gap-2 min-w-0">
+                  <span
+                    aria-current={i === stepIndex ? "step" : undefined}
+                    className={`grid h-6 w-6 shrink-0 place-items-center rounded-full text-xs font-semibold ${
+                      i <= stepIndex
+                        ? "bg-navy text-navy-foreground"
+                        : "bg-secondary text-muted-foreground"
+                    }`}
+                  >
+                    {i < stepIndex ? <Check className="h-3 w-3" strokeWidth={3} /> : i + 1}
+                  </span>
+                  <span
+                    className={`truncate text-xs font-medium ${
+                      i <= stepIndex ? "text-navy" : "text-muted-foreground"
+                    }`}
+                  >
+                    {label}
+                  </span>
+                </li>
+              ))}
+            </ol>
             {step === "done" ? (
               <ConfirmationScreen state={state} onReset={reset} />
             ) : step === "schedule" ? (
@@ -1715,40 +1854,61 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
 
               <form onSubmit={submit} className="space-y-5" noValidate>
                 <div className="grid gap-5 sm:grid-cols-2">
-                  <Field label="Full Name" error={errors.name} required>
+                  <Field label="Full Name" error={errors.name} required htmlFor="book-name">
                     <Input
+                      id="book-name"
+                      className="h-12 text-base"
                       value={state.name}
                       onChange={(e) => update("name", e.target.value)}
+                      onBlur={() => blur("name")}
                       placeholder="Jane Smith"
                       autoComplete="name"
+                      aria-invalid={!!errors.name}
+                      aria-describedby={errors.name ? "book-name-error" : undefined}
                     />
                   </Field>
-                  <Field label="Phone Number" error={errors.phone} required>
+                  <Field label="Phone Number" error={errors.phone} required htmlFor="book-phone">
                     <Input
+                      id="book-phone"
+                      className="h-12 text-base"
                       value={state.phone}
                       onChange={(e) => update("phone", formatPhone(e.target.value))}
+                      onBlur={() => blur("phone")}
                       placeholder="(210) 555-0123"
                       inputMode="tel"
                       autoComplete="tel"
+                      aria-invalid={!!errors.phone}
+                      aria-describedby={errors.phone ? "book-phone-error" : undefined}
                     />
                   </Field>
                 </div>
                 <div className="grid gap-5 sm:grid-cols-2">
-                  <Field label="Email" error={errors.email} required>
+                  <Field label="Email" error={errors.email} required htmlFor="book-email">
                     <Input
+                      id="book-email"
+                      className="h-12 text-base"
                       type="email"
                       value={state.email}
                       onChange={(e) => update("email", e.target.value)}
+                      onBlur={() => blur("email")}
                       placeholder="you@email.com"
+                      inputMode="email"
                       autoComplete="email"
+                      aria-invalid={!!errors.email}
+                      aria-describedby={errors.email ? "book-email-error" : undefined}
                     />
                   </Field>
-                  <Field label="Address" error={errors.address} required>
+                  <Field label="Address" error={errors.address} required htmlFor="book-address">
                     <Input
+                      id="book-address"
+                      className="h-12 text-base"
                       value={state.address}
                       onChange={(e) => update("address", e.target.value)}
+                      onBlur={() => blur("address")}
                       placeholder="123 Main St, San Antonio"
                       autoComplete="street-address"
+                      aria-invalid={!!errors.address}
+                      aria-describedby={errors.address ? "book-address-error" : undefined}
                     />
                   </Field>
                 </div>
@@ -1757,9 +1917,18 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
                   label="How soon are you wanting to enjoy your New Bathroom?"
                   error={errors.project}
                   required
+                  htmlFor="book-project"
                 >
-                  <Select value={state.project} onValueChange={(v) => update("project", v)}>
-                    <SelectTrigger className="w-full">
+                  <Select
+                    value={state.project}
+                    onValueChange={(v) => update("project", v)}
+                  >
+                    <SelectTrigger
+                      id="book-project"
+                      className="w-full h-12 text-base"
+                      aria-invalid={!!errors.project}
+                      aria-describedby={errors.project ? "book-project-error" : undefined}
+                    >
                       <SelectValue placeholder="Select a timeframe" />
                     </SelectTrigger>
                     <SelectContent>
@@ -1779,8 +1948,15 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
                     onChange={(e) => update("notes", e.target.value)}
                     placeholder="Size, age, style you're going for, any concerns…"
                     rows={4}
+                    className="text-base"
                   />
                 </Field>
+
+                {Object.keys(errors).length > 0 && (
+                  <p role="alert" className="text-sm text-destructive">
+                    Please fix the highlighted {Object.keys(errors).length === 1 ? "field" : "fields"} above to continue.
+                  </p>
+                )}
 
                 <Button
                   type="submit"
@@ -1795,6 +1971,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
               </form>
             )}
           </div>
+
 
         </div>
       </div>
@@ -1861,6 +2038,7 @@ function CalendlyEmbed({
     .filter(Boolean)
     .join("\n");
 
+  const attribution = getAttribution();
   const params = new URLSearchParams({
     hide_gdpr_banner: "1",
     primary_color: "0D3B66",
@@ -1870,9 +2048,11 @@ function CalendlyEmbed({
     a1: prefill.phone,
     a2: details,
     location: prefill.phone,
-    utm_campaign: prefill.offer ?? "Website Estimate",
-    utm_source: "texasbathsolutions.com",
-    utm_medium: prefill.offer ? "offer-claim" : "main-form",
+    utm_campaign: attribution.utm_campaign ?? prefill.offer ?? "Website Estimate",
+    utm_source: attribution.utm_source ?? "texasbathsolutions.com",
+    utm_medium: attribution.utm_medium ?? (prefill.offer ? "offer-claim" : "main-form"),
+    ...(attribution.utm_content ? { utm_content: attribution.utm_content } : {}),
+    ...(attribution.utm_term ? { utm_term: attribution.utm_term } : {}),
   });
 
   const url = `${CALENDLY_URL}?${params.toString()}`;
@@ -1932,23 +2112,30 @@ function Field({
   label,
   error,
   required,
+  htmlFor,
   children,
 }: {
   label: string;
   error?: string;
   required?: boolean;
+  htmlFor?: string;
   children: React.ReactNode;
 }) {
   return (
     <div className="space-y-1.5">
-      <Label className="text-sm font-medium text-foreground">
+      <Label htmlFor={htmlFor} className="text-sm font-medium text-foreground">
         {label} {required && <span className="text-destructive">*</span>}
       </Label>
       {children}
-      {error && <p className="text-xs text-destructive">{error}</p>}
+      {error && (
+        <p id={htmlFor ? `${htmlFor}-error` : undefined} className="text-xs text-destructive">
+          {error}
+        </p>
+      )}
     </div>
   );
 }
+
 
 function ConfirmationScreen({
   state,
@@ -1989,6 +2176,21 @@ function ConfirmationScreen({
           <dd className="font-medium text-navy">{state.address}</dd>
         </div>
       </dl>
+      <ol className="mt-5 grid gap-2 text-left max-w-md mx-auto text-sm text-muted-foreground">
+        {[
+          "Check your inbox — your confirmation email is on its way.",
+          "We'll text you a reminder before your appointment — no need to confirm with us.",
+          "A licensed installer arrives, measures, and gives you upfront pricing the same visit.",
+        ].map((s, i) => (
+          <li key={s} className="flex items-start gap-3">
+            <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-navy text-navy-foreground text-[11px] font-semibold">
+              {i + 1}
+            </span>
+            <span>{s}</span>
+          </li>
+        ))}
+      </ol>
+
       <div className="mt-6 flex flex-wrap justify-center gap-3">
         <Button onClick={onReset} className="bg-navy text-navy-foreground hover:bg-navy/90">
           Book another appointment
@@ -2138,7 +2340,7 @@ function ContactUsDialog({ open, onOpenChange }: { open: boolean; onOpenChange: 
         email: state.email,
         address: "Not provided (Contact Us form)",
         timeframe: "",
-        notes: state.message,
+        notes: state.message + attributionNote(),
         source: "Contact Us form",
       },
     }).catch((err: unknown) => console.error("Lead notification failed", err));
