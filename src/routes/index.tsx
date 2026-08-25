@@ -78,8 +78,15 @@ import beforeFiberglass from "@/assets/before-fiberglass.avif";
 import beforePink from "@/assets/before-pink.avif";
 import beforeWhiteTile from "@/assets/before-white-tile.avif";
 
-function trackLeadEvent() {
+/**
+ * Fires the Meta `Lead` event exactly once per genuine completed submission.
+ * `dedupeKey` prevents duplicates from React re-mounts / StrictMode double effects.
+ */
+const firedLeadKeys = new Set<string>();
+function trackLeadEvent(dedupeKey = "default") {
   if (typeof window === "undefined") return;
+  if (firedLeadKeys.has(dedupeKey)) return;
+  firedLeadKeys.add(dedupeKey);
   const w = window as unknown as { fbq?: (...args: unknown[]) => void };
   if (w.fbq) {
     w.fbq("track", "Lead", {
