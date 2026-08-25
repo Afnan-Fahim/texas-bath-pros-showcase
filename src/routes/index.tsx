@@ -1703,7 +1703,6 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
     notes: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [submitting, setSubmitting] = useState(false);
   const [step, setStep] = useState<"form" | "schedule" | "done">("form");
 
@@ -1722,7 +1721,6 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
   };
 
   const blur = (k: BookingFields) => {
-    setTouched((t) => ({ ...t, [k]: true }));
     const msg = validateBookingField(k, state[k]);
     setErrors((prev) => {
       const next = { ...prev };
@@ -1740,7 +1738,6 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
       if (msg) e[f] = msg;
     }
     setErrors(e);
-    setTouched(Object.fromEntries(fields.map((f) => [f, true])));
     const first = fields.find((f) => e[f]);
     if (first) {
       requestAnimationFrame(() => {
@@ -1777,7 +1774,6 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
   const reset = () => {
     setStep("form");
     setErrors({});
-    setTouched({});
     setState({ name: "", phone: "", email: "", address: "", project: "", notes: "" });
   };
 
@@ -1925,10 +1921,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
                 >
                   <Select
                     value={state.project}
-                    onValueChange={(v) => {
-                      update("project", v);
-                      setTouched((t) => ({ ...t, project: true }));
-                    }}
+                    onValueChange={(v) => update("project", v)}
                   >
                     <SelectTrigger
                       id="book-project"
