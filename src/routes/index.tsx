@@ -78,8 +78,15 @@ import beforeFiberglass from "@/assets/before-fiberglass.avif";
 import beforePink from "@/assets/before-pink.avif";
 import beforeWhiteTile from "@/assets/before-white-tile.avif";
 
-function trackLeadEvent() {
+/**
+ * Fires the Meta `Lead` event exactly once per genuine completed submission.
+ * `dedupeKey` prevents duplicates from React re-mounts / StrictMode double effects.
+ */
+const firedLeadKeys = new Set<string>();
+function trackLeadEvent(dedupeKey = "default") {
   if (typeof window === "undefined") return;
+  if (firedLeadKeys.has(dedupeKey)) return;
+  firedLeadKeys.add(dedupeKey);
   const w = window as unknown as { fbq?: (...args: unknown[]) => void };
   if (w.fbq) {
     w.fbq("track", "Lead", {
@@ -163,10 +170,10 @@ function attributionNote(): string {
   return `\n\nAd attribution: ${entries.map(([k, v]) => `${k}=${v}`).join(", ")}`;
 }
 
-function LeadEventTracker() {
+function LeadEventTracker({ dedupeKey = "default" }: { dedupeKey?: string }) {
   useEffect(() => {
-    trackLeadEvent();
-  }, []);
+    trackLeadEvent(dedupeKey);
+  }, [dedupeKey]);
   return null;
 }
 
@@ -210,14 +217,35 @@ function useViewContentTracking(contentName: string) {
 
 
 
+const SITE_URL = "https://texasbathsolutions.com";
+
+/** Social crawlers require absolute URLs; bundled asset paths are root-relative. */
+function absoluteUrl(path: string) {
+  return path.startsWith("http") ? path : `${SITE_URL}${path.startsWith("/") ? "" : "/"}${path}`;
+}
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { property: "og:image", content: heroShower },
-      { name: "twitter:image", content: heroShower },
+      { title: "Texas Bath Solutions | San Antonio Shower & Bathroom Remodeling" },
+      {
+        name: "description",
+        content:
+          "San Antonio's Trusted Shower Experts. Acrylic and Onyx shower remodels from $8,477, installed in days. Free estimates, $0 down financing, A+ BBB rated.",
+      },
+      { property: "og:title", content: "Texas Bath Solutions | San Antonio Shower Remodeling" },
+      {
+        property: "og:description",
+        content:
+          "Acrylic & Onyx shower remodels from $8,477. Family-owned, licensed installers, A+ BBB rated. Book your free San Antonio estimate.",
+      },
+      { property: "og:url", content: `${SITE_URL}/` },
+      { property: "og:image", content: absoluteUrl(heroShower) },
+      { property: "og:image:alt", content: "Completed acrylic shower remodel by Texas Bath Solutions" },
+      { name: "twitter:image", content: absoluteUrl(heroShower) },
     ],
     links: [
-      { rel: "canonical", href: "/" },
+      { rel: "canonical", href: `${SITE_URL}/` },
       { rel: "preload", as: "image", href: logoImg, fetchPriority: "high" },
       { rel: "preload", as: "image", href: heroPoster },
     ],
@@ -1446,7 +1474,7 @@ function Offers() {
           )}
           {active && claimed && (
             <div className="py-4 text-center">
-              <LeadEventTracker />
+              <LeadEventTracker dedupeKey="offer-claim" />
               <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-navy text-navy-foreground">
                 <Check className="h-7 w-7" />
               </div>
@@ -2195,11 +2223,18 @@ function ConfirmationScreen({
   onReset: () => void;
 }) {
   useEffect(() => {
-    trackLeadEvent();
-  }, []);
+    trackLeadEvent(`booking:${state.email}:${state.phone}`);
+  }, [state.email, state.phone]);
 
   return (
-    <div className="text-center py-4">
+    <div
+      className="text-center py-4"
+      id="booking-success"
+      data-lead-success="true"
+      role="status"
+      aria-live="polite"
+      aria-label="Booking confirmed"
+    >
       <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-navy text-navy-foreground">
         <Check className="h-8 w-8" strokeWidth={3} />
       </div>
@@ -2412,7 +2447,7 @@ function ContactUsDialog({ open, onOpenChange }: { open: boolean; onOpenChange: 
         </DialogHeader>
         {submitted ? (
           <div className="py-8 text-center space-y-4">
-            <LeadEventTracker />
+            <LeadEventTracker dedupeKey="contact-form" />
             <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-navy text-navy-foreground">
               <Check className="h-7 w-7" strokeWidth={3} />
             </div>
@@ -2481,6 +2516,10 @@ function ContactUsDialog({ open, onOpenChange }: { open: boolean; onOpenChange: 
 
 function Index() {
   const formRef = useRef<HTMLElement | null>(null);
+  // Capture fbclid / UTM params on landing, before any in-page navigation.
+  useEffect(() => {
+    captureAttribution();
+  }, []);
   const [contactOpen, setContactOpen] = useState(false);
   const scrollToBook = () => {
     const el = document.getElementById("book");
