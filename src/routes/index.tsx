@@ -1891,6 +1891,10 @@ function ConfirmationScreen({
   };
   onReset: () => void;
 }) {
+  useEffect(() => {
+    trackLeadEvent();
+  }, []);
+
   return (
     <div className="text-center py-4">
       <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-navy text-navy-foreground">
