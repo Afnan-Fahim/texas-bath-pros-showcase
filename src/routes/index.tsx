@@ -78,6 +78,25 @@ import beforeFiberglass from "@/assets/before-fiberglass.avif";
 import beforePink from "@/assets/before-pink.avif";
 import beforeWhiteTile from "@/assets/before-white-tile.avif";
 
+function trackLeadEvent() {
+  if (typeof window === "undefined") return;
+  const w = window as unknown as { fbq?: (...args: unknown[]) => void };
+  if (w.fbq) {
+    w.fbq("track", "Lead", {
+      value: 150,
+      currency: "USD",
+      content_name: "Free Estimate Request",
+    });
+  }
+}
+
+function LeadEventTracker() {
+  useEffect(() => {
+    trackLeadEvent();
+  }, []);
+  return null;
+}
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -1266,6 +1285,7 @@ function Offers() {
           )}
           {active && claimed && (
             <div className="py-4 text-center">
+              <LeadEventTracker />
               <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-navy text-navy-foreground">
                 <Check className="h-7 w-7" />
               </div>
@@ -1879,6 +1899,10 @@ function ConfirmationScreen({
   };
   onReset: () => void;
 }) {
+  useEffect(() => {
+    trackLeadEvent();
+  }, []);
+
   return (
     <div className="text-center py-4">
       <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-navy text-navy-foreground">
@@ -2078,6 +2102,7 @@ function ContactUsDialog({ open, onOpenChange }: { open: boolean; onOpenChange: 
         </DialogHeader>
         {submitted ? (
           <div className="py-8 text-center space-y-4">
+            <LeadEventTracker />
             <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-navy text-navy-foreground">
               <Check className="h-7 w-7" strokeWidth={3} />
             </div>
