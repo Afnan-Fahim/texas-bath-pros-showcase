@@ -767,6 +767,7 @@ function TrustBar() {
 
 /* ---------------- FINANCING BANNER ---------------- */
 function FinancingBanner({ onBook }: { onBook: () => void }) {
+  const financingRef = useViewContentTracking("Financing Options");
   const perks = [
     { icon: CreditCard, title: "$0 Down", copy: "Start your remodel with payments as low as $115 a month." },
     { icon: CalendarDays, title: "Up to 12 Months No Interest", copy: "Enjoy your New Bathroom with No Interest for a Full Year." },
@@ -774,7 +775,7 @@ function FinancingBanner({ onBook }: { onBook: () => void }) {
   ];
 
   return (
-    <section className="py-8 md:py-12">
+    <section ref={financingRef} className="py-8 md:py-12">
       <div className="container-x">
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-navy via-navy to-navy/85 text-navy-foreground shadow-elegant ring-1 ring-white/10">
           <div className="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-teal/25 blur-3xl" aria-hidden />
