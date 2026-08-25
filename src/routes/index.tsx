@@ -78,6 +78,47 @@ import beforeFiberglass from "@/assets/before-fiberglass.avif";
 import beforePink from "@/assets/before-pink.avif";
 import beforeWhiteTile from "@/assets/before-white-tile.avif";
 
+/* ---------------------------------------------------------------
+ * TEMPORARY VERIFICATION LOGGING (safe to delete after QA)
+ * Every log below is prefixed with [TBS Pixel] so you can filter the
+ * browser console by "TBS Pixel" and confirm:
+ *   1. Meta Pixel is initialized (fbq present on window)
+ *   2. Lead fires ONLY on successful form completion (once per lead)
+ *   3. Contact fires on tel: clicks
+ * Remove this block + the pixelLog() calls to clean up.
+ * --------------------------------------------------------------- */
+const PIXEL_DEBUG = true;
+function pixelLog(...args: unknown[]) {
+  if (!PIXEL_DEBUG || typeof window === "undefined") return;
+  // eslint-disable-next-line no-console
+  console.log("[TBS Pixel]", ...args);
+}
+
+function getFbq() {
+  if (typeof window === "undefined") return undefined;
+  return (window as unknown as { fbq?: (...args: unknown[]) => void }).fbq;
+}
+
+/** TEMP: verifies the base pixel loaded and PageView fired on this page load. */
+function usePixelInitCheck() {
+  useEffect(() => {
+    let tries = 0;
+    const id = window.setInterval(() => {
+      tries += 1;
+      if (getFbq()) {
+        pixelLog("✅ Meta Pixel initialized — base code loaded, PageView fired on load.");
+        window.clearInterval(id);
+      } else if (tries > 10) {
+        pixelLog(
+          "❌ Meta Pixel NOT detected (window.fbq missing). Check the Pixel ID in the site head.",
+        );
+        window.clearInterval(id);
+      }
+    }, 500);
+    return () => window.clearInterval(id);
+  }, []);
+}
+
 /**
  * Fires the Meta `Lead` event exactly once per genuine completed submission.
  * `dedupeKey` prevents duplicates from React re-mounts / StrictMode double effects.
@@ -85,35 +126,46 @@ import beforeWhiteTile from "@/assets/before-white-tile.avif";
 const firedLeadKeys = new Set<string>();
 function trackLeadEvent(dedupeKey = "default") {
   if (typeof window === "undefined") return;
-  if (firedLeadKeys.has(dedupeKey)) return;
+  if (firedLeadKeys.has(dedupeKey)) {
+    pixelLog("↩︎ Lead skipped (already fired for this submission):", dedupeKey);
+    return;
+  }
   firedLeadKeys.add(dedupeKey);
-  const w = window as unknown as { fbq?: (...args: unknown[]) => void };
-  if (w.fbq) {
-    w.fbq("track", "Lead", {
+  const w = getFbq();
+  if (w) {
+    w("track", "Lead", {
       value: 150,
       currency: "USD",
       content_name: "Free Estimate Request",
     });
+    pixelLog("🎯 Lead fired — successful form completion only. key:", dedupeKey);
+  } else {
+    pixelLog("⚠️ Lead NOT sent — window.fbq unavailable. key:", dedupeKey);
   }
 }
 
 function trackContactEvent() {
   if (typeof window === "undefined") return;
-  const w = window as unknown as { fbq?: (...args: unknown[]) => void };
-  if (w.fbq) {
-    w.fbq("track", "Contact");
+  const w = getFbq();
+  if (w) {
+    w("track", "Contact");
+    pixelLog("📞 Contact fired — tel: link clicked.");
+  } else {
+    pixelLog("⚠️ Contact NOT sent — window.fbq unavailable.");
   }
 }
 
 function trackScheduleEvent() {
   if (typeof window === "undefined") return;
-  const w = window as unknown as { fbq?: (...args: unknown[]) => void };
-  if (w.fbq) {
-    w.fbq("track", "Schedule", {
+  const w = getFbq();
+  if (w) {
+    w("track", "Schedule", {
       content_name: "Estimate Appointment",
     });
+    pixelLog("🗓️ Schedule fired — Calendly booking confirmed.");
   }
 }
+
 
 /* ---------------- Ad attribution (UTM / fbclid) ---------------- */
 const ATTRIBUTION_KEYS = [
@@ -2516,6 +2568,8 @@ function ContactUsDialog({ open, onOpenChange }: { open: boolean; onOpenChange: 
 
 function Index() {
   const formRef = useRef<HTMLElement | null>(null);
+  // TEMP (QA): logs "[TBS Pixel] ✅ Meta Pixel initialized" once fbq is on window.
+  usePixelInitCheck();
   // Capture fbclid / UTM params on landing, before any in-page navigation.
   useEffect(() => {
     captureAttribution();
