@@ -44,6 +44,7 @@ import {
 } from "@/components/ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { LazyCalendar } from "@/components/LazyCalendar";
+import { submitLead } from "@/lib/leads.functions";
 import {
   Dialog,
   DialogContent,
@@ -1179,6 +1180,17 @@ function Offers() {
                 className="mt-2 space-y-3"
                 onSubmit={(e) => {
                   e.preventDefault();
+                  void submitLead({
+                    data: {
+                      name: form.name,
+                      phone: form.phone,
+                      email: form.email,
+                      address: form.address,
+                      timeframe: "",
+                      notes: `Offer claimed: ${active.amount} — ${active.headline}`,
+                      source: "Offers & Discounts form",
+                    },
+                  }).catch((err: unknown) => console.error("Lead notification failed", err));
                   setScheduling(true);
                 }}
               >
@@ -1548,6 +1560,17 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
+    void submitLead({
+      data: {
+        name: state.name,
+        phone: state.phone,
+        email: state.email,
+        address: state.address,
+        timeframe: state.project,
+        notes: state.notes,
+        source: "Website booking form",
+      },
+    }).catch((err: unknown) => console.error("Lead notification failed", err));
     setStep("schedule");
     requestAnimationFrame(() => formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
   };
