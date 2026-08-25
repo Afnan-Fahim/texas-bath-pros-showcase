@@ -78,6 +78,18 @@ import beforeFiberglass from "@/assets/before-fiberglass.avif";
 import beforePink from "@/assets/before-pink.avif";
 import beforeWhiteTile from "@/assets/before-white-tile.avif";
 
+function trackLeadEvent() {
+  if (typeof window === "undefined") return;
+  const w = window as unknown as { fbq?: (...args: unknown[]) => void };
+  if (w.fbq) {
+    w.fbq("track", "Lead", {
+      value: 150,
+      currency: "USD",
+      content_name: "Free Estimate Request",
+    });
+  }
+}
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
