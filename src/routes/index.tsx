@@ -1548,6 +1548,17 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
+    void submitLead({
+      data: {
+        name: state.name,
+        phone: state.phone,
+        email: state.email,
+        address: state.address,
+        timeframe: state.project,
+        notes: state.notes,
+        source: "Website booking form",
+      },
+    }).catch((err) => console.error("Lead notification failed", err));
     setStep("schedule");
     requestAnimationFrame(() => formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
   };
