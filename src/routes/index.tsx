@@ -934,6 +934,7 @@ const FILTERS = [
 
 
 function Gallery() {
+  const galleryRef = useViewContentTracking("Bathroom Transformations");
   const [filter, setFilter] = useState<(typeof FILTERS)[number]["id"]>("all");
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
   const [sliderPos, setSliderPos] = useState(50);
