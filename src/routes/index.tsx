@@ -115,6 +115,44 @@ function LeadEventTracker() {
   return null;
 }
 
+function trackViewContent(contentName: string) {
+  if (typeof window === "undefined") return;
+  const w = window as unknown as { fbq?: (...args: unknown[]) => void };
+  if (w.fbq) {
+    w.fbq("track", "ViewContent", {
+      content_name: contentName,
+      content_category: "Bathroom Remodel",
+    });
+  }
+}
+
+function useViewContentTracking(contentName: string) {
+  const ref = useRef<HTMLElement>(null);
+  const tracked = useRef(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || tracked.current) return;
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !tracked.current) {
+          tracked.current = true;
+          trackViewContent(contentName);
+        }
+      },
+      { threshold: 0.5 },
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [contentName]);
+
+  return ref;
+}
+
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
