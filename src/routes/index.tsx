@@ -1285,6 +1285,7 @@ function Offers() {
           )}
           {active && claimed && (
             <div className="py-4 text-center">
+              <LeadEventTracker />
               <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-navy text-navy-foreground">
                 <Check className="h-7 w-7" />
               </div>
