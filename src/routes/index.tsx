@@ -1800,6 +1800,7 @@ function CalendlyEmbed({
         e.origin.includes("calendly.com") &&
         e.data?.event === "calendly.event_scheduled"
       ) {
+        trackScheduleEvent();
         onScheduled();
       }
     };
