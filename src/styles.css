@@ -107,6 +107,15 @@
     font-family: var(--font-display);
     letter-spacing: -0.02em;
     font-weight: 600;
+    /* Disable Fraunces' "wonk" + soft axes so f/y render as standard letterforms */
+    font-variation-settings: "SOFT" 0, "WONK" 0;
+    font-feature-settings: normal;
+    font-variant-ligatures: none;
+  }
+  .font-display,
+  [class*="font-display"] {
+    font-variation-settings: "SOFT" 0, "WONK" 0;
+    font-variant-ligatures: none;
   }
 }
 
