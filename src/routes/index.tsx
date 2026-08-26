@@ -799,14 +799,14 @@ function HeroVideo() {
         ref={videoRef}
         key={wide ? "wide" : "portrait"}
         className="block h-auto w-full"
-        src={wide ? heroVideoWideAsset.url : heroVideoAsset.url}
-        poster={wide ? undefined : heroPoster}
+        src={srcReady ? (wide ? heroVideoWideAsset.url : heroVideoAsset.url) : undefined}
+        poster={heroPoster}
         width={wide ? 1880 : 720}
         height={wide ? 1080 : 1280}
         autoPlay
         playsInline
         controls
-        preload="metadata"
+        preload={srcReady ? "metadata" : "none"}
         onEnded={handleEnded}
         aria-label="Texas Bath Solutions shower remodel walkthrough video"
       />
