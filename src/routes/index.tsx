@@ -722,7 +722,7 @@ function HeroVideo() {
 
   useEffect(() => {
     const v = videoRef.current;
-    if (!v) return;
+    if (!v || !srcReady) return;
     playsRef.current = 0;
     setFinished(false);
     let cleanup = () => {};
