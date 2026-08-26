@@ -2237,7 +2237,11 @@ function CalendlyEmbed({
         e.origin.includes("calendly.com") &&
         e.data?.event === "calendly.event_scheduled"
       ) {
-        trackScheduleEvent();
+        trackScheduleEvent({
+          email: prefill.email,
+          phone: prefill.phone,
+          name: prefill.name,
+        });
         onScheduled();
       }
     };
