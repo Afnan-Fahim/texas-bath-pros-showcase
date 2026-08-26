@@ -2610,7 +2610,7 @@ function ContactUsDialog({ open, onOpenChange }: { open: boolean; onOpenChange: 
           </DialogDescription>
         </DialogHeader>
         {submitted ? (
-          <div className="py-8 text-center space-y-4">
+          <div className="py-8 text-center space-y-4" data-lead-success="true">
             <LeadEventTracker
               dedupeKey={`contact:${state.email}:${state.phone}`}
               identity={{ name: state.name, email: state.email, phone: state.phone }}
