@@ -45,7 +45,6 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { LazyCalendar } from "@/components/LazyCalendar";
 import { submitLead } from "@/lib/leads.functions";
-import { trackServerEvent } from "@/lib/capi.functions";
 import {
   Dialog,
   DialogContent,
