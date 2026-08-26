@@ -45,6 +45,7 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { LazyCalendar } from "@/components/LazyCalendar";
 import { submitLead } from "@/lib/leads.functions";
+import { trackServerEvent } from "@/lib/capi.functions";
 import {
   Dialog,
   DialogContent,
@@ -284,9 +285,16 @@ function attributionNote(): string {
   return `\n\nAd attribution: ${entries.map(([k, v]) => `${k}=${v}`).join(", ")}`;
 }
 
-function LeadEventTracker({ dedupeKey = "default" }: { dedupeKey?: string }) {
+function LeadEventTracker({
+  dedupeKey = "default",
+  identity,
+}: {
+  dedupeKey?: string;
+  identity?: LeadIdentity;
+}) {
   useEffect(() => {
-    trackLeadEvent(dedupeKey);
+    trackLeadEvent(dedupeKey, identity ?? {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dedupeKey]);
   return null;
 }
@@ -2360,7 +2368,11 @@ function ConfirmationScreen({
   onReset: () => void;
 }) {
   useEffect(() => {
-    trackLeadEvent(`booking:${state.email}:${state.phone}`);
+    trackLeadEvent(`booking:${state.email}:${state.phone}`, {
+      email: state.email,
+      phone: state.phone,
+      name: state.name,
+    });
   }, [state.email, state.phone]);
 
   return (
