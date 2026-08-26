@@ -2018,7 +2018,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
             Book Your Free Estimate
           </span>
           <h2 className="mt-4 text-3xl md:text-5xl text-navy text-balance">
-            Ready to see your new shower? Schedule your free, no-obligation estimate.
+            Ready to see your new shower? Schedule your Free, no-obligation estimate.
           </h2>
           <p className="mt-5 text-lg text-muted-foreground">
             Tell us about your project, then pick the exact time that works for you.
@@ -2331,7 +2331,7 @@ function CalendlyEmbed({
 
       <noscript>
         <a href={CALENDLY_URL} target="_blank" rel="noreferrer">
-          Book your free estimate
+          Book your Free estimate
         </a>
       </noscript>
     </div>
