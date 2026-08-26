@@ -754,7 +754,7 @@ function HeroVideo() {
       cleanup = () => events.forEach((e) => window.removeEventListener(e, enableSound));
     });
     return () => cleanup();
-  }, [wide]);
+  }, [wide, srcReady]);
 
 
   const handleEnded = () => {
