@@ -2331,7 +2331,7 @@ function CalendlyEmbed({
 
       <noscript>
         <a href={CALENDLY_URL} target="_blank" rel="noreferrer">
-          Book your free estimate
+          Book your Free estimate
         </a>
       </noscript>
     </div>
