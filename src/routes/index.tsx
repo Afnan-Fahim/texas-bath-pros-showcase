@@ -45,6 +45,7 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { LazyCalendar } from "@/components/LazyCalendar";
 import { submitLead } from "@/lib/leads.functions";
+import { trackServerEvent } from "@/lib/capi.functions";
 import {
   Dialog,
   DialogContent,
@@ -119,52 +120,114 @@ function usePixelInitCheck() {
   }, []);
 }
 
+/* -------- Conversions API (server-side mirror of the browser pixel) -------- */
+type LeadIdentity = { email?: string; phone?: string; name?: string };
+
+function readCookie(name: string): string {
+  if (typeof document === "undefined") return "";
+  const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
+  return match ? decodeURIComponent(match[1]!) : "";
+}
+
+function newEventId(prefix: string) {
+  return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+}
+
+/** Sends the same event server-side with the shared event_id so Meta de-duplicates. */
+function sendServerEvent(
+  eventName: "Lead" | "Schedule" | "Contact",
+  eventId: string,
+  identity: LeadIdentity = {},
+  extra: { value?: number; contentName?: string } = {},
+) {
+  if (typeof window === "undefined") return;
+  const [firstName, ...rest] = (identity.name ?? "").trim().split(/\s+/);
+  void trackServerEvent({
+    data: {
+      eventName,
+      eventId,
+      eventSourceUrl: window.location.href,
+      email: identity.email ?? "",
+      phone: identity.phone ?? "",
+      firstName: firstName ?? "",
+      lastName: rest.join(" "),
+      fbc: readCookie("_fbc"),
+      fbp: readCookie("_fbp"),
+      currency: "USD",
+      ...(extra.value !== undefined ? { value: extra.value } : {}),
+      contentName: extra.contentName ?? "",
+    },
+  }).catch(() => {
+    /* CAPI is best-effort; the browser pixel already fired */
+  });
+}
+
 /**
  * Fires the Meta `Lead` event exactly once per genuine completed submission.
  * `dedupeKey` prevents duplicates from React re-mounts / StrictMode double effects.
  */
 const firedLeadKeys = new Set<string>();
-function trackLeadEvent(dedupeKey = "default") {
+function trackLeadEvent(dedupeKey = "default", identity: LeadIdentity = {}) {
   if (typeof window === "undefined") return;
   if (firedLeadKeys.has(dedupeKey)) {
     pixelLog("↩︎ Lead skipped (already fired for this submission):", dedupeKey);
     return;
   }
   firedLeadKeys.add(dedupeKey);
+  const eventId = newEventId("lead");
   const w = getFbq();
   if (w) {
-    w("track", "Lead", {
-      value: 150,
-      currency: "USD",
-      content_name: "Free Estimate Request",
-    });
+    w(
+      "track",
+      "Lead",
+      {
+        value: 150,
+        currency: "USD",
+        content_name: "Free Estimate Request",
+      },
+      { eventID: eventId },
+    );
     pixelLog("🎯 Lead fired — successful form completion only. key:", dedupeKey);
   } else {
     pixelLog("⚠️ Lead NOT sent — window.fbq unavailable. key:", dedupeKey);
   }
+  sendServerEvent("Lead", eventId, identity, {
+    value: 150,
+    contentName: "Free Estimate Request",
+  });
 }
 
 function trackContactEvent() {
   if (typeof window === "undefined") return;
+  const eventId = newEventId("contact");
   const w = getFbq();
   if (w) {
-    w("track", "Contact");
+    w("track", "Contact", {}, { eventID: eventId });
     pixelLog("📞 Contact fired — tel: link clicked.");
   } else {
     pixelLog("⚠️ Contact NOT sent — window.fbq unavailable.");
   }
+  sendServerEvent("Contact", eventId);
 }
 
-function trackScheduleEvent() {
+function trackScheduleEvent(identity: LeadIdentity = {}) {
   if (typeof window === "undefined") return;
+  const eventId = newEventId("schedule");
   const w = getFbq();
   if (w) {
-    w("track", "Schedule", {
-      content_name: "Estimate Appointment",
-    });
+    w(
+      "track",
+      "Schedule",
+      { content_name: "Estimate Appointment" },
+      { eventID: eventId },
+    );
     pixelLog("🗓️ Schedule fired — Calendly booking confirmed.");
   }
+  sendServerEvent("Schedule", eventId, identity, {
+    contentName: "Estimate Appointment",
+  });
 }
+
 
 
 /* ---------------- Ad attribution (UTM / fbclid) ---------------- */
@@ -222,9 +285,16 @@ function attributionNote(): string {
   return `\n\nAd attribution: ${entries.map(([k, v]) => `${k}=${v}`).join(", ")}`;
 }
 
-function LeadEventTracker({ dedupeKey = "default" }: { dedupeKey?: string }) {
+function LeadEventTracker({
+  dedupeKey = "default",
+  identity,
+}: {
+  dedupeKey?: string;
+  identity?: LeadIdentity;
+}) {
   useEffect(() => {
-    trackLeadEvent(dedupeKey);
+    trackLeadEvent(dedupeKey, identity ?? {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dedupeKey]);
   return null;
 }
@@ -2167,7 +2237,11 @@ function CalendlyEmbed({
         e.origin.includes("calendly.com") &&
         e.data?.event === "calendly.event_scheduled"
       ) {
-        trackScheduleEvent();
+        trackScheduleEvent({
+          email: prefill.email,
+          phone: prefill.phone,
+          name: prefill.name,
+        });
         onScheduled();
       }
     };
@@ -2298,7 +2372,11 @@ function ConfirmationScreen({
   onReset: () => void;
 }) {
   useEffect(() => {
-    trackLeadEvent(`booking:${state.email}:${state.phone}`);
+    trackLeadEvent(`booking:${state.email}:${state.phone}`, {
+      email: state.email,
+      phone: state.phone,
+      name: state.name,
+    });
   }, [state.email, state.phone]);
 
   return (
