@@ -142,26 +142,33 @@ function sendServerEvent(
 ) {
   if (typeof window === "undefined") return;
   const [firstName, ...rest] = (identity.name ?? "").trim().split(/\s+/);
-  void trackServerEvent({
-    data: {
-      eventName,
-      eventId,
-      eventSourceUrl: window.location.href,
-      email: identity.email ?? "",
-      phone: identity.phone ?? "",
-      firstName: firstName ?? "",
-      lastName: rest.join(" "),
-      fbc: readCookie("_fbc"),
-      fbp: readCookie("_fbp"),
-      currency: "USD",
-      ...(extra.value !== undefined ? { value: extra.value } : {}),
-      contentName: extra.contentName ?? "",
-      contentCategory: extra.contentCategory ?? "",
-    },
-  }).catch(() => {
-    /* CAPI is best-effort; the browser pixel already fired */
-  });
+  const payload = {
+    eventName,
+    eventId,
+    eventSourceUrl: window.location.href,
+    email: identity.email ?? "",
+    phone: identity.phone ?? "",
+    firstName: firstName ?? "",
+    lastName: rest.join(" "),
+    fbc: readCookie("_fbc"),
+    fbp: readCookie("_fbp"),
+    currency: "USD",
+    ...(extra.value !== undefined ? { value: extra.value } : {}),
+    contentName: extra.contentName ?? "",
+    contentCategory: extra.contentCategory ?? "",
+  };
+  void fetch("/api/meta-capi", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+    keepalive: true,
+  })
+    .then(() => pixelLog("📡 CAPI server event sent:", eventName, eventId))
+    .catch(() => {
+      /* CAPI is best-effort; the browser pixel already fired */
+    });
 }
+
 
 /**
  * Fires the Meta `Lead` event exactly once per genuine completed submission.
