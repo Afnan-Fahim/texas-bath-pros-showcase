@@ -15,6 +15,7 @@ const capiSchema = z.object({
   value: z.number().nonnegative().max(100000).optional(),
   currency: z.string().trim().max(8).optional().default('USD'),
   contentName: z.string().trim().max(120).optional().default(''),
+  contentCategory: z.string().trim().max(120).optional().default(''),
 })
 
 export const trackServerEvent = createServerFn({ method: 'POST' })
@@ -53,5 +54,6 @@ export const trackServerEvent = createServerFn({ method: 'POST' })
       value: data.value,
       currency: data.currency || undefined,
       contentName: data.contentName || undefined,
+      contentCategory: data.contentCategory || undefined,
     })
   })
