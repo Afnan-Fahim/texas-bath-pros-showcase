@@ -45,7 +45,6 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { LazyCalendar } from "@/components/LazyCalendar";
 import { submitLead } from "@/lib/leads.functions";
-import { trackServerEvent } from "@/lib/capi.functions";
 import {
   Dialog,
   DialogContent,
@@ -142,26 +141,33 @@ function sendServerEvent(
 ) {
   if (typeof window === "undefined") return;
   const [firstName, ...rest] = (identity.name ?? "").trim().split(/\s+/);
-  void trackServerEvent({
-    data: {
-      eventName,
-      eventId,
-      eventSourceUrl: window.location.href,
-      email: identity.email ?? "",
-      phone: identity.phone ?? "",
-      firstName: firstName ?? "",
-      lastName: rest.join(" "),
-      fbc: readCookie("_fbc"),
-      fbp: readCookie("_fbp"),
-      currency: "USD",
-      ...(extra.value !== undefined ? { value: extra.value } : {}),
-      contentName: extra.contentName ?? "",
-      contentCategory: extra.contentCategory ?? "",
-    },
-  }).catch(() => {
-    /* CAPI is best-effort; the browser pixel already fired */
-  });
+  const payload = {
+    eventName,
+    eventId,
+    eventSourceUrl: window.location.href,
+    email: identity.email ?? "",
+    phone: identity.phone ?? "",
+    firstName: firstName ?? "",
+    lastName: rest.join(" "),
+    fbc: readCookie("_fbc"),
+    fbp: readCookie("_fbp"),
+    currency: "USD",
+    ...(extra.value !== undefined ? { value: extra.value } : {}),
+    contentName: extra.contentName ?? "",
+    contentCategory: extra.contentCategory ?? "",
+  };
+  void fetch("/api/meta-capi", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+    keepalive: true,
+  })
+    .then(() => pixelLog("📡 CAPI server event sent:", eventName, eventId))
+    .catch(() => {
+      /* CAPI is best-effort; the browser pixel already fired */
+    });
 }
+
 
 /**
  * Fires the Meta `Lead` event exactly once per genuine completed submission.
@@ -372,7 +378,7 @@ export const Route = createFileRoute("/")({
     links: [
       { rel: "canonical", href: `${SITE_URL}/` },
       { rel: "preload", as: "image", href: logoImg, fetchPriority: "high" },
-      { rel: "preload", as: "image", href: heroPoster },
+      { rel: "preload", as: "image", href: heroPoster, fetchPriority: "high" },
     ],
     scripts: [
       {
@@ -2604,7 +2610,7 @@ function ContactUsDialog({ open, onOpenChange }: { open: boolean; onOpenChange: 
           </DialogDescription>
         </DialogHeader>
         {submitted ? (
-          <div className="py-8 text-center space-y-4">
+          <div className="py-8 text-center space-y-4" data-lead-success="true">
             <LeadEventTracker
               dedupeKey={`contact:${state.email}:${state.phone}`}
               identity={{ name: state.name, email: state.email, phone: state.phone }}
