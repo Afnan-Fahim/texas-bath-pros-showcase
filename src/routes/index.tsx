@@ -688,6 +688,9 @@ function HeroVideo() {
   // Desktop (and large tablets in landscape) get the widescreen cut so it fills
   // the space; phones/tablets keep the original portrait video.
   const [wide, setWide] = useState(false);
+  // Defer the actual video download until after the page has painted/LCP so the
+  // hero text + poster render fast on mobile. No visual change.
+  const [srcReady, setSrcReady] = useState(false);
 
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 1024px)");
@@ -696,6 +699,26 @@ function HeroVideo() {
     mq.addEventListener("change", apply);
     return () => mq.removeEventListener("change", apply);
   }, []);
+
+  useEffect(() => {
+    const start = () => setSrcReady(true);
+    const idle =
+      (window as unknown as { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number })
+        .requestIdleCallback;
+    let t: number | undefined;
+    if (document.readyState === "complete") {
+      if (idle) idle(start, { timeout: 1500 });
+      else t = window.setTimeout(start, 300);
+    } else {
+      window.addEventListener("load", () => (idle ? idle(start, { timeout: 1500 }) : start()), {
+        once: true,
+      });
+    }
+    return () => {
+      if (t) clearTimeout(t);
+    };
+  }, []);
+
 
   useEffect(() => {
     const v = videoRef.current;
