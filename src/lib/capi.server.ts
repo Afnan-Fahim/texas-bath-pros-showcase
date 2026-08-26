@@ -3,7 +3,7 @@
  * Mirrors the browser pixel events using the same event_id so Meta de-duplicates.
  */
 
-const PIXEL_ID = '1062683162839921'
+const DEFAULT_PIXEL_ID = '1062683162839921'
 const API_VERSION = 'v21.0'
 
 async function sha256(value: string): Promise<string> {
@@ -39,10 +39,12 @@ export type CapiEventInput = {
   value?: number
   currency?: string
   contentName?: string
+  contentCategory?: string
 }
 
 export async function sendCapiEvent(input: CapiEventInput) {
   const token = process.env['META_CAPI_ACCESS_TOKEN']
+  const PIXEL_ID = process.env['META_PIXEL_ID'] || DEFAULT_PIXEL_ID
   if (!token) {
     return { ok: false as const, skipped: 'missing_token' as const }
   }
@@ -64,6 +66,7 @@ export async function sendCapiEvent(input: CapiEventInput) {
   if (typeof input.value === 'number') customData['value'] = input.value
   if (input.currency) customData['currency'] = input.currency
   if (input.contentName) customData['content_name'] = input.contentName
+  if (input.contentCategory) customData['content_category'] = input.contentCategory
 
   const body = {
     data: [

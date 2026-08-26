@@ -138,7 +138,7 @@ function sendServerEvent(
   eventName: "Lead" | "Schedule" | "Contact",
   eventId: string,
   identity: LeadIdentity = {},
-  extra: { value?: number; contentName?: string } = {},
+  extra: { value?: number; contentName?: string; contentCategory?: string } = {},
 ) {
   if (typeof window === "undefined") return;
   const [firstName, ...rest] = (identity.name ?? "").trim().split(/\s+/);
@@ -156,6 +156,7 @@ function sendServerEvent(
       currency: "USD",
       ...(extra.value !== undefined ? { value: extra.value } : {}),
       contentName: extra.contentName ?? "",
+      contentCategory: extra.contentCategory ?? "",
     },
   }).catch(() => {
     /* CAPI is best-effort; the browser pixel already fired */
@@ -183,7 +184,8 @@ function trackLeadEvent(dedupeKey = "default", identity: LeadIdentity = {}) {
       {
         value: 150,
         currency: "USD",
-        content_name: "Free Estimate Request",
+        content_name: "Bathroom Estimate Request",
+        content_category: "Estimate Form",
       },
       { eventID: eventId },
     );
@@ -193,7 +195,8 @@ function trackLeadEvent(dedupeKey = "default", identity: LeadIdentity = {}) {
   }
   sendServerEvent("Lead", eventId, identity, {
     value: 150,
-    contentName: "Free Estimate Request",
+    contentName: "Bathroom Estimate Request",
+    contentCategory: "Estimate Form",
   });
 }
 
@@ -2237,11 +2240,13 @@ function CalendlyEmbed({
         e.origin.includes("calendly.com") &&
         e.data?.event === "calendly.event_scheduled"
       ) {
-        trackScheduleEvent({
+        const identity = {
           email: prefill.email,
           phone: prefill.phone,
           name: prefill.name,
-        });
+        };
+        trackScheduleEvent(identity);
+        trackLeadEvent(`calendly:${prefill.email}:${prefill.phone}`, identity);
         onScheduled();
       }
     };
@@ -2600,7 +2605,10 @@ function ContactUsDialog({ open, onOpenChange }: { open: boolean; onOpenChange: 
         </DialogHeader>
         {submitted ? (
           <div className="py-8 text-center space-y-4">
-            <LeadEventTracker dedupeKey="contact-form" />
+            <LeadEventTracker
+              dedupeKey={`contact:${state.email}:${state.phone}`}
+              identity={{ name: state.name, email: state.email, phone: state.phone }}
+            />
             <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-navy text-navy-foreground">
               <Check className="h-7 w-7" strokeWidth={3} />
             </div>
