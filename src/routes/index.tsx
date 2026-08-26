@@ -800,7 +800,7 @@ function HeroVideo() {
         key={wide ? "wide" : "portrait"}
         className="block h-auto w-full"
         src={srcReady ? (wide ? heroVideoWideAsset.url : heroVideoAsset.url) : undefined}
-        poster={heroPoster}
+        poster={wide ? undefined : heroPoster}
         width={wide ? 1880 : 720}
         height={wide ? 1080 : 1280}
         autoPlay
