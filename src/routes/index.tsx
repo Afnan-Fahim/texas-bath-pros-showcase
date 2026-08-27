@@ -2602,8 +2602,11 @@ function ContactUsDialog({ open, onOpenChange }: { open: boolean; onOpenChange: 
         <DialogHeader>
           <DialogTitle className="text-2xl text-navy">Contact Us</DialogTitle>
           <DialogDescription>
-            Send a message to our team. Submissions are delivered to all team
-            inboxes and we typically reply within one business day.
+            Send a message to{" "}
+            <a href="mailto:Contact@TexasBathSolutions.com" className="font-semibold text-navy hover:underline">
+              Contact@TexasBathSolutions.com
+            </a>
+            . We typically reply within one business day.
           </DialogDescription>
         </DialogHeader>
         {submitted ? (
@@ -2662,10 +2665,7 @@ function ContactUsDialog({ open, onOpenChange }: { open: boolean; onOpenChange: 
               />
             </Field>
             <div className="rounded-lg bg-secondary p-3 text-sm text-muted-foreground">
-              Recipients:{" "}
-              <span className="font-medium text-foreground">
-                justin@texasbathsolutions.com, josiah@texasbathsolutions.com, contact@texasbathsolutions.com
-              </span>
+              Recipient: <span className="font-medium text-foreground">Contact@TexasBathSolutions.com</span>
             </div>
             <Button
               type="submit"
