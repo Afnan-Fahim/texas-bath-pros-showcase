@@ -1585,7 +1585,7 @@ function Offers() {
                     type="email"
                     value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    placeholder="you@email.com"
+                    placeholder="Your Email"
                   />
                 </div>
                 <div className="space-y-1.5">
@@ -2087,7 +2087,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
                       value={state.name}
                       onChange={(e) => update("name", e.target.value)}
                       onBlur={() => blur("name")}
-                      placeholder="Jane Smith"
+                      placeholder="Your Name"
                       autoComplete="name"
                       aria-invalid={!!errors.name}
                       aria-describedby={errors.name ? "book-name-error" : undefined}
@@ -2117,7 +2117,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
                       value={state.email}
                       onChange={(e) => update("email", e.target.value)}
                       onBlur={() => blur("email")}
-                      placeholder="you@email.com"
+                      placeholder="Your Email"
                       inputMode="email"
                       autoComplete="email"
                       aria-invalid={!!errors.email}
@@ -2632,7 +2632,7 @@ function ContactUsDialog({ open, onOpenChange }: { open: boolean; onOpenChange: 
               <Input
                 value={state.name}
                 onChange={(e) => update("name", e.target.value)}
-                placeholder="Jane Smith"
+                placeholder="Your Name"
                 autoComplete="name"
               />
             </Field>
@@ -2642,7 +2642,7 @@ function ContactUsDialog({ open, onOpenChange }: { open: boolean; onOpenChange: 
                   type="email"
                   value={state.email}
                   onChange={(e) => update("email", e.target.value)}
-                  placeholder="you@email.com"
+                  placeholder="Your Email"
                   autoComplete="email"
                 />
               </Field>
