@@ -2665,10 +2665,7 @@ function ContactUsDialog({ open, onOpenChange }: { open: boolean; onOpenChange: 
               />
             </Field>
             <div className="rounded-lg bg-secondary p-3 text-sm text-muted-foreground">
-              Recipients:{" "}
-              <span className="font-medium text-foreground">
-                justin@texasbathsolutions.com, josiah@texasbathsolutions.com, contact@texasbathsolutions.com
-              </span>
+              Recipient: <span className="font-medium text-foreground">Contact@TexasBathSolutions.com</span>
             </div>
             <Button
               type="submit"
