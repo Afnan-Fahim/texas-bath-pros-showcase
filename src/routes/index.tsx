@@ -1563,7 +1563,7 @@ function Offers() {
                     required
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    placeholder="Jane Doe"
+                    placeholder="Your Name"
                   />
                 </div>
                 <div className="space-y-1.5">
