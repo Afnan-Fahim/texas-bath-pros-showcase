@@ -120,7 +120,7 @@ function usePixelInitCheck() {
 }
 
 /* -------- Conversions API (server-side mirror of the browser pixel) -------- */
-type LeadIdentity = { email?: string; phone?: string; name?: string };
+export type LeadIdentity = { email?: string; phone?: string; name?: string };
 
 function readCookie(name: string): string {
   if (typeof document === "undefined") return "";
@@ -174,7 +174,7 @@ function sendServerEvent(
  * `dedupeKey` prevents duplicates from React re-mounts / StrictMode double effects.
  */
 const firedLeadKeys = new Set<string>();
-function trackLeadEvent(dedupeKey = "default", identity: LeadIdentity = {}) {
+export function trackLeadEvent(dedupeKey = "default", identity: LeadIdentity = {}) {
   if (typeof window === "undefined") return;
   if (firedLeadKeys.has(dedupeKey)) {
     pixelLog("↩︎ Lead skipped (already fired for this submission):", dedupeKey);
@@ -2234,7 +2234,7 @@ type Prefill = {
   offer?: string;
 };
 
-function CalendlyEmbed({
+export function CalendlyEmbed({
   prefill,
   onBack,
   onScheduled,

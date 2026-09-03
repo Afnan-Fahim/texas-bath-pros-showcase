@@ -30,8 +30,11 @@ function createSupabaseFetch(supabaseKey: string): typeof fetch {
 }
 
 function createSupabaseAdminClient() {
-  const SUPABASE_URL = process.env['SUPABASE_URL'];
-  const SUPABASE_SERVICE_ROLE_KEY = process.env['SUPABASE_SERVICE_ROLE_KEY'];
+  // Custom Supabase project (admin/quiz) takes priority when BOTH custom values are
+  // set; otherwise falls back to Lovable Cloud (never mixes URL/key across projects).
+  const useCustom = Boolean(process.env['CUSTOM_SUPABASE_URL'] && process.env['CUSTOM_SUPABASE_SERVICE_ROLE_KEY']);
+  const SUPABASE_URL = useCustom ? process.env['CUSTOM_SUPABASE_URL'] : process.env['SUPABASE_URL'];
+  const SUPABASE_SERVICE_ROLE_KEY = useCustom ? process.env['CUSTOM_SUPABASE_SERVICE_ROLE_KEY'] : process.env['SUPABASE_SERVICE_ROLE_KEY'];
 
   if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
     const missing = [
