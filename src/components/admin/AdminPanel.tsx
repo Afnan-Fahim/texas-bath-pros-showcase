@@ -115,7 +115,7 @@ export function AdminPanel() {
     return (
       <div className="max-w-md mx-auto mt-12 p-6 bg-card border rounded-xl shadow-sm">
         <h2 className="text-2xl font-bold mb-2">Admin Login / Sign Up</h2>
-        <p className="text-xs text-muted-foreground mb-6">Connected to: {import.meta.env.VITE_SUPABASE_URL}</p>
+        <p className="text-xs text-muted-foreground mb-6">Connected to: {import.meta.env.VITE_CUSTOM_SUPABASE_URL || import.meta.env.VITE_SUPABASE_URL}</p>
         <form className="space-y-4">
           <div>
             <Label>Email</Label>
