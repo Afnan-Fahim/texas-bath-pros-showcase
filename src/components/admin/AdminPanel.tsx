@@ -50,21 +50,6 @@ export function AdminPanel() {
     setLoading(false);
   };
 
-  const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    const { data, error } = await supabase.auth.signUp({ email, password });
-    if (error) {
-      alert(`Sign Up Error: ${error.message}`);
-    } else {
-      if (data.session) {
-        alert("Account created and logged in successfully!");
-      } else {
-        alert("Account created! Please check your email inbox to verify your email, then come back here to log in.");
-      }
-    }
-    setLoading(false);
-  };
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -114,8 +99,7 @@ export function AdminPanel() {
   if (!session) {
     return (
       <div className="max-w-md mx-auto mt-12 p-6 bg-card border rounded-xl shadow-sm">
-        <h2 className="text-2xl font-bold mb-2">Admin Login / Sign Up</h2>
-        <p className="text-xs text-muted-foreground mb-6">Connected to: {import.meta.env.VITE_SUPABASE_URL}</p>
+        <h2 className="text-2xl font-bold mb-6">Admin Login</h2>
         <form className="space-y-4">
           <div>
             <Label>Email</Label>
@@ -125,9 +109,8 @@ export function AdminPanel() {
             <Label>Password</Label>
             <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} />
           </div>
-          <div className="flex gap-4 pt-2">
+          <div className="pt-2">
             <Button type="submit" onClick={handleLogin} className="w-full">Log In</Button>
-            <Button type="submit" onClick={handleSignUp} variant="outline" className="w-full">Create Account</Button>
           </div>
         </form>
       </div>
