@@ -159,14 +159,42 @@ export function AdminPanel() {
                   }} 
                   placeholder="https://calendly.com/your-name/event" 
                 />
-                <Button onClick={() => saveQuizData(quizData)}>Save Link</Button>
+                <Button onClick={() => saveQuizData(quizData)}>Save</Button>
+              </div>
+            </div>
+            <div className="max-w-2xl mt-6">
+              <Label className="text-base font-semibold">Quote Button Text</Label>
+              <p className="text-sm text-muted-foreground mb-2">Text for the bouncing button on the home page.</p>
+              <div className="flex gap-2">
+                <Input 
+                  value={quizData.quote_button_text || "Get Your Quote"} 
+                  onChange={(e) => {
+                    setQuizData({ ...quizData, quote_button_text: e.target.value });
+                  }} 
+                  placeholder="Get Your Quote" 
+                />
+                <Button onClick={() => saveQuizData(quizData)}>Save</Button>
+              </div>
+            </div>
+            <div className="max-w-2xl mt-6">
+              <Label className="text-base font-semibold">Quote Button Color</Label>
+              <p className="text-sm text-muted-foreground mb-2">Tailwind classes for color (e.g. bg-blue-600 hover:bg-blue-700)</p>
+              <div className="flex gap-2">
+                <Input 
+                  value={quizData.quote_button_color || "bg-blue-600 hover:bg-blue-700"} 
+                  onChange={(e) => {
+                    setQuizData({ ...quizData, quote_button_color: e.target.value });
+                  }} 
+                  placeholder="bg-blue-600 hover:bg-blue-700" 
+                />
+                <Button onClick={() => saveQuizData(quizData)}>Save</Button>
               </div>
             </div>
           </div>
 
           {/* Quiz Questions */}
           {Object.entries(quizData).map(([qKey, question]: [string, any]) => {
-            if (qKey === "calendly_url") return null; // Skip non-question keys
+            if (qKey === "calendly_url" || qKey === "quote_button_text" || qKey === "quote_button_color") return null; // Skip non-question keys
             return (
             <div key={qKey} className="border p-6 rounded-lg bg-muted/20">
               <div className="mb-6 bg-background p-4 rounded-lg border shadow-sm">

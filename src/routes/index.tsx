@@ -1618,6 +1618,7 @@ function Offers() {
                 <DialogDescription>Pick your Free Estimate appointment time.</DialogDescription>
               </DialogHeader>
               <CalendlyEmbed
+                url="https://calendly.com/rugsafari/texas-bath-solutions"
                 prefill={{ ...form, offer: `${active.amount} — ${active.headline}` }}
                 title={`Pick your time to lock in ${active.amount}`}
                 subtitle={`Your ${active.headline} discount is attached to this appointment.`}
@@ -2023,14 +2024,6 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
         <div className="lg:col-span-3">
           <div className="w-full max-h-[85vh] overflow-y-auto rounded-3xl hide-scrollbar relative bg-card shadow-2xl border border-teal/20">
             <div className={showCalendly ? "hidden" : "block w-full"}>
-              <div className="flex justify-center pt-8 pb-2 px-6 md:px-8">
-                <Button 
-                  size="lg" 
-                  className="relative z-10 w-full sm:w-auto h-14 md:h-16 px-8 md:px-10 text-lg md:text-xl font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-xl hover:shadow-2xl transition-all animate-bounce cursor-default"
-                >
-                  Get Your Quote
-                </Button>
-              </div>
               <QuizFlow
                 onShowCalendly={handleShowCalendly}
                 onComplete={async (data) => {

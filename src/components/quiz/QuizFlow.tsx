@@ -131,7 +131,16 @@ export function QuizFlow({ onComplete, onShowCalendly, calendlyCompleted }: Quiz
   }
 
   return (
-    <div className="w-full max-w-2xl mx-auto bg-card rounded-[2rem] shadow-2xl border border-teal/20 relative overflow-hidden transition-all duration-500 group hover:shadow-[0_10px_50px_rgba(13,59,102,0.12)]">
+    <>
+      <div className="flex justify-center pt-8 pb-4 px-6 md:px-8">
+        <Button 
+          size="lg" 
+          className={`relative z-10 w-full sm:w-auto h-14 md:h-16 px-8 md:px-10 text-lg md:text-xl font-semibold text-white shadow-xl hover:shadow-2xl transition-all animate-bounce cursor-default ${quizData.quote_button_color || "bg-blue-600 hover:bg-blue-700"}`}
+        >
+          {quizData.quote_button_text || "Get Your Quote"}
+        </Button>
+      </div>
+      <div className="w-full max-w-2xl mx-auto bg-card rounded-[2rem] shadow-2xl border border-teal/20 relative overflow-hidden transition-all duration-500 group hover:shadow-[0_10px_50px_rgba(13,59,102,0.12)]">
       
       {/* Decorative gradient backgrounds */}
       <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-teal/10 blur-3xl opacity-50 pointer-events-none group-hover:opacity-100 transition-opacity duration-700"></div>
@@ -298,5 +307,6 @@ export function QuizFlow({ onComplete, onShowCalendly, calendlyCompleted }: Quiz
       )}
       </div>
     </div>
+    </>
   );
 }
