@@ -140,11 +140,11 @@ export function QuizFlow({ onComplete, onShowCalendly, calendlyCompleted }: Quiz
     <>
       {/* Backdrop for popout effect */}
       <div 
-        className={`fixed inset-0 z-40 bg-background/60 backdrop-blur-sm transition-all duration-500 pointer-events-none ${isHovered ? 'opacity-100' : 'opacity-0'}`} 
+        className={`fixed inset-0 z-30 bg-background/60 backdrop-blur-sm transition-all duration-500 pointer-events-none ${isHovered ? 'opacity-100' : 'opacity-0'}`} 
       />
       
       <div 
-        className={`relative w-full max-w-4xl mx-auto transition-all duration-500 z-50 ${isHovered ? 'scale-[1.02] md:scale-105' : 'scale-100'}`}
+        className={`relative w-full max-w-4xl mx-auto transition-all duration-500 z-40 ${isHovered ? 'scale-100' : 'scale-100'}`}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
