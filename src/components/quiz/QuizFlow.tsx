@@ -59,7 +59,7 @@ export function QuizFlow({ onComplete, onShowCalendly, calendlyCompleted }: Quiz
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
-        const { data } = await supabase
+        const { data } = await (supabase as any)
           .from("quiz_settings")
           .select("quiz_data")
           .eq("id", 1)
