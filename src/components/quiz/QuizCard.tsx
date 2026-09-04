@@ -7,18 +7,21 @@ interface QuizCardProps {
   image?: string;
   selected: boolean;
   onClick: () => void;
+  index?: number;
 }
 
-export function QuizCard({ title, description, image, selected, onClick }: QuizCardProps) {
+export function QuizCard({ title, description, image, selected, onClick, index = 0 }: QuizCardProps) {
   return (
     <div
       onClick={onClick}
+      style={{ animationDelay: `${index * 0.15}s` }}
       className={cn(
-        "cursor-pointer rounded-xl border-2 overflow-hidden transition-all duration-300",
+        "cursor-pointer rounded-xl border-2 overflow-hidden transition-all duration-300 ease-in-out",
         "flex flex-col items-center text-center",
-        "hover:border-primary/50 hover:shadow-md active:scale-90 active:rotate-1",
+        "motion-safe:animate-subtle-float",
+        "hover:border-primary/40 hover:shadow-lg hover:-translate-y-1 hover:scale-[1.02]",
         selected
-          ? "border-primary bg-primary/5 shadow-lg scale-105"
+          ? "border-primary bg-primary/5 shadow-[0_0_15px_rgba(var(--color-primary),0.15)] scale-[1.02]"
           : "border-border bg-card"
       )}
     >
@@ -32,7 +35,7 @@ export function QuizCard({ title, description, image, selected, onClick }: QuizC
           <img
             src={image}
             alt={title}
-            className="relative w-full h-full object-contain rounded-md drop-shadow-md z-10 animate-float transition-all duration-500 ease-out group-hover:-translate-y-2 group-hover:scale-110 group-hover:drop-shadow-2xl"
+            className="relative w-full h-full object-contain rounded-md drop-shadow-md z-10 transition-transform duration-500 ease-out group-hover:scale-105"
             loading="lazy"
             onError={(e) => {
               // Fallback if image fails to load

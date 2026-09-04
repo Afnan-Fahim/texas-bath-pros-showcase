@@ -172,9 +172,10 @@ export function QuizFlow({ onComplete, onShowCalendly, calendlyCompleted }: Quiz
             <p className="text-muted-foreground">{quizData.question1.description}</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {quizData.question1.options.map((opt: any) => (
+            {quizData.question1.options.map((opt: any, idx: number) => (
               <QuizCard
                 key={opt.id}
+                index={idx}
                 title={opt.label}
                 image={opt.image}
                 selected={state.desiredUpgrade === opt.id}
@@ -193,9 +194,10 @@ export function QuizFlow({ onComplete, onShowCalendly, calendlyCompleted }: Quiz
             <p className="text-muted-foreground">{quizData.question2.description}</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {quizData.question2.options.map((opt: any) => (
+            {quizData.question2.options.map((opt: any, idx: number) => (
               <QuizCard
                 key={opt.id}
+                index={idx}
                 title={opt.label}
                 image={opt.image}
                 selected={state.mainProblem === opt.id}

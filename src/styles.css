@@ -149,6 +149,21 @@
   animation: float 6s ease-in-out infinite;
 }
 
+@keyframes subtle-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@utility animate-subtle-float {
+  animation: subtle-float 3s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-subtle-float {
+    animation: none !important;
+  }
+}
+
 /* Skip rendering work for offscreen sections until they scroll into view */
 @utility cv-auto {
   content-visibility: auto;
