@@ -154,3 +154,11 @@
     repeating-linear-gradient(0deg, rgba(0,0,0,0.045) 0 1px, transparent 1px 3px),
     repeating-linear-gradient(45deg, rgba(0,0,0,0.02) 0 2px, transparent 2px 4px);
 }
+
+@utility hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
