@@ -2066,14 +2066,14 @@ export type Prefill = {
 };
 
 export function CalendlyEmbed({
-  url,
+  url = "https://calendly.com/rugsafari/texas-bath-solutions",
   prefill,
   onBack,
   onScheduled,
   title,
   subtitle,
 }: {
-  url: string;
+  url?: string;
   prefill: Prefill;
   onBack: () => void;
   onScheduled: () => void;
