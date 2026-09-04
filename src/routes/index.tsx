@@ -1938,6 +1938,7 @@ function validateBookingField(k: BookingFields, v: string): string {
 }
 
 function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null> }) {
+  const [isQuizOpen, setIsQuizOpen] = useState(false);
   const [calendlyCompleted, setCalendlyCompleted] = useState(false);
   const [showCalendly, setShowCalendly] = useState(false);
   const [quizData, setQuizData] = useState<QuizState | null>(null);
