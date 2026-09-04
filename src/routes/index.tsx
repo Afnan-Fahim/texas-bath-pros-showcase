@@ -2176,7 +2176,7 @@ export function CalendlyEmbed({
     ...(attribution.utm_term ? { utm_term: attribution.utm_term } : {}),
   });
 
-  const url = `${CALENDLY_URL}?${params.toString()}`;
+  const widgetUrl = `${url}?${params.toString()}`;
 
   useEffect(() => {
     let cancelled = false;
@@ -2187,7 +2187,7 @@ export function CalendlyEmbed({
         .Calendly;
       if (host && C) {
         host.innerHTML = "";
-        C.initInlineWidget({ url, parentElement: host });
+        C.initInlineWidget({ url: widgetUrl, parentElement: host });
       } else {
         setTimeout(tryInit, 200);
       }
@@ -2196,7 +2196,7 @@ export function CalendlyEmbed({
     return () => {
       cancelled = true;
     };
-  }, [url]);
+  }, [widgetUrl]);
 
   return (
     <div>
