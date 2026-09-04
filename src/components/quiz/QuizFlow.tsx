@@ -131,6 +131,7 @@ export function QuizFlow({ onComplete, onShowCalendly, calendlyCompleted }: Quiz
     return <div className="w-full max-w-2xl mx-auto p-12 text-center text-muted-foreground">Loading quiz...</div>;
   }
 
+  return (
     <>
       {/* Backdrop for popout effect */}
       <div 
@@ -319,6 +320,7 @@ export function QuizFlow({ onComplete, onShowCalendly, calendlyCompleted }: Quiz
       )}
         </div>
       </div>
+    </div>
     </>
   );
 }
