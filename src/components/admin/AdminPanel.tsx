@@ -28,7 +28,7 @@ export function AdminPanel() {
 
   const fetchQuizData = async () => {
     setLoading(true);
-    const { data, error } = await supabase
+    const { data, error } = await (supabase as any)
       .from("quiz_settings")
       .select("quiz_data")
       .eq("id", 1)
@@ -97,7 +97,7 @@ export function AdminPanel() {
   };
 
   const saveQuizData = async (data: any) => {
-    const { error } = await supabase
+    const { error } = await (supabase as any)
       .from("quiz_settings")
       .update({ quiz_data: data })
       .eq("id", 1);
