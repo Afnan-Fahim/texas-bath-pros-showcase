@@ -1942,13 +1942,15 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
   const [calendlyCompleted, setCalendlyCompleted] = useState(false);
   const [showCalendly, setShowCalendly] = useState(false);
   const [quizData, setQuizData] = useState<QuizState | null>(null);
+  const [calendlyUrl, setCalendlyUrl] = useState(CALENDLY_URL);
 
   useEffect(() => {
     captureAttribution();
   }, []);
 
-  const handleShowCalendly = (data: QuizState) => {
+  const handleShowCalendly = (data: QuizState, url?: string) => {
     setQuizData(data);
+    if (url) setCalendlyUrl(url);
     setShowCalendly(true);
   };
 
@@ -2050,7 +2052,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
             <Button
               onClick={() => setIsQuizOpen(true)}
               size="lg"
-              className="relative z-10 w-full sm:w-auto h-16 px-10 text-xl font-semibold bg-teal hover:bg-teal/90 text-white shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1"
+              className="relative z-10 w-full sm:w-auto h-16 px-10 text-xl font-semibold bg-teal hover:bg-teal/90 text-white shadow-xl hover:shadow-2xl transition-all animate-bounce mt-4"
             >
               Start My Quote Quiz
             </Button>
@@ -2060,7 +2062,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
 
       <Dialog open={isQuizOpen} onOpenChange={setIsQuizOpen}>
         <DialogContent className="max-w-4xl p-0 overflow-hidden bg-transparent border-none shadow-none [&>button]:text-white [&>button]:bg-navy/50 [&>button]:hover:bg-navy/80 [&>button]:rounded-full [&>button]:p-2 [&>button]:w-10 [&>button]:h-10 [&>button]:-top-4 [&>button]:-right-4 sm:[&>button]:-right-12">
-          <div className="max-h-[85vh] overflow-y-auto rounded-[2rem] w-full relative">
+          <div className="max-h-[85vh] overflow-y-auto rounded-[2rem] hide-scrollbar w-full relative">
             <div className={showCalendly ? "hidden" : "block w-full"}>
               <QuizFlow
                 onShowCalendly={handleShowCalendly}
@@ -2070,6 +2072,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
             </div>
             <div className={showCalendly ? "block w-full bg-card rounded-[2rem] shadow-2xl border-2 border-teal/20 p-6 md:p-8" : "hidden"}>
               <CalendlyEmbed
+                url={calendlyUrl}
                 prefill={{
                   name: "",
                   email: "",
@@ -2102,12 +2105,14 @@ type Prefill = {
 };
 
 export function CalendlyEmbed({
+  url = CALENDLY_URL,
   prefill,
   onBack,
   onScheduled,
   title,
   subtitle,
 }: {
+  url?: string;
   prefill: Prefill;
   onBack: () => void;
   onScheduled: () => void;
@@ -2171,7 +2176,7 @@ export function CalendlyEmbed({
     ...(attribution.utm_term ? { utm_term: attribution.utm_term } : {}),
   });
 
-  const url = `${CALENDLY_URL}?${params.toString()}`;
+  const widgetUrl = `${url}?${params.toString()}`;
 
   useEffect(() => {
     let cancelled = false;
@@ -2182,7 +2187,7 @@ export function CalendlyEmbed({
         .Calendly;
       if (host && C) {
         host.innerHTML = "";
-        C.initInlineWidget({ url, parentElement: host });
+        C.initInlineWidget({ url: widgetUrl, parentElement: host });
       } else {
         setTimeout(tryInit, 200);
       }
@@ -2191,7 +2196,7 @@ export function CalendlyEmbed({
     return () => {
       cancelled = true;
     };
-  }, [url]);
+  }, [widgetUrl]);
 
   return (
     <div>
