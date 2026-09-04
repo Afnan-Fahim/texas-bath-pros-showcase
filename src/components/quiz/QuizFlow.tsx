@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { QuizCard } from "./QuizCard";
-import { supabase } from "@/integrations/supabase/client";
+import { customSupabase as supabase } from "@/integrations/custom-supabase/client";
 
 export type QuizState = {
   desiredUpgrade: string;
