@@ -2424,7 +2424,11 @@ function Footer() {
       <div className="border-t border-neutral-900/10">
         <div className="container-x py-5 flex flex-wrap items-center justify-between gap-3 text-xs text-neutral-600">
           <div>© {new Date().getFullYear()} Texas Bath Solutions. All rights reserved.</div>
-          <div className="text-neutral-600">Licensed &amp; Insured · San Antonio, Texas</div>
+          <div className="flex items-center gap-3 text-neutral-600">
+            <span>Licensed &amp; Insured · San Antonio, Texas</span>
+            <span>·</span>
+            <a href="/admin" className="hover:text-navy hover:underline transition-colors">Admin Panel</a>
+          </div>
         </div>
       </div>
       <LegalTerms />
