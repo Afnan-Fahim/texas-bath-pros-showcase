@@ -60,17 +60,22 @@ export function QuizFlow({ onComplete, onShowCalendly, calendlyCompleted }: Quiz
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
-        const { data } = await (supabase as any)
+        const { data, error } = await (supabase as any)
           .from("quiz_settings")
           .select("quiz_data")
           .eq("id", 1)
           .single();
+          
+        if (error) {
+          console.error("Supabase Error fetching quiz data:", error);
+          throw error;
+        }
 
         if (data && data.quiz_data) {
           setQuizData(data.quiz_data);
         }
-      } catch (err) {
-        console.error("Failed to load dynamic quiz data", err);
+      } catch (err: any) {
+        console.error("Failed to load dynamic quiz data. Using default data instead.", err?.message || err);
       } finally {
         setIsLoadingQuiz(false);
       }
