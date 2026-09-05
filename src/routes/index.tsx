@@ -747,35 +747,10 @@ function HeroVideo() {
     if (!v || !srcReady) return;
     playsRef.current = 0;
     setFinished(false);
-    let cleanup = () => {};
-    // First play: with sound. Browsers block unmuted autoplay until the visitor
-    // has interacted with the page, so fall back to muted playback and unmute
-    // (restarting from the top) on their very first interaction.
-    v.muted = false;
-    v.volume = 1;
-    setMuted(false);
-    v.play().catch(() => {
-      v.muted = true;
-      setMuted(true);
-      v.play().catch(() => {});
-
-      const enableSound = () => {
-        const el = videoRef.current;
-        if (!el) return;
-        el.muted = false;
-        el.volume = 1;
-        setMuted(false);
-        if (playsRef.current === 0) el.currentTime = 0;
-        el.play().catch(() => {});
-        cleanup();
-      };
-      const events = ["pointerdown", "touchstart", "keydown", "scroll", "wheel"] as const;
-      events.forEach((e) =>
-        window.addEventListener(e, enableSound, { once: true, passive: true }),
-      );
-      cleanup = () => events.forEach((e) => window.removeEventListener(e, enableSound));
-    });
-    return () => cleanup();
+    // Muted autoplay — browsers always allow it, so it just plays.
+    v.muted = true;
+    setMuted(true);
+    v.play().catch(() => {});
   }, [wide, srcReady]);
 
 
