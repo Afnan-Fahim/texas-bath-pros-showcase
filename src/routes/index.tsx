@@ -618,62 +618,6 @@ function Navbar({ onBook, onContact }: { onBook: () => void; onContact: () => vo
   );
 }
 
-/* ---------------- FLOATING MOBILE BOOK + PHONE CTA ---------------- */
-function MobilePhoneCTA({ onBook }: { onBook: () => void }) {
-  const [dismissed, setDismissed] = useState(() => {
-    if (typeof window === "undefined") return false;
-    try {
-      return window.sessionStorage.getItem("tbs_mobile_cta_dismissed") === "1";
-    } catch {
-      return false;
-    }
-  });
-
-  const dismiss = () => {
-    setDismissed(true);
-    try {
-      window.sessionStorage.setItem("tbs_mobile_cta_dismissed", "1");
-    } catch {
-      /* ignore */
-    }
-  };
-
-  if (dismissed) return null;
-
-  return (
-    <div className="lg:hidden fixed inset-x-0 bottom-0 z-40 border-t border-border bg-card/95 backdrop-blur-md shadow-[0_-10px_40px_-12px_rgba(13,59,102,0.18)]">
-      <div className="container-x flex items-center gap-3 py-3">
-        <Button
-          onClick={onBook}
-          size="default"
-          className="flex-1 h-12 bg-navy text-navy-foreground hover:bg-navy/90 text-sm font-semibold shadow-sm"
-        >
-          <CalendarDays className="h-4 w-4 mr-2" />
-          Book Free Estimate
-        </Button>
-        <PhoneLink className="flex-1">
-          {(display) => (
-            <Button
-              variant="outline"
-              size="default"
-              className="w-full h-12 border-navy/25 text-navy hover:bg-navy/5 hover:text-navy text-sm font-semibold"
-            >
-              <Phone className="h-4 w-4 mr-2" />
-              {display || "Call Us"}
-            </Button>
-          )}
-        </PhoneLink>
-        <button
-          onClick={dismiss}
-          className="grid h-10 w-10 shrink-0 place-items-center rounded-md text-muted-foreground hover:bg-secondary hover:text-navy"
-          aria-label="Hide mobile booking bar"
-        >
-          <X className="h-5 w-5" />
-        </button>
-      </div>
-    </div>
-  );
-}
 
 /* ---------------- HERO ---------------- */
 function Hero({ onBook }: { onBook: () => void }) {
@@ -2593,7 +2537,6 @@ function Index() {
       </main>
       <FinancingBanner onBook={scrollToBook} />
       <Footer />
-      <MobilePhoneCTA onBook={scrollToBook} />
       <ContactUsDialog open={contactOpen} onOpenChange={setContactOpen} />
     </div>
   );
