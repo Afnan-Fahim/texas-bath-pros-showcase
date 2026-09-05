@@ -820,7 +820,6 @@ function HeroVideo() {
       <video
         ref={videoRef}
         className="block h-auto w-full"
-        src="/texas-bath-solutions-hero.mp4"
         poster={heroPoster}
         width={720}
         height={1280}
@@ -829,7 +828,10 @@ function HeroVideo() {
         preload="metadata"
         onEnded={handleEnded}
         aria-label="Texas Bath Solutions shower remodel walkthrough video"
-      />
+      >
+        <source src="/texas-bath-solutions-hero.webm" type="video/webm" />
+        <source src="/texas-bath-solutions-hero.mp4" type="video/mp4" />
+      </video>
 
       <button
         type="button"
