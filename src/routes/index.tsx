@@ -708,20 +708,9 @@ function HeroVideo() {
   const [finished, setFinished] = useState(false);
   const playsRef = useRef(0);
   const hasUnmutedRef = useRef(false);
-  // Desktop (and large tablets in landscape) get the widescreen cut so it fills
-  // the space; phones/tablets keep the original portrait video.
-  const [wide, setWide] = useState(false);
   // Defer the actual video download until after the page has painted/LCP so the
   // hero text + poster render fast on mobile. No visual change.
   const [srcReady, setSrcReady] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(min-width: 1024px)");
-    const apply = () => setWide(mq.matches);
-    apply();
-    mq.addEventListener("change", apply);
-    return () => mq.removeEventListener("change", apply);
-  }, []);
 
   useEffect(() => {
     const start = () => setSrcReady(true);
@@ -752,7 +741,7 @@ function HeroVideo() {
     v.muted = true;
     setMuted(true);
     v.play().catch(() => {});
-  }, [wide, srcReady]);
+  }, [srcReady]);
 
   // When the visitor scrolls the video into view, automatically play with sound.
   useEffect(() => {
@@ -847,24 +836,15 @@ function HeroVideo() {
 
   return (
     <div
-      className={`relative mx-auto w-full overflow-hidden rounded-2xl shadow-elegant ring-1 ring-black/5 bg-navy ${
-        wide ? "max-w-none" : "max-w-sm"
-      }`}
+      className="relative mx-auto w-full max-w-sm overflow-hidden rounded-2xl bg-navy shadow-elegant ring-1 ring-black/5"
     >
       <video
         ref={videoRef}
-        key={wide ? "wide" : "portrait"}
         className="block h-auto w-full"
-        src={
-          srcReady
-            ? wide
-              ? "/__l5e/assets-v1/7a1871b0-3146-4838-be63-177642561c7b/texas-bath-solutions-hero-wide.mp4"
-              : "/texas-bath-solutions-hero.mp4"
-            : undefined
-        }
-        poster={wide ? undefined : heroPoster}
-        width={wide ? 1880 : 720}
-        height={wide ? 1080 : 1280}
+        src={srcReady ? "/texas-bath-solutions-hero.mp4" : undefined}
+        poster={heroPoster}
+        width={720}
+        height={1280}
         autoPlay
         muted={muted}
         playsInline
