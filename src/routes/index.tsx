@@ -2537,7 +2537,6 @@ function Index() {
       </main>
       <FinancingBanner onBook={scrollToBook} />
       <Footer />
-      <MobilePhoneCTA onBook={scrollToBook} />
       <ContactUsDialog open={contactOpen} onOpenChange={setContactOpen} />
     </div>
   );
