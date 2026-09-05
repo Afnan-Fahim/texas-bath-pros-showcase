@@ -704,9 +704,10 @@ function Hero({ onBook }: { onBook: () => void }) {
 /* ---------------- HERO VIDEO (auto-play) ---------------- */
 function HeroVideo() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [muted, setMuted] = useState(false);
+  const [muted, setMuted] = useState(true);
   const [finished, setFinished] = useState(false);
   const playsRef = useRef(0);
+  const hasUnmutedRef = useRef(false);
   // Desktop (and large tablets in landscape) get the widescreen cut so it fills
   // the space; phones/tablets keep the original portrait video.
   const [wide, setWide] = useState(false);
@@ -741,25 +742,50 @@ function HeroVideo() {
     };
   }, []);
 
-
   useEffect(() => {
     const v = videoRef.current;
     if (!v || !srcReady) return;
     playsRef.current = 0;
     setFinished(false);
+    hasUnmutedRef.current = false;
     // Muted autoplay — browsers always allow it, so it just plays.
     v.muted = true;
     setMuted(true);
     v.play().catch(() => {});
   }, [wide, srcReady]);
 
+  // When the visitor scrolls the video into view, automatically play with sound.
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v || !srcReady) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !hasUnmutedRef.current) {
+            hasUnmutedRef.current = true;
+            v.muted = false;
+            v.volume = 1;
+            setMuted(false);
+            v.play().catch(() => {});
+          }
+        });
+      },
+      { threshold: 0.5 },
+    );
+
+    observer.observe(v);
+    return () => observer.disconnect();
+  }, [srcReady]);
 
   const handleEnded = () => {
     const v = videoRef.current;
     if (!v) return;
     playsRef.current += 1;
     if (playsRef.current === 1) {
-      // Replay exactly once, still muted.
+      // Replay exactly once, muted.
+      v.muted = true;
+      setMuted(true);
       v.currentTime = 0;
       v.play().catch(() => {});
     } else {
@@ -779,7 +805,11 @@ function HeroVideo() {
   const replay = () => {
     const v = videoRef.current;
     if (!v) return;
+    playsRef.current = 0;
     setFinished(false);
+    hasUnmutedRef.current = false;
+    v.muted = true;
+    setMuted(true);
     v.currentTime = 0;
     v.play().catch(() => {});
   };
@@ -812,7 +842,7 @@ function HeroVideo() {
         className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur hover:bg-black/75"
         aria-label={muted ? "Unmute video" : "Mute video"}
       >
-        {muted ? "🔇 Tap for sound" : "🔊 Sound on"}
+        {muted ? "🔇 Muted" : "🔊 Sound on"}
       </button>
 
       {finished && (
