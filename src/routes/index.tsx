@@ -759,52 +759,23 @@ function HeroVideo() {
     const v = videoRef.current;
     if (!v || !srcReady) return;
 
-    // Try to switch to sound. If the browser blocks unmuted playback (no user
-    // gesture yet), fall back to muted so the video keeps playing instead of
-    // freezing, and retry the unmute on the visitor's first real interaction.
-    const attemptSound = async () => {
-      if (hasUnmutedRef.current) return;
-      hasUnmutedRef.current = true;
-      v.muted = false;
-      v.volume = 1;
-      setMuted(false);
-      try {
-        await v.play();
-      } catch {
-        hasUnmutedRef.current = false;
-        v.muted = true;
-        setMuted(true);
-        v.play().catch(() => {});
-      }
-    };
-
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) attemptSound();
+          if (entry.isIntersecting && !hasUnmutedRef.current) {
+            hasUnmutedRef.current = true;
+            v.muted = false;
+            v.volume = 1;
+            setMuted(false);
+            v.play().catch(() => {});
+          }
         });
       },
       { threshold: 0.5 },
     );
+
     observer.observe(v);
-
-    // First tap/click/keypress anywhere on the page grants sound permission —
-    // unmute then if the video is on screen.
-    const gesture = () => {
-      const rect = v.getBoundingClientRect();
-      const visible = rect.top < window.innerHeight && rect.bottom > 0;
-      if (visible) attemptSound();
-      window.removeEventListener("pointerdown", gesture);
-      window.removeEventListener("keydown", gesture);
-    };
-    window.addEventListener("pointerdown", gesture);
-    window.addEventListener("keydown", gesture);
-
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("pointerdown", gesture);
-      window.removeEventListener("keydown", gesture);
-    };
+    return () => observer.disconnect();
   }, [srcReady]);
 
   const handleEnded = () => {
