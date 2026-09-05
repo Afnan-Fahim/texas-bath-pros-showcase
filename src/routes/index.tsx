@@ -704,9 +704,8 @@ function Hero({ onBook }: { onBook: () => void }) {
 /* ---------------- HERO VIDEO (auto-play) ---------------- */
 function HeroVideo() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [muted, setMuted] = useState(true);
+  const [muted, setMuted] = useState(false);
   const [finished, setFinished] = useState(false);
-  const [needsSoundTap, setNeedsSoundTap] = useState(false);
   const playsRef = useRef(0);
   const hasStartedRef = useRef(false);
 
@@ -715,101 +714,67 @@ function HeroVideo() {
     if (!v) return;
     playsRef.current = 0;
     setFinished(false);
-    setNeedsSoundTap(false);
     hasStartedRef.current = false;
-    v.muted = true;
-    setMuted(true);
+    v.muted = false;
+    v.defaultMuted = false;
+    v.volume = 1;
+    setMuted(false);
     v.pause();
     v.currentTime = 0;
   }, []);
 
-  // Start only when the video reaches the viewport. Browsers permit unmuted
-  // playback after user activation; otherwise we keep the video moving and
-  // present one clear tap target rather than leaving it silently muted.
+  // First pass: start with sound only when the video is in view. Scroll and
+  // touch listeners retry the same unmuted play request on every device.
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
 
-    const attemptSound = async () => {
-      if (hasStartedRef.current) return;
-      v.currentTime = 0;
+    const playFirstPass = () => {
+      const rect = v.getBoundingClientRect();
+      const visibleHeight = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+      const inView = visibleHeight > Math.min(rect.height * 0.25, 120);
+      if (!inView || hasStartedRef.current || playsRef.current > 0) return;
       v.muted = false;
+      v.defaultMuted = false;
       v.volume = 1;
-      try {
-        await v.play();
+      void v.play().then(() => {
         hasStartedRef.current = true;
         setMuted(false);
-        setNeedsSoundTap(false);
-      } catch {
-        v.muted = true;
-        setMuted(true);
-        setNeedsSoundTap(true);
-        try {
-          await v.play();
-          hasStartedRef.current = true;
-        } catch {
-          hasStartedRef.current = false;
-        }
-      }
+      }).catch(() => {
+        // Never substitute a muted first pass. Retry on the visitor's next
+        // scroll/touch/click while this section remains visible.
+        hasStartedRef.current = false;
+      });
     };
 
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) attemptSound();
-        });
+        const entry = entries[0];
+        if (entry?.isIntersecting) playFirstPass();
       },
       { threshold: 0.25 },
     );
     observer.observe(v);
 
-    const gesture = () => {
-      const rect = v.getBoundingClientRect();
-      const visible = rect.top < window.innerHeight && rect.bottom > 0;
-      if (!visible) return;
-      if (hasStartedRef.current && v.muted) {
-        v.muted = false;
-        v.volume = 1;
-        setMuted(false);
-        setNeedsSoundTap(false);
-        v.play().catch(() => {
-          v.muted = true;
-          setMuted(true);
-          setNeedsSoundTap(true);
-        });
-        return;
-      }
-      attemptSound();
-    };
-    window.addEventListener("pointerdown", gesture);
-    window.addEventListener("keydown", gesture);
-    window.addEventListener("touchend", gesture);
+    window.addEventListener("scroll", playFirstPass, { passive: true });
+    window.addEventListener("wheel", playFirstPass, { passive: true });
+    window.addEventListener("touchmove", playFirstPass, { passive: true });
+    window.addEventListener("touchend", playFirstPass, { passive: true });
+    window.addEventListener("pointerdown", playFirstPass);
+    window.addEventListener("pointerup", playFirstPass);
+    window.addEventListener("keydown", playFirstPass);
 
     return () => {
       observer.disconnect();
-      window.removeEventListener("pointerdown", gesture);
-      window.removeEventListener("keydown", gesture);
-      window.removeEventListener("touchend", gesture);
+      window.removeEventListener("scroll", playFirstPass);
+      window.removeEventListener("wheel", playFirstPass);
+      window.removeEventListener("touchmove", playFirstPass);
+      window.removeEventListener("touchend", playFirstPass);
+      window.removeEventListener("pointerdown", playFirstPass);
+      window.removeEventListener("pointerup", playFirstPass);
+      window.removeEventListener("keydown", playFirstPass);
     };
   }, []);
-
-  const startWithSound = async () => {
-    const v = videoRef.current;
-    if (!v) return;
-    v.muted = false;
-    v.volume = 1;
-    setMuted(false);
-    setNeedsSoundTap(false);
-    if (!hasStartedRef.current) v.currentTime = 0;
-    hasStartedRef.current = true;
-    try {
-      await v.play();
-    } catch {
-      v.muted = true;
-      setMuted(true);
-      setNeedsSoundTap(true);
-    }
-  };
 
   const handleEnded = () => {
     const v = videoRef.current;
@@ -823,6 +788,10 @@ function HeroVideo() {
       v.play().catch(() => {});
     } else {
       // Second pass done — hold on the final frame.
+      v.pause();
+      if (Number.isFinite(v.duration) && v.duration > 0) {
+        v.currentTime = Math.max(0, v.duration - 0.04);
+      }
       setFinished(true);
     }
   };
@@ -840,7 +809,6 @@ function HeroVideo() {
     if (!v) return;
     playsRef.current = 0;
     setFinished(false);
-    setNeedsSoundTap(false);
     hasStartedRef.current = true;
     v.muted = false;
     v.volume = 1;
@@ -859,7 +827,6 @@ function HeroVideo() {
         poster={heroPoster}
         width={720}
         height={1280}
-        muted={muted}
         playsInline
         preload="metadata"
         onEnded={handleEnded}
@@ -877,19 +844,6 @@ function HeroVideo() {
       >
         {muted ? "🔇 Muted" : "🔊 Sound on"}
       </button>
-
-      {needsSoundTap && !finished && (
-        <button
-          type="button"
-          onClick={startWithSound}
-          className="absolute inset-0 flex items-center justify-center bg-black/20 transition-colors hover:bg-black/30"
-          aria-label="Play video with sound"
-        >
-          <span className="rounded-full bg-card/95 px-5 py-3 text-sm font-bold text-navy shadow-elegant">
-            Tap to play with sound
-          </span>
-        </button>
-      )}
 
       {finished && (
         <button
