@@ -729,8 +729,10 @@ function HeroVideo() {
     const v = videoRef.current;
     if (!v) return;
 
-    let inView = false;
     const playFirstPass = () => {
+      const rect = v.getBoundingClientRect();
+      const visibleHeight = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+      const inView = visibleHeight > Math.min(rect.height * 0.25, 120);
       if (!inView || hasStartedRef.current || playsRef.current > 0) return;
       v.muted = false;
       v.defaultMuted = false;
@@ -748,8 +750,7 @@ function HeroVideo() {
     const observer = new IntersectionObserver(
       (entries) => {
         const entry = entries[0];
-        inView = Boolean(entry?.isIntersecting);
-        if (inView) playFirstPass();
+        if (entry?.isIntersecting) playFirstPass();
       },
       { threshold: 0.25 },
     );
@@ -759,7 +760,9 @@ function HeroVideo() {
     window.addEventListener("wheel", playFirstPass, { passive: true });
     window.addEventListener("touchmove", playFirstPass, { passive: true });
     window.addEventListener("touchend", playFirstPass, { passive: true });
+    window.addEventListener("pointerdown", playFirstPass);
     window.addEventListener("pointerup", playFirstPass);
+    window.addEventListener("keydown", playFirstPass);
 
     return () => {
       observer.disconnect();
@@ -767,7 +770,9 @@ function HeroVideo() {
       window.removeEventListener("wheel", playFirstPass);
       window.removeEventListener("touchmove", playFirstPass);
       window.removeEventListener("touchend", playFirstPass);
+      window.removeEventListener("pointerdown", playFirstPass);
       window.removeEventListener("pointerup", playFirstPass);
+      window.removeEventListener("keydown", playFirstPass);
     };
   }, []);
 
