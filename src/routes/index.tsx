@@ -824,7 +824,13 @@ function HeroVideo() {
         ref={videoRef}
         key={wide ? "wide" : "portrait"}
         className="block h-auto w-full"
-        src={srcReady ? "/texas-bath-solutions-hero.mp4" : undefined}
+        src={
+          srcReady
+            ? wide
+              ? "/__l5e/assets-v1/7a1871b0-3146-4838-be63-177642561c7b/texas-bath-solutions-hero-wide.mp4"
+              : "/texas-bath-solutions-hero.mp4"
+            : undefined
+        }
         poster={wide ? undefined : heroPoster}
         width={wide ? 1880 : 720}
         height={wide ? 1080 : 1280}
