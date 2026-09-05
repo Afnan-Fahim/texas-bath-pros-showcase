@@ -708,45 +708,23 @@ function HeroVideo() {
   const [finished, setFinished] = useState(false);
   const playsRef = useRef(0);
   const hasUnmutedRef = useRef(false);
-  // Defer the actual video download until after the page has painted/LCP so the
-  // hero text + poster render fast on mobile. No visual change.
-  const [srcReady, setSrcReady] = useState(false);
-
-  useEffect(() => {
-    const start = () => setSrcReady(true);
-    const idle =
-      (window as unknown as { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number })
-        .requestIdleCallback;
-    let t: number | undefined;
-    if (document.readyState === "complete") {
-      if (idle) idle(start, { timeout: 1500 });
-      else t = window.setTimeout(start, 300);
-    } else {
-      window.addEventListener("load", () => (idle ? idle(start, { timeout: 1500 }) : start()), {
-        once: true,
-      });
-    }
-    return () => {
-      if (t) clearTimeout(t);
-    };
-  }, []);
 
   useEffect(() => {
     const v = videoRef.current;
-    if (!v || !srcReady) return;
+    if (!v) return;
     playsRef.current = 0;
     setFinished(false);
     hasUnmutedRef.current = false;
-    // Muted autoplay — browsers always allow it, so it just plays.
     v.muted = true;
     setMuted(true);
-    v.play().catch(() => {});
-  }, [srcReady]);
+    v.pause();
+    v.currentTime = 0;
+  }, []);
 
   // When the visitor scrolls the video into view, automatically play with sound.
   useEffect(() => {
     const v = videoRef.current;
-    if (!v || !srcReady) return;
+    if (!v) return;
 
     // Switch to sound when the video scrolls into view. Browsers that haven't
     // seen a tap/click yet may refuse unmuted playback — in that case keep the
@@ -755,6 +733,7 @@ function HeroVideo() {
     const attemptSound = async () => {
       if (hasUnmutedRef.current) return;
       hasUnmutedRef.current = true;
+      v.currentTime = 0;
       v.muted = false;
       v.volume = 1;
       setMuted(false);
@@ -774,7 +753,7 @@ function HeroVideo() {
           if (entry.isIntersecting) attemptSound();
         });
       },
-      { threshold: 0.5 },
+      { threshold: 0.25 },
     );
     observer.observe(v);
 
@@ -796,7 +775,7 @@ function HeroVideo() {
       window.removeEventListener("keydown", gesture);
       window.removeEventListener("touchstart", gesture);
     };
-  }, [srcReady]);
+  }, []);
 
   const handleEnded = () => {
     const v = videoRef.current;
@@ -841,14 +820,13 @@ function HeroVideo() {
       <video
         ref={videoRef}
         className="block h-auto w-full"
-        src={srcReady ? "/texas-bath-solutions-hero.mp4" : undefined}
+        src="/texas-bath-solutions-hero.mp4"
         poster={heroPoster}
         width={720}
         height={1280}
-        autoPlay
         muted={muted}
         playsInline
-        preload={srcReady ? "metadata" : "none"}
+        preload="metadata"
         onEnded={handleEnded}
         aria-label="Texas Bath Solutions shower remodel walkthrough video"
       />
