@@ -759,23 +759,54 @@ function HeroVideo() {
     const v = videoRef.current;
     if (!v || !srcReady) return;
 
+    // Switch to sound when the video scrolls into view. Browsers that haven't
+    // seen a tap/click yet may refuse unmuted playback — in that case keep the
+    // video playing muted (never freeze it) and flip sound on at the visitor's
+    // first interaction.
+    const attemptSound = async () => {
+      if (hasUnmutedRef.current) return;
+      hasUnmutedRef.current = true;
+      v.muted = false;
+      v.volume = 1;
+      setMuted(false);
+      try {
+        await v.play();
+      } catch {
+        hasUnmutedRef.current = false;
+        v.muted = true;
+        setMuted(true);
+        v.play().catch(() => {});
+      }
+    };
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && !hasUnmutedRef.current) {
-            hasUnmutedRef.current = true;
-            v.muted = false;
-            v.volume = 1;
-            setMuted(false);
-            v.play().catch(() => {});
-          }
+          if (entry.isIntersecting) attemptSound();
         });
       },
       { threshold: 0.5 },
     );
-
     observer.observe(v);
-    return () => observer.disconnect();
+
+    const gesture = () => {
+      const rect = v.getBoundingClientRect();
+      const visible = rect.top < window.innerHeight && rect.bottom > 0;
+      if (visible) attemptSound();
+      window.removeEventListener("pointerdown", gesture);
+      window.removeEventListener("keydown", gesture);
+      window.removeEventListener("touchstart", gesture);
+    };
+    window.addEventListener("pointerdown", gesture);
+    window.addEventListener("keydown", gesture);
+    window.addEventListener("touchstart", gesture);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("pointerdown", gesture);
+      window.removeEventListener("keydown", gesture);
+      window.removeEventListener("touchstart", gesture);
+    };
   }, [srcReady]);
 
   const handleEnded = () => {
