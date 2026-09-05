@@ -706,44 +706,50 @@ function HeroVideo() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
   const [finished, setFinished] = useState(false);
+  const [needsSoundTap, setNeedsSoundTap] = useState(false);
   const playsRef = useRef(0);
-  const hasUnmutedRef = useRef(false);
+  const hasStartedRef = useRef(false);
 
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
     playsRef.current = 0;
     setFinished(false);
-    hasUnmutedRef.current = false;
+    setNeedsSoundTap(false);
+    hasStartedRef.current = false;
     v.muted = true;
     setMuted(true);
     v.pause();
     v.currentTime = 0;
   }, []);
 
-  // When the visitor scrolls the video into view, automatically play with sound.
+  // Start only when the video reaches the viewport. Browsers permit unmuted
+  // playback after user activation; otherwise we keep the video moving and
+  // present one clear tap target rather than leaving it silently muted.
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
 
-    // Switch to sound when the video scrolls into view. Browsers that haven't
-    // seen a tap/click yet may refuse unmuted playback — in that case keep the
-    // video playing muted (never freeze it) and flip sound on at the visitor's
-    // first interaction.
     const attemptSound = async () => {
-      if (hasUnmutedRef.current) return;
-      hasUnmutedRef.current = true;
+      if (hasStartedRef.current) return;
       v.currentTime = 0;
       v.muted = false;
       v.volume = 1;
-      setMuted(false);
       try {
         await v.play();
+        hasStartedRef.current = true;
+        setMuted(false);
+        setNeedsSoundTap(false);
       } catch {
-        hasUnmutedRef.current = false;
         v.muted = true;
         setMuted(true);
-        v.play().catch(() => {});
+        setNeedsSoundTap(true);
+        try {
+          await v.play();
+          hasStartedRef.current = true;
+        } catch {
+          hasStartedRef.current = false;
+        }
       }
     };
 
@@ -760,22 +766,50 @@ function HeroVideo() {
     const gesture = () => {
       const rect = v.getBoundingClientRect();
       const visible = rect.top < window.innerHeight && rect.bottom > 0;
-      if (visible) attemptSound();
-      window.removeEventListener("pointerdown", gesture);
-      window.removeEventListener("keydown", gesture);
-      window.removeEventListener("touchstart", gesture);
+      if (!visible) return;
+      if (hasStartedRef.current && v.muted) {
+        v.muted = false;
+        v.volume = 1;
+        setMuted(false);
+        setNeedsSoundTap(false);
+        v.play().catch(() => {
+          v.muted = true;
+          setMuted(true);
+          setNeedsSoundTap(true);
+        });
+        return;
+      }
+      attemptSound();
     };
     window.addEventListener("pointerdown", gesture);
     window.addEventListener("keydown", gesture);
-    window.addEventListener("touchstart", gesture);
+    window.addEventListener("touchend", gesture);
 
     return () => {
       observer.disconnect();
       window.removeEventListener("pointerdown", gesture);
       window.removeEventListener("keydown", gesture);
-      window.removeEventListener("touchstart", gesture);
+      window.removeEventListener("touchend", gesture);
     };
   }, []);
+
+  const startWithSound = async () => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.muted = false;
+    v.volume = 1;
+    setMuted(false);
+    setNeedsSoundTap(false);
+    if (!hasStartedRef.current) v.currentTime = 0;
+    hasStartedRef.current = true;
+    try {
+      await v.play();
+    } catch {
+      v.muted = true;
+      setMuted(true);
+      setNeedsSoundTap(true);
+    }
+  };
 
   const handleEnded = () => {
     const v = videoRef.current;
@@ -806,9 +840,11 @@ function HeroVideo() {
     if (!v) return;
     playsRef.current = 0;
     setFinished(false);
-    hasUnmutedRef.current = false;
-    v.muted = true;
-    setMuted(true);
+    setNeedsSoundTap(false);
+    hasStartedRef.current = true;
+    v.muted = false;
+    v.volume = 1;
+    setMuted(false);
     v.currentTime = 0;
     v.play().catch(() => {});
   };
@@ -841,6 +877,19 @@ function HeroVideo() {
       >
         {muted ? "🔇 Muted" : "🔊 Sound on"}
       </button>
+
+      {needsSoundTap && !finished && (
+        <button
+          type="button"
+          onClick={startWithSound}
+          className="absolute inset-0 flex items-center justify-center bg-black/20 transition-colors hover:bg-black/30"
+          aria-label="Play video with sound"
+        >
+          <span className="rounded-full bg-card/95 px-5 py-3 text-sm font-bold text-navy shadow-elegant">
+            Tap to play with sound
+          </span>
+        </button>
+      )}
 
       {finished && (
         <button
