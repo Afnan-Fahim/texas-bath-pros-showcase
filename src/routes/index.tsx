@@ -759,13 +759,11 @@ function HeroVideo() {
     if (!v) return;
     playsRef.current += 1;
     if (playsRef.current === 1) {
-      // Second pass plays muted — the customer chooses to unmute.
-      v.muted = true;
-      setMuted(true);
+      // Replay exactly once, still muted.
       v.currentTime = 0;
       v.play().catch(() => {});
     } else {
-      // Stop after the second play and hold on the final frame.
+      // Second pass done — hold on the final frame.
       setFinished(true);
     }
   };
