@@ -766,7 +766,20 @@ function HeroVideo() {
     const gesture = () => {
       const rect = v.getBoundingClientRect();
       const visible = rect.top < window.innerHeight && rect.bottom > 0;
-      if (visible) attemptSound();
+      if (!visible) return;
+      if (hasStartedRef.current && v.muted) {
+        v.muted = false;
+        v.volume = 1;
+        setMuted(false);
+        setNeedsSoundTap(false);
+        v.play().catch(() => {
+          v.muted = true;
+          setMuted(true);
+          setNeedsSoundTap(true);
+        });
+        return;
+      }
+      attemptSound();
     };
     window.addEventListener("pointerdown", gesture);
     window.addEventListener("keydown", gesture);
