@@ -828,7 +828,6 @@ function HeroVideo() {
         autoPlay
         muted={muted}
         playsInline
-        controls
         preload={srcReady ? "metadata" : "none"}
         onEnded={handleEnded}
         aria-label="Texas Bath Solutions shower remodel walkthrough video"
