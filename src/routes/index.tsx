@@ -1233,15 +1233,15 @@ function Gallery() {
               className="group relative overflow-hidden rounded-2xl bg-card shadow-card ring-1 ring-border text-left"
             >
               <div className="relative aspect-[4/5] overflow-hidden">
-                <img
+                <OptimizedImage
                   src={item.after}
                   alt={`${item.title} — ${item.location}`}
-                  loading="lazy"
-                  decoding="async"
                   width={1200}
                   height={1200}
+                  sizes="(min-width: 1024px) 380px, (min-width: 640px) 45vw, 92vw"
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
+
                 {item.before && (
                   <span className="absolute left-3 top-3 rounded-full bg-navy/90 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-navy-foreground">
                     Before & After
