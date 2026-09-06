@@ -2017,9 +2017,10 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
                 />
               </div>
             )}
-
+          </div>
         </div>
       </div>
+
     </section>
   );
 }
