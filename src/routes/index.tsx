@@ -1266,6 +1266,9 @@ function Gallery() {
 
       <Dialog open={active !== null} onOpenChange={(o) => !o && setActiveIdx(null)}>
         <DialogContent className="max-w-5xl p-0 overflow-hidden bg-background">
+          <DialogTitle className="sr-only">
+            {active ? `${active.title} — ${active.location}` : "Project photo"}
+          </DialogTitle>
           {active && (
             <div className="relative">
               {active.before ? (
