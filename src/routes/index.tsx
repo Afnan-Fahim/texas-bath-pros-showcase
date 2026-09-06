@@ -1191,7 +1191,7 @@ function Gallery() {
     setActiveIdx((i) => (i === null ? 0 : (i - 1 + items.length) % items.length));
 
   return (
-    <section ref={galleryRef} id="work" className="cv-auto pt-8 pb-12 md:pt-12 md:pb-16 bg-gradient-to-b from-secondary/40 to-background">
+    <section ref={galleryRef} id="work" className="pt-8 pb-12 md:pt-12 md:pb-16 bg-gradient-to-b from-secondary/40 to-background">
       <div className="container-x">
         <div className="max-w-3xl mx-auto text-center">
           <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-navy">
@@ -1406,7 +1406,7 @@ function Offers() {
 
 
   return (
-    <section ref={offersRef} id="offers" className="cv-auto py-12 md:py-16 bg-secondary/40">
+    <section ref={offersRef} id="offers" className="py-12 md:py-16 bg-secondary/40">
       <div className="container-x">
         <div className="max-w-3xl mx-auto text-center">
           <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-navy">
@@ -1635,7 +1635,7 @@ function WhyUs() {
     },
   ];
   return (
-    <section ref={whyRef} id="why" className="cv-auto py-12 md:py-16">
+    <section ref={whyRef} id="why" className="py-12 md:py-16">
       <div className="container-x">
         <div className="max-w-3xl mx-auto text-center">
           <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-navy">
@@ -1676,7 +1676,7 @@ function Process() {
     { n: "3", Icon: ShowerHead, title: "Professional Installation", body: "Fast, clean installation — and we provide Post-Care for Peace of Mind." },
   ];
   return (
-    <section ref={processRef} id="process" className="cv-auto py-5 md:py-8 bg-gradient-to-b from-navy to-navy/95 text-navy-foreground">
+    <section ref={processRef} id="process" className="py-5 md:py-8 bg-gradient-to-b from-navy to-navy/95 text-navy-foreground">
       <div className="container-x">
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl text-navy-foreground text-balance">
