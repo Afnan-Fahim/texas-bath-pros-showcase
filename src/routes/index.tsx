@@ -1975,30 +1975,49 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
         <div className="lg:col-span-3">
           <div className="w-full max-h-[85vh] overflow-y-auto rounded-3xl hide-scrollbar relative bg-card shadow-2xl border border-teal/20">
             <div className={showCalendly ? "hidden" : "block w-full"}>
-              <QuizFlow
-                onShowCalendly={handleShowCalendly}
-                onComplete={async (data) => {
-                  await handleQuizComplete(data);
-                }}
-                calendlyCompleted={calendlyCompleted}
-              />
+              <LazyMount
+                minHeight={620}
+                placeholder={
+                  <div className="w-full max-w-2xl mx-auto p-12 text-center text-muted-foreground">
+                    Loading quiz...
+                  </div>
+                }
+              >
+                <Suspense
+                  fallback={
+                    <div className="w-full max-w-2xl mx-auto p-12 text-center text-muted-foreground">
+                      Loading quiz...
+                    </div>
+                  }
+                >
+                  <QuizFlow
+                    onShowCalendly={handleShowCalendly}
+                    onComplete={async (data: QuizState) => {
+                      await handleQuizComplete(data);
+                    }}
+                    calendlyCompleted={calendlyCompleted}
+                  />
+                </Suspense>
+              </LazyMount>
             </div>
-            <div className={showCalendly ? "block w-full p-6 md:p-8" : "hidden"}>
-              <CalendlyEmbed
-                url={calendlyUrl}
-                prefill={{
-                  name: "",
-                  email: "",
-                  phone: quizData?.phone || "",
-                  project: quizData?.timeline || "",
-                }}
-                onBack={handleCalendlyBack}
-                onScheduled={handleCalendlyScheduled}
-                title="Pick a time for your free estimate"
-                subtitle="Lock in your appointment to discuss your project."
-              />
-            </div>
-          </div>
+            {showCalendly && (
+              <div className="block w-full p-6 md:p-8">
+                <CalendlyEmbed
+                  url={calendlyUrl}
+                  prefill={{
+                    name: "",
+                    email: "",
+                    phone: quizData?.phone || "",
+                    project: quizData?.timeline || "",
+                  }}
+                  onBack={handleCalendlyBack}
+                  onScheduled={handleCalendlyScheduled}
+                  title="Pick a time for your free estimate"
+                  subtitle="Lock in your appointment to discuss your project."
+                />
+              </div>
+            )}
+
         </div>
       </div>
     </section>
