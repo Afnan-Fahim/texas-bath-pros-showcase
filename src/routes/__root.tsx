@@ -78,22 +78,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     scripts: [
       {
-        src: "https://assets.calendly.com/assets/external/widget.js",
-        async: true,
-      },
-      {
-        children: `!function(f,b,e,v,n,t,s)\n{if(f.fbq)return;n=f.fbq=function(){n.callMethod?\nn.callMethod.apply(n,arguments):n.queue.push(arguments)};\nif(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';\nn.queue=[];t=b.createElement(e);t.async=!0;\nt.src=v;s=b.getElementsByTagName(e)[0];\ns.parentNode.insertBefore(t,s)}(window, document,'script',\n'https://connect.facebook.net/en_US/fbevents.js');\nfbq('init', '1062683162839921');\nfbq('track', 'PageView');`,
-      },
-      {
-        children: `(function(d, s, id){
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) {return;}
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/messenger.Extensions.js";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'Messenger'));`,
+        // Meta Pixel + Messenger Extensions: queued immediately (so no events are
+        // lost) but the network fetch is deferred until the browser is idle, so
+        // they never compete with first paint.
+        children: `!function(f,b,e,v,n,t,s)\n{if(f.fbq)return;n=f.fbq=function(){n.callMethod?\nn.callMethod.apply(n,arguments):n.queue.push(arguments)};\nif(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';\nn.queue=[]}(window, document,'script');\nfbq('init', '1062683162839921');\nfbq('track', 'PageView');\n(function(){var loaded=false;function load(){if(loaded)return;loaded=true;\nvar t=document.createElement('script');t.async=!0;t.src='https://connect.facebook.net/en_US/fbevents.js';document.head.appendChild(t);\nif(!document.getElementById('Messenger')){var m=document.createElement('script');m.async=!0;m.id='Messenger';m.src='https://connect.facebook.net/en_US/messenger.Extensions.js';document.head.appendChild(m);}}\nfunction schedule(){if('requestIdleCallback' in window){requestIdleCallback(load,{timeout:3000})}else{setTimeout(load,1500)}}\nif(document.readyState==='complete'){schedule()}else{window.addEventListener('load',schedule,{once:true})}\n['pointerdown','keydown','touchstart'].forEach(function(e){window.addEventListener(e,load,{once:true,passive:true})});})();`,
       },
     ],
+
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
