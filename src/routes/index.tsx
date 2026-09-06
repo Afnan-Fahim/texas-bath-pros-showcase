@@ -1871,6 +1871,12 @@ function validateBookingField(k: BookingFields, v: string): string {
   }
 }
 
+/* Quiz pulls the backend client — loaded only when the booking block is near
+   the viewport, so it never lands in the first-paint bundle. */
+const QuizFlow = lazy(() =>
+  import("@/components/quiz/QuizFlow").then((m) => ({ default: m.QuizFlow })),
+);
+
 function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null> }) {
   const [calendlyCompleted, setCalendlyCompleted] = useState(false);
   const [showCalendly, setShowCalendly] = useState(false);
