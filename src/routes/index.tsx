@@ -708,6 +708,7 @@ function HeroVideo() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(false);
   const [finished, setFinished] = useState(false);
+  const [userPaused, setUserPaused] = useState(false);
   const playsRef = useRef(0);
   const hasStartedRef = useRef(false);
 
@@ -716,6 +717,7 @@ function HeroVideo() {
     if (!v) return;
     playsRef.current = 0;
     setFinished(false);
+    setUserPaused(false);
     hasStartedRef.current = false;
     v.muted = false;
     v.defaultMuted = false;
@@ -735,7 +737,7 @@ function HeroVideo() {
       const rect = v.getBoundingClientRect();
       const visibleHeight = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
       const inView = visibleHeight > Math.min(rect.height * 0.25, 120);
-      if (!inView || hasStartedRef.current || playsRef.current > 0) return;
+      if (!inView || hasStartedRef.current || playsRef.current > 0 || userPaused) return;
       v.muted = false;
       v.defaultMuted = false;
       v.volume = 1;
@@ -776,7 +778,7 @@ function HeroVideo() {
       window.removeEventListener("pointerup", playFirstPass);
       window.removeEventListener("keydown", playFirstPass);
     };
-  }, []);
+  }, [userPaused]);
 
   const handleEnded = () => {
     const v = videoRef.current;
@@ -806,11 +808,24 @@ function HeroVideo() {
     setMuted(v.muted);
   };
 
+  const togglePause = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (v.paused) {
+      setUserPaused(false);
+      v.play().catch(() => {});
+    } else {
+      v.pause();
+      setUserPaused(true);
+    }
+  };
+
   const replay = () => {
     const v = videoRef.current;
     if (!v) return;
     playsRef.current = 0;
     setFinished(false);
+    setUserPaused(false);
     hasStartedRef.current = true;
     v.muted = false;
     v.volume = 1;
@@ -849,6 +864,23 @@ function HeroVideo() {
         aria-label={muted ? "Unmute video" : "Mute video"}
       >
         {muted ? "🔇 Muted" : "🔊 Sound on"}
+      </button>
+
+      <button
+        type="button"
+        onClick={togglePause}
+        className="absolute bottom-3 right-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur hover:bg-black/75"
+        aria-label={userPaused ? "Play video" : "Pause video"}
+      >
+        {userPaused ? (
+          <svg viewBox="0 0 24 24" className="ml-0.5 h-4 w-4 fill-current" aria-hidden="true">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+        ) : (
+          <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden="true">
+            <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
+          </svg>
+        )}
       </button>
 
       {finished && (
