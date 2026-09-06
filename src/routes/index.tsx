@@ -828,13 +828,17 @@ function HeroVideo() {
         width={720}
         height={1280}
         playsInline
-        preload="metadata"
+        disablePictureInPicture
+        /* The poster is the first paint; the video bytes are only fetched
+           once playback is requested (in-view or user interaction). */
+        preload="none"
         onEnded={handleEnded}
         aria-label="Texas Bath Solutions shower remodel walkthrough video"
       >
         <source src="/texas-bath-solutions-hero.webm" type="video/webm" />
         <source src="/texas-bath-solutions-hero.mp4" type="video/mp4" />
       </video>
+
 
       <button
         type="button"
