@@ -1440,15 +1440,15 @@ function Offers() {
               className="group cursor-pointer overflow-hidden rounded-2xl border border-border bg-card shadow-card hover:shadow-elegant transition-shadow flex flex-col focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               <div className="relative aspect-[4/3] overflow-hidden">
-                <img
+                <OptimizedImage
                   src={o.image}
                   alt={`${o.headline} bathroom remodel discount in San Antonio, TX`}
-                  loading="lazy"
-                  decoding="async"
                   width={1024}
                   height={768}
+                  sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 92vw"
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
+
                 <span className="absolute left-3 top-3 rounded-full bg-navy/90 px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-wide text-navy-foreground">
                   {o.badge}
                 </span>
