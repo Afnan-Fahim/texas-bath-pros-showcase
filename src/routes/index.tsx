@@ -58,7 +58,8 @@ import {
 } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
 import { LegalTerms } from "@/components/LegalTerms";
-import { QuizFlow, QuizState } from "@/components/quiz/QuizFlow";
+import type { QuizState } from "@/components/quiz/QuizFlow";
+import { LazyMount } from "@/components/LazyMount";
 
 import heroShower from "@/assets/hero-shower.avif";
 import afterSubway from "@/assets/after-subway.avif";
