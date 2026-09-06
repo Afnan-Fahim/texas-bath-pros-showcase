@@ -60,6 +60,7 @@ import { cn } from "@/lib/utils";
 import { LegalTerms } from "@/components/LegalTerms";
 import type { QuizState } from "@/components/quiz/QuizFlow";
 import { LazyMount } from "@/components/LazyMount";
+import { OptimizedImage } from "@/components/OptimizedImage";
 
 import heroShower from "@/assets/hero-shower.avif";
 import afterSubway from "@/assets/after-subway.avif";
