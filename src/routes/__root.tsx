@@ -107,9 +107,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     links: [
       { rel: "stylesheet", href: appCss },
       { rel: "icon", type: "image/png", href: "/favicon.png" },
-      { rel: "preconnect", href: "https://assets.calendly.com", crossOrigin: "anonymous" },
+      // Heading + body font files actually used above the fold.
+      { rel: "preload", as: "font", type: "font/woff2", href: frauncesLatin, crossOrigin: "anonymous" },
+      { rel: "preload", as: "font", type: "font/woff2", href: interLatin, crossOrigin: "anonymous" },
+      // Calendly + Meta are loaded lazily, so only warm DNS for them.
+      { rel: "dns-prefetch", href: "https://assets.calendly.com" },
       { rel: "dns-prefetch", href: "https://calendly.com" },
-      { rel: "preconnect", href: "https://connect.facebook.net", crossOrigin: "anonymous" },
+      { rel: "dns-prefetch", href: "https://connect.facebook.net" },
       { rel: "dns-prefetch", href: "https://www.facebook.com" },
     ],
   }),
