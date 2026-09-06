@@ -7,12 +7,15 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 export function LazyMount({
   children,
   minHeight,
+  placeholderClassName,
   placeholder,
   rootMargin = "400px",
   className,
 }: {
   children: ReactNode;
-  minHeight: number | string;
+  minHeight?: number | string;
+  /** Classes applied only while the placeholder is showing (e.g. responsive min-height). */
+  placeholderClassName?: string;
   placeholder?: ReactNode;
   rootMargin?: string;
   className?: string;
@@ -42,7 +45,11 @@ export function LazyMount({
   }, [show, rootMargin]);
 
   return (
-    <div ref={ref} className={className} style={show ? undefined : { minHeight }}>
+    <div
+      ref={ref}
+      className={[className, show ? "" : placeholderClassName].filter(Boolean).join(" ")}
+      style={show || minHeight === undefined ? undefined : { minHeight }}
+    >
       {show ? children : placeholder}
     </div>
   );

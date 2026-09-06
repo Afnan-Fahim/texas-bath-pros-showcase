@@ -1983,7 +1983,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
           <div className="w-full max-h-[85vh] overflow-y-auto rounded-3xl hide-scrollbar relative bg-card shadow-2xl border border-teal/20">
             <div className={showCalendly ? "hidden" : "block w-full"}>
               <LazyMount
-                minHeight={620}
+                placeholderClassName="min-h-[717px] lg:min-h-[611px]"
                 placeholder={
                   <div className="w-full max-w-2xl mx-auto p-12 text-center text-muted-foreground">
                     Loading quiz...
