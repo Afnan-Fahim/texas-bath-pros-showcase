@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, lazy, useEffect, useMemo, useRef, useState } from "react";
 import { format } from "date-fns";
 import {
   Phone,
@@ -58,7 +58,9 @@ import {
 } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
 import { LegalTerms } from "@/components/LegalTerms";
-import { QuizFlow, QuizState } from "@/components/quiz/QuizFlow";
+import type { QuizState } from "@/components/quiz/QuizFlow";
+import { LazyMount } from "@/components/LazyMount";
+import { OptimizedImage } from "@/components/OptimizedImage";
 
 import heroShower from "@/assets/hero-shower.avif";
 import afterSubway from "@/assets/after-subway.avif";
@@ -828,13 +830,17 @@ function HeroVideo() {
         width={720}
         height={1280}
         playsInline
-        preload="metadata"
+        disablePictureInPicture
+        /* The poster is the first paint; the video bytes are only fetched
+           once playback is requested (in-view or user interaction). */
+        preload="none"
         onEnded={handleEnded}
         aria-label="Texas Bath Solutions shower remodel walkthrough video"
       >
         <source src="/texas-bath-solutions-hero.webm" type="video/webm" />
         <source src="/texas-bath-solutions-hero.mp4" type="video/mp4" />
       </video>
+
 
       <button
         type="button"
@@ -1228,15 +1234,15 @@ function Gallery() {
               className="group relative overflow-hidden rounded-2xl bg-card shadow-card ring-1 ring-border text-left"
             >
               <div className="relative aspect-[4/5] overflow-hidden">
-                <img
+                <OptimizedImage
                   src={item.after}
                   alt={`${item.title} — ${item.location}`}
-                  loading="lazy"
-                  decoding="async"
                   width={1200}
                   height={1200}
+                  sizes="(min-width: 1024px) 380px, (min-width: 640px) 45vw, 92vw"
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
+
                 {item.before && (
                   <span className="absolute left-3 top-3 rounded-full bg-navy/90 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-navy-foreground">
                     Before & After
@@ -1260,6 +1266,9 @@ function Gallery() {
 
       <Dialog open={active !== null} onOpenChange={(o) => !o && setActiveIdx(null)}>
         <DialogContent className="max-w-5xl p-0 overflow-hidden bg-background">
+          <DialogTitle className="sr-only">
+            {active ? `${active.title} — ${active.location}` : "Project photo"}
+          </DialogTitle>
           {active && (
             <div className="relative">
               {active.before ? (
@@ -1435,15 +1444,15 @@ function Offers() {
               className="group cursor-pointer overflow-hidden rounded-2xl border border-border bg-card shadow-card hover:shadow-elegant transition-shadow flex flex-col focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               <div className="relative aspect-[4/3] overflow-hidden">
-                <img
+                <OptimizedImage
                   src={o.image}
                   alt={`${o.headline} bathroom remodel discount in San Antonio, TX`}
-                  loading="lazy"
-                  decoding="async"
                   width={1024}
                   height={768}
+                  sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 92vw"
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
+
                 <span className="absolute left-3 top-3 rounded-full bg-navy/90 px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-wide text-navy-foreground">
                   {o.badge}
                 </span>
@@ -1629,7 +1638,7 @@ function WhyUs() {
     },
   ];
   return (
-    <section ref={whyRef} id="why" className="cv-auto py-12 md:py-16">
+    <section ref={whyRef} id="why" className="py-12 md:py-16">
       <div className="container-x">
         <div className="max-w-3xl mx-auto text-center">
           <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-navy">
@@ -1670,7 +1679,7 @@ function Process() {
     { n: "3", Icon: ShowerHead, title: "Professional Installation", body: "Fast, clean installation — and we provide Post-Care for Peace of Mind." },
   ];
   return (
-    <section ref={processRef} id="process" className="cv-auto py-5 md:py-8 bg-gradient-to-b from-navy to-navy/95 text-navy-foreground">
+    <section ref={processRef} id="process" className="py-5 md:py-8 bg-gradient-to-b from-navy to-navy/95 text-navy-foreground">
       <div className="container-x">
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl text-navy-foreground text-balance">
@@ -1866,6 +1875,12 @@ function validateBookingField(k: BookingFields, v: string): string {
   }
 }
 
+/* Quiz pulls the backend client — loaded only when the booking block is near
+   the viewport, so it never lands in the first-paint bundle. */
+const QuizFlow = lazy(() =>
+  import("@/components/quiz/QuizFlow").then((m) => ({ default: m.QuizFlow })),
+);
+
 function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null> }) {
   const [calendlyCompleted, setCalendlyCompleted] = useState(false);
   const [showCalendly, setShowCalendly] = useState(false);
@@ -1969,33 +1984,53 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
         </div>
         <div className="lg:col-span-3">
           <div className="w-full max-h-[85vh] overflow-y-auto rounded-3xl hide-scrollbar relative bg-card shadow-2xl border border-teal/20">
-            <div className={showCalendly ? "hidden" : "block w-full"}>
-              <QuizFlow
-                onShowCalendly={handleShowCalendly}
-                onComplete={async (data) => {
-                  await handleQuizComplete(data);
-                }}
-                calendlyCompleted={calendlyCompleted}
-              />
+            <div className={showCalendly ? "hidden" : "block w-full min-h-[717px] lg:min-h-[611px]"}>
+              <LazyMount
+                placeholderClassName="min-h-[717px] lg:min-h-[611px]"
+                placeholder={
+                  <div className="w-full max-w-2xl mx-auto p-12 text-center text-muted-foreground">
+                    Loading quiz...
+                  </div>
+                }
+              >
+                <Suspense
+                  fallback={
+                    <div className="w-full max-w-2xl mx-auto p-12 text-center text-muted-foreground">
+                      Loading quiz...
+                    </div>
+                  }
+                >
+                  <QuizFlow
+                    onShowCalendly={handleShowCalendly}
+                    onComplete={async (data: QuizState) => {
+                      await handleQuizComplete(data);
+                    }}
+                    calendlyCompleted={calendlyCompleted}
+                  />
+                </Suspense>
+              </LazyMount>
             </div>
-            <div className={showCalendly ? "block w-full p-6 md:p-8" : "hidden"}>
-              <CalendlyEmbed
-                url={calendlyUrl}
-                prefill={{
-                  name: "",
-                  email: "",
-                  phone: quizData?.phone || "",
-                  project: quizData?.timeline || "",
-                }}
-                onBack={handleCalendlyBack}
-                onScheduled={handleCalendlyScheduled}
-                title="Pick a time for your free estimate"
-                subtitle="Lock in your appointment to discuss your project."
-              />
-            </div>
+            {showCalendly && (
+              <div className="block w-full p-6 md:p-8">
+                <CalendlyEmbed
+                  url={calendlyUrl}
+                  prefill={{
+                    name: "",
+                    email: "",
+                    phone: quizData?.phone || "",
+                    project: quizData?.timeline || "",
+                  }}
+                  onBack={handleCalendlyBack}
+                  onScheduled={handleCalendlyScheduled}
+                  title="Pick a time for your free estimate"
+                  subtitle="Lock in your appointment to discuss your project."
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>
+
     </section>
   );
 }
