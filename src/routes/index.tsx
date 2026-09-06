@@ -1191,7 +1191,7 @@ function Gallery() {
     setActiveIdx((i) => (i === null ? 0 : (i - 1 + items.length) % items.length));
 
   return (
-    <section ref={galleryRef} id="work" className="pt-8 pb-12 md:pt-12 md:pb-16 bg-gradient-to-b from-secondary/40 to-background">
+    <section ref={galleryRef} id="work" className="cv-auto pt-8 pb-12 md:pt-12 md:pb-16 bg-gradient-to-b from-secondary/40 to-background">
       <div className="container-x">
         <div className="max-w-3xl mx-auto text-center">
           <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-navy">
@@ -1406,7 +1406,7 @@ function Offers() {
 
 
   return (
-    <section ref={offersRef} id="offers" className="py-12 md:py-16 bg-secondary/40">
+    <section ref={offersRef} id="offers" className="cv-auto py-12 md:py-16 bg-secondary/40">
       <div className="container-x">
         <div className="max-w-3xl mx-auto text-center">
           <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-navy">
