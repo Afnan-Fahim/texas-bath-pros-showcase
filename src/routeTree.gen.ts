@@ -13,6 +13,7 @@ import { Route as QuizRouteImport } from './routes/quiz'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiMetaCapiRouteImport } from './routes/api/meta-capi'
+import { Route as ApiManychatRouteImport } from './routes/api/manychat'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 
 const QuizRoute = QuizRouteImport.update({
@@ -35,6 +36,11 @@ const ApiMetaCapiRoute = ApiMetaCapiRouteImport.update({
   path: '/api/meta-capi',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiManychatRoute = ApiManychatRouteImport.update({
+  id: '/api/manychat',
+  path: '/api/manychat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LovableEmailTransactionalPreviewRoute =
   LovableEmailTransactionalPreviewRouteImport.update({
     id: '/lovable/email/transactional/preview',
@@ -46,6 +52,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/quiz': typeof QuizRoute
+  '/api/manychat': typeof ApiManychatRoute
   '/api/meta-capi': typeof ApiMetaCapiRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
@@ -53,6 +60,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/quiz': typeof QuizRoute
+  '/api/manychat': typeof ApiManychatRoute
   '/api/meta-capi': typeof ApiMetaCapiRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
@@ -61,6 +69,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/quiz': typeof QuizRoute
+  '/api/manychat': typeof ApiManychatRoute
   '/api/meta-capi': typeof ApiMetaCapiRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
@@ -70,6 +79,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/quiz'
+    | '/api/manychat'
     | '/api/meta-capi'
     | '/lovable/email/transactional/preview'
   fileRoutesByTo: FileRoutesByTo
@@ -77,6 +87,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/quiz'
+    | '/api/manychat'
     | '/api/meta-capi'
     | '/lovable/email/transactional/preview'
   id:
@@ -84,6 +95,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/quiz'
+    | '/api/manychat'
     | '/api/meta-capi'
     | '/lovable/email/transactional/preview'
   fileRoutesById: FileRoutesById
@@ -92,6 +104,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
   QuizRoute: typeof QuizRoute
+  ApiManychatRoute: typeof ApiManychatRoute
   ApiMetaCapiRoute: typeof ApiMetaCapiRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
 }
@@ -126,6 +139,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiMetaCapiRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/manychat': {
+      id: '/api/manychat'
+      path: '/api/manychat'
+      fullPath: '/api/manychat'
+      preLoaderRoute: typeof ApiManychatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/lovable/email/transactional/preview': {
       id: '/lovable/email/transactional/preview'
       path: '/lovable/email/transactional/preview'
@@ -140,6 +160,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
   QuizRoute: QuizRoute,
+  ApiManychatRoute: ApiManychatRoute,
   ApiMetaCapiRoute: ApiMetaCapiRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
 }
