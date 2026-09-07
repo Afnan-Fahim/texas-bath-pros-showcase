@@ -56,8 +56,6 @@ export function QuizFlow({ onComplete, onShowCalendly, calendlyCompleted }: Quiz
   const [step, setStep] = useState(1);
   const [quizData, setQuizData] = useState<any>(QUIZ_DATA);
   const [isLoadingQuiz, setIsLoadingQuiz] = useState(true);
-  const [isHovered, setIsHovered] = useState(false);
-
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
@@ -140,17 +138,8 @@ export function QuizFlow({ onComplete, onShowCalendly, calendlyCompleted }: Quiz
 
   return (
     <>
-      {/* Backdrop for popout effect */}
-      <div 
-        className={`fixed inset-0 z-30 bg-background/60 backdrop-blur-sm transition-all duration-500 pointer-events-none ${isHovered ? 'opacity-100' : 'opacity-0'}`} 
-      />
-      
-      <div 
-        className={`relative w-full max-w-4xl mx-auto transition-all duration-500 z-40 ${isHovered ? 'scale-100' : 'scale-100'}`}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
-        <div className="w-full bg-card rounded-[2rem] shadow-2xl border border-teal/20 relative overflow-hidden transition-all duration-500 group hover:shadow-[0_20px_70px_rgba(13,59,102,0.15)]">
+      <div className="relative w-full max-w-4xl mx-auto z-40">
+        <div className="w-full relative overflow-hidden transition-all duration-500">
           <div className="flex justify-center pt-8 pb-4 px-6 md:px-8 border-b border-border/10 bg-muted/20">
             <Button 
               size="lg" 
