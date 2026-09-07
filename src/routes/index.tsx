@@ -1962,7 +1962,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
       ].join('\n') + attributionNote();
 
       const leadData = {
-        name: finalData.name, 
+        name: finalData.name || "Provided in Calendly", 
         email: "calendly@provided.com",
         phone: finalData.phone,
         address: finalData.address,

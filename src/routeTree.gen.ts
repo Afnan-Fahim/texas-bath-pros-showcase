@@ -9,16 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as QuizRouteImport } from './routes/quiz'
-import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ApiMetaCapiRouteImport } from './routes/api/meta-capi'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as QuizRouteImport } from './routes/quiz'
 import { Route as ApiManychatRouteImport } from './routes/api/manychat'
+import { Route as ApiMetaCapiRouteImport } from './routes/api/meta-capi'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 
-const QuizRoute = QuizRouteImport.update({
-  id: '/quiz',
-  path: '/quiz',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRoute = AdminRouteImport.update({
@@ -26,19 +26,19 @@ const AdminRoute = AdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiMetaCapiRoute = ApiMetaCapiRouteImport.update({
-  id: '/api/meta-capi',
-  path: '/api/meta-capi',
+const QuizRoute = QuizRouteImport.update({
+  id: '/quiz',
+  path: '/quiz',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiManychatRoute = ApiManychatRouteImport.update({
   id: '/api/manychat',
   path: '/api/manychat',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiMetaCapiRoute = ApiMetaCapiRouteImport.update({
+  id: '/api/meta-capi',
+  path: '/api/meta-capi',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LovableEmailTransactionalPreviewRoute =
@@ -111,11 +111,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/quiz': {
-      id: '/quiz'
-      path: '/quiz'
-      fullPath: '/quiz'
-      preLoaderRoute: typeof QuizRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -125,18 +125,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/meta-capi': {
-      id: '/api/meta-capi'
-      path: '/api/meta-capi'
-      fullPath: '/api/meta-capi'
-      preLoaderRoute: typeof ApiMetaCapiRouteImport
+    '/quiz': {
+      id: '/quiz'
+      path: '/quiz'
+      fullPath: '/quiz'
+      preLoaderRoute: typeof QuizRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/manychat': {
@@ -144,6 +137,13 @@ declare module '@tanstack/react-router' {
       path: '/api/manychat'
       fullPath: '/api/manychat'
       preLoaderRoute: typeof ApiManychatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/meta-capi': {
+      id: '/api/meta-capi'
+      path: '/api/meta-capi'
+      fullPath: '/api/meta-capi'
+      preLoaderRoute: typeof ApiMetaCapiRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/lovable/email/transactional/preview': {
