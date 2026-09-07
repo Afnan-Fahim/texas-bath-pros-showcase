@@ -47,10 +47,12 @@ const QUIZ_DATA = {
 };
 
 interface QuizFlowProps {
-  onContactSubmit: (data: QuizState) => Promise<void>;
+  onShowCalendly?: (data: QuizState, url?: string) => void;
+  onComplete?: (data: QuizState) => Promise<void> | void;
+  calendlyCompleted?: boolean;
 }
 
-export function QuizFlow({ onContactSubmit }: QuizFlowProps) {
+export function QuizFlow({ onShowCalendly, onComplete, calendlyCompleted = false }: QuizFlowProps) {
   const [step, setStep] = useState(1);
   const [quizData, setQuizData] = useState<any>(QUIZ_DATA);
   const [isLoadingQuiz, setIsLoadingQuiz] = useState(true);
