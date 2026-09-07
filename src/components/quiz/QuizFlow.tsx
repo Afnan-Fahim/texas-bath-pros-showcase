@@ -9,6 +9,7 @@ export type QuizState = {
   desiredUpgrade: string;
   mainProblem: string;
   timeline: string;
+  name: string;
   phone: string;
   address: string;
   homeowner: "Yes" | "No" | "";
@@ -87,6 +88,7 @@ export function QuizFlow({ onComplete, onShowCalendly, calendlyCompleted }: Quiz
     desiredUpgrade: "",
     mainProblem: "",
     timeline: "",
+    name: "",
     phone: "",
     address: "",
     homeowner: "",
@@ -118,7 +120,7 @@ export function QuizFlow({ onComplete, onShowCalendly, calendlyCompleted }: Quiz
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!state.phone || !state.address || !state.homeowner) {
+    if (!state.name || !state.phone || !state.address || !state.homeowner) {
       setError("Please fill out all fields.");
       return;
     }
@@ -148,15 +150,15 @@ export function QuizFlow({ onComplete, onShowCalendly, calendlyCompleted }: Quiz
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <div className="flex justify-center pt-8 pb-4 px-6 md:px-8">
-          <Button 
-            size="lg" 
-            className={`relative z-10 w-full sm:w-auto h-14 md:h-16 px-8 md:px-10 text-lg md:text-xl font-semibold text-white shadow-xl hover:shadow-2xl transition-all animate-bounce cursor-default ${quizData.quote_button_color || "bg-blue-600 hover:bg-blue-700"}`}
-          >
-            {quizData.quote_button_text || "Get Your Quote"}
-          </Button>
-        </div>
         <div className="w-full bg-card rounded-[2rem] shadow-2xl border border-teal/20 relative overflow-hidden transition-all duration-500 group hover:shadow-[0_20px_70px_rgba(13,59,102,0.15)]">
+          <div className="flex justify-center pt-8 pb-4 px-6 md:px-8 border-b border-border/10 bg-muted/20">
+            <Button 
+              size="lg" 
+              className={`relative z-10 w-full sm:w-auto h-14 md:h-16 px-8 md:px-10 text-lg md:text-xl font-semibold text-white shadow-xl hover:shadow-2xl transition-all animate-bounce cursor-default ${quizData.quote_button_color || "bg-blue-600 hover:bg-blue-700"}`}
+            >
+              {quizData.quote_button_text || "Get Your Quote"}
+            </Button>
+          </div>
       
       {/* Decorative gradient backgrounds */}
       <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-teal/10 blur-3xl opacity-50 pointer-events-none group-hover:opacity-100 transition-opacity duration-700"></div>
@@ -257,6 +259,19 @@ export function QuizFlow({ onComplete, onShowCalendly, calendlyCompleted }: Quiz
           <form onSubmit={handleSubmit} className="space-y-6 mx-auto text-left">
             {error && <div className="p-3 text-sm text-destructive-foreground bg-destructive/10 rounded-md">{error}</div>}
             
+            <div className="space-y-2">
+              <Label htmlFor="quiz-name" className="text-base font-semibold text-navy">Full name *</Label>
+              <Input
+                id="quiz-name"
+                type="text"
+                placeholder="John Doe"
+                className="h-12 text-base"
+                value={state.name}
+                onChange={(e) => updateState("name", e.target.value)}
+                required
+              />
+            </div>
+
             <div className="space-y-2">
               <Label htmlFor="quiz-phone" className="text-base font-semibold text-navy">Mobile phone *</Label>
               <Input

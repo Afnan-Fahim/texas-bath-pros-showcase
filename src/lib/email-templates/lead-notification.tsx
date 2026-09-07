@@ -35,8 +35,8 @@ function LeadNotification({
   source = 'Website booking form',
   submittedAt = '',
 }: LeadNotificationProps) {
-  const isCalendlySource = name === 'Provided in Calendly';
-  const displayName = isCalendlySource ? 'New Quiz Lead' : name;
+  const isCalendlyEmail = email === 'calendly@provided.com';
+  const isQuiz = source === 'Website quiz form' || name === 'Provided in Calendly';
 
   return (
     <Html>
@@ -56,20 +56,18 @@ function LeadNotification({
           <Section style={{ backgroundColor: '#F8FAFC', padding: '24px', borderRadius: '12px', marginBottom: '24px' }}>
             <Text style={{ ...row, fontSize: '18px', fontWeight: 'bold', color: '#0D3B66', marginTop: 0 }}>Contact Details</Text>
             
-            {!isCalendlySource && (
-              <Text style={row}><span style={labelStyle}>Name:</span> {name}</Text>
-            )}
+            <Text style={row}><span style={labelStyle}>Name:</span> {name}</Text>
             
             <Text style={row}><span style={labelStyle}>Phone:</span> <a href={`tel:${phone}`} style={{ color: '#0D3B66', textDecoration: 'none', fontWeight: 'bold' }}>{phone}</a></Text>
             <Text style={row}><span style={labelStyle}>Address:</span> {address}</Text>
             
-            {!isCalendlySource && (
+            {!isCalendlyEmail && (
               <Text style={row}><span style={labelStyle}>Email:</span> {email}</Text>
             )}
             
-            {isCalendlySource && (
+            {isCalendlyEmail && (
               <Text style={{ ...row, fontSize: '13px', color: '#5A6B7B', fontStyle: 'italic', marginTop: '16px' }}>
-                * Note: The lead's Name and Email were captured directly into Calendly during the scheduling step.
+                * Note: The lead's Email will be provided directly into Calendly during the scheduling step.
               </Text>
             )}
           </Section>
@@ -102,14 +100,15 @@ export const template = {
   component: LeadNotification,
   displayName: 'Lead Notification',
   subject: (data: Record<string, any>) => {
-    const isQuiz = data?.['name'] === 'Provided in Calendly';
+    const isQuiz = data?.['source'] === 'Website quiz form' || data?.['name'] === 'Provided in Calendly';
     if (isQuiz) {
-      return `🎉 New Quiz Lead: ${data?.['phone'] ?? 'Action Required'}`;
+      const namePart = data?.['name'] && data?.['name'] !== 'Provided in Calendly' ? data?.['name'] : data?.['phone'];
+      return `🎉 New Quiz Lead: ${namePart ?? 'Action Required'}`;
     }
     return `🎉 New estimate request — ${data?.['name'] ?? 'Website lead'}`;
   },
   previewData: {
-    name: 'Provided in Calendly',
+    name: 'John Doe',
     phone: '(210) 555-0123',
     email: 'calendly@provided.com',
     address: '123 Main St, San Antonio, TX',

@@ -1948,7 +1948,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
       ].join('\n') + attributionNote();
 
       const leadData = {
-        name: "Provided in Calendly", 
+        name: finalData.name, 
         email: "calendly@provided.com",
         phone: finalData.phone,
         address: finalData.address,
@@ -2047,7 +2047,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
                 <CalendlyEmbed
                   url={calendlyUrl}
                   prefill={{
-                    name: "",
+                    name: quizData?.name || "",
                     email: "",
                     phone: quizData?.phone || "",
                     project: quizData?.timeline || "",
