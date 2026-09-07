@@ -296,7 +296,6 @@ export function QuizFlow({ onComplete, onShowCalendly, calendlyCompleted }: Quiz
                     value="Yes"
                     className="hidden"
                     onChange={(e) => updateState("homeowner", e.target.value)}
-                    required
                   />
                   <span className="text-lg text-foreground">Yes</span>
                 </label>
@@ -310,7 +309,6 @@ export function QuizFlow({ onComplete, onShowCalendly, calendlyCompleted }: Quiz
                     value="No"
                     className="hidden"
                     onChange={(e) => updateState("homeowner", e.target.value)}
-                    required
                   />
                   <span className="text-lg text-foreground">No.</span>
                 </label>

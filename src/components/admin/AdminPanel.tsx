@@ -100,7 +100,7 @@ export function AdminPanel() {
     return (
       <div className="max-w-md mx-auto mt-12 p-6 bg-card border rounded-xl shadow-sm">
         <h2 className="text-2xl font-bold mb-6">Admin Login</h2>
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={handleLogin}>
           <div>
             <Label>Email</Label>
             <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
