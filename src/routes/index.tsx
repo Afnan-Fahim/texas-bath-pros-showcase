@@ -42,7 +42,7 @@ import {
 } from "@/components/ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { LazyCalendar } from "@/components/LazyCalendar";
-import { submitLead } from "@/lib/leads.functions";
+import { submitLead, scheduleLead } from "@/lib/leads.functions";
 import {
   Dialog,
   DialogContent,
@@ -2053,7 +2053,32 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
                     project: quizData?.timeline || "",
                   }}
                   onBack={handleCalendlyBack}
-                  onScheduled={handleCalendlyScheduled}
+                  onScheduled={async (eventUri: string) => {
+                    const notes = quizData ? [
+                      `Homeowner: ${quizData.homeowner}`,
+                      `Upgrade: ${quizData.desiredUpgrade}`,
+                      `Problem: ${quizData.mainProblem}`
+                    ].join('\n') : "";
+
+                    const leadData = {
+                      name: quizData?.name || "Provided in Calendly", 
+                      email: "calendly@provided.com",
+                      phone: quizData?.phone || "",
+                      address: quizData?.address || "",
+                      timeframe: quizData?.timeline || "",
+                      notes: notes,
+                      source: "Website quiz form",
+                    };
+
+                    await scheduleLead({
+                      data: {
+                        leadData,
+                        eventUri
+                      }
+                    });
+
+                    handleCalendlyScheduled();
+                  }}
                   title="Pick a time for your free estimate"
                   subtitle="Lock in your appointment to discuss your project."
                 />
@@ -2090,7 +2115,7 @@ export function CalendlyEmbed({
   url?: string;
   prefill: Prefill;
   onBack: () => void;
-  onScheduled: () => void;
+  onScheduled: (eventUri: string) => void;
   title?: string;
   subtitle?: string;
 }) {
@@ -2117,7 +2142,11 @@ export function CalendlyEmbed({
         };
         trackScheduleEvent(identity);
         trackLeadEvent(`calendly:${prefill.email}:${prefill.phone}`, identity);
-        onScheduled();
+        if (e.data?.payload?.event?.uri) {
+          onScheduled(e.data.payload.event.uri);
+        } else {
+          onScheduled("");
+        }
       }
     };
     window.addEventListener("message", onMessage);

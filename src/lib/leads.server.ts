@@ -14,6 +14,7 @@ export interface LeadInput {
   timeframe?: string
   notes?: string
   source?: string
+  appointmentDate?: string
 }
 
 export async function notifyLead(lead: LeadInput) {

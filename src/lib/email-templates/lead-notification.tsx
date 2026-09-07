@@ -20,6 +20,7 @@ interface LeadNotificationProps {
   notes?: string
   source?: string
   submittedAt?: string
+  appointmentDate?: string
 }
 
 const row = { margin: '0 0 12px', fontSize: '15px', color: '#12263F', lineHeight: '1.5' } as const
@@ -34,6 +35,7 @@ function LeadNotification({
   notes = '',
   source = 'Website booking form',
   submittedAt = '',
+  appointmentDate,
 }: LeadNotificationProps) {
   const isCalendlyEmail = email === 'calendly@provided.com';
   const isQuiz = source === 'Website quiz form' || name === 'Provided in Calendly';
@@ -74,6 +76,13 @@ function LeadNotification({
 
           <Section style={{ backgroundColor: '#F8FAFC', padding: '24px', borderRadius: '12px' }}>
              <Text style={{ ...row, fontSize: '18px', fontWeight: 'bold', color: '#0D3B66', marginTop: 0 }}>Project Details</Text>
+             
+             {appointmentDate && (
+               <Text style={{ ...row, color: '#10B981', fontWeight: 'bold' }}>
+                 <span style={labelStyle}>Appt Date:</span> {appointmentDate}
+               </Text>
+             )}
+             
              <Text style={row}><span style={labelStyle}>Timeline:</span> {timeframe}</Text>
              
              {notes && (
@@ -100,6 +109,9 @@ export const template = {
   component: LeadNotification,
   displayName: 'Lead Notification',
   subject: (data: Record<string, any>) => {
+    if (data?.['appointmentDate']) {
+      return `📅 Scheduled Appt: ${data?.['name'] ?? data?.['phone'] ?? 'Action Required'}`;
+    }
     const isQuiz = data?.['source'] === 'Website quiz form' || data?.['name'] === 'Provided in Calendly';
     if (isQuiz) {
       const namePart = data?.['name'] && data?.['name'] !== 'Provided in Calendly' ? data?.['name'] : data?.['phone'];
