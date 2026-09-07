@@ -1933,13 +1933,27 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
   const handleCalendlyScheduled = () => {
     setCalendlyCompleted(true);
     setShowCalendly(false);
+    
+    alert("Thank you! Your visit is confirmed.");
+    setIsQuizOpen(false);
+    const mw = (window as any).MessengerExtensions;
+    if (mw) {
+      mw.requestCloseBrowser(
+        function success() {},
+        function error(err: any) {
+          window.location.reload();
+        }
+      );
+    } else {
+      window.location.reload();
+    }
   };
 
   const handleCalendlyBack = () => {
     setShowCalendly(false);
   };
 
-  const handleQuizComplete = async (finalData: QuizState) => {
+  const handleContactSubmit = async (finalData: QuizState) => {
     try {
       const notes = [
         `Homeowner: ${finalData.homeowner}`,
@@ -1960,19 +1974,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
       await submitLead({ data: leadData });
       trackLeadEvent(`quiz:${finalData.phone}`, { phone: finalData.phone });
 
-      alert("Thank you! Your visit is confirmed.");
-      setIsQuizOpen(false);
-      const mw = (window as any).MessengerExtensions;
-      if (mw) {
-        mw.requestCloseBrowser(
-          function success() {},
-          function error(err: any) {
-            window.location.reload();
-          }
-        );
-      } else {
-        window.location.reload();
-      }
+      handleShowCalendly(finalData);
     } catch (e) {
       console.error(e);
       alert("Failed to submit. Please try again.");
@@ -2033,11 +2035,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
                   }
                 >
                   <QuizFlow
-                    onShowCalendly={handleShowCalendly}
-                    onComplete={async (data: QuizState) => {
-                      await handleQuizComplete(data);
-                    }}
-                    calendlyCompleted={calendlyCompleted}
+                    onContactSubmit={handleContactSubmit}
                   />
                 </Suspense>
               </LazyMount>

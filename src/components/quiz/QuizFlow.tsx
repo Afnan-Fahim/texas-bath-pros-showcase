@@ -47,12 +47,10 @@ const QUIZ_DATA = {
 };
 
 interface QuizFlowProps {
-  onComplete: (data: QuizState) => Promise<void>;
-  onShowCalendly: (data: QuizState, calendlyUrl?: string) => void;
-  calendlyCompleted: boolean;
+  onContactSubmit: (data: QuizState) => Promise<void>;
 }
 
-export function QuizFlow({ onComplete, onShowCalendly, calendlyCompleted }: QuizFlowProps) {
+export function QuizFlow({ onContactSubmit }: QuizFlowProps) {
   const [step, setStep] = useState(1);
   const [quizData, setQuizData] = useState<any>(QUIZ_DATA);
   const [isLoadingQuiz, setIsLoadingQuiz] = useState(true);
@@ -108,11 +106,7 @@ export function QuizFlow({ onComplete, onShowCalendly, calendlyCompleted }: Quiz
     setState(newState);
     
     setTimeout(() => {
-      if (currentStep === 3) {
-        onShowCalendly(newState, quizData.calendly_url);
-      } else {
-        handleNext();
-      }
+      handleNext();
     }, 300);
   };
 
@@ -125,7 +119,7 @@ export function QuizFlow({ onComplete, onShowCalendly, calendlyCompleted }: Quiz
     setError("");
     setSubmitting(true);
     try {
-      await onComplete(state);
+      await onContactSubmit(state);
     } catch (err) {
       setError("Something went wrong. Please try again.");
       setSubmitting(false);
@@ -155,24 +149,24 @@ export function QuizFlow({ onComplete, onShowCalendly, calendlyCompleted }: Quiz
 
       <div className="relative z-10 p-5 sm:p-8 md:p-10">
         {/* Progress */}
-      {currentStep <= 3 && (
+      {step <= 4 && (
         <div className="mb-6 flex items-center justify-between">
           <button
             onClick={handleBack}
-            disabled={currentStep === 1}
-            className={`text-sm font-medium transition-opacity ${currentStep === 1 ? "opacity-0" : "opacity-100 text-muted-foreground hover:text-foreground"}`}
+            disabled={step === 1}
+            className={`text-sm font-medium transition-opacity ${step === 1 ? "opacity-0" : "opacity-100 text-muted-foreground hover:text-foreground"}`}
           >
             ← Back
           </button>
           <span className="text-sm font-medium text-muted-foreground">
-            Step {currentStep} of 3
+            Step {step} of 4
           </span>
           <div className="w-12"></div>
         </div>
       )}
 
       {/* QUESTION 1 */}
-      {currentStep === 1 && (
+      {step === 1 && (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
           <div className="text-center mb-4 sm:mb-5">
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{quizData.question1.title}</h2>
@@ -185,8 +179,8 @@ export function QuizFlow({ onComplete, onShowCalendly, calendlyCompleted }: Quiz
                 index={idx}
                 title={opt.label}
                 image={opt.image}
-                selected={state.desiredUpgrade === opt.id}
-                onClick={() => handleOptionSelect("desiredUpgrade", opt.id)}
+                selected={state.desiredUpgrade === opt.label}
+                onClick={() => handleOptionSelect("desiredUpgrade", opt.label)}
               />
             ))}
           </div>
@@ -194,7 +188,7 @@ export function QuizFlow({ onComplete, onShowCalendly, calendlyCompleted }: Quiz
       )}
 
       {/* QUESTION 2 */}
-      {currentStep === 2 && (
+      {step === 2 && (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
           <div className="text-center mb-4 sm:mb-5">
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{quizData.question2.title}</h2>
@@ -207,8 +201,8 @@ export function QuizFlow({ onComplete, onShowCalendly, calendlyCompleted }: Quiz
                 index={idx}
                 title={opt.label}
                 image={opt.image}
-                selected={state.mainProblem === opt.id}
-                onClick={() => handleOptionSelect("mainProblem", opt.id)}
+                selected={state.mainProblem === opt.label}
+                onClick={() => handleOptionSelect("mainProblem", opt.label)}
               />
             ))}
           </div>
@@ -216,29 +210,40 @@ export function QuizFlow({ onComplete, onShowCalendly, calendlyCompleted }: Quiz
       )}
 
       {/* QUESTION 3 */}
-      {currentStep === 3 && (
+      {step === 3 && (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
           <div className="text-center mb-4 sm:mb-5">
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{quizData.question3.title}</h2>
             <p className="text-muted-foreground">{quizData.question3.description}</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {quizData.question3.options.map((opt: any) => (
-              <Button
-                key={opt.id}
-                variant={state.timeline === opt.id ? "default" : "outline"}
-                className={`h-auto py-4 text-lg border-2 ${state.timeline === opt.id ? "border-primary" : "border-border hover:border-primary/50"}`}
-                onClick={() => handleOptionSelect("timeline", opt.id)}
-              >
-                {opt.label}
-              </Button>
+            {quizData.question3.options.map((opt: any, idx: number) => (
+              opt.image ? (
+                <QuizCard
+                  key={opt.id}
+                  index={idx}
+                  title={opt.label}
+                  image={opt.image}
+                  selected={state.timeline === opt.label}
+                  onClick={() => handleOptionSelect("timeline", opt.label)}
+                />
+              ) : (
+                <Button
+                  key={opt.id}
+                  variant={state.timeline === opt.label ? "default" : "outline"}
+                  className={`h-auto py-4 text-lg border-2 ${state.timeline === opt.label ? "border-primary" : "border-border hover:border-primary/50"}`}
+                  onClick={() => handleOptionSelect("timeline", opt.label)}
+                >
+                  {opt.label}
+                </Button>
+              )
             ))}
           </div>
         </div>
       )}
 
-      {/* FINAL CAPTURE FORM (After Calendly) */}
-      {currentStep === 4 && (
+      {/* FINAL CAPTURE FORM (Before Calendly) */}
+      {step === 4 && (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
           <div className="mb-8">
             <h2 className="text-3xl sm:text-4xl font-bold text-navy mb-2 leading-tight">You're all set —<br />just confirm the visit.</h2>
