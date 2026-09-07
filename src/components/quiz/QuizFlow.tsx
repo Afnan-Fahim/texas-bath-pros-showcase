@@ -47,10 +47,13 @@ const QUIZ_DATA = {
 };
 
 interface QuizFlowProps {
-  onContactSubmit: (data: QuizState) => Promise<void>;
+  onShowCalendly?: (data: QuizState, url?: string) => void;
+  onComplete?: (data: QuizState) => Promise<void> | void;
+  onContactSubmit?: (data: QuizState) => Promise<void> | void;
+  calendlyCompleted?: boolean;
 }
 
-export function QuizFlow({ onContactSubmit }: QuizFlowProps) {
+export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendlyCompleted = false }: QuizFlowProps) {
   const [step, setStep] = useState(1);
   const [quizData, setQuizData] = useState<any>(QUIZ_DATA);
   const [isLoadingQuiz, setIsLoadingQuiz] = useState(true);
@@ -119,7 +122,16 @@ export function QuizFlow({ onContactSubmit }: QuizFlowProps) {
     setError("");
     setSubmitting(true);
     try {
-      await onContactSubmit(state);
+      if (onContactSubmit) {
+        await onContactSubmit(state);
+      } else if (calendlyCompleted && onComplete) {
+        await onComplete(state);
+      } else if (onShowCalendly) {
+        onShowCalendly(state);
+        setSubmitting(false);
+      } else if (onComplete) {
+        await onComplete(state);
+      }
     } catch (err) {
       setError("Something went wrong. Please try again.");
       setSubmitting(false);
