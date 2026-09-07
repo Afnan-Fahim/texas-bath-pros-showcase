@@ -217,26 +217,15 @@ export function QuizFlow({ onContactSubmit }: QuizFlowProps) {
             <p className="text-muted-foreground">{quizData.question3.description}</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {quizData.question3.options.map((opt: any, idx: number) => (
-              opt.image ? (
-                <QuizCard
-                  key={opt.id}
-                  index={idx}
-                  title={opt.label}
-                  image={opt.image}
-                  selected={state.timeline === opt.label}
-                  onClick={() => handleOptionSelect("timeline", opt.label)}
-                />
-              ) : (
-                <Button
-                  key={opt.id}
-                  variant={state.timeline === opt.label ? "default" : "outline"}
-                  className={`h-auto py-4 text-lg border-2 ${state.timeline === opt.label ? "border-primary" : "border-border hover:border-primary/50"}`}
-                  onClick={() => handleOptionSelect("timeline", opt.label)}
-                >
-                  {opt.label}
-                </Button>
-              )
+            {quizData.question3.options.map((opt: any) => (
+              <Button
+                key={opt.id}
+                variant={state.timeline === opt.label ? "default" : "outline"}
+                className={`h-auto py-4 text-lg border-2 ${state.timeline === opt.label ? "border-primary" : "border-border hover:border-primary/50"}`}
+                onClick={() => handleOptionSelect("timeline", opt.label)}
+              >
+                {opt.label}
+              </Button>
             ))}
           </div>
         </div>
