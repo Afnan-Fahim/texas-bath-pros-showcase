@@ -122,7 +122,16 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
     setError("");
     setSubmitting(true);
     try {
-      await onContactSubmit(state);
+      if (onContactSubmit) {
+        await onContactSubmit(state);
+      } else if (calendlyCompleted && onComplete) {
+        await onComplete(state);
+      } else if (onShowCalendly) {
+        onShowCalendly(state);
+        setSubmitting(false);
+      } else if (onComplete) {
+        await onComplete(state);
+      }
     } catch (err) {
       setError("Something went wrong. Please try again.");
       setSubmitting(false);
