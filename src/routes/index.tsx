@@ -1917,7 +1917,8 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
   const [calendlyCompleted, setCalendlyCompleted] = useState(false);
   const [showCalendly, setShowCalendly] = useState(false);
   const [quizData, setQuizData] = useState<QuizState | null>(null);
-  const [calendlyUrl, setCalendlyUrl] = useState("https://calendly.com/rugsafari/texas-bath-solutions");
+  const [calendlyUrl, setCalendlyUrl] = useState<string>("https://calendly.com/rugsafari/texas-bath-solutions");
+  const [eventUri, setEventUri] = useState<string>("");
   const [isQuizOpen, setIsQuizOpen] = useState(false);
 
   useEffect(() => {
@@ -1930,30 +1931,17 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
     setShowCalendly(true);
   };
 
-  const handleCalendlyScheduled = () => {
+  const handleCalendlyScheduled = (uri: string) => {
+    if (uri) setEventUri(uri);
     setCalendlyCompleted(true);
     setShowCalendly(false);
-    
-    alert("Thank you! Your visit is confirmed.");
-    setIsQuizOpen(false);
-    const mw = (window as any).MessengerExtensions;
-    if (mw) {
-      mw.requestCloseBrowser(
-        function success() {},
-        function error(err: any) {
-          window.location.reload();
-        }
-      );
-    } else {
-      window.location.reload();
-    }
   };
 
   const handleCalendlyBack = () => {
     setShowCalendly(false);
   };
 
-  const handleContactSubmit = async (finalData: QuizState) => {
+  const handleQuizComplete = async (finalData: QuizState) => {
     try {
       const notes = [
         `Homeowner: ${finalData.homeowner}`,
@@ -1971,10 +1959,27 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
         source: "Website quiz form",
       };
 
-      await submitLead({ data: leadData });
+      if (eventUri) {
+        await scheduleLead({ data: { leadData, eventUri } });
+      } else {
+        await submitLead({ data: leadData });
+      }
+
       trackLeadEvent(`quiz:${finalData.phone}`, { phone: finalData.phone });
 
-      handleShowCalendly(finalData);
+      alert("Thank you! Your visit is confirmed.");
+      setIsQuizOpen(false);
+      const mw = (window as any).MessengerExtensions;
+      if (mw) {
+        mw.requestCloseBrowser(
+          function success() {},
+          function error(err: any) {
+            window.location.reload();
+          }
+        );
+      } else {
+        window.location.reload();
+      }
     } catch (e) {
       console.error(e);
       alert("Failed to submit. Please try again.");
@@ -2035,7 +2040,9 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
                   }
                 >
                   <QuizFlow
-                    onContactSubmit={handleContactSubmit}
+                    onShowCalendly={handleShowCalendly}
+                    onComplete={handleQuizComplete}
+                    calendlyCompleted={calendlyCompleted}
                   />
                 </Suspense>
               </LazyMount>
@@ -2052,30 +2059,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
                   }}
                   onBack={handleCalendlyBack}
                   onScheduled={async (eventUri: string) => {
-                    const notes = quizData ? [
-                      `Homeowner: ${quizData.homeowner}`,
-                      `Upgrade: ${quizData.desiredUpgrade}`,
-                      `Problem: ${quizData.mainProblem}`
-                    ].join('\n') : "";
-
-                    const leadData = {
-                      name: quizData?.name || "Provided in Calendly", 
-                      email: "calendly@provided.com",
-                      phone: quizData?.phone || "",
-                      address: quizData?.address || "",
-                      timeframe: quizData?.timeline || "",
-                      notes: notes,
-                      source: "Website quiz form",
-                    };
-
-                    await scheduleLead({
-                      data: {
-                        leadData,
-                        eventUri
-                      }
-                    });
-
-                    handleCalendlyScheduled();
+                    handleCalendlyScheduled(eventUri);
                   }}
                   title="Pick a time for your free estimate"
                   subtitle="Lock in your appointment to discuss your project."

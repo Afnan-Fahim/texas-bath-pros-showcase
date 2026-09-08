@@ -109,7 +109,11 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
     setState(newState);
     
     setTimeout(() => {
-      handleNext();
+      if (key === "timeline" && onShowCalendly && !calendlyCompleted) {
+        onShowCalendly(newState);
+      } else {
+        handleNext();
+      }
     }, 300);
   };
 
@@ -122,15 +126,10 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
     setError("");
     setSubmitting(true);
     try {
-      if (onContactSubmit) {
+      if (onComplete) {
+        await onComplete(state);
+      } else if (onContactSubmit) {
         await onContactSubmit(state);
-      } else if (calendlyCompleted && onComplete) {
-        await onComplete(state);
-      } else if (onShowCalendly) {
-        onShowCalendly(state);
-        setSubmitting(false);
-      } else if (onComplete) {
-        await onComplete(state);
       }
     } catch (err) {
       setError("Something went wrong. Please try again.");
@@ -236,15 +235,15 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
                   index={idx}
                   title={opt.label}
                   image={opt.image}
-                  selected={state.timeline === opt.label}
-                  onClick={() => handleOptionSelect("timeline", opt.label)}
+                  selected={state.timeline === opt.id}
+                  onClick={() => handleOptionSelect("timeline", opt.id)}
                 />
               ) : (
                 <Button
                   key={opt.id}
-                  variant={state.timeline === opt.label ? "default" : "outline"}
-                  className={`h-auto py-4 text-lg border-2 ${state.timeline === opt.label ? "border-primary" : "border-border hover:border-primary/50"}`}
-                  onClick={() => handleOptionSelect("timeline", opt.label)}
+                  variant={state.timeline === opt.id ? "default" : "outline"}
+                  className={`h-auto py-4 text-lg border-2 ${state.timeline === opt.id ? "border-primary" : "border-border hover:border-primary/50"}`}
+                  onClick={() => handleOptionSelect("timeline", opt.id)}
                 >
                   {opt.label}
                 </Button>
