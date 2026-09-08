@@ -160,24 +160,24 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
 
       <div className="relative z-10 p-5 sm:p-8 md:p-10">
         {/* Progress */}
-      {step <= 4 && (
+      {currentStep <= 4 && (
         <div className="mb-6 flex items-center justify-between">
           <button
             onClick={handleBack}
-            disabled={step === 1}
-            className={`text-sm font-medium transition-opacity ${step === 1 ? "opacity-0" : "opacity-100 text-muted-foreground hover:text-foreground"}`}
+            disabled={currentStep === 1}
+            className={`text-sm font-medium transition-opacity ${currentStep === 1 ? "opacity-0" : "opacity-100 text-muted-foreground hover:text-foreground"}`}
           >
             ← Back
           </button>
           <span className="text-sm font-medium text-muted-foreground">
-            Step {step} of 4
+            Step {currentStep} of 4
           </span>
           <div className="w-12"></div>
         </div>
       )}
 
       {/* QUESTION 1 */}
-      {step === 1 && (
+      {currentStep === 1 && (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
           <div className="text-center mb-4 sm:mb-5">
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{quizData.question1.title}</h2>
@@ -199,7 +199,7 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
       )}
 
       {/* QUESTION 2 */}
-      {step === 2 && (
+      {currentStep === 2 && (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
           <div className="text-center mb-4 sm:mb-5">
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{quizData.question2.title}</h2>
@@ -221,7 +221,7 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
       )}
 
       {/* QUESTION 3 */}
-      {step === 3 && (
+      {currentStep === 3 && (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
           <div className="text-center mb-4 sm:mb-5">
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{quizData.question3.title}</h2>
@@ -254,7 +254,7 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
       )}
 
       {/* FINAL CAPTURE FORM (Before Calendly) */}
-      {step === 4 && (
+      {currentStep === 4 && (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
           <div className="mb-8">
             <h2 className="text-3xl sm:text-4xl font-bold text-navy mb-2 leading-tight">You're all set —<br />just confirm the visit.</h2>
