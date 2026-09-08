@@ -221,6 +221,7 @@ export function AdminPanel() {
                           onChange={(e) => {
                             const newData = { ...quizData };
                             newData[qKey].options[index].label = e.target.value;
+                            newData[qKey].options[index].id = e.target.value;
                             setQuizData(newData);
                           }}
                         />

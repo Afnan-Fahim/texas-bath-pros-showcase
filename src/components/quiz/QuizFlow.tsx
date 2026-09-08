@@ -119,7 +119,7 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!state.phone || !state.address || !state.homeowner) {
+    if (!state.name || !state.phone || !state.address || !state.homeowner) {
       setError("Please fill out all fields.");
       return;
     }
@@ -235,15 +235,15 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
                   index={idx}
                   title={opt.label}
                   image={opt.image}
-                  selected={state.timeline === opt.id}
-                  onClick={() => handleOptionSelect("timeline", opt.id)}
+                  selected={state.timeline === (opt.id || opt.label)}
+                  onClick={() => handleOptionSelect("timeline", opt.id || opt.label)}
                 />
               ) : (
                 <Button
                   key={opt.id}
-                  variant={state.timeline === opt.id ? "default" : "outline"}
-                  className={`h-auto py-4 text-lg border-2 ${state.timeline === opt.id ? "border-primary" : "border-border hover:border-primary/50"}`}
-                  onClick={() => handleOptionSelect("timeline", opt.id)}
+                  variant={state.timeline === (opt.id || opt.label) ? "default" : "outline"}
+                  className={`h-auto py-4 text-lg border-2 ${state.timeline === (opt.id || opt.label) ? "border-primary" : "border-border hover:border-primary/50"}`}
+                  onClick={() => handleOptionSelect("timeline", opt.id || opt.label)}
                 >
                   {opt.label}
                 </Button>
@@ -264,6 +264,19 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
           <form onSubmit={handleSubmit} className="space-y-6 mx-auto text-left">
             {error && <div className="p-3 text-sm text-destructive-foreground bg-destructive/10 rounded-md">{error}</div>}
             
+            <div className="space-y-2">
+              <Label htmlFor="quiz-name" className="text-base font-semibold text-navy">Full name *</Label>
+              <Input
+                id="quiz-name"
+                type="text"
+                placeholder="Your full name"
+                className="h-12 text-base"
+                value={state.name}
+                onChange={(e) => updateState("name", e.target.value)}
+                required
+              />
+            </div>
+
             <div className="space-y-2">
               <Label htmlFor="quiz-phone" className="text-base font-semibold text-navy">Mobile phone *</Label>
               <Input

@@ -39,7 +39,7 @@ function QuizPage() {
       ].join('\n');
 
       const leadData = {
-        name: "Provided in Calendly", // We don't ask for name anymore in step 5
+        name: finalData.name || "Provided in Calendly",
         email: "calendly@provided.com",
         phone: finalData.phone,
         address: finalData.address,
