@@ -57,21 +57,7 @@ function QuizPage() {
 
   const handleQuizComplete = async (finalData: QuizState) => {
     try {
-      const notes = [
-        `Homeowner: ${finalData.homeowner}`,
-        `Upgrade: ${finalData.desiredUpgrade}`,
-        `Problem: ${finalData.mainProblem}`
-      ].join('\n');
-
-      const leadData = {
-        name: finalData.name || "Provided in Calendly",
-        email: "calendly@provided.com",
-        phone: finalData.phone,
-        address: finalData.address,
-        timeframe: finalData.timeline,
-        notes: notes,
-        source: "Facebook/Messenger Quiz",
-      };
+      const leadData = buildLead(finalData);
 
       // Show the calendar right away, save the lead in the background
       setQuizData(finalData);
