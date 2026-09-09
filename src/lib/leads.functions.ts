@@ -30,6 +30,9 @@ export const scheduleLead = createServerFn({ method: 'POST' })
     const CALENDLY_TOKEN = "eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzg4ODIxMDUyLCJqdGkiOiIyZGY4MDVjNi05MTIyLTRmOGItOTBhNS1jZGM1MjIxYTM1ZDEiLCJ1c2VyX3V1aWQiOiI4YjI2NWJhOC1kOGU1LTQ1MjktYjcyMi0wZWU5MWUzNGZjNmQiLCJzY29wZSI6ImF2YWlsYWJpbGl0eTpyZWFkIGF2YWlsYWJpbGl0eTp3cml0ZSBldmVudF90eXBlczpyZWFkIGV2ZW50X3R5cGVzOndyaXRlIGxvY2F0aW9uczpyZWFkIHJvdXRpbmdfZm9ybXM6cmVhZCBzaGFyZXM6d3JpdGUgc2NoZWR1bGVkX2V2ZW50czpyZWFkIHNjaGVkdWxlZF9ldmVudHM6d3JpdGUgc2NoZWR1bGluZ19saW5rczp3cml0ZSBncm91cHM6cmVhZCBvcmdhbml6YXRpb25zOnJlYWQgb3JnYW5pemF0aW9uczp3cml0ZSB1c2VyczpyZWFkIGNvbnRhY3RzOnJlYWQgY29udGFjdHM6d3JpdGUgbWVldGluZ19yZWNhcHM6cmVhZCBtZWV0aW5nX3JlY2Fwczp3cml0ZSBhY3Rpdml0eV9sb2c6cmVhZCBkYXRhX2NvbXBsaWFuY2U6d3JpdGUgb3V0Z29pbmdfY29tbXVuaWNhdGlvbnM6cmVhZCB3ZWJob29rczpyZWFkIHdlYmhvb2tzOndyaXRlIn0.sE3Xb-I4SKszlKQOQrFxwnuVOq0-UO1YcCtbkdmloQL1uCv0-iC9C-hwgqZpgMm6gdjFCJkW5W-biv6bX00q6w"
 
     let appointmentDate: string | undefined
+    let inviteeEmail: string | undefined
+    let inviteeName: string | undefined
+    let rescheduleUrl: string | undefined
 
     try {
       if (!data.eventUri) throw new Error('No Calendly event URI provided')
@@ -63,9 +66,46 @@ export const scheduleLead = createServerFn({ method: 'POST' })
       console.error('Failed to fetch calendly details', e)
     }
 
-    const { notifyLead } = await import('./leads.server')
+    // The customer's real email address is collected by Calendly, not by our form.
+    try {
+      if (data.eventUri) {
+        const inviteeRes = await fetch(`${data.eventUri}/invitees`, {
+          headers: {
+            Authorization: `Bearer ${CALENDLY_TOKEN}`,
+            'Content-Type': 'application/json'
+          }
+        })
+        if (inviteeRes.ok) {
+          const invitees = await inviteeRes.json()
+          const invitee = invitees.collection?.[0]
+          inviteeEmail = invitee?.email
+          inviteeName = invitee?.name
+          rescheduleUrl = invitee?.reschedule_url ?? invitee?.cancel_url
+        } else {
+          console.error('Calendly invitee lookup failed', inviteeRes.status, data.eventUri)
+        }
+      }
+    } catch (e) {
+      console.error('Failed to fetch calendly invitee', e)
+    }
+
+    const { notifyLead, sendCustomerConfirmation } = await import('./leads.server')
+
+    if (inviteeEmail) {
+      await sendCustomerConfirmation({
+        email: inviteeEmail,
+        name: inviteeName ?? data.leadData.name,
+        phone: data.leadData.phone,
+        address: data.leadData.address,
+        eventUri: data.eventUri,
+        ...(appointmentDate ? { appointmentDate } : {}),
+        ...(rescheduleUrl ? { rescheduleUrl } : {}),
+      })
+    }
+
     return notifyLead({
       ...data.leadData,
+      ...(inviteeEmail ? { email: inviteeEmail } : {}),
       source: 'Calendly Scheduled Appt',
       ...(appointmentDate
         ? { appointmentDate }
