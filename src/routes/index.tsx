@@ -254,7 +254,7 @@ const ATTRIBUTION_KEYS = [
 const ATTRIBUTION_STORAGE_KEY = "tbs_attribution";
 
 /** Captures ad params on first landing so they survive in-page navigation. */
-function captureAttribution() {
+export function captureAttribution() {
   if (typeof window === "undefined") return;
   try {
     const params = new URLSearchParams(window.location.search);
@@ -288,7 +288,7 @@ export function getAttribution(): Record<string, string> {
   }
 }
 
-function attributionNote(): string {
+export function attributionNote(): string {
   const a = getAttribution();
   const entries = Object.entries(a);
   if (entries.length === 0) return "";

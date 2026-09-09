@@ -31,7 +31,9 @@ export async function notifyLead(lead: LeadInput) {
       sendTemplateEmail('lead-notification', to, {
         templateData: { ...lead, submittedAt },
         idempotencyKey: `lead-notification-${eventId}-${to}`,
-        replyTo: lead.email,
+        // Only set reply-to when we actually captured the customer's email;
+        // placeholder addresses would send replies into a black hole.
+        ...(isRealEmail(lead.email) ? { replyTo: lead.email } : {}),
       })
     )
   )
