@@ -2093,7 +2093,9 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
                   }}
                   title="Pick a time for your free estimate"
                   subtitle="Lock in your appointment to discuss your project."
-                />
+                    />
+                  </>
+                )}
               </div>
             )}
           </div>
