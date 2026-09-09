@@ -56,6 +56,31 @@ interface QuizFlowProps {
 export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendlyCompleted = false }: QuizFlowProps) {
   const [step, setStep] = useState(1);
   const [quizData, setQuizData] = useState<any>(QUIZ_DATA);
+
+  // Warm up the booking calendar as soon as the quiz is on screen, so it is
+  // ready by the time the visitor finishes the questions.
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    const addLink = (rel: string, href: string, id: string) => {
+      if (document.getElementById(id)) return;
+      const l = document.createElement("link");
+      l.id = id;
+      l.rel = rel;
+      l.href = href;
+      if (rel === "preconnect") l.crossOrigin = "";
+      document.head.appendChild(l);
+    };
+    addLink("preconnect", "https://assets.calendly.com", "calendly-preconnect-assets");
+    addLink("preconnect", "https://calendly.com", "calendly-preconnect-app");
+    if (!document.getElementById("calendly-widget-script")) {
+      const s = document.createElement("script");
+      s.id = "calendly-widget-script";
+      s.src = "https://assets.calendly.com/assets/external/widget.js";
+      s.async = true;
+      document.body.appendChild(s);
+    }
+  }, []);
+
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
@@ -102,16 +127,9 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
   };
 
   const handleOptionSelect = (key: keyof QuizState, value: string) => {
-    const newState = { ...state, [key]: value };
-    setState(newState);
-    
-    setTimeout(() => {
-      if (key === "timeline" && onShowCalendly && !calendlyCompleted) {
-        onShowCalendly(newState);
-      } else {
-        handleNext();
-      }
-    }, 300);
+    setState((prev) => ({ ...prev, [key]: value }));
+    // Move to the next screen right away — never leave a blank/loading gap.
+    handleNext();
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

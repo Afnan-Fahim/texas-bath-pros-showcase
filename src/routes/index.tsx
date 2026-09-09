@@ -1934,7 +1934,24 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
   const handleCalendlyScheduled = (uri: string) => {
     if (uri) setEventUri(uri);
     setCalendlyCompleted(true);
-    setShowCalendly(false);
+    // Send the confirmed appointment time with the already-saved lead.
+    if (uri && quizData) {
+      const leadData = {
+        name: quizData.name || "Provided in Calendly",
+        email: "calendly@provided.com",
+        phone: quizData.phone,
+        address: quizData.address,
+        timeframe: quizData.timeline,
+        notes:
+          [
+            `Homeowner: ${quizData.homeowner}`,
+            `Upgrade: ${quizData.desiredUpgrade}`,
+            `Problem: ${quizData.mainProblem}`,
+          ].join("\n") + attributionNote(),
+        source: "Website quiz form",
+      };
+      scheduleLead({ data: { leadData, eventUri: uri } }).catch((e) => console.error(e));
+    }
   };
 
   const handleCalendlyBack = () => {
@@ -1959,6 +1976,10 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
         source: "Website quiz form",
       };
 
+      // Save the lead immediately — before any time is picked.
+      setQuizData(finalData);
+      setShowCalendly(true);
+
       if (eventUri) {
         await scheduleLead({ data: { leadData, eventUri } });
       } else {
@@ -1966,23 +1987,8 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
       }
 
       trackLeadEvent(`quiz:${finalData.phone}`, { phone: finalData.phone });
-
-      alert("Thank you! Your visit is confirmed.");
-      setIsQuizOpen(false);
-      const mw = (window as any).MessengerExtensions;
-      if (mw) {
-        mw.requestCloseBrowser(
-          function success() {},
-          function error(err: any) {
-            window.location.reload();
-          }
-        );
-      } else {
-        window.location.reload();
-      }
     } catch (e) {
       console.error(e);
-      alert("Failed to submit. Please try again.");
     }
   };
 
@@ -2049,7 +2055,31 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
             </div>
             {showCalendly && (
               <div className="block w-full p-6 md:p-8">
-                <CalendlyEmbed
+                {calendlyCompleted ? (
+                  <div className="py-6 text-center">
+                    <h3 className="text-2xl font-display font-semibold text-navy">
+                      You're confirmed — thank you!
+                    </h3>
+                    <p className="mt-2 text-muted-foreground">
+                      We have your details and your time slot. We'll call to confirm before we head out.
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    <div className="mb-4 rounded-2xl border border-teal/20 bg-secondary/40 p-4 text-center">
+                      <p className="text-sm text-foreground/80">
+                        Your details are saved. Pick a time below — or
+                      </p>
+                      <a
+                        href={calendlyUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-2 inline-flex h-11 items-center justify-center rounded-full bg-navy px-6 font-semibold text-navy-foreground"
+                      >
+                        Pick a time
+                      </a>
+                    </div>
+                    <CalendlyEmbed
                   url={calendlyUrl}
                   prefill={{
                     name: quizData?.name || "",
@@ -2063,7 +2093,9 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
                   }}
                   title="Pick a time for your free estimate"
                   subtitle="Lock in your appointment to discuss your project."
-                />
+                    />
+                  </>
+                )}
               </div>
             )}
           </div>
