@@ -56,7 +56,6 @@ interface QuizFlowProps {
 export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendlyCompleted = false }: QuizFlowProps) {
   const [step, setStep] = useState(1);
   const [quizData, setQuizData] = useState<any>(QUIZ_DATA);
-  const [isLoadingQuiz, setIsLoadingQuiz] = useState(true);
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
@@ -71,13 +70,11 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
           throw error;
         }
 
-        if (data && data.quiz_data) {
+        if (data?.quiz_data?.question1 && data.quiz_data.question2 && data.quiz_data.question3) {
           setQuizData(data.quiz_data);
         }
       } catch (err: any) {
         console.error("Failed to load dynamic quiz data. Using default data instead.", err?.message || err);
-      } finally {
-        setIsLoadingQuiz(false);
       }
     };
     fetchQuiz();
@@ -137,9 +134,6 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
     }
   };
 
-  if (isLoadingQuiz) {
-    return <div className="w-full max-w-2xl mx-auto p-12 text-center text-muted-foreground">Loading quiz...</div>;
-  }
 
   return (
     <>
