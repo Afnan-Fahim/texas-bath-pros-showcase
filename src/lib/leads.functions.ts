@@ -32,6 +32,7 @@ export const scheduleLead = createServerFn({ method: 'POST' })
     let appointmentDate: string | undefined
 
     try {
+      if (!data.eventUri) throw new Error('No Calendly event URI provided')
       const response = await fetch(data.eventUri, {
         headers: {
           Authorization: `Bearer ${CALENDLY_TOKEN}`,
