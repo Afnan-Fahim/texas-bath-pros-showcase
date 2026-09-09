@@ -134,9 +134,6 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
     }
   };
 
-  if (isLoadingQuiz) {
-    return <div className="w-full max-w-2xl mx-auto p-12 text-center text-muted-foreground">Loading quiz...</div>;
-  }
 
   return (
     <>
