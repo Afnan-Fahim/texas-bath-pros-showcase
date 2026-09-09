@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { QuizFlow, QuizState } from "@/components/quiz/QuizFlow";
-import { CalendlyEmbed, trackLeadEvent } from "./index";
+import { CalendlyEmbed, trackLeadEvent, captureAttribution, attributionNote } from "./index";
 import logoImg from "@/assets/logo-header.webp";
-import { submitLead } from "@/lib/leads.functions";
+import { submitLead, scheduleLead } from "@/lib/leads.functions";
 
 export const Route = createFileRoute("/quiz")({
   component: QuizPage,
