@@ -1,5 +1,6 @@
 import type { ComponentType } from 'react'
 import { template as leadNotificationTemplate } from './lead-notification'
+import { template as appointmentConfirmationTemplate } from './appointment-confirmation'
 
 
 export interface TemplateEntry {
