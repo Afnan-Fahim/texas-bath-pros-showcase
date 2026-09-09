@@ -1934,7 +1934,24 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
   const handleCalendlyScheduled = (uri: string) => {
     if (uri) setEventUri(uri);
     setCalendlyCompleted(true);
-    setShowCalendly(false);
+    // Send the confirmed appointment time with the already-saved lead.
+    if (uri && quizData) {
+      const leadData = {
+        name: quizData.name || "Provided in Calendly",
+        email: "calendly@provided.com",
+        phone: quizData.phone,
+        address: quizData.address,
+        timeframe: quizData.timeline,
+        notes:
+          [
+            `Homeowner: ${quizData.homeowner}`,
+            `Upgrade: ${quizData.desiredUpgrade}`,
+            `Problem: ${quizData.mainProblem}`,
+          ].join("\n") + attributionNote(),
+        source: "Website quiz form",
+      };
+      scheduleLead({ data: { leadData, eventUri: uri } }).catch((e) => console.error(e));
+    }
   };
 
   const handleCalendlyBack = () => {
