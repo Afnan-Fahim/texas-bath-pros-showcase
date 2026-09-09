@@ -2055,7 +2055,31 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
             </div>
             {showCalendly && (
               <div className="block w-full p-6 md:p-8">
-                <CalendlyEmbed
+                {calendlyCompleted ? (
+                  <div className="py-6 text-center">
+                    <h3 className="text-2xl font-display font-semibold text-navy">
+                      You're confirmed — thank you!
+                    </h3>
+                    <p className="mt-2 text-muted-foreground">
+                      We have your details and your time slot. We'll call to confirm before we head out.
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    <div className="mb-4 rounded-2xl border border-teal/20 bg-secondary/40 p-4 text-center">
+                      <p className="text-sm text-foreground/80">
+                        Your details are saved. Pick a time below — or
+                      </p>
+                      <a
+                        href={calendlyUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-2 inline-flex h-11 items-center justify-center rounded-full bg-navy px-6 font-semibold text-navy-foreground"
+                      >
+                        Pick a time
+                      </a>
+                    </div>
+                    <CalendlyEmbed
                   url={calendlyUrl}
                   prefill={{
                     name: quizData?.name || "",
