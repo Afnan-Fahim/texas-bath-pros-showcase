@@ -127,16 +127,9 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
   };
 
   const handleOptionSelect = (key: keyof QuizState, value: string) => {
-    const newState = { ...state, [key]: value };
-    setState(newState);
-    
-    setTimeout(() => {
-      if (key === "timeline" && onShowCalendly && !calendlyCompleted) {
-        onShowCalendly(newState);
-      } else {
-        handleNext();
-      }
-    }, 300);
+    setState((prev) => ({ ...prev, [key]: value }));
+    // Move to the next screen right away — never leave a blank/loading gap.
+    handleNext();
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
