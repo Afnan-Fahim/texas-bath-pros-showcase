@@ -15,15 +15,40 @@ function QuizPage() {
   const [quizData, setQuizData] = useState<QuizState | null>(null);
   const [calendlyUrl, setCalendlyUrl] = useState("https://calendly.com/rugsafari/texas-bath-solutions");
 
+  useEffect(() => {
+    captureAttribution();
+  }, []);
+
+  const buildLead = (d: QuizState) => ({
+    name: d.name || `Quiz lead ${d.phone}`,
+    email: "quiz@provided.com",
+    phone: d.phone,
+    address: d.address,
+    timeframe: d.timeline,
+    notes:
+      [
+        `Homeowner: ${d.homeowner}`,
+        `Upgrade: ${d.desiredUpgrade}`,
+        `Problem: ${d.mainProblem}`,
+      ].join("\n") + attributionNote(),
+    source: "Facebook/Messenger Quiz",
+  });
+
   const handleShowCalendly = (data: QuizState, url?: string) => {
     setQuizData(data);
     if (url) setCalendlyUrl(url);
     setShowCalendly(true);
   };
 
-  const handleCalendlyScheduled = () => {
+  const handleCalendlyScheduled = (uri: string) => {
     setCalendlyCompleted(true);
     setShowCalendly(false); // Go back to quiz flow for final lead form (step 5)
+    // Send a follow-up notification carrying the booked appointment time.
+    if (quizData) {
+      scheduleLead({
+        data: { leadData: buildLead(quizData), eventUri: uri || "" },
+      }).catch((e) => console.error(e));
+    }
   };
 
   const handleCalendlyBack = () => {
