@@ -48,28 +48,14 @@ function QuizPage() {
         source: "Facebook/Messenger Quiz",
       };
 
-      // Save the lead to the database
+      // Show the calendar right away, save the lead in the background
+      setQuizData(finalData);
+      setShowCalendly(true);
+
       await submitLead({ data: leadData });
       trackLeadEvent(`quiz:${finalData.phone}`, { phone: finalData.phone });
-
-      alert("Thank you! Your visit is confirmed.");
-      const mw = (window as any).MessengerExtensions;
-      if (mw) {
-        mw.requestCloseBrowser(
-          function success() {
-            // Closed webview successfully
-          },
-          function error(err: any) {
-            window.location.href = "/";
-          }
-        );
-      } else {
-        window.location.href = "/";
-      }
     } catch (e) {
       console.error(e);
-      alert("Failed to submit. Please try again.");
-      throw e;
     }
   };
 
