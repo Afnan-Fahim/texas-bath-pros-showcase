@@ -75,8 +75,6 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
         }
       } catch (err: any) {
         console.error("Failed to load dynamic quiz data. Using default data instead.", err?.message || err);
-      } finally {
-        setIsLoadingQuiz(false);
       }
     };
     fetchQuiz();
