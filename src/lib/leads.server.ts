@@ -17,6 +17,13 @@ export interface LeadInput {
   appointmentDate?: string
 }
 
+const PLACEHOLDER_EMAILS = ['calendly@provided.com', 'quiz@provided.com']
+
+function isRealEmail(email?: string) {
+  if (!email) return false
+  return !PLACEHOLDER_EMAILS.includes(email.toLowerCase())
+}
+
 export async function notifyLead(lead: LeadInput) {
   const submittedAt = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/Chicago',
