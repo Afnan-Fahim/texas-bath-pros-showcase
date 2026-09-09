@@ -53,3 +53,38 @@ export async function notifyLead(lead: LeadInput) {
 
   return { ok: results.some((r) => r.status === 'fulfilled') }
 }
+
+export interface CustomerConfirmationInput {
+  email: string
+  name?: string
+  phone?: string
+  address?: string
+  appointmentDate?: string
+  rescheduleUrl?: string
+  eventUri?: string
+}
+
+/** Sends the booked customer their own appointment confirmation. */
+export async function sendCustomerConfirmation(input: CustomerConfirmationInput) {
+  if (!isRealEmail(input.email)) return { ok: false }
+
+  const key = (input.eventUri || input.email).replace(/[^a-zA-Z0-9]/g, '').slice(-40)
+
+  try {
+    const result = await sendTemplateEmail('appointment-confirmation', input.email, {
+      templateData: {
+        name: input.name,
+        phone: input.phone,
+        address: input.address,
+        appointmentDate: input.appointmentDate,
+        rescheduleUrl: input.rescheduleUrl,
+      },
+      idempotencyKey: `appointment-confirmation-${key}`,
+      replyTo: 'contact@texasbathsolutions.com',
+    })
+    return { ok: result.sent }
+  } catch (e) {
+    console.error('[leads] failed to send customer confirmation:', e)
+    return { ok: false }
+  }
+}
