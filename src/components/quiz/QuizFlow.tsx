@@ -56,7 +56,6 @@ interface QuizFlowProps {
 export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendlyCompleted = false }: QuizFlowProps) {
   const [step, setStep] = useState(1);
   const [quizData, setQuizData] = useState<any>(QUIZ_DATA);
-  const [isLoadingQuiz, setIsLoadingQuiz] = useState(true);
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
