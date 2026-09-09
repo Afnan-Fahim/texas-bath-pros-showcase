@@ -20,7 +20,8 @@ export const submitLead = createServerFn({ method: 'POST' })
 
 const scheduledLeadSchema = z.object({
   leadData: leadSchema,
-  eventUri: z.string().url(),
+  // Calendly does not always hand us an event URI; the notification must still go out.
+  eventUri: z.union([z.string().url(), z.literal('')]).optional().default(''),
 })
 
 export const scheduleLead = createServerFn({ method: 'POST' })
@@ -31,6 +32,7 @@ export const scheduleLead = createServerFn({ method: 'POST' })
     let appointmentDate: string | undefined
 
     try {
+      if (!data.eventUri) throw new Error('No Calendly event URI provided')
       const response = await fetch(data.eventUri, {
         headers: {
           Authorization: `Bearer ${CALENDLY_TOKEN}`,

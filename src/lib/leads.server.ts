@@ -17,6 +17,13 @@ export interface LeadInput {
   appointmentDate?: string
 }
 
+const PLACEHOLDER_EMAILS = ['calendly@provided.com', 'quiz@provided.com']
+
+function isRealEmail(email?: string) {
+  if (!email) return false
+  return !PLACEHOLDER_EMAILS.includes(email.toLowerCase())
+}
+
 export async function notifyLead(lead: LeadInput) {
   const submittedAt = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/Chicago',
@@ -31,7 +38,9 @@ export async function notifyLead(lead: LeadInput) {
       sendTemplateEmail('lead-notification', to, {
         templateData: { ...lead, submittedAt },
         idempotencyKey: `lead-notification-${eventId}-${to}`,
-        replyTo: lead.email,
+        // Only set reply-to when we actually captured the customer's email;
+        // placeholder addresses would send replies into a black hole.
+        ...(isRealEmail(lead.email) ? { replyTo: lead.email } : {}),
       })
     )
   )

@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { QuizFlow, QuizState } from "@/components/quiz/QuizFlow";
-import { CalendlyEmbed, trackLeadEvent } from "./index";
+import { CalendlyEmbed, trackLeadEvent, captureAttribution, attributionNote } from "./index";
 import logoImg from "@/assets/logo-header.webp";
-import { submitLead } from "@/lib/leads.functions";
+import { submitLead, scheduleLead } from "@/lib/leads.functions";
 
 export const Route = createFileRoute("/quiz")({
   component: QuizPage,
@@ -15,15 +15,40 @@ function QuizPage() {
   const [quizData, setQuizData] = useState<QuizState | null>(null);
   const [calendlyUrl, setCalendlyUrl] = useState("https://calendly.com/rugsafari/texas-bath-solutions");
 
+  useEffect(() => {
+    captureAttribution();
+  }, []);
+
+  const buildLead = (d: QuizState) => ({
+    name: d.name || `Quiz lead ${d.phone}`,
+    email: "quiz@provided.com",
+    phone: d.phone,
+    address: d.address,
+    timeframe: d.timeline,
+    notes:
+      [
+        `Homeowner: ${d.homeowner}`,
+        `Upgrade: ${d.desiredUpgrade}`,
+        `Problem: ${d.mainProblem}`,
+      ].join("\n") + attributionNote(),
+    source: "Facebook/Messenger Quiz",
+  });
+
   const handleShowCalendly = (data: QuizState, url?: string) => {
     setQuizData(data);
     if (url) setCalendlyUrl(url);
     setShowCalendly(true);
   };
 
-  const handleCalendlyScheduled = () => {
+  const handleCalendlyScheduled = (uri: string) => {
     setCalendlyCompleted(true);
     setShowCalendly(false); // Go back to quiz flow for final lead form (step 5)
+    // Send a follow-up notification carrying the booked appointment time.
+    if (quizData) {
+      scheduleLead({
+        data: { leadData: buildLead(quizData), eventUri: uri || "" },
+      }).catch((e) => console.error(e));
+    }
   };
 
   const handleCalendlyBack = () => {
@@ -32,21 +57,7 @@ function QuizPage() {
 
   const handleQuizComplete = async (finalData: QuizState) => {
     try {
-      const notes = [
-        `Homeowner: ${finalData.homeowner}`,
-        `Upgrade: ${finalData.desiredUpgrade}`,
-        `Problem: ${finalData.mainProblem}`
-      ].join('\n');
-
-      const leadData = {
-        name: finalData.name || "Provided in Calendly",
-        email: "calendly@provided.com",
-        phone: finalData.phone,
-        address: finalData.address,
-        timeframe: finalData.timeline,
-        notes: notes,
-        source: "Facebook/Messenger Quiz",
-      };
+      const leadData = buildLead(finalData);
 
       // Show the calendar right away, save the lead in the background
       setQuizData(finalData);
