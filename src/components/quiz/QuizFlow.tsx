@@ -70,7 +70,7 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
           throw error;
         }
 
-        if (data && data.quiz_data) {
+        if (data?.quiz_data?.question1 && data.quiz_data.question2 && data.quiz_data.question3) {
           setQuizData(data.quiz_data);
         }
       } catch (err: any) {
