@@ -34,7 +34,8 @@ export function QuizCard({ title, description, image, selected, onClick, index =
             src={image}
             alt={title}
             className="relative w-full h-full object-contain rounded-md drop-shadow-md z-10 transition-transform duration-500 ease-out group-hover:scale-105"
-            loading="lazy"
+            loading="eager"
+            decoding="sync"
             onError={(e) => {
               // Fallback if image fails to load
               (e.target as HTMLImageElement).style.display = "none";
