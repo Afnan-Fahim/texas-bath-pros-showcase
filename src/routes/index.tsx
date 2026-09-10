@@ -2581,6 +2581,18 @@ function ContactUsDialog({ open, onOpenChange }: { open: boolean; onOpenChange: 
 
 function Index() {
   const formRef = useRef<HTMLElement | null>(null);
+  const [quizVisible, setQuizVisible] = useState(false);
+  // Hide the site header while the quiz card is on screen.
+  useEffect(() => {
+    const el = formRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => setQuizVisible(entry.isIntersecting),
+      { threshold: 0.15 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
   // TEMP (QA): logs "[TBS Pixel] ✅ Meta Pixel initialized" once fbq is on window.
   usePixelInitCheck();
   // Capture fbclid / UTM params on landing, before any in-page navigation.
