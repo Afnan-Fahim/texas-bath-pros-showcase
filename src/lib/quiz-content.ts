@@ -34,7 +34,11 @@ export type QuizContactConfig = {
 export type QuizConfig = {
   steps: QuizStepConfig[];
   contact: QuizContactConfig;
+  /** Booking link shown after the last photo question. Editable in /admin. */
+  calendlyUrl: string;
 };
+
+export const DEFAULT_CALENDLY_URL = "https://calendly.com/rugsafari/texas-bath-solutions";
 
 export const DEFAULT_QUIZ_CONFIG: QuizConfig = {
   steps: [
@@ -86,6 +90,7 @@ export const DEFAULT_QUIZ_CONFIG: QuizConfig = {
     submitLabel: "See available times",
     footnote: "Next you’ll pick a time. No charge, no obligation.",
   },
+  calendlyUrl: "https://calendly.com/rugsafari/texas-bath-solutions",
 };
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -123,7 +128,12 @@ export function normalizeQuizConfig(raw: unknown): QuizConfig {
     ? { ...DEFAULT_QUIZ_CONFIG.contact, ...(raw.contact as Partial<QuizContactConfig>) }
     : DEFAULT_QUIZ_CONFIG.contact;
 
-  return { steps: steps.length ? steps : DEFAULT_QUIZ_CONFIG.steps, contact };
+  const calendlyUrl =
+    typeof raw.calendlyUrl === "string" && raw.calendlyUrl.trim()
+      ? raw.calendlyUrl.trim()
+      : DEFAULT_CALENDLY_URL;
+
+  return { steps: steps.length ? steps : DEFAULT_QUIZ_CONFIG.steps, contact, calendlyUrl };
 }
 
 export async function fetchQuizConfig(): Promise<QuizConfig> {
