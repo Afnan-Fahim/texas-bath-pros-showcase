@@ -1,0 +1,186 @@
+import { useEffect, useState } from "react";
+import { supabasePublic as supabase } from "@/integrations/supabase/public-client";
+import { resolveQuizImageUrl } from "@/lib/quiz-images";
+
+export type QuizAnswerKey = "desiredUpgrade" | "mainProblem" | "timeline";
+
+export type QuizOptionConfig = {
+  id: string;
+  label: string;
+  /** Storage path, absolute URL, or public /images path. Empty = text button. */
+  image?: string;
+};
+
+export type QuizStepConfig = {
+  id: string;
+  key: QuizAnswerKey;
+  title: string;
+  description: string;
+  options: QuizOptionConfig[];
+};
+
+export type QuizContactConfig = {
+  headline: string;
+  subline: string;
+  nameLabel: string;
+  emailLabel: string;
+  phoneLabel: string;
+  addressLabel: string;
+  homeownerLabel: string;
+  submitLabel: string;
+  footnote: string;
+};
+
+export type QuizConfig = {
+  steps: QuizStepConfig[];
+  contact: QuizContactConfig;
+};
+
+export const DEFAULT_QUIZ_CONFIG: QuizConfig = {
+  steps: [
+    {
+      id: "step-1",
+      key: "desiredUpgrade",
+      title: "Tap the one that looks like your project.",
+      description:
+        "15 seconds. We’ll come look at it and give you a straight price — no pressure.",
+      options: [
+        { id: "walk-in-shower", label: "Walk-in shower", image: "/images/quiz/walk-in-shower.jpg" },
+        { id: "new-tub", label: "New tub remodel", image: "/images/quiz/new-tub.jpg" },
+        { id: "not-sure", label: "Not sure yet" },
+      ],
+    },
+    {
+      id: "step-2",
+      key: "mainProblem",
+      title: "What's the main problem?",
+      description: "Choose what matters most to you.",
+      options: [
+        { id: "hard-step", label: "Hard to step over", image: "/images/quiz/hard-step.jpg" },
+        { id: "looks-dated", label: "Looks dated", image: "/images/quiz/looks-dated.jpg" },
+        { id: "leak", label: "Leak or damage", image: "/images/quiz/leak.jpg" },
+        { id: "not-guest-ready", label: "Not guest-ready", image: "/images/quiz/not-guest-ready.jpg" },
+      ],
+    },
+    {
+      id: "step-3",
+      key: "timeline",
+      title: "When would you like it done?",
+      description: "Choose the timing that works best for you.",
+      options: [
+        { id: "asap", label: "ASAP" },
+        { id: "2-weeks", label: "2 weeks" },
+        { id: "1-3-months", label: "1–3 months" },
+        { id: "just-looking", label: "Just looking" },
+      ],
+    },
+  ],
+  contact: {
+    headline: "Where should we come look?",
+    subline: "Free estimate at your house from a local Texas company. No pressure.",
+    nameLabel: "Name *",
+    emailLabel: "Email *",
+    phoneLabel: "Mobile phone *",
+    addressLabel: "Address *",
+    homeownerLabel: "Are you the homeowner? *",
+    submitLabel: "See available times",
+    footnote: "Next you’ll pick a time. No charge, no obligation.",
+  },
+};
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return !!value && typeof value === "object" && !Array.isArray(value);
+}
+
+/** Accepts any stored shape and fills gaps with the defaults. */
+export function normalizeQuizConfig(raw: unknown): QuizConfig {
+  if (!isRecord(raw)) return DEFAULT_QUIZ_CONFIG;
+
+  const rawSteps = Array.isArray(raw.steps) ? raw.steps : null;
+  const steps: QuizStepConfig[] = rawSteps
+    ? rawSteps.filter(isRecord).map((step, i) => {
+        const fallback = DEFAULT_QUIZ_CONFIG.steps[i] ?? DEFAULT_QUIZ_CONFIG.steps[0];
+        const options = Array.isArray(step.options)
+          ? step.options.filter(isRecord).map((opt, j) => ({
+              id: String(opt.id ?? `option-${j + 1}`),
+              label: String(opt.label ?? ""),
+              image: typeof opt.image === "string" ? opt.image : "",
+            }))
+          : fallback.options;
+        return {
+          id: String(step.id ?? `step-${i + 1}`),
+          key: (["desiredUpgrade", "mainProblem", "timeline"] as const).includes(step.key as QuizAnswerKey)
+            ? (step.key as QuizAnswerKey)
+            : fallback.key,
+          title: String(step.title ?? fallback.title),
+          description: String(step.description ?? fallback.description),
+          options,
+        };
+      })
+    : DEFAULT_QUIZ_CONFIG.steps;
+
+  const contact = isRecord(raw.contact)
+    ? { ...DEFAULT_QUIZ_CONFIG.contact, ...(raw.contact as Partial<QuizContactConfig>) }
+    : DEFAULT_QUIZ_CONFIG.contact;
+
+  return { steps: steps.length ? steps : DEFAULT_QUIZ_CONFIG.steps, contact };
+}
+
+export async function fetchQuizConfig(): Promise<QuizConfig> {
+  const { data, error } = await supabase
+    .from("quiz_content")
+    .select("config")
+    .eq("id", "default")
+    .maybeSingle();
+
+  if (error || !data?.config) return DEFAULT_QUIZ_CONFIG;
+  return normalizeQuizConfig(data.config);
+}
+
+export async function saveQuizConfig(config: QuizConfig) {
+  const { error } = await supabase
+    .from("quiz_content")
+    .upsert({ id: "default", config: config as unknown as Record<string, unknown> });
+  if (error) throw error;
+}
+
+/** Resolves every option image to a displayable URL. */
+export async function resolveConfigImages(config: QuizConfig): Promise<QuizConfig> {
+  const steps = await Promise.all(
+    config.steps.map(async (step) => ({
+      ...step,
+      options: await Promise.all(
+        step.options.map(async (opt) => ({
+          ...opt,
+          image: opt.image ? await resolveQuizImageUrl(opt.image) : "",
+        })),
+      ),
+    })),
+  );
+  return { ...config, steps };
+}
+
+/**
+ * Renders defaults instantly, then swaps in the admin-edited content.
+ * Never blocks the quiz on a network request.
+ */
+export function useQuizConfig(): QuizConfig {
+  const [config, setConfig] = useState<QuizConfig>(DEFAULT_QUIZ_CONFIG);
+
+  useEffect(() => {
+    let active = true;
+    fetchQuizConfig()
+      .then(resolveConfigImages)
+      .then((next) => {
+        if (active) setConfig(next);
+      })
+      .catch(() => {
+        /* keep defaults */
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  return config;
+}

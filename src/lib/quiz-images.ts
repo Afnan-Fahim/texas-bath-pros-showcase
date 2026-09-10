@@ -11,7 +11,7 @@ export type QuizImageMap = Record<string, string>;
 /** Turns a stored storage path into a URL the browser can display. */
 export async function resolveQuizImageUrl(path: string): Promise<string> {
   if (!path) return "";
-  if (path.startsWith("http")) return path;
+  if (path.startsWith("http") || path.startsWith("/")) return path;
   const { data } = await supabase.storage
     .from("quiz-assets")
     .createSignedUrl(path, 60 * 60 * 24 * 7);
