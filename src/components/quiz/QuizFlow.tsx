@@ -113,7 +113,7 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
           {/* PHOTO / CHOICE QUESTIONS — every step is editable in /admin */}
           {steps.map((stepConfig, stepIdx) =>
             currentStep === stepIdx + 1 ? (
-              <div key={stepConfig.id} className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <div key={stepConfig.id} className="animate-in fade-in duration-150">
                 <div className="text-center mb-4 sm:mb-5">
                   {stepIdx === 0 ? (
                     <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{stepConfig.title}</h1>
