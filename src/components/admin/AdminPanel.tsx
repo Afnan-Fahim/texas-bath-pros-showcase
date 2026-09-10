@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import type { FormEvent } from "react";
 import type { Session } from "@supabase/supabase-js";
-import { supabase } from "@/integrations/supabase/client";
+import { supabasePublic as supabase } from "@/integrations/supabase/public-client";
 import { claimAdmin } from "@/lib/admin.functions";
 import { QUIZ_IMAGE_SLOTS, resolveQuizImageUrl } from "@/lib/quiz-images";
 import { Button } from "@/components/ui/button";
