@@ -9,9 +9,10 @@ interface QuizCardProps {
   onClick: () => void;
   index?: number;
   fill?: boolean;
+  compact?: boolean;
 }
 
-export function QuizCard({ title, description, image, selected, onClick, fill = false }: QuizCardProps) {
+export function QuizCard({ title, description, image, selected, onClick, fill = false, compact = false }: QuizCardProps) {
   return (
     <div
       onClick={onClick}
