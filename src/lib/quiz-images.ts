@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabasePublic as supabase } from "@/integrations/supabase/public-client";
 
 export const QUIZ_IMAGE_SLOTS = [
   { slot: "walk-in-shower", label: "Walk-in shower" },

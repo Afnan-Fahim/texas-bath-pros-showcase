@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import type { FormEvent } from "react";
 import type { Session } from "@supabase/supabase-js";
-import { supabase } from "@/integrations/supabase/client";
+import { supabasePublic as supabase } from "@/integrations/supabase/public-client";
 import { claimAdmin } from "@/lib/admin.functions";
 import { QUIZ_IMAGE_SLOTS, resolveQuizImageUrl } from "@/lib/quiz-images";
 import { Button } from "@/components/ui/button";
@@ -95,7 +95,31 @@ export function AdminPanel() {
     try {
       await withTimeout(
         (async () => {
-          const { isAdmin: admin } = await claimAdmin();
+          // Works on any domain: check the role directly with the signed-in
+          // session, and only fall back to the server call to claim the very
+          // first admin account.
+          const { data: userData } = await supabase.auth.getUser();
+          const uid = userData.user?.id;
+          let admin = false;
+
+          if (uid) {
+            const { data: roleRow } = await supabase
+              .from("user_roles")
+              .select("role")
+              .eq("user_id", uid)
+              .eq("role", "admin")
+              .maybeSingle();
+            admin = !!roleRow;
+          }
+
+          if (!admin) {
+            try {
+              admin = (await claimAdmin()).isAdmin;
+            } catch (err) {
+              console.error("claimAdmin failed:", err);
+            }
+          }
+
           setIsAdmin(admin);
           if (!admin) return;
 
