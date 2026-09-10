@@ -2013,8 +2013,8 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
       ref={formRef as React.RefObject<HTMLElement>}
       className="bg-gradient-to-b from-background to-secondary/60"
     >
-      <div ref={stageRef} className="container-x flex min-h-svh items-center justify-center py-3">
-        <div className="hidden">
+      <div className="container-x grid items-start gap-10 py-16 md:py-20 lg:grid-cols-2 lg:gap-14">
+        <div className="lg:sticky lg:top-24">
           <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold normal-case tracking-wide text-navy">
             Book Your Free Estimate
           </span>
@@ -2042,8 +2042,8 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
             ))}
           </ul>
         </div>
-        <div className="w-full max-w-4xl">
-          <div className="relative mx-auto h-[calc(100svh-1.5rem)] w-full overflow-y-auto overscroll-contain rounded-3xl border border-teal/20 bg-card shadow-2xl hide-scrollbar">
+        <div ref={stageRef} className="w-full">
+          <div className="relative mx-auto w-full overflow-hidden rounded-3xl border border-teal/20 bg-card shadow-2xl">
             <div className={showCalendly ? "hidden" : "flex h-full w-full items-center justify-center"}>
               <LazyMount
                 placeholderClassName="h-full w-full"
