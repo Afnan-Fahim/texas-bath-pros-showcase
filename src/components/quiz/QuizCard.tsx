@@ -48,7 +48,7 @@ export function QuizCard({ title, description, image, brandLogo, selected, onCli
                src={brandLogo}
                alt=""
                aria-hidden="true"
-               className="absolute bottom-4 right-4 z-20 h-auto w-28 sm:w-36 drop-shadow-lg"
+               className="absolute bottom-2 right-2 z-20 h-auto w-16 sm:w-20 drop-shadow-md"
              />
            )}
         </div>
