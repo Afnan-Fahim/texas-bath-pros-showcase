@@ -1149,6 +1149,26 @@ function About() {
   );
 }
 
+/* ---------------- ABOUT BLOCK (trust icons + about text) ---------------- */
+function AboutBlock() {
+  return (
+    <section className="relative overflow-hidden">
+      <img
+        src={aboutBgAsset.url}
+        alt=""
+        width={1920}
+        height={725}
+        loading="lazy"
+        decoding="async"
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 h-full w-full object-cover object-right-bottom opacity-10 select-none"
+      />
+      <TrustBar />
+      <About />
+    </section>
+  );
+}
+
 /* ---------------- GALLERY ---------------- */
 type GalleryItem = {
   id: string;
