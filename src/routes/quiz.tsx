@@ -91,7 +91,7 @@ function QuizPage() {
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col items-center">
       <header className="w-full flex justify-center py-4 sm:py-5">
-        <img src={logoImg} alt="Texas Bath Solutions" className="h-10 w-auto" />
+        <img src={logoImg} alt="Texas Bath Solutions" className="h-14 sm:h-16 w-auto" />
       </header>
 
       <main ref={stageRef} className="flex min-h-svh w-full flex-1 items-center justify-center px-3 py-3 sm:px-6 relative">
@@ -100,7 +100,7 @@ function QuizPage() {
             onComplete={handleQuizComplete}
             calendlyCompleted={calendlyCompleted}
             showStartCue={false}
-            photoFill={true}
+            photoFill={false}
             labelOverrides={{ "new-tub": "New bathtub" }}
             extraSubline="Free in-home estimate • San Antonio • No pressure"
           />
