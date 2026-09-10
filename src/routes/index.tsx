@@ -537,7 +537,8 @@ function Navbar({ onBook, onContact }: { onBook: () => void; onContact: () => vo
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-all duration-300",
+        "fixed inset-x-0 top-0 z-50 transition-transform duration-300 ease-out will-change-transform",
+        isHidden ? "-translate-y-full pointer-events-none" : "translate-y-0",
         scrolled
           ? "bg-background/85 backdrop-blur-md border-b border-border shadow-sm"
           : "bg-background/60 backdrop-blur-sm",
