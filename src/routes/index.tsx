@@ -502,13 +502,36 @@ function Logo({
 function Navbar({ onBook, onContact }: { onBook: () => void; onContact: () => void }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const anchorY = useRef(0);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 8);
+      if (y < 20) {
+        setHidden(false);
+        anchorY.current = y;
+      } else if (!hidden) {
+        anchorY.current = Math.min(anchorY.current, y);
+        if (y - anchorY.current > 5) {
+          setHidden(true);
+          anchorY.current = y;
+        }
+      } else {
+        anchorY.current = Math.max(anchorY.current, y);
+        if (anchorY.current - y > 50) {
+          setHidden(false);
+          anchorY.current = y;
+        }
+      }
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [hidden]);
+
+  const isHidden = hidden && !open;
 
   const links = [
     { href: "#work", label: "Our Work" },
@@ -521,7 +544,8 @@ function Navbar({ onBook, onContact }: { onBook: () => void; onContact: () => vo
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-all duration-300",
+        "fixed inset-x-0 top-0 z-50 transition-transform duration-300 ease-out will-change-transform",
+        isHidden ? "-translate-y-full pointer-events-none" : "translate-y-0",
         scrolled
           ? "bg-background/85 backdrop-blur-md border-b border-border shadow-sm"
           : "bg-background/60 backdrop-blur-sm",
