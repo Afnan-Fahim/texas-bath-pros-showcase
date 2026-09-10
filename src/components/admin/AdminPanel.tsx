@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import type { FormEvent } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { claimAdmin } from "@/lib/admin.functions";
@@ -24,10 +25,24 @@ type Lead = {
 
 type SlotState = { path: string; preview: string; busy: boolean };
 
+const REQUEST_TIMEOUT_MS = 15000;
+
+function withTimeout<T>(promise: Promise<T>, message: string): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<T>((_, reject) => {
+      setTimeout(() => reject(new Error(message)), REQUEST_TIMEOUT_MS);
+    }),
+  ]);
+}
+
 export function AdminPanel() {
   const [session, setSession] = useState<Session | null>(null);
-  const [checking, setChecking] = useState(true);
+  const [authReady, setAuthReady] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [checkingAdmin, setCheckingAdmin] = useState(false);
+  const [adminError, setAdminError] = useState("");
+  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [authBusy, setAuthBusy] = useState(false);
@@ -41,21 +56,30 @@ export function AdminPanel() {
   useEffect(() => {
     let active = true;
 
-    supabase.auth.getSession().then(({ data }) => {
+    // Fallback to stop the spinner if auth is completely stuck
+    const fallback = setTimeout(() => {
+      if (active) setAuthReady(true);
+    }, 5000);
+
+    supabase.auth.getSession().then(({ data, error }) => {
       if (!active) return;
+      if (error) {
+        console.error("Auth session error:", error);
+        setAuthMessage("Could not verify login session.");
+      }
       setSession(data.session);
-      setChecking(false);
+      setAuthReady(true);
+      clearTimeout(fallback);
+    }).catch(err => {
+      console.error("Auth session fatal error:", err);
+      if (active) setAuthReady(true);
     });
 
     const { data: listener } = supabase.auth.onAuthStateChange((_event, next) => {
+      if (!active) return;
       setSession(next);
-      setChecking(false);
+      setAuthReady(true);
     });
-
-    // Never leave the page sitting on a spinner if the session lookup is slow.
-    const fallback = setTimeout(() => {
-      if (active) setChecking(false);
-    }, 1500);
 
     return () => {
       active = false;
@@ -65,54 +89,100 @@ export function AdminPanel() {
   }, []);
 
   const loadData = useCallback(async () => {
-    const { isAdmin: admin } = await claimAdmin();
-    setIsAdmin(admin);
-    if (!admin) return;
+    setCheckingAdmin(true);
+    setAdminError("");
+    setLeadsError("");
+    try {
+      // Step 1: Check admin status
+      const { isAdmin: admin } = await withTimeout(
+        claimAdmin(),
+        "Checking admin permissions timed out."
+      );
+      setIsAdmin(admin);
 
-    const { data, error } = await supabase
-      .from("leads")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .limit(500);
+      if (!admin) {
+        setCheckingAdmin(false);
+        return;
+      }
 
-    if (error) setLeadsError(error.message);
-    else setLeads((data ?? []) as Lead[]);
+      // Step 2: Load admin data
+      const [leadResult, imageResult] = await withTimeout(
+        Promise.all([
+          supabase.from("leads").select("*").order("created_at", { ascending: false }).limit(500),
+          supabase.from("quiz_images").select("slot, image_url"),
+        ]),
+        "Admin data load timed out."
+      );
 
-    const { data: imgs } = await supabase.from("quiz_images").select("slot, image_url");
-    const next: Record<string, SlotState> = {};
-    for (const s of QUIZ_IMAGE_SLOTS) {
-      const row = imgs?.find((i) => i.slot === s.slot);
-      const path = row?.image_url ?? "";
-      next[s.slot] = { path, preview: await resolveQuizImageUrl(path), busy: false };
+      if (leadResult.error) {
+        setLeadsError(leadResult.error.message);
+      } else {
+        setLeads((leadResult.data ?? []) as Lead[]);
+      }
+
+      if (imageResult.error) {
+        setAdminError(`Quiz photos could not load: ${imageResult.error.message}`);
+      } else {
+        const next: Record<string, SlotState> = {};
+        for (const s of QUIZ_IMAGE_SLOTS) {
+          const row = imageResult.data?.find((i) => i.slot === s.slot);
+          const path = row?.image_url ?? "";
+          next[s.slot] = { 
+            path, 
+            preview: await resolveQuizImageUrl(path), 
+            busy: false 
+          };
+        }
+        setSlots(next);
+      }
+    } catch (err) {
+      console.error("Admin data load failed:", err);
+      setAdminError(err instanceof Error ? err.message : "Failed to load admin dashboard.");
+    } finally {
+      setCheckingAdmin(false);
     }
-    setSlots(next);
   }, []);
 
   useEffect(() => {
-    if (session) void loadData();
+    if (session) {
+      void loadData();
+    } else {
+      setIsAdmin(false);
+      setCheckingAdmin(false);
+    }
   }, [session, loadData]);
 
-  const handleAuth = async (e: React.FormEvent, mode: "in" | "up") => {
+  const handleAuth = async (e: FormEvent, mode: "in" | "up") => {
     e.preventDefault();
     setAuthBusy(true);
     setAuthMessage("");
-    const fn =
-      mode === "in"
+    try {
+      const { error } = await (mode === "in"
         ? supabase.auth.signInWithPassword({ email, password })
         : supabase.auth.signUp({
             email,
             password,
             options: { emailRedirectTo: `${window.location.origin}/admin` },
-          });
-    const { error } = await fn;
-    if (error) setAuthMessage(error.message);
-    else if (mode === "up") setAuthMessage("Account created. You can log in now.");
-    setAuthBusy(false);
+          }));
+      
+      if (error) {
+        setAuthMessage(error.message);
+      } else if (mode === "up") {
+        setAuthMessage("Account created. You can log in now.");
+      }
+    } catch (err) {
+      setAuthMessage(err instanceof Error ? err.message : "Authentication failed.");
+    } finally {
+      setAuthBusy(false);
+    }
   };
 
   const uploadSlot = async (slot: string, file: File) => {
     setSaveMessage("");
-    setSlots((s) => ({ ...s, [slot]: { ...s[slot]!, busy: true } }));
+    setSlots((current) => {
+      const existing = current[slot] ?? { path: "", preview: "", busy: false };
+      return { ...current, [slot]: { ...existing, busy: true } };
+    });
     try {
       const ext = file.name.split(".").pop() ?? "jpg";
       const path = `step1/${slot}-${Date.now()}.${ext}`;
@@ -132,14 +202,13 @@ export function AdminPanel() {
       setSlots((s) => ({ ...s, [slot]: { path, preview, busy: false } }));
       setSaveMessage("Saved. The new photo is live on /quiz.");
     } catch (err) {
-      setSlots((s) => ({ ...s, [slot]: { ...s[slot]!, busy: false } }));
+      setSlots((current) => {
+        const existing = current[slot] ?? { path: "", preview: "", busy: false };
+        return { ...current, [slot]: { ...existing, busy: false } };
+      });
       setSaveMessage(`Upload failed: ${(err as Error).message}`);
     }
   };
-
-  if (checking) {
-    return <div className="p-8 text-muted-foreground">Checking your login…</div>;
-  }
 
   if (!session) {
     return (
@@ -169,7 +238,14 @@ export function AdminPanel() {
               minLength={6}
             />
           </div>
-          {authMessage && <p className="text-sm text-muted-foreground">{authMessage}</p>}
+          {!authReady && (
+            <p className="text-sm text-muted-foreground">Checking for a saved login…</p>
+          )}
+          {authMessage && (
+            <p className={`text-sm ${authMessage.includes("created") ? "text-primary" : "text-destructive"}`}>
+              {authMessage}
+            </p>
+          )}
           <Button type="submit" className="w-full" disabled={authBusy}>
             {authBusy ? "Please wait…" : "Log In"}
           </Button>
@@ -187,13 +263,31 @@ export function AdminPanel() {
     );
   }
 
+  if (!checkingAdmin && adminError && !isAdmin) {
+    return (
+      <div className="max-w-md mx-auto mt-12 p-6 bg-card border rounded-xl shadow-sm space-y-4">
+        <h1 className="text-xl font-bold text-destructive">Error</h1>
+        <p className="text-sm text-muted-foreground">{adminError}</p>
+        <div className="flex gap-2">
+          <Button onClick={() => void loadData()}>Retry</Button>
+          <Button variant="outline" onClick={() => supabase.auth.signOut()}>Log Out</Button>
+        </div>
+      </div>
+    );
+  }
+
   if (!isAdmin) {
     return (
       <div className="max-w-md mx-auto mt-12 p-6 bg-card border rounded-xl shadow-sm space-y-4">
-        <h1 className="text-xl font-bold">This account is not an admin</h1>
-        <p className="text-sm text-muted-foreground">
-          Signed in as {session.user.email}. Ask an existing admin to add you.
-        </p>
+        <h1 className="text-xl font-bold">Admin</h1>
+        {checkingAdmin ? (
+          <p className="text-sm text-muted-foreground">Checking access…</p>
+        ) : (
+          <p className="text-sm text-muted-foreground">
+            Signed in as {session.user.email}. This account is not an admin.
+          </p>
+        )}
+        {!checkingAdmin && <Button onClick={() => void loadData()}>Try Again</Button>}
         <Button variant="outline" onClick={() => supabase.auth.signOut()}>
           Log Out
         </Button>
@@ -204,11 +298,21 @@ export function AdminPanel() {
   return (
     <div className="max-w-5xl mx-auto mt-8 space-y-10">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Admin</h1>
-        <Button variant="outline" onClick={() => supabase.auth.signOut()}>
-          Log Out
-        </Button>
+        <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+        <div className="flex items-center gap-4">
+          <span className="text-sm text-muted-foreground hidden sm:inline">{session.user.email}</span>
+          <Button variant="outline" onClick={() => supabase.auth.signOut()}>
+            Log Out
+          </Button>
+        </div>
       </div>
+
+      {adminError && (
+        <div className="p-4 bg-destructive/10 border border-destructive/20 text-destructive text-sm rounded-lg flex justify-between items-center">
+          <span>{adminError}</span>
+          <Button variant="ghost" size="sm" onClick={() => void loadData()}>Reload</Button>
+        </div>
+      )}
 
       {/* Quiz step 1 photo editor */}
       <section className="p-6 bg-card border rounded-xl shadow-sm">
@@ -216,7 +320,11 @@ export function AdminPanel() {
         <p className="text-sm text-muted-foreground mb-6">
           Upload a photo for each option. It appears on /quiz right away.
         </p>
-        {saveMessage && <p className="text-sm mb-4">{saveMessage}</p>}
+        {saveMessage && (
+          <p className={`text-sm mb-4 ${saveMessage.includes("failed") ? "text-destructive" : "text-primary"}`}>
+            {saveMessage}
+          </p>
+        )}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {QUIZ_IMAGE_SLOTS.map((s) => {
             const state = slots[s.slot];
@@ -245,7 +353,7 @@ export function AdminPanel() {
                   }}
                 />
                 {state?.busy && (
-                  <p className="text-xs text-muted-foreground mt-2">Uploading…</p>
+                  <p className="text-xs text-muted-foreground mt-2 animate-pulse">Uploading…</p>
                 )}
               </div>
             );
@@ -255,47 +363,62 @@ export function AdminPanel() {
 
       {/* Leads */}
       <section className="p-6 bg-card border rounded-xl shadow-sm">
-        <h2 className="text-2xl font-bold mb-1">Leads</h2>
-        <p className="text-sm text-muted-foreground mb-6">{leads.length} total</p>
+        <div className="flex justify-between items-baseline mb-6">
+          <h2 className="text-2xl font-bold">Leads</h2>
+          <span className="text-sm text-muted-foreground">{leads.length} total</span>
+        </div>
+        
         {leadsError && <p className="text-sm text-destructive mb-4">{leadsError}</p>}
+        
         {leads.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No leads yet.</p>
+          <div className="text-center py-12 border border-dashed rounded-lg">
+            <p className="text-sm text-muted-foreground">No leads found.</p>
+          </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="text-left border-b">
-                  <th className="py-2 pr-4">Received</th>
-                  <th className="py-2 pr-4">Name</th>
-                  <th className="py-2 pr-4">Phone</th>
-                  <th className="py-2 pr-4">Email</th>
-                  <th className="py-2 pr-4">Address / ZIP</th>
-                  <th className="py-2 pr-4">Status</th>
-                  <th className="py-2 pr-4">Details</th>
+                  <th className="py-2 pr-4 font-semibold">Received</th>
+                  <th className="py-2 pr-4 font-semibold">Name</th>
+                  <th className="py-2 pr-4 font-semibold">Contact</th>
+                  <th className="py-2 pr-4 font-semibold">Address / ZIP</th>
+                  <th className="py-2 pr-4 font-semibold">Status</th>
+                  <th className="py-2 pr-4 font-semibold">Details</th>
                 </tr>
               </thead>
               <tbody>
                 {leads.map((lead) => (
-                  <tr key={lead.id} className="border-b align-top">
-                    <td className="py-2 pr-4 whitespace-nowrap">
+                  <tr key={lead.id} className="border-b align-top hover:bg-muted/50 transition-colors">
+                    <td className="py-4 pr-4 whitespace-nowrap">
                       {new Date(lead.created_at).toLocaleString("en-US", {
                         timeZone: "America/Chicago",
                         dateStyle: "medium",
                         timeStyle: "short",
                       })}
                     </td>
-                    <td className="py-2 pr-4">{lead.name}</td>
-                    <td className="py-2 pr-4 whitespace-nowrap">
-                      <a href={`tel:${lead.phone}`} className="underline">
-                        {lead.phone}
-                      </a>
+                    <td className="py-4 pr-4 font-medium">{lead.name}</td>
+                    <td className="py-4 pr-4">
+                      <div className="flex flex-col">
+                        <a href={`tel:${lead.phone}`} className="hover:underline text-primary">
+                          {lead.phone}
+                        </a>
+                        <span className="text-xs text-muted-foreground">{lead.email}</span>
+                      </div>
                     </td>
-                    <td className="py-2 pr-4">{lead.email}</td>
-                    <td className="py-2 pr-4">{lead.address}</td>
-                    <td className="py-2 pr-4 whitespace-nowrap">
-                      {lead.booked ? `Booked${lead.appointment_date ? ` — ${lead.appointment_date}` : ""}` : "New"}
+                    <td className="py-4 pr-4">{lead.address}</td>
+                    <td className="py-4 pr-4 whitespace-nowrap">
+                      {lead.booked ? (
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+                          Booked {lead.appointment_date}
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
+                          New
+                        </span>
+                      )}
                     </td>
-                    <td className="py-2 pr-4 max-w-sm whitespace-pre-wrap text-muted-foreground">
+                    <td className="py-4 pr-4 max-w-xs whitespace-pre-wrap text-muted-foreground text-xs leading-relaxed">
                       {[lead.timeframe, lead.homeowner, lead.notes, lead.source]
                         .filter(Boolean)
                         .join("\n")}
