@@ -1161,7 +1161,7 @@ function AboutBlock() {
         loading="lazy"
         decoding="async"
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 h-full w-full object-cover object-right-bottom opacity-10 select-none"
+        className="pointer-events-none absolute inset-0 h-full w-full object-cover object-right-bottom opacity-[0.07] select-none"
       />
       <TrustBar />
       <About />
