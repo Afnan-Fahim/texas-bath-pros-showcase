@@ -43,7 +43,7 @@ export function QuizCard({ title, description, image, selected, onClick, fill = 
             alt={title}
             className={cn(
               "relative w-full h-full rounded-md drop-shadow-md z-10 transition-transform duration-500 ease-out group-hover:scale-105",
-              fill || compact ? "object-cover" : "object-contain"
+              fill ? "object-cover" : "object-contain"
             )}
             loading="eager"
             decoding="sync"
