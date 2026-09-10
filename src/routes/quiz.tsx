@@ -94,7 +94,7 @@ function QuizPage() {
         <img src={logoImg} alt="Texas Bath Solutions" className="h-10 sm:h-12 w-auto" />
       </header>
 
-      <main ref={stageRef} className="flex w-full flex-1 items-start justify-center px-3 pt-1 pb-2 sm:px-6 relative">
+      <main ref={stageRef} className="flex w-full flex-1 items-center justify-center px-3 sm:px-6 relative">
         <div className={showCalendly ? "hidden" : "contents"}>
           <QuizFlow
             onComplete={handleQuizComplete}
