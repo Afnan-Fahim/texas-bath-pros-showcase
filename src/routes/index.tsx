@@ -1951,6 +1951,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
   const calendlyUrl = calendlyOverride || quizConfig.calendlyUrl || DEFAULT_CALENDLY_URL;
   const [eventUri, setEventUri] = useState<string>("");
   const [isQuizOpen, setIsQuizOpen] = useState(false);
+  const stageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     captureAttribution();
@@ -1961,6 +1962,17 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
     if (url) setCalendlyUrl(url);
     setShowCalendly(true);
   };
+
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) return;
+    const centerStage = () => {
+      const rect = stage.getBoundingClientRect();
+      const targetTop = window.scrollY + rect.top - Math.max(0, (window.innerHeight - rect.height) / 2);
+      window.scrollTo({ top: Math.max(0, targetTop), behavior: "smooth" });
+    };
+    requestAnimationFrame(centerStage);
+  }, [showCalendly]);
 
   const handleCalendlyScheduled = (uri: string) => {
     if (uri) setEventUri(uri);
@@ -1999,10 +2011,10 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
     <section
       id="book"
       ref={formRef as React.RefObject<HTMLElement>}
-      className="scroll-mt-24 py-12 md:py-16 bg-gradient-to-b from-background to-secondary/60"
+      className="bg-gradient-to-b from-background to-secondary/60"
     >
-      <div className="container-x grid gap-10 lg:grid-cols-5 items-start">
-        <div className="lg:col-span-2 lg:sticky lg:top-28">
+      <div ref={stageRef} className="container-x flex min-h-svh items-center justify-center py-3">
+        <div className="hidden">
           <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold normal-case tracking-wide text-navy">
             Book Your Free Estimate
           </span>
@@ -2030,11 +2042,11 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
             ))}
           </ul>
         </div>
-        <div className="lg:col-span-3">
-          <div className="w-full max-h-[85vh] overflow-y-auto rounded-3xl hide-scrollbar relative bg-card shadow-2xl border border-teal/20">
-            <div className={showCalendly ? "hidden" : "block w-full min-h-[717px] lg:min-h-[611px]"}>
+        <div className="w-full max-w-4xl">
+          <div className="relative mx-auto h-[calc(100svh-1.5rem)] w-full overflow-y-auto overscroll-contain rounded-3xl border border-teal/20 bg-card shadow-2xl hide-scrollbar">
+            <div className={showCalendly ? "hidden" : "flex h-full w-full items-center justify-center"}>
               <LazyMount
-                placeholderClassName="min-h-[717px] lg:min-h-[611px]"
+                placeholderClassName="h-full w-full"
                 placeholder={
                   <div className="w-full max-w-2xl mx-auto p-12 text-center text-muted-foreground">
                     Loading quiz...
@@ -2057,7 +2069,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
               </LazyMount>
             </div>
             {showCalendly && (
-              <div className="block w-full p-6 md:p-8">
+              <div className="block min-h-full w-full p-4 md:p-6">
                 {calendlyCompleted ? (
                   <div className="py-6 text-center">
                     <h3 className="text-2xl font-display font-semibold text-navy">
