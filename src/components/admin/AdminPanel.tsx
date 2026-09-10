@@ -52,8 +52,14 @@ export function AdminPanel() {
       setChecking(false);
     });
 
+    // Never leave the page sitting on a spinner if the session lookup is slow.
+    const fallback = setTimeout(() => {
+      if (active) setChecking(false);
+    }, 1500);
+
     return () => {
       active = false;
+      clearTimeout(fallback);
       listener.subscription.unsubscribe();
     };
   }, []);
