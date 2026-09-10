@@ -3,7 +3,14 @@ import type { FormEvent } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { supabasePublic as supabase } from "@/integrations/supabase/public-client";
 import { claimAdmin } from "@/lib/admin.functions";
-import { QUIZ_IMAGE_SLOTS, resolveQuizImageUrl } from "@/lib/quiz-images";
+import { resolveQuizImageUrl } from "@/lib/quiz-images";
+import {
+  DEFAULT_QUIZ_CONFIG,
+  fetchQuizConfig,
+  saveQuizConfig,
+  type QuizConfig,
+} from "@/lib/quiz-content";
+import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -22,8 +29,6 @@ type Lead = {
   appointment_date: string;
   created_at: string;
 };
-
-type SlotState = { path: string; preview: string; busy: boolean };
 
 const REQUEST_TIMEOUT_MS = 1900;
 
@@ -50,7 +55,10 @@ export function AdminPanel() {
 
   const [leads, setLeads] = useState<Lead[]>([]);
   const [leadsError, setLeadsError] = useState("");
-  const [slots, setSlots] = useState<Record<string, SlotState>>({});
+  const [quizConfig, setQuizConfig] = useState<QuizConfig>(DEFAULT_QUIZ_CONFIG);
+  const [previews, setPreviews] = useState<Record<string, string>>({});
+  const [uploading, setUploading] = useState<string>("");
+  const [savingQuiz, setSavingQuiz] = useState(false);
   const [saveMessage, setSaveMessage] = useState("");
 
   useEffect(() => {
@@ -123,27 +131,23 @@ export function AdminPanel() {
           setIsAdmin(admin);
           if (!admin) return;
 
-          const [leadResult, imageResult] = await Promise.all([
+          const [leadResult, config] = await Promise.all([
             supabase.from("leads").select("*").order("created_at", { ascending: false }).limit(500),
-            supabase.from("quiz_images").select("slot, image_url"),
+            fetchQuizConfig(),
           ]);
 
           if (leadResult.error) setLeadsError(leadResult.error.message);
           else setLeads((leadResult.data ?? []) as Lead[]);
 
-          if (imageResult.error) {
-            setAdminError(`Quiz photos could not load: ${imageResult.error.message}`);
-            return;
-          }
-
-          const entries = await Promise.all(
-            QUIZ_IMAGE_SLOTS.map(async (slot) => {
-              const row = imageResult.data?.find((image) => image.slot === slot.slot);
-              const path = row?.image_url ?? "";
-              return [slot.slot, { path, preview: await resolveQuizImageUrl(path), busy: false }] as const;
-            }),
+          setQuizConfig(config);
+          const previewEntries = await Promise.all(
+            config.steps.flatMap((step) =>
+              step.options
+                .filter((opt) => !!opt.image)
+                .map(async (opt) => [opt.image as string, await resolveQuizImageUrl(opt.image as string)] as const),
+            ),
           );
-          setSlots(Object.fromEntries(entries));
+          setPreviews(Object.fromEntries(previewEntries));
         })(),
         "Admin service did not respond within two seconds.",
       );
@@ -189,36 +193,81 @@ export function AdminPanel() {
     }
   };
 
-  const uploadSlot = async (slot: string, file: File) => {
+  const updateStep = (stepIdx: number, patch: Partial<QuizConfig["steps"][number]>) => {
+    setQuizConfig((cfg) => ({
+      ...cfg,
+      steps: cfg.steps.map((s, i) => (i === stepIdx ? { ...s, ...patch } : s)),
+    }));
+  };
+
+  const updateOption = (stepIdx: number, optIdx: number, patch: { label?: string; image?: string }) => {
+    setQuizConfig((cfg) => ({
+      ...cfg,
+      steps: cfg.steps.map((s, i) =>
+        i === stepIdx
+          ? { ...s, options: s.options.map((o, j) => (j === optIdx ? { ...o, ...patch } : o)) }
+          : s,
+      ),
+    }));
+  };
+
+  const addOption = (stepIdx: number) => {
+    setQuizConfig((cfg) => ({
+      ...cfg,
+      steps: cfg.steps.map((s, i) =>
+        i === stepIdx
+          ? { ...s, options: [...s.options, { id: `option-${Date.now()}`, label: "New choice", image: "" }] }
+          : s,
+      ),
+    }));
+  };
+
+  const removeOption = (stepIdx: number, optIdx: number) => {
+    setQuizConfig((cfg) => ({
+      ...cfg,
+      steps: cfg.steps.map((s, i) =>
+        i === stepIdx ? { ...s, options: s.options.filter((_, j) => j !== optIdx) } : s,
+      ),
+    }));
+  };
+
+  const updateContact = (patch: Partial<QuizConfig["contact"]>) => {
+    setQuizConfig((cfg) => ({ ...cfg, contact: { ...cfg.contact, ...patch } }));
+  };
+
+  const uploadOptionPhoto = async (stepIdx: number, optIdx: number, file: File) => {
+    const key = `${stepIdx}-${optIdx}`;
+    setUploading(key);
     setSaveMessage("");
-    setSlots((current) => {
-      const existing = current[slot] ?? { path: "", preview: "", busy: false };
-      return { ...current, [slot]: { ...existing, busy: true } };
-    });
     try {
       const ext = file.name.split(".").pop() ?? "jpg";
-      const path = `step1/${slot}-${Date.now()}.${ext}`;
-
+      const path = `quiz/${quizConfig.steps[stepIdx].id}-${optIdx}-${Date.now()}.${ext}`;
       const { error: upErr } = await supabase.storage
         .from("quiz-assets")
         .upload(path, file, { cacheControl: "3600", upsert: false });
       if (upErr) throw upErr;
 
-      const { error: dbErr } = await supabase
-        .from("quiz_images")
-        .update({ image_url: path })
-        .eq("slot", slot);
-      if (dbErr) throw dbErr;
-
       const preview = await resolveQuizImageUrl(path);
-      setSlots((s) => ({ ...s, [slot]: { path, preview, busy: false } }));
-      setSaveMessage("Saved. The new photo is live on /quiz.");
+      setPreviews((p) => ({ ...p, [path]: preview }));
+      updateOption(stepIdx, optIdx, { image: path });
+      setSaveMessage("Photo uploaded. Click “Save quiz” to publish it to /quiz.");
     } catch (err) {
-      setSlots((current) => {
-        const existing = current[slot] ?? { path: "", preview: "", busy: false };
-        return { ...current, [slot]: { ...existing, busy: false } };
-      });
       setSaveMessage(`Upload failed: ${(err as Error).message}`);
+    } finally {
+      setUploading("");
+    }
+  };
+
+  const handleSaveQuiz = async () => {
+    setSavingQuiz(true);
+    setSaveMessage("");
+    try {
+      await saveQuizConfig(quizConfig);
+      setSaveMessage("Saved. /quiz is updated.");
+    } catch (err) {
+      setSaveMessage(`Save failed: ${(err as Error).message}`);
+    } finally {
+      setSavingQuiz(false);
     }
   };
 
@@ -298,50 +347,146 @@ export function AdminPanel() {
         </div>
       )}
 
-      {/* Quiz step 1 photo editor */}
+      {/* Quiz editor — every step */}
       <section className="p-6 bg-card border rounded-xl shadow-sm">
-        <h2 className="text-2xl font-bold mb-1">Quiz photos (step 1)</h2>
-        <p className="text-sm text-muted-foreground mb-6">
-          Upload a photo for each option. It appears on /quiz right away.
-        </p>
+        <div className="flex flex-wrap justify-between items-start gap-4 mb-6">
+          <div>
+            <h2 className="text-2xl font-bold mb-1">Quiz steps</h2>
+            <p className="text-sm text-muted-foreground">
+              Edit every question, description, answer label and photo. Save to publish to /quiz.
+            </p>
+          </div>
+          <Button onClick={() => void handleSaveQuiz()} disabled={!isAdmin || savingQuiz}>
+            {savingQuiz ? "Saving…" : "Save quiz"}
+          </Button>
+        </div>
+
         {saveMessage && (
-          <p className={`text-sm mb-4 ${saveMessage.includes("failed") ? "text-destructive" : "text-primary"}`}>
+          <p className={`text-sm mb-4 ${saveMessage.toLowerCase().includes("failed") ? "text-destructive" : "text-primary"}`}>
             {saveMessage}
           </p>
         )}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {QUIZ_IMAGE_SLOTS.map((s) => {
-            const state = slots[s.slot];
-            return (
-              <div key={s.slot} className="border rounded-lg p-4 bg-background">
-                <h3 className="font-semibold mb-3">{s.label}</h3>
-                {state?.preview ? (
-                  <img
-                    src={state.preview}
-                    alt={s.label}
-                    className="w-full h-40 object-cover rounded mb-4"
-                  />
-                ) : (
-                  <div className="w-full h-40 bg-muted rounded mb-4 flex items-center justify-center text-sm text-muted-foreground">
-                    No photo uploaded yet
-                  </div>
-                )}
-                <Label className="text-xs mb-1 block">Upload new photo</Label>
+
+        <div className="space-y-8">
+          {quizConfig.steps.map((step, stepIdx) => (
+            <div key={step.id} className="border rounded-lg p-4 bg-background space-y-4">
+              <h3 className="font-semibold text-lg">Step {stepIdx + 1}</h3>
+
+              <div className="space-y-2">
+                <Label className="text-xs">Question title</Label>
                 <Input
-                  type="file"
-                  accept="image/*"
-                  disabled={!isAdmin || state?.busy}
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) void uploadSlot(s.slot, file);
-                  }}
+                  value={step.title}
+                  disabled={!isAdmin}
+                  onChange={(e) => updateStep(stepIdx, { title: e.target.value })}
                 />
-                {state?.busy && (
-                  <p className="text-xs text-muted-foreground mt-2 animate-pulse">Uploading…</p>
-                )}
               </div>
-            );
-          })}
+
+              <div className="space-y-2">
+                <Label className="text-xs">Short description</Label>
+                <Textarea
+                  value={step.description}
+                  rows={2}
+                  disabled={!isAdmin}
+                  onChange={(e) => updateStep(stepIdx, { description: e.target.value })}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {step.options.map((opt, optIdx) => {
+                  const key = `${stepIdx}-${optIdx}`;
+                  const preview = opt.image ? previews[opt.image] || opt.image : "";
+                  return (
+                    <div key={opt.id} className="border rounded-lg p-3 space-y-3">
+                      {preview ? (
+                        <img src={preview} alt={opt.label} className="w-full h-32 object-cover rounded" />
+                      ) : (
+                        <div className="w-full h-32 bg-muted rounded flex items-center justify-center text-xs text-muted-foreground">
+                          No photo (shows as a text button)
+                        </div>
+                      )}
+                      <div className="space-y-1">
+                        <Label className="text-xs">Answer label</Label>
+                        <Input
+                          value={opt.label}
+                          disabled={!isAdmin}
+                          onChange={(e) => updateOption(stepIdx, optIdx, { label: e.target.value })}
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <Label className="text-xs">Upload photo</Label>
+                        <Input
+                          type="file"
+                          accept="image/*"
+                          disabled={!isAdmin || uploading === key}
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) void uploadOptionPhoto(stepIdx, optIdx, file);
+                          }}
+                        />
+                        {uploading === key && (
+                          <p className="text-xs text-muted-foreground animate-pulse">Uploading…</p>
+                        )}
+                      </div>
+                      <div className="flex gap-2">
+                        {opt.image && (
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            disabled={!isAdmin}
+                            onClick={() => updateOption(stepIdx, optIdx, { image: "" })}
+                          >
+                            Remove photo
+                          </Button>
+                        )}
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="text-destructive"
+                          disabled={!isAdmin}
+                          onClick={() => removeOption(stepIdx, optIdx)}
+                        >
+                          Delete choice
+                        </Button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <Button type="button" variant="outline" size="sm" disabled={!isAdmin} onClick={() => addOption(stepIdx)}>
+                + Add choice
+              </Button>
+            </div>
+          ))}
+
+          {/* Contact step */}
+          <div className="border rounded-lg p-4 bg-background space-y-4">
+            <h3 className="font-semibold text-lg">Step {quizConfig.steps.length + 1} — contact form</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {([
+                ["headline", "Headline"],
+                ["subline", "Subline"],
+                ["nameLabel", "Name field label"],
+                ["emailLabel", "Email field label"],
+                ["phoneLabel", "Phone field label"],
+                ["addressLabel", "Address field label"],
+                ["homeownerLabel", "Homeowner question label"],
+                ["submitLabel", "Button text"],
+                ["footnote", "Text under the button"],
+              ] as const).map(([field, label]) => (
+                <div key={field} className="space-y-1">
+                  <Label className="text-xs">{label}</Label>
+                  <Input
+                    value={quizConfig.contact[field]}
+                    disabled={!isAdmin}
+                    onChange={(e) => updateContact({ [field]: e.target.value })}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 

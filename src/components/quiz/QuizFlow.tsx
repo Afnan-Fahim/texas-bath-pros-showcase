@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { QuizCard } from "./QuizCard";
 import brandLogo from "@/assets/texas-bath-solutions-logo-transparent.png.asset.json";
-import { useQuizImages } from "@/lib/quiz-images";
+import { useQuizConfig } from "@/lib/quiz-content";
 
 export type QuizState = {
   desiredUpgrade: string;
@@ -17,37 +17,6 @@ export type QuizState = {
   homeowner: "Yes" | "No" | "";
 };
 
-const QUIZ_DATA = {
-  question1: {
-    title: "Tap the one that looks like your project.",
-    description: "15 seconds. We’ll come look at it and give you a straight price — no pressure.",
-    options: [
-      { id: "Walk-in shower", label: "Walk-in shower", slot: "walk-in-shower", image: "/images/quiz/walk-in-shower.jpg" },
-      { id: "New tub remodel", label: "New tub remodel", slot: "new-tub", image: "/images/quiz/new-tub.jpg" },
-      { id: "Not sure yet", label: "Not sure yet" },
-    ],
-  },
-  question2: {
-    title: "What's the main problem?",
-    description: "Choose what matters most to you.",
-    options: [
-      { id: "Hard to step over", label: "Hard to step over", image: "/images/quiz/hard-step.jpg" },
-      { id: "Looks dated", label: "Looks dated", image: "/images/quiz/looks-dated.jpg" },
-      { id: "Leak or damage", label: "Leak or damage", image: "/images/quiz/leak.jpg" },
-      { id: "Not guest-ready", label: "Not guest-ready", image: "/images/quiz/not-guest-ready.jpg" },
-    ],
-  },
-  question3: {
-    title: "When would you like it done?",
-    description: "Choose the timing that works best for you.",
-    options: [
-      { id: "ASAP", label: "ASAP" },
-      { id: "2 weeks", label: "2 weeks" },
-      { id: "1–3 months", label: "1–3 months" },
-      { id: "Just looking", label: "Just looking" },
-    ],
-  },
-};
 
 interface QuizFlowProps {
   onShowCalendly?: (data: QuizState, url?: string) => void;
@@ -58,9 +27,11 @@ interface QuizFlowProps {
 
 export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendlyCompleted = false }: QuizFlowProps) {
   const [step, setStep] = useState(1);
-  const quizData = QUIZ_DATA;
-  // Step 1 photos are managed from /admin.
-  const uploadedImages = useQuizImages();
+  // All quiz steps, questions and photos are managed from /admin.
+  const quizConfig = useQuizConfig();
+  const steps = quizConfig.steps;
+  const contact = quizConfig.contact;
+  const totalSteps = steps.length + 1;
 
   // Warm up the booking calendar as soon as the quiz is on screen, so it is
   // ready by the time the visitor finishes the questions.
@@ -99,7 +70,7 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
-  const currentStep = calendlyCompleted ? 4 : step;
+  const currentStep = calendlyCompleted ? totalSteps : Math.min(step, totalSteps);
 
   const handleNext = () => setStep((s) => s + 1);
   const handleBack = () => setStep((s) => Math.max(1, s - 1));
@@ -143,7 +114,7 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
 
         <div className="relative z-10 p-5 sm:p-8 md:p-10">
           {/* Progress */}
-          {currentStep <= 4 && (
+          {currentStep <= totalSteps && (
             <div className="mb-6 flex items-center justify-between">
               <button
                 onClick={handleBack}
@@ -153,103 +124,65 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
                 ← Back
               </button>
               <span className="text-sm font-medium text-muted-foreground">
-                Step {currentStep} of 4
+                Step {currentStep} of {totalSteps}
               </span>
               <div className="w-12"></div>
             </div>
           )}
 
-          {/* QUESTION 1 */}
-          {currentStep === 1 && (
-            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <div className="text-center mb-4 sm:mb-5">
-                <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{quizData.question1.title}</h1>
-                <p className="text-muted-foreground">{quizData.question1.description}</p>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {quizData.question1.options.map((opt: any, idx: number) => (
-                  opt.image || uploadedImages[opt.slot] ? (
-                    <QuizCard
-                      key={opt.id}
-                      index={idx}
-                      title={opt.label}
-                      image={uploadedImages[opt.slot] || opt.image}
-                      brandLogo={brandLogo.url}
-                      selected={state.desiredUpgrade === opt.label}
-                      onClick={() => handleOptionSelect("desiredUpgrade", opt.label)}
-                    />
+          {/* PHOTO / CHOICE QUESTIONS — every step is editable in /admin */}
+          {steps.map((stepConfig, stepIdx) =>
+            currentStep === stepIdx + 1 ? (
+              <div key={stepConfig.id} className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <div className="text-center mb-4 sm:mb-5">
+                  {stepIdx === 0 ? (
+                    <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{stepConfig.title}</h1>
                   ) : (
-                    <Button
-                      key={opt.id}
-                      variant={state.desiredUpgrade === opt.label ? "default" : "outline"}
-                      className={`h-auto py-4 text-lg border-2 sm:col-span-2 ${state.desiredUpgrade === opt.label ? "border-primary" : "border-border hover:border-primary/50"}`}
-                      onClick={() => handleOptionSelect("desiredUpgrade", opt.label)}
-                    >
-                      {opt.label}
-                    </Button>
-                  )
-                ))}
+                    <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{stepConfig.title}</h2>
+                  )}
+                  <p className="text-muted-foreground">{stepConfig.description}</p>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {stepConfig.options.map((opt, idx) =>
+                    opt.image ? (
+                      <QuizCard
+                        key={opt.id}
+                        index={idx}
+                        title={opt.label}
+                        image={opt.image}
+                        brandLogo={stepIdx === 0 ? brandLogo.url : undefined}
+                        selected={state[stepConfig.key] === opt.label}
+                        onClick={() => handleOptionSelect(stepConfig.key, opt.label)}
+                      />
+                    ) : (
+                      <Button
+                        key={opt.id}
+                        variant={state[stepConfig.key] === opt.label ? "default" : "outline"}
+                        className={`h-auto py-4 text-lg border-2 ${state[stepConfig.key] === opt.label ? "border-primary" : "border-border hover:border-primary/50"}`}
+                        onClick={() => handleOptionSelect(stepConfig.key, opt.label)}
+                      >
+                        {opt.label}
+                      </Button>
+                    ),
+                  )}
+                </div>
               </div>
-            </div>
-          )}
-
-          {/* QUESTION 2 */}
-          {currentStep === 2 && (
-            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <div className="text-center mb-4 sm:mb-5">
-                <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{quizData.question2.title}</h2>
-                <p className="text-muted-foreground">{quizData.question2.description}</p>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {quizData.question2.options.map((opt: any, idx: number) => (
-                  <QuizCard
-                    key={opt.id}
-                    index={idx}
-                    title={opt.label}
-                    image={opt.image}
-                    selected={state.mainProblem === opt.label}
-                    onClick={() => handleOptionSelect("mainProblem", opt.label)}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* QUESTION 3 */}
-          {currentStep === 3 && (
-            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <div className="text-center mb-4 sm:mb-5">
-                <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{quizData.question3.title}</h2>
-                <p className="text-muted-foreground">{quizData.question3.description}</p>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {quizData.question3.options.map((opt: any, idx: number) => (
-                  <Button
-                    key={opt.id}
-                    variant={state.timeline === (opt.id || opt.label) ? "default" : "outline"}
-                    className={`h-auto py-4 text-lg border-2 ${state.timeline === (opt.id || opt.label) ? "border-primary" : "border-border hover:border-primary/50"}`}
-                    onClick={() => handleOptionSelect("timeline", opt.id || opt.label)}
-                  >
-                    {opt.label}
-                  </Button>
-                ))}
-              </div>
-            </div>
+            ) : null,
           )}
 
           {/* CONTACT STEP */}
-          {currentStep === 4 && (
+          {currentStep === totalSteps && (
             <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
               <div className="mb-8">
-                <h2 className="text-3xl sm:text-4xl font-bold text-navy mb-2 leading-tight">Where should we come look?</h2>
-                <p className="text-muted-foreground text-base mt-4">Free estimate at your house from a local Texas company. No pressure.</p>
+                <h2 className="text-3xl sm:text-4xl font-bold text-navy mb-2 leading-tight">{contact.headline}</h2>
+                <p className="text-muted-foreground text-base mt-4">{contact.subline}</p>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-6 mx-auto text-left">
                 {error && <div className="p-3 text-sm text-destructive bg-destructive/10 rounded-md">{error}</div>}
 
                 <div className="space-y-2">
-                  <Label htmlFor="quiz-name" className="text-base font-semibold text-navy">Name *</Label>
+                  <Label htmlFor="quiz-name" className="text-base font-semibold text-navy">{contact.nameLabel}</Label>
                   <Input
                     id="quiz-name"
                     type="text"
@@ -261,7 +194,7 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="quiz-email" className="text-base font-semibold text-navy">Email *</Label>
+                  <Label htmlFor="quiz-email" className="text-base font-semibold text-navy">{contact.emailLabel}</Label>
                   <Input
                     id="quiz-email"
                     type="email"
@@ -273,7 +206,7 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="quiz-phone" className="text-base font-semibold text-navy">Mobile phone *</Label>
+                  <Label htmlFor="quiz-phone" className="text-base font-semibold text-navy">{contact.phoneLabel}</Label>
                   <Input
                     id="quiz-phone"
                     type="tel"
@@ -285,7 +218,7 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="quiz-address" className="text-base font-semibold text-navy">Address *</Label>
+                  <Label htmlFor="quiz-address" className="text-base font-semibold text-navy">{contact.addressLabel}</Label>
                   <Input
                     id="quiz-address"
                     type="text"
@@ -298,7 +231,7 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
                 </div>
 
                 <div className="space-y-4 pt-2">
-                  <Label className="text-base font-semibold text-navy">Are you the homeowner? *</Label>
+                  <Label className="text-base font-semibold text-navy">{contact.homeownerLabel}</Label>
                   <div className="flex gap-8">
                     {(["Yes", "No"] as const).map((val) => (
                       <button
@@ -318,10 +251,10 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
                 </div>
 
                 <Button type="submit" size="lg" className="w-full h-14 text-lg bg-[#0d2240] hover:bg-[#0d2240]/90 text-white mt-8" disabled={submitting}>
-                  {submitting ? "Saving..." : "See available times"}
+                  {submitting ? "Saving..." : contact.submitLabel}
                 </Button>
 
-                <p className="text-center text-sm text-muted-foreground">Next you’ll pick a time. No charge, no obligation.</p>
+                <p className="text-center text-sm text-muted-foreground">{contact.footnote}</p>
               </form>
             </div>
           )}
