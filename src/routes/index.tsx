@@ -1131,28 +1131,33 @@ function FinancingBanner({ onBook }: { onBook: () => void }) {
 /* ---------------- ABOUT ---------------- */
 function About() {
   return (
-    <section className="relative overflow-hidden">
-      <OptimizedImage
-        src={aboutBgAsset.url}
-        alt=""
-        width={1920}
-        height={725}
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 h-full w-full object-cover object-right select-none"
-      />
-      <div className="container-x relative py-14 md:py-20">
-        <div className="ml-auto max-w-lg rounded-2xl bg-white/85 p-7 md:p-10 shadow-card backdrop-blur-sm">
-          <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-navy">
-            About Us
-          </span>
-          <h2 className="mt-4 text-3xl md:text-4xl text-navy text-balance">
-            A local San Antonio family, transforming bathrooms our neighbors love.
-          </h2>
-          <p className="mt-5 text-lg text-navy/80 text-balance">
-            We're a family business dedicated to turning outdated bathrooms into beautiful,
-            functional spaces. We believe in clean, honest, upfront pricing and doing the job right
-            the first time.
-          </p>
+    <section className="py-2 md:py-12">
+      <div className="container-x">
+        <div className="grid grid-cols-1 lg:grid-cols-2 overflow-hidden rounded-2xl bg-sand">
+          <div className="relative min-h-[260px] md:min-h-[420px]">
+            <OptimizedImage
+              src={aboutBgAsset.url}
+              alt="Bathroom with walk-in shower and vanity"
+              width={1920}
+              height={725}
+              className="absolute inset-0 h-full w-full object-cover object-left"
+            />
+          </div>
+          <div className="flex items-center p-8 md:p-12 lg:p-16">
+            <div className="max-w-xl">
+              <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-navy">
+                About Us
+              </span>
+              <h2 className="mt-4 text-3xl md:text-4xl text-navy text-balance">
+                A local San Antonio family, transforming bathrooms our neighbors love.
+              </h2>
+              <p className="mt-5 text-lg text-navy/80 text-balance">
+                We're a family business dedicated to turning outdated bathrooms into beautiful,
+                functional spaces. We believe in clean, honest, upfront pricing and doing the job right
+                the first time.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
