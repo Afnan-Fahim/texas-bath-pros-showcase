@@ -1133,25 +1133,35 @@ function About() {
   return (
     <section className="py-2 md:py-12">
       <div className="container-x">
-        <div className="grid grid-cols-1 lg:grid-cols-2 overflow-hidden rounded-2xl bg-sand">
-          <div className="relative min-h-[260px] md:min-h-[420px]">
-            <OptimizedImage
-              src={aboutBgAsset.url}
-              alt="Bathroom with walk-in shower and vanity"
-              width={1920}
-              height={725}
-              className="absolute inset-0 h-full w-full object-cover object-left"
-            />
-          </div>
-          <div className="flex items-center p-8 md:p-12 lg:p-16">
-            <div className="max-w-xl">
-              <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-navy">
+        <div className="relative overflow-hidden rounded-2xl">
+          {/* Full photo, edge to edge in this section */}
+          <OptimizedImage
+            src={aboutBgAsset.url}
+            alt="Bathroom with walk-in shower and vanity"
+            width={1920}
+            height={725}
+            className="h-auto w-full object-cover"
+            style={{ aspectRatio: "1920 / 725" }}
+          />
+          {/* Soft light fade only behind the text */}
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(ellipse 72% 60% at top right, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.55) 35%, rgba(255,255,255,0.18) 60%, transparent 78%)",
+            }}
+            aria-hidden
+          />
+          {/* About words directly on the photo, upper-right / open wall area */}
+          <div className="absolute inset-0 flex items-start justify-end p-5 sm:p-8 md:p-10 lg:p-14">
+            <div className="max-w-[15rem] text-right sm:max-w-xs md:max-w-sm lg:max-w-md">
+              <span className="inline-flex items-center gap-2 rounded-full bg-white/60 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-navy sm:text-xs">
                 About Us
               </span>
-              <h2 className="mt-4 text-3xl md:text-4xl text-navy text-balance">
+              <h2 className="mt-2 text-xl font-semibold leading-snug text-navy text-balance sm:text-2xl md:mt-3 md:text-3xl lg:text-4xl">
                 A local San Antonio family, transforming bathrooms our neighbors love.
               </h2>
-              <p className="mt-5 text-lg text-navy/80 text-balance">
+              <p className="mt-2 text-sm leading-relaxed text-navy/90 text-balance sm:text-base md:mt-3 md:text-lg">
                 We're a family business dedicated to turning outdated bathrooms into beautiful,
                 functional spaces. We believe in clean, honest, upfront pricing and doing the job right
                 the first time.
