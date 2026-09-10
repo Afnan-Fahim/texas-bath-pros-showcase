@@ -168,12 +168,12 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {quizData.question1.options.map((opt: any, idx: number) => (
-                  opt.image ? (
+                  opt.image || uploadedImages[opt.slot] ? (
                     <QuizCard
                       key={opt.id}
                       index={idx}
                       title={opt.label}
-                      image={opt.image}
+                      image={uploadedImages[opt.slot] || opt.image}
                       brandLogo={brandLogo.url}
                       selected={state.desiredUpgrade === opt.label}
                       onClick={() => handleOptionSelect("desiredUpgrade", opt.label)}
