@@ -28,13 +28,17 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
   const hasMountedRef = React.useRef(false);
 
   // Keep the quiz card in view after each answer so the next question is
-  // already in front of the visitor without manual scrolling.
+  // already in front of the visitor without manual scrolling. Center it when
+  // it fits on screen; on small screens align the top so nothing is cut off.
   useEffect(() => {
     if (!hasMountedRef.current) {
       hasMountedRef.current = true;
       return;
     }
-    containerRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    const el = containerRef.current;
+    if (!el) return;
+    const fits = el.offsetHeight <= window.innerHeight - 32;
+    el.scrollIntoView({ behavior: "smooth", block: fits ? "center" : "start" });
   }, [step]);
   // All quiz steps, questions and photos are managed from /admin.
   const quizConfig = useQuizConfig();
