@@ -114,7 +114,7 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
 
         <div className="relative z-10 p-5 sm:p-8 md:p-10">
           {/* Progress */}
-          {currentStep <= 4 && (
+          {currentStep <= totalSteps && (
             <div className="mb-6 flex items-center justify-between">
               <button
                 onClick={handleBack}
@@ -124,88 +124,50 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
                 ← Back
               </button>
               <span className="text-sm font-medium text-muted-foreground">
-                Step {currentStep} of 4
+                Step {currentStep} of {totalSteps}
               </span>
               <div className="w-12"></div>
             </div>
           )}
 
-          {/* QUESTION 1 */}
-          {currentStep === 1 && (
-            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <div className="text-center mb-4 sm:mb-5">
-                <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{quizData.question1.title}</h1>
-                <p className="text-muted-foreground">{quizData.question1.description}</p>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {quizData.question1.options.map((opt: any, idx: number) => (
-                  opt.image || uploadedImages[opt.slot] ? (
-                    <QuizCard
-                      key={opt.id}
-                      index={idx}
-                      title={opt.label}
-                      image={uploadedImages[opt.slot] || opt.image}
-                      brandLogo={brandLogo.url}
-                      selected={state.desiredUpgrade === opt.label}
-                      onClick={() => handleOptionSelect("desiredUpgrade", opt.label)}
-                    />
+          {/* PHOTO / CHOICE QUESTIONS — every step is editable in /admin */}
+          {steps.map((stepConfig, stepIdx) =>
+            currentStep === stepIdx + 1 ? (
+              <div key={stepConfig.id} className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <div className="text-center mb-4 sm:mb-5">
+                  {stepIdx === 0 ? (
+                    <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{stepConfig.title}</h1>
                   ) : (
-                    <Button
-                      key={opt.id}
-                      variant={state.desiredUpgrade === opt.label ? "default" : "outline"}
-                      className={`h-auto py-4 text-lg border-2 sm:col-span-2 ${state.desiredUpgrade === opt.label ? "border-primary" : "border-border hover:border-primary/50"}`}
-                      onClick={() => handleOptionSelect("desiredUpgrade", opt.label)}
-                    >
-                      {opt.label}
-                    </Button>
-                  )
-                ))}
+                    <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{stepConfig.title}</h2>
+                  )}
+                  <p className="text-muted-foreground">{stepConfig.description}</p>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {stepConfig.options.map((opt, idx) =>
+                    opt.image ? (
+                      <QuizCard
+                        key={opt.id}
+                        index={idx}
+                        title={opt.label}
+                        image={opt.image}
+                        brandLogo={stepIdx === 0 ? brandLogo.url : undefined}
+                        selected={state[stepConfig.key] === opt.label}
+                        onClick={() => handleOptionSelect(stepConfig.key, opt.label)}
+                      />
+                    ) : (
+                      <Button
+                        key={opt.id}
+                        variant={state[stepConfig.key] === opt.label ? "default" : "outline"}
+                        className={`h-auto py-4 text-lg border-2 ${state[stepConfig.key] === opt.label ? "border-primary" : "border-border hover:border-primary/50"}`}
+                        onClick={() => handleOptionSelect(stepConfig.key, opt.label)}
+                      >
+                        {opt.label}
+                      </Button>
+                    ),
+                  )}
+                </div>
               </div>
-            </div>
-          )}
-
-          {/* QUESTION 2 */}
-          {currentStep === 2 && (
-            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <div className="text-center mb-4 sm:mb-5">
-                <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{quizData.question2.title}</h2>
-                <p className="text-muted-foreground">{quizData.question2.description}</p>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {quizData.question2.options.map((opt: any, idx: number) => (
-                  <QuizCard
-                    key={opt.id}
-                    index={idx}
-                    title={opt.label}
-                    image={opt.image}
-                    selected={state.mainProblem === opt.label}
-                    onClick={() => handleOptionSelect("mainProblem", opt.label)}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* QUESTION 3 */}
-          {currentStep === 3 && (
-            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <div className="text-center mb-4 sm:mb-5">
-                <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{quizData.question3.title}</h2>
-                <p className="text-muted-foreground">{quizData.question3.description}</p>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {quizData.question3.options.map((opt: any, idx: number) => (
-                  <Button
-                    key={opt.id}
-                    variant={state.timeline === (opt.id || opt.label) ? "default" : "outline"}
-                    className={`h-auto py-4 text-lg border-2 ${state.timeline === (opt.id || opt.label) ? "border-primary" : "border-border hover:border-primary/50"}`}
-                    onClick={() => handleOptionSelect("timeline", opt.id || opt.label)}
-                  >
-                    {opt.label}
-                  </Button>
-                ))}
-              </div>
-            </div>
+            ) : null,
           )}
 
           {/* CONTACT STEP */}
