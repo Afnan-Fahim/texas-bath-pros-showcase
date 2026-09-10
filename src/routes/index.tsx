@@ -2718,8 +2718,7 @@ function Index() {
       <Navbar onBook={scrollToBook} onContact={() => setContactOpen(true)} forceHidden={quizVisible} />
       <main className="pb-[4.5rem] lg:pb-0">
         <Hero onBook={scrollToBook} />
-        <TrustBar />
-        <About />
+        <AboutBlock />
         <BookingForm formRef={formRef} />
         <Gallery />
         <Offers />
