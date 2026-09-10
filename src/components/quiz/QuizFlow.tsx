@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { QuizCard } from "./QuizCard";
 import brandLogo from "@/assets/texas-bath-solutions-logo-transparent.png.asset.json";
+import { useQuizImages } from "@/lib/quiz-images";
 
 export type QuizState = {
   desiredUpgrade: string;
@@ -21,8 +22,8 @@ const QUIZ_DATA = {
     title: "Tap the one that looks like your project.",
     description: "15 seconds. We’ll come look at it and give you a straight price — no pressure.",
     options: [
-      { id: "Walk-in shower", label: "Walk-in shower", image: "/images/quiz/walk-in-shower.jpg" },
-      { id: "New tub remodel", label: "New tub remodel", image: "/images/quiz/new-tub.jpg" },
+      { id: "Walk-in shower", label: "Walk-in shower", slot: "walk-in-shower", image: "/images/quiz/walk-in-shower.jpg" },
+      { id: "New tub remodel", label: "New tub remodel", slot: "new-tub", image: "/images/quiz/new-tub.jpg" },
       { id: "Not sure yet", label: "Not sure yet" },
     ],
   },
