@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { QuizFlow, QuizState } from "@/components/quiz/QuizFlow";
 import { CalendlyEmbed, trackLeadEvent, captureAttribution, attributionNote } from "./index";
 
@@ -28,6 +28,7 @@ export const Route = createFileRoute("/quiz")({
 });
 
 function QuizPage() {
+  const stageRef = useRef<HTMLElement>(null);
   const [calendlyCompleted, setCalendlyCompleted] = useState(false);
   const [showCalendly, setShowCalendly] = useState(false);
   const [quizData, setQuizData] = useState<QuizState | null>(null);
@@ -78,17 +79,25 @@ function QuizPage() {
     trackLeadEvent(`quiz:${finalData.desiredUpgrade}:${Date.now()}`, {});
   };
 
+  useLayoutEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) return;
+    const rect = stage.getBoundingClientRect();
+    const targetTop = window.scrollY + rect.top - Math.max(0, (window.innerHeight - rect.height) / 2);
+    window.scrollTo({ top: Math.max(0, targetTop), behavior: "smooth" });
+  }, [showCalendly]);
+
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col items-center">
 
 
-      <main className="flex-1 w-full flex flex-col justify-center py-12 px-4 sm:px-6 relative">
+      <main ref={stageRef} className="flex min-h-svh w-full flex-1 items-center justify-center px-3 py-3 sm:px-6 relative">
         {!showCalendly && (
           <QuizFlow onComplete={handleQuizComplete} calendlyCompleted={calendlyCompleted} />
         )}
 
         {showCalendly && (
-          <div className="w-full max-w-3xl mx-auto bg-background p-6 rounded-2xl shadow-sm border border-border">
+          <div className="mx-auto h-[calc(100svh-1.5rem)] w-full max-w-3xl overflow-y-auto overscroll-contain rounded-2xl border border-border bg-background p-4 shadow-sm sm:p-6">
             <CalendlyEmbed
               url={calendlyUrl}
               prefill={{

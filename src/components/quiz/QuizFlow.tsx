@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { QuizCard } from "./QuizCard";
 import { useQuizConfig } from "@/lib/quiz-content";
@@ -27,18 +27,14 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
   const containerRef = React.useRef<HTMLDivElement>(null);
   const hasMountedRef = React.useRef(false);
 
-  // Keep the quiz card in view after each answer so the next question is
-  // already in front of the visitor without manual scrolling. Center it when
-  // it fits on screen; on small screens align the top so nothing is cut off.
-  useEffect(() => {
-    if (!hasMountedRef.current) {
-      hasMountedRef.current = true;
-      return;
-    }
+  // Pin every question to the same viewport position before it paints.
+  useLayoutEffect(() => {
     const el = containerRef.current;
     if (!el) return;
-    const fits = el.offsetHeight <= window.innerHeight - 32;
-    el.scrollIntoView({ behavior: "smooth", block: fits ? "center" : "start" });
+    const rect = el.getBoundingClientRect();
+    const targetTop = window.scrollY + rect.top - Math.max(12, (window.innerHeight - rect.height) / 2);
+    window.scrollTo({ top: Math.max(0, targetTop), behavior: hasMountedRef.current ? "smooth" : "auto" });
+    hasMountedRef.current = true;
   }, [step]);
   // All quiz steps, questions and photos are managed from /admin.
   const quizConfig = useQuizConfig();
@@ -102,16 +98,19 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
   };
 
   return (
-    <div ref={containerRef} className="relative w-full max-w-4xl mx-auto z-40 scroll-mt-4">
+    <div
+      ref={containerRef}
+      className="relative z-40 mx-auto flex h-[min(44rem,calc(100svh-1.5rem))] min-h-[34rem] w-full max-w-4xl items-center justify-center overflow-y-auto overscroll-contain scroll-m-0"
+    >
       <div className="w-full relative overflow-hidden">
         {/* Decorative gradient backgrounds */}
         <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-teal/10 blur-3xl opacity-50 pointer-events-none"></div>
         <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 rounded-full bg-navy/5 blur-3xl opacity-50 pointer-events-none"></div>
 
-        <div className="relative z-10 p-5 sm:p-8 md:p-10">
+        <div className="relative z-10 p-4 sm:p-7 md:p-8">
           {/* Progress */}
           {currentStep <= totalSteps && (
-            <div className="mb-6 flex items-center justify-between">
+            <div className="mb-4 flex items-center justify-between">
               <button
                 onClick={handleBack}
                 disabled={currentStep === 1}
@@ -129,9 +128,7 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
           {/* PHOTO / CHOICE QUESTIONS — every step is editable in /admin */}
           {steps.map((stepConfig, stepIdx) =>
             currentStep === stepIdx + 1 ? (
-              // Stable height across steps so the next question appears in the
-              // same spot with no vertical jump.
-              <div key={stepConfig.id} className="min-h-[420px] sm:min-h-[460px]">
+              <div key={stepConfig.id} className="flex min-h-[25rem] flex-col justify-center sm:min-h-[27rem]">
                 <div className="text-center mb-4 sm:mb-5">
                   {stepIdx === 0 ? (
                     <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{stepConfig.title}</h1>
@@ -140,7 +137,7 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
                   )}
                   <p className="text-muted-foreground">{stepConfig.description}</p>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-3 sm:gap-4">
                   {stepConfig.options.map((opt, idx) =>
                     opt.image || opt.imagePending ? (
                       <QuizCard
@@ -155,7 +152,7 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
                       <Button
                         key={opt.id}
                         variant={state[stepConfig.key] === opt.label ? "default" : "outline"}
-                        className={`h-auto border-2 text-lg ${stepIdx === 0 ? "min-h-20 py-6 sm:col-span-2" : "py-4"} ${state[stepConfig.key] === opt.label ? "border-primary" : "border-border hover:border-primary/50"}`}
+                        className={`h-auto border-2 text-base sm:text-lg ${stepIdx === 0 ? "col-span-2 min-h-16 py-4 sm:min-h-20 sm:py-6" : "min-h-14 py-3 sm:py-4"} ${state[stepConfig.key] === opt.label ? "border-primary" : "border-border hover:border-primary/50"}`}
                         onClick={() => handleOptionSelect(stepConfig.key, opt.label)}
                       >
                         {opt.label}
