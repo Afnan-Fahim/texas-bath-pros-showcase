@@ -25,7 +25,7 @@ type Lead = {
 
 type SlotState = { path: string; preview: string; busy: boolean };
 
-const REQUEST_TIMEOUT_MS = 15000;
+const REQUEST_TIMEOUT_MS = 1900;
 
 function withTimeout<T>(promise: Promise<T>, message: string): Promise<T> {
   return Promise.race([
@@ -93,48 +93,36 @@ export function AdminPanel() {
     setAdminError("");
     setLeadsError("");
     try {
-      // Step 1: Check admin status
-      const { isAdmin: admin } = await withTimeout(
-        claimAdmin(),
-        "Checking admin permissions timed out."
+      await withTimeout(
+        (async () => {
+          const { isAdmin: admin } = await claimAdmin();
+          setIsAdmin(admin);
+          if (!admin) return;
+
+          const [leadResult, imageResult] = await Promise.all([
+            supabase.from("leads").select("*").order("created_at", { ascending: false }).limit(500),
+            supabase.from("quiz_images").select("slot, image_url"),
+          ]);
+
+          if (leadResult.error) setLeadsError(leadResult.error.message);
+          else setLeads((leadResult.data ?? []) as Lead[]);
+
+          if (imageResult.error) {
+            setAdminError(`Quiz photos could not load: ${imageResult.error.message}`);
+            return;
+          }
+
+          const entries = await Promise.all(
+            QUIZ_IMAGE_SLOTS.map(async (slot) => {
+              const row = imageResult.data?.find((image) => image.slot === slot.slot);
+              const path = row?.image_url ?? "";
+              return [slot.slot, { path, preview: await resolveQuizImageUrl(path), busy: false }] as const;
+            }),
+          );
+          setSlots(Object.fromEntries(entries));
+        })(),
+        "Admin service did not respond within two seconds.",
       );
-      setIsAdmin(admin);
-
-      if (!admin) {
-        setCheckingAdmin(false);
-        return;
-      }
-
-      // Step 2: Load admin data
-      const [leadResult, imageResult] = await withTimeout(
-        Promise.all([
-          supabase.from("leads").select("*").order("created_at", { ascending: false }).limit(500),
-          supabase.from("quiz_images").select("slot, image_url"),
-        ]),
-        "Admin data load timed out."
-      );
-
-      if (leadResult.error) {
-        setLeadsError(leadResult.error.message);
-      } else {
-        setLeads((leadResult.data ?? []) as Lead[]);
-      }
-
-      if (imageResult.error) {
-        setAdminError(`Quiz photos could not load: ${imageResult.error.message}`);
-      } else {
-        const next: Record<string, SlotState> = {};
-        for (const s of QUIZ_IMAGE_SLOTS) {
-          const row = imageResult.data?.find((i) => i.slot === s.slot);
-          const path = row?.image_url ?? "";
-          next[s.slot] = { 
-            path, 
-            preview: await resolveQuizImageUrl(path), 
-            busy: false 
-          };
-        }
-        setSlots(next);
-      }
     } catch (err) {
       console.error("Admin data load failed:", err);
       setAdminError(err instanceof Error ? err.message : "Failed to load admin dashboard.");
@@ -263,38 +251,6 @@ export function AdminPanel() {
     );
   }
 
-  if (!checkingAdmin && adminError && !isAdmin) {
-    return (
-      <div className="max-w-md mx-auto mt-12 p-6 bg-card border rounded-xl shadow-sm space-y-4">
-        <h1 className="text-xl font-bold text-destructive">Error</h1>
-        <p className="text-sm text-muted-foreground">{adminError}</p>
-        <div className="flex gap-2">
-          <Button onClick={() => void loadData()}>Retry</Button>
-          <Button variant="outline" onClick={() => supabase.auth.signOut()}>Log Out</Button>
-        </div>
-      </div>
-    );
-  }
-
-  if (!isAdmin) {
-    return (
-      <div className="max-w-md mx-auto mt-12 p-6 bg-card border rounded-xl shadow-sm space-y-4">
-        <h1 className="text-xl font-bold">Admin</h1>
-        {checkingAdmin ? (
-          <p className="text-sm text-muted-foreground">Checking access…</p>
-        ) : (
-          <p className="text-sm text-muted-foreground">
-            Signed in as {session.user.email}. This account is not an admin.
-          </p>
-        )}
-        {!checkingAdmin && <Button onClick={() => void loadData()}>Try Again</Button>}
-        <Button variant="outline" onClick={() => supabase.auth.signOut()}>
-          Log Out
-        </Button>
-      </div>
-    );
-  }
-
   return (
     <div className="max-w-5xl mx-auto mt-8 space-y-10">
       <div className="flex justify-between items-center">
@@ -307,10 +263,14 @@ export function AdminPanel() {
         </div>
       </div>
 
-      {adminError && (
+      {(checkingAdmin || adminError || !isAdmin) && (
         <div className="p-4 bg-destructive/10 border border-destructive/20 text-destructive text-sm rounded-lg flex justify-between items-center">
-          <span>{adminError}</span>
-          <Button variant="ghost" size="sm" onClick={() => void loadData()}>Reload</Button>
+          <span>
+            {checkingAdmin
+              ? "Checking admin access…"
+              : adminError || "This account does not have admin access."}
+          </span>
+          {!checkingAdmin && <Button variant="ghost" size="sm" onClick={() => void loadData()}>Retry</Button>}
         </div>
       )}
 
@@ -346,7 +306,7 @@ export function AdminPanel() {
                 <Input
                   type="file"
                   accept="image/*"
-                  disabled={state?.busy}
+                  disabled={!isAdmin || state?.busy}
                   onChange={(e) => {
                     const file = e.target.files?.[0];
                     if (file) void uploadSlot(s.slot, file);
