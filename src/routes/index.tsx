@@ -499,7 +499,7 @@ function Logo({
 }
 
 /* ---------------- NAVBAR ---------------- */
-function Navbar({ onBook, onContact }: { onBook: () => void; onContact: () => void }) {
+function Navbar({ onBook, onContact, forceHidden = false }: { onBook: () => void; onContact: () => void; forceHidden?: boolean }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
@@ -531,7 +531,11 @@ function Navbar({ onBook, onContact }: { onBook: () => void; onContact: () => vo
     return () => window.removeEventListener("scroll", onScroll);
   }, [hidden]);
 
-  const isHidden = hidden && !open;
+  useEffect(() => {
+    if (forceHidden) setOpen(false);
+  }, [forceHidden]);
+
+  const isHidden = (forceHidden || hidden) && !open;
 
   const links = [
     { href: "#work", label: "Our Work" },
@@ -2577,6 +2581,18 @@ function ContactUsDialog({ open, onOpenChange }: { open: boolean; onOpenChange: 
 
 function Index() {
   const formRef = useRef<HTMLElement | null>(null);
+  const [quizVisible, setQuizVisible] = useState(false);
+  // Hide the site header while the quiz card is on screen.
+  useEffect(() => {
+    const el = formRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => setQuizVisible(entry.isIntersecting),
+      { threshold: 0.15 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
   // TEMP (QA): logs "[TBS Pixel] ✅ Meta Pixel initialized" once fbq is on window.
   usePixelInitCheck();
   // Capture fbclid / UTM params on landing, before any in-page navigation.
@@ -2617,7 +2633,7 @@ function Index() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Navbar onBook={scrollToBook} onContact={() => setContactOpen(true)} />
+      <Navbar onBook={scrollToBook} onContact={() => setContactOpen(true)} forceHidden={quizVisible} />
       <main className="pb-[4.5rem] lg:pb-0">
         <Hero onBook={scrollToBook} />
         <TrustBar />

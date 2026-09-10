@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { QuizFlow, QuizState } from "@/components/quiz/QuizFlow";
 import { CalendlyEmbed, trackLeadEvent, captureAttribution, attributionNote } from "./index";
-import logoImg from "@/assets/logo-header.webp";
+
 import { useQuizConfig, DEFAULT_CALENDLY_URL } from "@/lib/quiz-content";
 import { scheduleLead } from "@/lib/leads.functions";
 
@@ -80,9 +80,7 @@ function QuizPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col items-center">
-      <header className="w-full bg-background border-b border-border py-4 px-6 flex justify-center shadow-sm z-10 relative">
-        <img src={logoImg} alt="Texas Bath Solutions" className="h-10 object-contain" />
-      </header>
+
 
       <main className="flex-1 w-full flex flex-col justify-center py-12 px-4 sm:px-6 relative">
         {!showCalendly && (
