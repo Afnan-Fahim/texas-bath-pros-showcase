@@ -9,6 +9,8 @@ export type QuizOptionConfig = {
   label: string;
   /** Storage path, absolute URL, or public /images path. Empty = text button. */
   image?: string;
+  /** True while the saved photo is still loading: render a blank card, not an old photo. */
+  imagePending?: boolean;
 };
 
 export type QuizStepConfig = {
