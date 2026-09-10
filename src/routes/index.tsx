@@ -2194,11 +2194,15 @@ export function CalendlyEmbed({
 
   const finalUrl = `${url}?${params.toString()}`;
 
+  // The frame exists as soon as Calendly injects it — reveal it right away
+  // instead of waiting for a full load event.
   const [calendarReady, setCalendarReady] = useState(false);
+  const [showFallback, setShowFallback] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
     let observer: MutationObserver | undefined;
+    const fallbackTimer = setTimeout(() => !cancelled && setShowFallback(true), 1000);
     const tryInit = () => {
       if (cancelled) return;
       const host = hostRef.current;
@@ -2207,23 +2211,31 @@ export function CalendlyEmbed({
       if (host && C) {
         host.innerHTML = "";
         C.initInlineWidget({ url: finalUrl, parentElement: host });
-        // Hide the "Loading calendar…" note as soon as the calendar frame shows up.
-        observer = new MutationObserver(() => {
-          const frame = host.querySelector("iframe");
-          if (frame) {
-            frame.addEventListener("load", () => !cancelled && setCalendarReady(true), { once: true });
-            setTimeout(() => !cancelled && setCalendarReady(true), 1200);
-            observer?.disconnect();
-          }
-        });
-        observer.observe(host, { childList: true, subtree: true });
+        const reveal = () => {
+          if (cancelled) return;
+          setCalendarReady(true);
+          setShowFallback(false);
+          clearTimeout(fallbackTimer);
+        };
+        if (host.querySelector("iframe")) {
+          reveal();
+        } else {
+          observer = new MutationObserver(() => {
+            if (host.querySelector("iframe")) {
+              observer?.disconnect();
+              reveal();
+            }
+          });
+          observer.observe(host, { childList: true, subtree: true });
+        }
       } else {
-        setTimeout(tryInit, 50);
+        setTimeout(tryInit, 30);
       }
     };
     tryInit();
     return () => {
       cancelled = true;
+      clearTimeout(fallbackTimer);
       observer?.disconnect();
     };
   }, [url]);
@@ -2245,14 +2257,19 @@ export function CalendlyEmbed({
         </Button>
       </div>
 
+      {!calendarReady && showFallback && (
+        <a
+          href={finalUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="mt-4 flex w-full items-center justify-center rounded-xl bg-navy px-6 py-3 text-base font-semibold text-primary-foreground"
+        >
+          Open calendar
+        </a>
+      )}
+
       <div className="relative mt-4 overflow-hidden rounded-2xl border border-border bg-card">
         <div ref={hostRef} style={{ minWidth: "300px", height: "760px" }} />
-        {!calendarReady && (
-          <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-3 bg-card text-sm text-muted-foreground">
-            <span className="h-6 w-6 animate-spin rounded-full border-2 border-navy/25 border-t-navy" />
-            Loading calendar…
-          </div>
-        )}
       </div>
 
 
