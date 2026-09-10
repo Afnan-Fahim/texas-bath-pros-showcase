@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { QuizFlow, QuizState } from "@/components/quiz/QuizFlow";
 import { CalendlyEmbed, trackLeadEvent, captureAttribution, attributionNote } from "./index";
 import logoImg from "@/assets/logo-header.webp";
+import { useQuizConfig, DEFAULT_CALENDLY_URL } from "@/lib/quiz-content";
 import { scheduleLead } from "@/lib/leads.functions";
 
 export const Route = createFileRoute("/quiz")({
@@ -30,7 +31,8 @@ function QuizPage() {
   const [calendlyCompleted, setCalendlyCompleted] = useState(false);
   const [showCalendly, setShowCalendly] = useState(false);
   const [quizData, setQuizData] = useState<QuizState | null>(null);
-  const [calendlyUrl] = useState("https://calendly.com/rugsafari/texas-bath-solutions");
+  const quizConfig = useQuizConfig();
+  const calendlyUrl = quizConfig.calendlyUrl || DEFAULT_CALENDLY_URL;
 
   useEffect(() => {
     captureAttribution();

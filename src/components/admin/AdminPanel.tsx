@@ -361,6 +361,29 @@ export function AdminPanel() {
           </Button>
         </div>
 
+        <div className="mb-6 border rounded-lg p-4 bg-background space-y-2">
+          <Label className="text-xs" htmlFor="calendly-url">Calendly booking link</Label>
+          <div className="flex flex-col sm:flex-row gap-2">
+            <Input
+              id="calendly-url"
+              value={quizConfig.calendlyUrl}
+              disabled={!isAdmin}
+              placeholder="https://calendly.com/your-account/your-event"
+              onChange={(e) => setQuizConfig((c) => ({ ...c, calendlyUrl: e.target.value }))}
+            />
+            <Button
+              className="shrink-0"
+              onClick={() => void handleSaveQuiz()}
+              disabled={!isAdmin || savingQuiz}
+            >
+              {savingQuiz ? "Saving…" : "Save link"}
+            </Button>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Shown on /quiz after the last photo question.
+          </p>
+        </div>
+
         {saveMessage && (
           <p className={`text-sm mb-4 ${saveMessage.toLowerCase().includes("failed") ? "text-destructive" : "text-primary"}`}>
             {saveMessage}
