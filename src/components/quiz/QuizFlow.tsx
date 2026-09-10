@@ -152,7 +152,7 @@ export function QuizFlow({
 
           {/* Progress */}
           {currentStep <= totalSteps && (
-            <div className="mb-4 flex items-center justify-between">
+            <div className={cn("flex items-center justify-between", compact ? "mb-2" : "mb-4")}>
               <button
                 onClick={handleBack}
                 disabled={currentStep === 1}
