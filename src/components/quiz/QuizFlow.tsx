@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
-import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { ChevronDown } from "lucide-react";
 import { QuizCard } from "./QuizCard";
 import { useQuizConfig } from "@/lib/quiz-content";
