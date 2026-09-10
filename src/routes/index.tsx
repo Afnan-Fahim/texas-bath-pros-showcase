@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import logoImg from "@/assets/logo-header.webp";
 import logoFooterImg from "@/assets/logo-footer.webp";
+import aboutBgAsset from "@/assets/about-bg.jpg.asset.json";
 
 import heroPoster from "@/assets/hero-video-poster.avif";
 
@@ -1042,7 +1043,7 @@ function TrustBar() {
     { icon: MapPin, label: "Local Service", sub: "San Antonio Area" },
   ];
   return (
-    <section className="border-y border-border bg-secondary/60">
+    <section className="border-y border-border/30">
       <div className="container-x py-6 md:py-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
         {items.map((it) => (
           <div key={it.label} className="flex items-center gap-3">
@@ -1138,12 +1139,32 @@ function About() {
         <h2 className="mt-4 text-3xl md:text-4xl text-navy text-balance">
           A local San Antonio family, transforming bathrooms our neighbors love.
         </h2>
-        <p className="mt-5 text-lg text-muted-foreground text-balance">
+        <p className="mt-5 text-lg text-navy/80 text-balance">
           We're a family business dedicated to turning outdated bathrooms into beautiful,
           functional spaces. We believe in clean, honest, upfront pricing and doing the job right
           the first time.
         </p>
       </div>
+    </section>
+  );
+}
+
+/* ---------------- ABOUT BLOCK (trust icons + about text) ---------------- */
+function AboutBlock() {
+  return (
+    <section className="relative overflow-hidden">
+      <img
+        src={aboutBgAsset.url}
+        alt=""
+        width={1920}
+        height={725}
+        loading="lazy"
+        decoding="async"
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 h-full w-full object-cover object-right-bottom opacity-[0.07] select-none"
+      />
+      <TrustBar />
+      <About />
     </section>
   );
 }
@@ -2697,8 +2718,7 @@ function Index() {
       <Navbar onBook={scrollToBook} onContact={() => setContactOpen(true)} forceHidden={quizVisible} />
       <main className="pb-[4.5rem] lg:pb-0">
         <Hero onBook={scrollToBook} />
-        <TrustBar />
-        <About />
+        <AboutBlock />
         <BookingForm formRef={formRef} />
         <Gallery />
         <Offers />
