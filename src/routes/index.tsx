@@ -531,6 +531,10 @@ function Navbar({ onBook, onContact, forceHidden = false }: { onBook: () => void
     return () => window.removeEventListener("scroll", onScroll);
   }, [hidden]);
 
+  useEffect(() => {
+    if (forceHidden) setOpen(false);
+  }, [forceHidden]);
+
   const isHidden = (forceHidden || hidden) && !open;
 
   const links = [
