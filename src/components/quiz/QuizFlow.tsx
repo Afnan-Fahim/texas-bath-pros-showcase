@@ -59,6 +59,8 @@ interface QuizFlowProps {
 export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendlyCompleted = false }: QuizFlowProps) {
   const [step, setStep] = useState(1);
   const quizData = QUIZ_DATA;
+  // Step 1 photos are managed from /admin.
+  const uploadedImages = useQuizImages();
 
   // Warm up the booking calendar as soon as the quiz is on screen, so it is
   // ready by the time the visitor finishes the questions.
