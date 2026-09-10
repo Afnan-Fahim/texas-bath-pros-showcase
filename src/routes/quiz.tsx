@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { QuizFlow, QuizState } from "@/components/quiz/QuizFlow";
 import { CalendlyEmbed, trackLeadEvent, captureAttribution, attributionNote } from "./index";
+import logoImg from "@/assets/logo-header.webp";
 
 import { useQuizConfig, DEFAULT_CALENDLY_URL } from "@/lib/quiz-content";
 import { scheduleLead } from "@/lib/leads.functions";
@@ -89,11 +90,20 @@ function QuizPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col items-center">
-
+      <header className="w-full flex justify-center py-4 sm:py-5">
+        <img src={logoImg} alt="Texas Bath Solutions" className="h-10 w-auto" />
+      </header>
 
       <main ref={stageRef} className="flex min-h-svh w-full flex-1 items-center justify-center px-3 py-3 sm:px-6 relative">
         <div className={showCalendly ? "hidden" : "contents"}>
-          <QuizFlow onComplete={handleQuizComplete} calendlyCompleted={calendlyCompleted} />
+          <QuizFlow
+            onComplete={handleQuizComplete}
+            calendlyCompleted={calendlyCompleted}
+            showStartCue={false}
+            photoFill={true}
+            labelOverrides={{ "new-tub": "New bathtub" }}
+            extraSubline="Free in-home estimate • San Antonio • No pressure"
+          />
         </div>
 
         {/* Calendar mounts with the quiz so finishing step 3 reveals it instantly. */}
