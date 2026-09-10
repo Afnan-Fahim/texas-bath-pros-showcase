@@ -35,6 +35,7 @@ export function QuizFlow({
   calendlyCompleted = false,
   showStartCue = true,
   photoFill = false,
+  compact = false,
   labelOverrides = {},
   extraSubline,
 }: QuizFlowProps) {
