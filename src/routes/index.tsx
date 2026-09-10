@@ -1043,16 +1043,16 @@ function TrustBar() {
     { icon: MapPin, label: "Local Service", sub: "San Antonio Area" },
   ];
   return (
-    <section className="bg-sand">
+    <section className="bg-navy">
       <div className="container-x py-6 md:py-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
         {items.map((it) => (
           <div key={it.label} className="flex items-center gap-3">
-            <div className="grid h-11 w-11 shrink-0 place-items-center rounded-lg bg-navy/10 text-navy">
+            <div className="grid h-11 w-11 shrink-0 place-items-center rounded-lg bg-white/15 text-white">
               <it.icon className="h-5 w-5" />
             </div>
             <div className="min-w-0">
-              <div className="text-sm font-semibold text-navy truncate">{it.label}</div>
-              <div className="text-xs text-muted-foreground truncate">{it.sub}</div>
+              <div className="text-sm font-semibold text-white truncate">{it.label}</div>
+              <div className="text-xs text-white/80 truncate">{it.sub}</div>
             </div>
           </div>
         ))}
