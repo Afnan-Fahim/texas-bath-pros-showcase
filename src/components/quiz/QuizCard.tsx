@@ -9,9 +9,10 @@ interface QuizCardProps {
   onClick: () => void;
   index?: number;
   fill?: boolean;
+  compact?: boolean;
 }
 
-export function QuizCard({ title, description, image, selected, onClick, fill = false }: QuizCardProps) {
+export function QuizCard({ title, description, image, selected, onClick, fill = false, compact = false }: QuizCardProps) {
   return (
     <div
       onClick={onClick}
@@ -26,8 +27,11 @@ export function QuizCard({ title, description, image, selected, onClick, fill = 
     >
       {image ? (
         <div className={cn(
-          "w-full aspect-video sm:aspect-[4/3] bg-muted/30 relative overflow-hidden flex items-center justify-center group",
-          !fill && "p-2"
+          "w-full bg-muted/30 relative overflow-hidden flex items-center justify-center group",
+          compact
+            ? "aspect-square"
+            : "aspect-video sm:aspect-[4/3]",
+          !fill && !compact && "p-2"
         )}>
           {/* Premium blurred background effect */}
           <div 
@@ -51,10 +55,10 @@ export function QuizCard({ title, description, image, selected, onClick, fill = 
         </div>
       ) : (
         // Neutral placeholder while the saved photo loads
-        <div className="w-full aspect-video sm:aspect-[4/3] bg-muted/40" />
+        <div className={cn("w-full bg-muted/40", compact ? "aspect-square" : "aspect-video sm:aspect-[4/3]")} />
       )}
-      <div className="p-3 w-full">
-        <h3 className="font-medium text-base sm:text-lg">{title}</h3>
+      <div className={cn("w-full", compact ? "p-2" : "p-3")}>
+        <h3 className={cn("font-medium", compact ? "text-sm sm:text-base" : "text-base sm:text-lg")}>{title}</h3>
         {description && <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">{description}</p>}
       </div>
     </div>

@@ -23,6 +23,7 @@ interface QuizFlowProps {
   calendlyCompleted?: boolean;
   showStartCue?: boolean;
   photoFill?: boolean;
+  compact?: boolean;
   labelOverrides?: Record<string, string>;
   extraSubline?: string;
 }
@@ -34,6 +35,7 @@ export function QuizFlow({
   calendlyCompleted = false,
   showStartCue = true,
   photoFill = false,
+  compact = false,
   labelOverrides = {},
   extraSubline,
 }: QuizFlowProps) {
@@ -116,14 +118,19 @@ export function QuizFlow({
   return (
     <div
       ref={containerRef}
-      className="relative z-40 mx-auto flex max-h-[calc(100svh-1.5rem)] min-h-[34rem] w-full max-w-4xl items-center justify-center overflow-y-auto overscroll-contain scroll-m-0"
+      className={cn(
+        "relative z-40 mx-auto flex w-full items-start justify-center overflow-y-auto overscroll-contain scroll-m-0",
+        compact
+          ? "max-h-[calc(100svh-0.5rem)] max-w-xl"
+          : "max-h-[calc(100svh-1.5rem)] min-h-[34rem] max-w-4xl"
+      )}
     >
       <div className="w-full relative overflow-hidden">
         {/* Decorative gradient backgrounds */}
         <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-teal/10 blur-3xl opacity-50 pointer-events-none"></div>
         <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 rounded-full bg-navy/5 blur-3xl opacity-50 pointer-events-none"></div>
 
-        <div className="relative z-10 p-4 sm:p-7 md:p-8">
+        <div className={cn("relative z-10", compact ? "p-3 sm:p-5" : "p-4 sm:p-7 md:p-8")}>
           {/* Start here cue */}
           {showStartCue && (
             <div
@@ -145,7 +152,7 @@ export function QuizFlow({
 
           {/* Progress */}
           {currentStep <= totalSteps && (
-            <div className="mb-4 flex items-center justify-between">
+            <div className={cn("flex items-center justify-between", compact ? "mb-2" : "mb-4")}>
               <button
                 onClick={handleBack}
                 disabled={currentStep === 1}
@@ -163,19 +170,19 @@ export function QuizFlow({
           {/* PHOTO / CHOICE QUESTIONS — every step is editable in /admin */}
           {steps.map((stepConfig, stepIdx) =>
             currentStep === stepIdx + 1 ? (
-              <div key={stepConfig.id} className="flex min-h-[25rem] flex-col justify-center sm:min-h-[27rem]">
-                <div className="text-center mb-4 sm:mb-5">
+              <div key={stepConfig.id} className={cn("flex flex-col justify-center", compact ? "" : "min-h-[25rem] sm:min-h-[27rem]")}>
+                <div className={cn("text-center", compact ? "mb-2 sm:mb-3" : "mb-4 sm:mb-5")}>
                   {stepIdx === 0 ? (
-                    <h1 className="text-2xl sm:text-3xl font-sans font-bold text-navy leading-snug mb-2">{stepConfig.title}</h1>
+                    <h1 className={cn("font-sans font-bold text-navy leading-snug mb-1", compact ? "text-xl sm:text-2xl" : "text-2xl sm:text-3xl")}>{stepConfig.title}</h1>
                   ) : (
-                    <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{stepConfig.title}</h2>
+                    <h2 className={cn("font-bold text-foreground mb-1", compact ? "text-xl sm:text-2xl" : "text-2xl sm:text-3xl")}>{stepConfig.title}</h2>
                   )}
-                  <p className="text-muted-foreground">{stepConfig.description}</p>
+                  <p className={cn("text-muted-foreground", compact ? "text-sm" : "")}>{stepConfig.description}</p>
                   {stepIdx === 0 && extraSubline && (
-                    <p className="mt-1 text-sm text-muted-foreground">{extraSubline}</p>
+                    <p className={cn("text-muted-foreground", compact ? "mt-0.5 text-xs" : "mt-1 text-sm")}>{extraSubline}</p>
                   )}
                 </div>
-                <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                <div className={cn("grid grid-cols-2", compact ? "gap-2 sm:gap-3" : "gap-3 sm:gap-4")}>
                   {stepConfig.options.map((opt, idx) => {
                     const optionLabel = labelOverrides[opt.id] ?? opt.label;
                     return opt.image || opt.imagePending ? (
@@ -185,6 +192,7 @@ export function QuizFlow({
                         title={optionLabel}
                         image={opt.image}
                         fill={photoFill}
+                        compact={compact}
                         selected={state[stepConfig.key] === optionLabel}
                         onClick={() => handleOptionSelect(stepConfig.key, optionLabel)}
                       />
@@ -195,8 +203,12 @@ export function QuizFlow({
                         className={cn(
                           "col-span-2 w-full rounded-xl border text-center transition-colors",
                           stepIdx === 0
-                            ? "border-navy/30 bg-card px-4 py-2.5 text-base font-medium text-navy hover:bg-navy/5 hover:border-navy/50 sm:text-lg"
-                            : "min-h-14 border-2 py-3 text-base sm:py-4 sm:text-lg",
+                            ? compact
+                              ? "border-navy/30 bg-card px-4 py-2 text-sm font-medium text-navy hover:bg-navy/5 hover:border-navy/50 sm:text-base"
+                              : "border-navy/30 bg-card px-4 py-2.5 text-base font-medium text-navy hover:bg-navy/5 hover:border-navy/50 sm:text-lg"
+                            : compact
+                              ? "min-h-10 border-2 py-2 text-sm sm:py-2.5 sm:text-base"
+                              : "min-h-14 border-2 py-3 text-base sm:py-4 sm:text-lg",
                           state[stepConfig.key] === optionLabel
                             ? "border-primary bg-primary/5"
                             : "border-border hover:border-primary/50"
