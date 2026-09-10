@@ -92,25 +92,31 @@ function QuizPage() {
 
 
       <main ref={stageRef} className="flex min-h-svh w-full flex-1 items-center justify-center px-3 py-3 sm:px-6 relative">
-        {!showCalendly && (
+        <div className={showCalendly ? "hidden" : "contents"}>
           <QuizFlow onComplete={handleQuizComplete} calendlyCompleted={calendlyCompleted} />
-        )}
+        </div>
 
-        {showCalendly && (
-          <div className="mx-auto h-[calc(100svh-1.5rem)] w-full max-w-3xl overflow-y-auto overscroll-contain rounded-2xl border border-border bg-background p-4 shadow-sm sm:p-6">
-            <CalendlyEmbed
-              url={calendlyUrl}
-              prefill={{
-                name: quizData?.name || "",
-                email: quizData?.email || "",
-              }}
-              onBack={handleCalendlyBack}
-              onScheduled={handleCalendlyScheduled}
-              title="Pick a time for your free estimate"
-              subtitle="No pressure. Takes about 45 minutes."
-            />
-          </div>
-        )}
+        {/* Calendar mounts with the quiz so finishing step 3 reveals it instantly. */}
+        <div
+          className={
+            showCalendly
+              ? "mx-auto h-[calc(100svh-1.5rem)] w-full max-w-3xl overflow-y-auto overscroll-contain rounded-2xl border border-border bg-background p-4 shadow-sm sm:p-6"
+              : "pointer-events-none absolute inset-0 -z-10 w-full overflow-hidden p-4 opacity-0"
+          }
+          aria-hidden={!showCalendly}
+        >
+          <CalendlyEmbed
+            url={calendlyUrl}
+            prefill={{
+              name: quizData?.name || "",
+              email: quizData?.email || "",
+            }}
+            onBack={handleCalendlyBack}
+            onScheduled={handleCalendlyScheduled}
+            title="Pick a time for your free estimate"
+            subtitle="No pressure. Takes about 45 minutes."
+          />
+        </div>
       </main>
     </div>
   );
