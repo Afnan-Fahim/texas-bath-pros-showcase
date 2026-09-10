@@ -531,7 +531,7 @@ function Navbar({ onBook, onContact, forceHidden = false }: { onBook: () => void
     return () => window.removeEventListener("scroll", onScroll);
   }, [hidden]);
 
-  const isHidden = hidden && !open;
+  const isHidden = (forceHidden || hidden) && !open;
 
   const links = [
     { href: "#work", label: "Our Work" },
