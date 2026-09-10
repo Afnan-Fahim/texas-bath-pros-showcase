@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { QuizCard } from "./QuizCard";
 import { useQuizConfig } from "@/lib/quiz-content";
 
@@ -29,8 +27,7 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
   // All quiz steps, questions and photos are managed from /admin.
   const quizConfig = useQuizConfig();
   const steps = quizConfig.steps;
-  const contact = quizConfig.contact;
-  const totalSteps = steps.length + 1;
+  const totalSteps = steps.length;
 
   // Warm up the booking calendar as soon as the quiz is on screen, so it is
   // ready by the time the visitor finishes the questions.
@@ -66,21 +63,25 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
     address: "",
     homeowner: "",
   });
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState("");
-
   const currentStep = calendlyCompleted ? totalSteps : Math.min(step, totalSteps);
 
   const handleNext = () => setStep((s) => s + 1);
   const handleBack = () => setStep((s) => Math.max(1, s - 1));
 
-  const updateState = (key: keyof QuizState, value: string) => {
-    setState((prev) => ({ ...prev, [key]: value }));
-  };
-
   const handleOptionSelect = (key: keyof QuizState, value: string) => {
-    setState((prev) => ({ ...prev, [key]: value }));
-    // Move to the next screen right away — never leave a blank/loading gap.
+    const next = { ...state, [key]: value };
+    setState(next);
+    const isLastQuestion = step >= steps.length;
+    if (isLastQuestion) {
+      // Straight to the calendar — Calendly collects all personal details.
+      if (onComplete) {
+        void onComplete(next);
+      } else if (onContactSubmit) {
+        void onContactSubmit(next);
+      }
+      onShowCalendly?.(next);
+      return;
+    }
     handleNext();
   };
 
