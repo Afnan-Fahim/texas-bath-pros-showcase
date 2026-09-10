@@ -510,6 +510,7 @@ function Navbar({ onBook, onContact }: { onBook: () => void; onContact: () => vo
     const onScroll = () => {
       const y = window.scrollY;
       setScrolled(y > 8);
+      console.log("[nav scroll] y:", y, "hidden:", hidden, "toggleY:", toggleY.current);
       if (y < 20) {
         setHidden(false);
       } else if (!hidden && y - toggleY.current > 5) {
