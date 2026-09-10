@@ -504,25 +504,27 @@ function Navbar({ onBook, onContact }: { onBook: () => void; onContact: () => vo
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const lastY = useRef(0);
+  const toggleY = useRef(0);
 
   useEffect(() => {
     const onScroll = () => {
       const y = window.scrollY;
       setScrolled(y > 8);
-      const delta = y - lastY.current;
       if (y < 20) {
         setHidden(false);
-      } else if (delta > 5) {
+      } else if (!hidden && y - toggleY.current > 5) {
         setHidden(true);
-      } else if (delta < -50) {
+        toggleY.current = y;
+      } else if (hidden && y - toggleY.current < -50) {
         setHidden(false);
+        toggleY.current = y;
       }
       lastY.current = y;
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [hidden]);
 
   const isHidden = hidden && !open;
 
