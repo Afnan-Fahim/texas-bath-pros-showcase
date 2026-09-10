@@ -100,7 +100,7 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
   return (
     <div
       ref={containerRef}
-      className="relative z-40 mx-auto flex h-[min(44rem,calc(100svh-1.5rem))] min-h-[34rem] w-full max-w-4xl items-center justify-center overflow-y-auto overscroll-contain scroll-m-0"
+      className="relative z-40 mx-auto flex max-h-[calc(100svh-1.5rem)] min-h-[34rem] w-full max-w-4xl items-center justify-center overflow-y-auto overscroll-contain scroll-m-0"
     >
       <div className="w-full relative overflow-hidden">
         {/* Decorative gradient backgrounds */}
