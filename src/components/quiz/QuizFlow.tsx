@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { QuizCard } from "./QuizCard";
+import blackFramedShower from "@/assets/offer-summer-sale.avif";
+import brandLogo from "@/assets/texas-bath-solutions-logo-transparent.png.asset.json";
 
 export type QuizState = {
   desiredUpgrade: string;
@@ -16,17 +18,17 @@ export type QuizState = {
 
 const QUIZ_DATA = {
   question1: {
-    title: "Tap what you want. We'll come look at it and give you a straight price.",
-    description: "About 15 seconds. Free estimate, no pressure.",
+    title: "Tap the one that looks like your project.",
+    description: "15 seconds. We’ll come look at it and give you a straight price — no pressure.",
     options: [
-      { id: "Walk-in shower", label: "Walk-in shower", image: "/images/quiz/walk-in-shower.jpg" },
-      { id: "New bathtub", label: "New bathtub", image: "/images/quiz/new-tub.jpg" },
+      { id: "Walk-in shower", label: "Walk-in shower", image: blackFramedShower },
+      { id: "New tub remodel", label: "New tub remodel", image: "/images/quiz/new-tub.jpg" },
       { id: "Not sure yet", label: "Not sure yet" },
     ],
   },
   question2: {
     title: "What's the main problem?",
-    description: "What's driving you crazy right now?",
+    description: "Choose what matters most to you.",
     options: [
       { id: "Hard to step over", label: "Hard to step over", image: "/images/quiz/hard-step.jpg" },
       { id: "Looks dated", label: "Looks dated", image: "/images/quiz/looks-dated.jpg" },
@@ -35,8 +37,8 @@ const QUIZ_DATA = {
     ],
   },
   question3: {
-    title: "When do you want it done?",
-    description: "Pick the one that matches your timeline.",
+    title: "When would you like it done?",
+    description: "Choose the timing that works best for you.",
     options: [
       { id: "ASAP", label: "ASAP" },
       { id: "2 weeks", label: "2 weeks" },
@@ -168,6 +170,7 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
                       index={idx}
                       title={opt.label}
                       image={opt.image}
+                      brandLogo={brandLogo.url}
                       selected={state.desiredUpgrade === opt.label}
                       onClick={() => handleOptionSelect("desiredUpgrade", opt.label)}
                     />
