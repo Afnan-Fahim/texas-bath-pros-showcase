@@ -3,6 +3,16 @@ import { AdminPanel } from "@/components/admin/AdminPanel";
 import logoImg from "@/assets/logo-header.webp";
 
 export const Route = createFileRoute("/admin")({
+  head: () => ({
+    meta: [
+      { title: "Admin | Texas Bath Solutions" },
+      { name: "description", content: "Texas Bath Solutions lead and quiz photo administration." },
+      { property: "og:title", content: "Admin | Texas Bath Solutions" },
+      { property: "og:description", content: "Texas Bath Solutions lead and quiz photo administration." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+    ],
+  }),
   component: AdminPage,
 });
 
