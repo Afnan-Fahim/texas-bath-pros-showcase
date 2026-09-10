@@ -171,18 +171,18 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
           )}
 
           {/* CONTACT STEP */}
-          {currentStep === 4 && (
+          {currentStep === totalSteps && (
             <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
               <div className="mb-8">
-                <h2 className="text-3xl sm:text-4xl font-bold text-navy mb-2 leading-tight">Where should we come look?</h2>
-                <p className="text-muted-foreground text-base mt-4">Free estimate at your house from a local Texas company. No pressure.</p>
+                <h2 className="text-3xl sm:text-4xl font-bold text-navy mb-2 leading-tight">{contact.headline}</h2>
+                <p className="text-muted-foreground text-base mt-4">{contact.subline}</p>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-6 mx-auto text-left">
                 {error && <div className="p-3 text-sm text-destructive bg-destructive/10 rounded-md">{error}</div>}
 
                 <div className="space-y-2">
-                  <Label htmlFor="quiz-name" className="text-base font-semibold text-navy">Name *</Label>
+                  <Label htmlFor="quiz-name" className="text-base font-semibold text-navy">{contact.nameLabel}</Label>
                   <Input
                     id="quiz-name"
                     type="text"
@@ -194,7 +194,7 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="quiz-email" className="text-base font-semibold text-navy">Email *</Label>
+                  <Label htmlFor="quiz-email" className="text-base font-semibold text-navy">{contact.emailLabel}</Label>
                   <Input
                     id="quiz-email"
                     type="email"
@@ -206,7 +206,7 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="quiz-phone" className="text-base font-semibold text-navy">Mobile phone *</Label>
+                  <Label htmlFor="quiz-phone" className="text-base font-semibold text-navy">{contact.phoneLabel}</Label>
                   <Input
                     id="quiz-phone"
                     type="tel"
@@ -218,7 +218,7 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="quiz-address" className="text-base font-semibold text-navy">Address *</Label>
+                  <Label htmlFor="quiz-address" className="text-base font-semibold text-navy">{contact.addressLabel}</Label>
                   <Input
                     id="quiz-address"
                     type="text"
@@ -231,7 +231,7 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
                 </div>
 
                 <div className="space-y-4 pt-2">
-                  <Label className="text-base font-semibold text-navy">Are you the homeowner? *</Label>
+                  <Label className="text-base font-semibold text-navy">{contact.homeownerLabel}</Label>
                   <div className="flex gap-8">
                     {(["Yes", "No"] as const).map((val) => (
                       <button
@@ -251,10 +251,10 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
                 </div>
 
                 <Button type="submit" size="lg" className="w-full h-14 text-lg bg-[#0d2240] hover:bg-[#0d2240]/90 text-white mt-8" disabled={submitting}>
-                  {submitting ? "Saving..." : "See available times"}
+                  {submitting ? "Saving..." : contact.submitLabel}
                 </Button>
 
-                <p className="text-center text-sm text-muted-foreground">Next you’ll pick a time. No charge, no obligation.</p>
+                <p className="text-center text-sm text-muted-foreground">{contact.footnote}</p>
               </form>
             </div>
           )}
