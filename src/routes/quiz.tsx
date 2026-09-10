@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { QuizFlow, QuizState } from "@/components/quiz/QuizFlow";
 import { CalendlyEmbed, trackLeadEvent, captureAttribution, attributionNote } from "./index";
 import logoImg from "@/assets/logo-header.webp";
-import { submitLead, scheduleLead } from "@/lib/leads.functions";
+import { scheduleLead } from "@/lib/leads.functions";
 
 export const Route = createFileRoute("/quiz")({
   component: QuizPage,
@@ -39,19 +39,18 @@ function QuizPage() {
   }, []);
 
   const buildLead = (d: QuizState, booked: boolean) => ({
-    name: d.name || `Quiz lead ${d.phone}`,
+    // Calendly collects the personal details; the quiz only carries the answers.
+    name: d.name || "Quiz lead",
     email: d.email || "quiz@provided.com",
-    phone: d.phone,
-    address: d.address,
+    phone: d.phone || "See Calendly",
+    address: d.address || "Provided in Calendly",
     timeframe: d.timeline,
     notes:
       [
         `Status: ${booked ? "BOOKED" : "NOT BOOKED"}`,
-        `Homeowner: ${d.homeowner}`,
         `Upgrade: ${d.desiredUpgrade}`,
         `Problem: ${d.mainProblem}`,
         `Timeline: ${d.timeline}`,
-        `Address: ${d.address}`,
         `Page: ${typeof window !== "undefined" ? window.location.href : "/quiz"}`,
       ].join("\n") + attributionNote(),
     source: booked ? "Facebook/Messenger Quiz — Booked" : "Facebook/Messenger Quiz",
@@ -71,18 +70,10 @@ function QuizPage() {
   };
 
   const handleQuizComplete = async (finalData: QuizState) => {
-    // Show the calendar right away, save the lead in the background
+    // Straight to the calendar after the last photo question.
     setQuizData(finalData);
     setShowCalendly(true);
-    trackLeadEvent(`quiz:${finalData.phone}`, {
-      phone: finalData.phone,
-      name: finalData.name,
-    });
-    try {
-      await submitLead({ data: buildLead(finalData, false) });
-    } catch (e) {
-      console.error(e);
-    }
+    trackLeadEvent(`quiz:${finalData.desiredUpgrade}:${Date.now()}`, {});
   };
 
   return (
