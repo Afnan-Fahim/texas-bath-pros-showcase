@@ -84,26 +84,6 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
     handleNext();
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!state.name || !state.email || !state.phone || !state.address || !state.homeowner) {
-      setError("Please fill out all fields.");
-      return;
-    }
-    setError("");
-    setSubmitting(true);
-    try {
-      if (onComplete) {
-        await onComplete(state);
-      } else if (onContactSubmit) {
-        await onContactSubmit(state);
-      }
-    } catch (err) {
-      setError("Something went wrong. Please try again.");
-      setSubmitting(false);
-    }
-  };
-
   return (
     <div className="relative w-full max-w-4xl mx-auto z-40">
       <div className="w-full relative overflow-hidden transition-all duration-500">
@@ -168,94 +148,6 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
             ) : null,
           )}
 
-          {/* CONTACT STEP */}
-          {currentStep === totalSteps && (
-            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <div className="mb-8">
-                <h2 className="text-3xl sm:text-4xl font-bold text-navy mb-2 leading-tight">{contact.headline}</h2>
-                <p className="text-muted-foreground text-base mt-4">{contact.subline}</p>
-              </div>
-
-              <form onSubmit={handleSubmit} className="space-y-6 mx-auto text-left">
-                {error && <div className="p-3 text-sm text-destructive bg-destructive/10 rounded-md">{error}</div>}
-
-                <div className="space-y-2">
-                  <Label htmlFor="quiz-name" className="text-base font-semibold text-navy">{contact.nameLabel}</Label>
-                  <Input
-                    id="quiz-name"
-                    type="text"
-                    placeholder="First and last name"
-                    className="h-12 text-base"
-                    value={state.name}
-                    onChange={(e) => updateState("name", e.target.value)}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="quiz-email" className="text-base font-semibold text-navy">{contact.emailLabel}</Label>
-                  <Input
-                    id="quiz-email"
-                    type="email"
-                    placeholder="you@example.com"
-                    className="h-12 text-base"
-                    value={state.email}
-                    onChange={(e) => updateState("email", e.target.value)}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="quiz-phone" className="text-base font-semibold text-navy">{contact.phoneLabel}</Label>
-                  <Input
-                    id="quiz-phone"
-                    type="tel"
-                    placeholder="(   ) ___-____"
-                    className="h-12 text-base"
-                    value={state.phone}
-                    onChange={(e) => updateState("phone", e.target.value)}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="quiz-address" className="text-base font-semibold text-navy">{contact.addressLabel}</Label>
-                  <Input
-                    id="quiz-address"
-                    type="text"
-                    placeholder="Street address, city, ZIP"
-                    className="h-12 text-base"
-                    value={state.address}
-                    onChange={(e) => updateState("address", e.target.value)}
-                    required
-                  />
-                </div>
-
-                <div className="space-y-4 pt-2">
-                  <Label className="text-base font-semibold text-navy">{contact.homeownerLabel}</Label>
-                  <div className="flex gap-8">
-                    {(["Yes", "No"] as const).map((val) => (
-                      <button
-                        key={val}
-                        type="button"
-                        onClick={() => updateState("homeowner", val)}
-                        className="flex items-center space-x-3 cursor-pointer group"
-                        aria-pressed={state.homeowner === val}
-                      >
-                        <span className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${state.homeowner === val ? "border-navy" : "border-border group-hover:border-navy"}`}>
-                          {state.homeowner === val && <span className="w-3 h-3 bg-navy rounded-full" />}
-                        </span>
-                        <span className="text-lg text-foreground">{val}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <Button type="submit" size="lg" className="w-full h-14 text-lg bg-[#0d2240] hover:bg-[#0d2240]/90 text-white mt-8" disabled={submitting}>
-                  {submitting ? "Saving..." : contact.submitLabel}
-                </Button>
-
-                <p className="text-center text-sm text-muted-foreground">{contact.footnote}</p>
-              </form>
-            </div>
-          )}
         </div>
       </div>
     </div>
