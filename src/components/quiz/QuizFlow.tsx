@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { QuizCard } from "./QuizCard";
-import { customSupabase as supabase } from "@/integrations/custom-supabase/client";
 
 export type QuizState = {
   desiredUpgrade: string;
@@ -17,11 +16,12 @@ export type QuizState = {
 
 const QUIZ_DATA = {
   question1: {
-    title: "What do you want most?",
-    description: "Tap the picture that fits.",
+    title: "Tap what you want. We'll come look at it and give you a straight price.",
+    description: "About 15 seconds. Free estimate, no pressure.",
     options: [
       { id: "Walk-in shower", label: "Walk-in shower", image: "/images/quiz/walk-in-shower.jpg" },
-      { id: "New tub remodel", label: "New tub remodel", image: "/images/quiz/new-tub.jpg" },
+      { id: "New bathtub", label: "New bathtub", image: "/images/quiz/new-tub.jpg" },
+      { id: "Not sure yet", label: "Not sure yet" },
     ],
   },
   question2: {
@@ -55,7 +55,7 @@ interface QuizFlowProps {
 
 export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendlyCompleted = false }: QuizFlowProps) {
   const [step, setStep] = useState(1);
-  const [quizData, setQuizData] = useState<any>(QUIZ_DATA);
+  const quizData = QUIZ_DATA;
 
   // Warm up the booking calendar as soon as the quiz is on screen, so it is
   // ready by the time the visitor finishes the questions.
@@ -79,30 +79,6 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
       s.async = true;
       document.body.appendChild(s);
     }
-  }, []);
-
-  useEffect(() => {
-    const fetchQuiz = async () => {
-      try {
-        const { data, error } = await (supabase as any)
-          .from("quiz_settings")
-          .select("quiz_data")
-          .eq("id", 1)
-          .single();
-          
-        if (error) {
-          console.error("Supabase Error fetching quiz data:", error);
-          throw error;
-        }
-
-        if (data?.quiz_data?.question1 && data.quiz_data.question2 && data.quiz_data.question3) {
-          setQuizData(data.quiz_data);
-        }
-      } catch (err: any) {
-        console.error("Failed to load dynamic quiz data. Using default data instead.", err?.message || err);
-      }
-    };
-    fetchQuiz();
   }, []);
 
   const [state, setState] = useState<QuizState>({
@@ -134,7 +110,7 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!state.phone || !state.address || !state.homeowner) {
+    if (!state.name || !state.phone || !state.address || !state.homeowner) {
       setError("Please fill out all fields.");
       return;
     }
@@ -152,197 +128,184 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
     }
   };
 
-
   return (
-    <>
-      <div className="relative w-full max-w-4xl mx-auto z-40">
-        <div className="w-full relative overflow-hidden transition-all duration-500">
-          <div className="flex justify-center pt-8 pb-4 px-6 md:px-8 border-b border-border/10 bg-muted/20">
-            <Button 
-              size="lg" 
-              className={`relative z-10 w-full sm:w-auto h-14 md:h-16 px-8 md:px-10 text-lg md:text-xl font-semibold text-white shadow-xl hover:shadow-2xl transition-all animate-bounce cursor-default ${quizData.quote_button_color || "bg-blue-600 hover:bg-blue-700"}`}
-            >
-              {quizData.quote_button_text || "Get Your Quote"}
-            </Button>
-          </div>
-      
-      {/* Decorative gradient backgrounds */}
-      <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-teal/10 blur-3xl opacity-50 pointer-events-none group-hover:opacity-100 transition-opacity duration-700"></div>
-      <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 rounded-full bg-navy/5 blur-3xl opacity-50 pointer-events-none group-hover:opacity-100 transition-opacity duration-700"></div>
+    <div className="relative w-full max-w-4xl mx-auto z-40">
+      <div className="w-full relative overflow-hidden transition-all duration-500">
+        {/* Decorative gradient backgrounds */}
+        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-teal/10 blur-3xl opacity-50 pointer-events-none"></div>
+        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 rounded-full bg-navy/5 blur-3xl opacity-50 pointer-events-none"></div>
 
-      <div className="relative z-10 p-5 sm:p-8 md:p-10">
-        {/* Progress */}
-      {currentStep <= 4 && (
-        <div className="mb-6 flex items-center justify-between">
-          <button
-            onClick={handleBack}
-            disabled={currentStep === 1}
-            className={`text-sm font-medium transition-opacity ${currentStep === 1 ? "opacity-0" : "opacity-100 text-muted-foreground hover:text-foreground"}`}
-          >
-            ← Back
-          </button>
-          <span className="text-sm font-medium text-muted-foreground">
-            Step {currentStep} of 4
-          </span>
-          <div className="w-12"></div>
-        </div>
-      )}
-
-      {/* QUESTION 1 */}
-      {currentStep === 1 && (
-        <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <div className="text-center mb-4 sm:mb-5">
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{quizData.question1.title}</h2>
-            <p className="text-muted-foreground">{quizData.question1.description}</p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {quizData.question1.options.map((opt: any, idx: number) => (
-              <QuizCard
-                key={opt.id}
-                index={idx}
-                title={opt.label}
-                image={opt.image}
-                selected={state.desiredUpgrade === opt.label}
-                onClick={() => handleOptionSelect("desiredUpgrade", opt.label)}
-              />
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* QUESTION 2 */}
-      {currentStep === 2 && (
-        <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <div className="text-center mb-4 sm:mb-5">
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{quizData.question2.title}</h2>
-            <p className="text-muted-foreground">{quizData.question2.description}</p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {quizData.question2.options.map((opt: any, idx: number) => (
-              <QuizCard
-                key={opt.id}
-                index={idx}
-                title={opt.label}
-                image={opt.image}
-                selected={state.mainProblem === opt.label}
-                onClick={() => handleOptionSelect("mainProblem", opt.label)}
-              />
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* QUESTION 3 */}
-      {currentStep === 3 && (
-        <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <div className="text-center mb-4 sm:mb-5">
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{quizData.question3.title}</h2>
-            <p className="text-muted-foreground">{quizData.question3.description}</p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {quizData.question3.options.map((opt: any, idx: number) => (
-              opt.image ? (
-                <QuizCard
-                  key={opt.id}
-                  index={idx}
-                  title={opt.label}
-                  image={opt.image}
-                  selected={state.timeline === (opt.id || opt.label)}
-                  onClick={() => handleOptionSelect("timeline", opt.id || opt.label)}
-                />
-              ) : (
-                <Button
-                  key={opt.id}
-                  variant={state.timeline === (opt.id || opt.label) ? "default" : "outline"}
-                  className={`h-auto py-4 text-lg border-2 ${state.timeline === (opt.id || opt.label) ? "border-primary" : "border-border hover:border-primary/50"}`}
-                  onClick={() => handleOptionSelect("timeline", opt.id || opt.label)}
-                >
-                  {opt.label}
-                </Button>
-              )
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* FINAL CAPTURE FORM (Before Calendly) */}
-      {currentStep === 4 && (
-        <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <div className="mb-8">
-            <h2 className="text-3xl sm:text-4xl font-bold text-navy mb-2 leading-tight">You're all set —<br />just confirm the visit.</h2>
-            <p className="text-muted-foreground text-base mt-4">Free estimate at your house from a local Texas company. No pressure. We just need a phone and address so we can show up.</p>
-          </div>
-          
-          <form onSubmit={handleSubmit} className="space-y-6 mx-auto text-left">
-            {error && <div className="p-3 text-sm text-destructive-foreground bg-destructive/10 rounded-md">{error}</div>}
-            
-            <div className="space-y-2">
-              <Label htmlFor="quiz-phone" className="text-base font-semibold text-navy">Mobile phone *</Label>
-              <Input
-                id="quiz-phone"
-                type="tel"
-                placeholder="(   ) ___-____"
-                className="h-12 text-base"
-                value={state.phone}
-                onChange={(e) => updateState("phone", e.target.value)}
-                required
-              />
+        <div className="relative z-10 p-5 sm:p-8 md:p-10">
+          {/* Progress */}
+          {currentStep <= 4 && (
+            <div className="mb-6 flex items-center justify-between">
+              <button
+                onClick={handleBack}
+                disabled={currentStep === 1}
+                className={`text-sm font-medium transition-opacity ${currentStep === 1 ? "opacity-0" : "opacity-100 text-muted-foreground hover:text-foreground"}`}
+              >
+                ← Back
+              </button>
+              <span className="text-sm font-medium text-muted-foreground">
+                Step {currentStep} of 4
+              </span>
+              <div className="w-12"></div>
             </div>
+          )}
 
-            <div className="space-y-2">
-              <Label htmlFor="quiz-address" className="text-base font-semibold text-navy">Street address *</Label>
-              <Input
-                id="quiz-address"
-                type="text"
-                placeholder="123 Main St, Apt # or Unit"
-                className="h-12 text-base"
-                value={state.address}
-                onChange={(e) => updateState("address", e.target.value)}
-                required
-              />
-            </div>
-
-            <div className="space-y-4 pt-2">
-              <Label className="text-base font-semibold text-navy">Are you the homeowner?</Label>
-              <div className="flex gap-8">
-                <label className="flex items-center space-x-3 cursor-pointer group">
-                  <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${state.homeowner === "Yes" ? "border-navy" : "border-border group-hover:border-navy"}`}>
-                    {state.homeowner === "Yes" && <div className="w-3 h-3 bg-navy rounded-full" />}
-                  </div>
-                  <input 
-                    type="radio" 
-                    name="homeowner" 
-                    value="Yes"
-                    className="hidden"
-                    onChange={(e) => updateState("homeowner", e.target.value)}
-                  />
-                  <span className="text-lg text-foreground">Yes</span>
-                </label>
-                <label className="flex items-center space-x-3 cursor-pointer group">
-                  <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${state.homeowner === "No" ? "border-navy" : "border-border group-hover:border-navy"}`}>
-                    {state.homeowner === "No" && <div className="w-3 h-3 bg-navy rounded-full" />}
-                  </div>
-                  <input 
-                    type="radio" 
-                    name="homeowner" 
-                    value="No"
-                    className="hidden"
-                    onChange={(e) => updateState("homeowner", e.target.value)}
-                  />
-                  <span className="text-lg text-foreground">No.</span>
-                </label>
+          {/* QUESTION 1 */}
+          {currentStep === 1 && (
+            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <div className="text-center mb-4 sm:mb-5">
+                <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{quizData.question1.title}</h1>
+                <p className="text-muted-foreground">{quizData.question1.description}</p>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {quizData.question1.options.map((opt: any, idx: number) => (
+                  opt.image ? (
+                    <QuizCard
+                      key={opt.id}
+                      index={idx}
+                      title={opt.label}
+                      image={opt.image}
+                      selected={state.desiredUpgrade === opt.label}
+                      onClick={() => handleOptionSelect("desiredUpgrade", opt.label)}
+                    />
+                  ) : (
+                    <Button
+                      key={opt.id}
+                      variant={state.desiredUpgrade === opt.label ? "default" : "outline"}
+                      className={`h-auto py-4 text-lg border-2 sm:col-span-2 ${state.desiredUpgrade === opt.label ? "border-primary" : "border-border hover:border-primary/50"}`}
+                      onClick={() => handleOptionSelect("desiredUpgrade", opt.label)}
+                    >
+                      {opt.label}
+                    </Button>
+                  )
+                ))}
               </div>
             </div>
+          )}
 
-            <Button type="submit" size="lg" className="w-full h-14 text-lg bg-[#0d2240] hover:bg-[#0d2240]/90 text-white mt-8" disabled={submitting}>
-              {submitting ? "Confirming..." : "Confirm my visit"}
-            </Button>
-          </form>
-        </div>
-      )}
+          {/* QUESTION 2 */}
+          {currentStep === 2 && (
+            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <div className="text-center mb-4 sm:mb-5">
+                <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{quizData.question2.title}</h2>
+                <p className="text-muted-foreground">{quizData.question2.description}</p>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {quizData.question2.options.map((opt: any, idx: number) => (
+                  <QuizCard
+                    key={opt.id}
+                    index={idx}
+                    title={opt.label}
+                    image={opt.image}
+                    selected={state.mainProblem === opt.label}
+                    onClick={() => handleOptionSelect("mainProblem", opt.label)}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* QUESTION 3 */}
+          {currentStep === 3 && (
+            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <div className="text-center mb-4 sm:mb-5">
+                <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{quizData.question3.title}</h2>
+                <p className="text-muted-foreground">{quizData.question3.description}</p>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {quizData.question3.options.map((opt: any, idx: number) => (
+                  <Button
+                    key={opt.id}
+                    variant={state.timeline === (opt.id || opt.label) ? "default" : "outline"}
+                    className={`h-auto py-4 text-lg border-2 ${state.timeline === (opt.id || opt.label) ? "border-primary" : "border-border hover:border-primary/50"}`}
+                    onClick={() => handleOptionSelect("timeline", opt.id || opt.label)}
+                  >
+                    {opt.label}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* CONTACT STEP */}
+          {currentStep === 4 && (
+            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <div className="mb-8">
+                <h2 className="text-3xl sm:text-4xl font-bold text-navy mb-2 leading-tight">You're all set —<br />where should we come look?</h2>
+                <p className="text-muted-foreground text-base mt-4">Free estimate at your house from a local Texas company. No pressure.</p>
+              </div>
+
+              <form onSubmit={handleSubmit} className="space-y-6 mx-auto text-left">
+                {error && <div className="p-3 text-sm text-destructive bg-destructive/10 rounded-md">{error}</div>}
+
+                <div className="space-y-2">
+                  <Label htmlFor="quiz-name" className="text-base font-semibold text-navy">Name *</Label>
+                  <Input
+                    id="quiz-name"
+                    type="text"
+                    placeholder="First and last name"
+                    className="h-12 text-base"
+                    value={state.name}
+                    onChange={(e) => updateState("name", e.target.value)}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="quiz-phone" className="text-base font-semibold text-navy">Mobile phone *</Label>
+                  <Input
+                    id="quiz-phone"
+                    type="tel"
+                    placeholder="(   ) ___-____"
+                    className="h-12 text-base"
+                    value={state.phone}
+                    onChange={(e) => updateState("phone", e.target.value)}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="quiz-address" className="text-base font-semibold text-navy">ZIP code *</Label>
+                  <Input
+                    id="quiz-address"
+                    type="text"
+                    inputMode="numeric"
+                    placeholder="78216"
+                    className="h-12 text-base"
+                    value={state.address}
+                    onChange={(e) => updateState("address", e.target.value)}
+                  />
+                </div>
+
+                <div className="space-y-4 pt-2">
+                  <Label className="text-base font-semibold text-navy">Are you the homeowner?</Label>
+                  <div className="flex gap-8">
+                    {(["Yes", "No"] as const).map((val) => (
+                      <button
+                        key={val}
+                        type="button"
+                        onClick={() => updateState("homeowner", val)}
+                        className="flex items-center space-x-3 cursor-pointer group"
+                        aria-pressed={state.homeowner === val}
+                      >
+                        <span className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${state.homeowner === val ? "border-navy" : "border-border group-hover:border-navy"}`}>
+                          {state.homeowner === val && <span className="w-3 h-3 bg-navy rounded-full" />}
+                        </span>
+                        <span className="text-lg text-foreground">{val}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <Button type="submit" size="lg" className="w-full h-14 text-lg bg-[#0d2240] hover:bg-[#0d2240]/90 text-white mt-8" disabled={submitting}>
+                  {submitting ? "Saving..." : "See available times"}
+                </Button>
+              </form>
+            </div>
+          )}
         </div>
       </div>
     </div>
-    </>
   );
 }
