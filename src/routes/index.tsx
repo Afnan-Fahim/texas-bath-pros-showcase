@@ -2633,7 +2633,7 @@ function Index() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Navbar onBook={scrollToBook} onContact={() => setContactOpen(true)} />
+      <Navbar onBook={scrollToBook} onContact={() => setContactOpen(true)} forceHidden={quizVisible} />
       <main className="pb-[4.5rem] lg:pb-0">
         <Hero onBook={scrollToBook} />
         <TrustBar />
