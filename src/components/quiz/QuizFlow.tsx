@@ -170,19 +170,19 @@ export function QuizFlow({
           {/* PHOTO / CHOICE QUESTIONS — every step is editable in /admin */}
           {steps.map((stepConfig, stepIdx) =>
             currentStep === stepIdx + 1 ? (
-              <div key={stepConfig.id} className="flex min-h-[25rem] flex-col justify-center sm:min-h-[27rem]">
-                <div className="text-center mb-4 sm:mb-5">
+              <div key={stepConfig.id} className={cn("flex flex-col justify-center", compact ? "" : "min-h-[25rem] sm:min-h-[27rem]")}>
+                <div className={cn("text-center", compact ? "mb-2 sm:mb-3" : "mb-4 sm:mb-5")}>
                   {stepIdx === 0 ? (
-                    <h1 className="text-2xl sm:text-3xl font-sans font-bold text-navy leading-snug mb-2">{stepConfig.title}</h1>
+                    <h1 className={cn("font-sans font-bold text-navy leading-snug mb-1", compact ? "text-xl sm:text-2xl" : "text-2xl sm:text-3xl")}>{stepConfig.title}</h1>
                   ) : (
-                    <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{stepConfig.title}</h2>
+                    <h2 className={cn("font-bold text-foreground mb-1", compact ? "text-xl sm:text-2xl" : "text-2xl sm:text-3xl")}>{stepConfig.title}</h2>
                   )}
-                  <p className="text-muted-foreground">{stepConfig.description}</p>
+                  <p className={cn("text-muted-foreground", compact ? "text-sm" : "")}>{stepConfig.description}</p>
                   {stepIdx === 0 && extraSubline && (
-                    <p className="mt-1 text-sm text-muted-foreground">{extraSubline}</p>
+                    <p className={cn("text-muted-foreground", compact ? "mt-0.5 text-xs" : "mt-1 text-sm")}>{extraSubline}</p>
                   )}
                 </div>
-                <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                <div className={cn("grid grid-cols-2", compact ? "gap-2 sm:gap-3" : "gap-3 sm:gap-4")}>
                   {stepConfig.options.map((opt, idx) => {
                     const optionLabel = labelOverrides[opt.id] ?? opt.label;
                     return opt.image || opt.imagePending ? (
