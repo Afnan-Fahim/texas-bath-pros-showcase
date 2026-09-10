@@ -2040,36 +2040,19 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
                     </p>
                   </div>
                 ) : (
-                  <>
-                    <div className="mb-4 rounded-2xl border border-teal/20 bg-secondary/40 p-4 text-center">
-                      <p className="text-sm text-foreground/80">
-                        Your details are saved. Pick a time below — or
-                      </p>
-                      <a
-                        href={calendlyUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mt-2 inline-flex h-11 items-center justify-center rounded-full bg-navy px-6 font-semibold text-navy-foreground"
-                      >
-                        Pick a time
-                      </a>
-                    </div>
-                    <CalendlyEmbed
+                  <CalendlyEmbed
                   url={calendlyUrl}
                   prefill={{
                     name: quizData?.name || "",
-                    email: "",
-                    phone: quizData?.phone || "",
-                    project: quizData?.timeline || "",
+                    email: quizData?.email || "",
                   }}
                   onBack={handleCalendlyBack}
                   onScheduled={async (eventUri: string) => {
                     handleCalendlyScheduled(eventUri);
                   }}
                   title="Pick a time for your free estimate"
-                  subtitle="Lock in your appointment to discuss your project."
+                  subtitle="No pressure. Takes about 45 minutes."
                     />
-                  </>
                 )}
               </div>
             )}
@@ -2085,8 +2068,8 @@ const CALENDLY_URL = "https://calendly.com/rugsafari/texas-bath-solutions";
 
 export type Prefill = {
   name: string;
-  phone: string;
   email: string;
+  phone?: string;
   address?: string;
   project?: string;
   notes?: string;
@@ -2146,7 +2129,7 @@ export function CalendlyEmbed({
     prefill.offer ? `Offer claimed: ${prefill.offer}` : "",
     prefill.project ? `Desired timeframe: ${prefill.project}` : "",
     prefill.address ? `Address: ${prefill.address}` : "",
-    `Phone: ${prefill.phone}`,
+    prefill.phone ? `Phone: ${prefill.phone}` : "",
     prefill.notes ? `Notes: ${prefill.notes}` : "",
   ]
     .filter(Boolean)
@@ -2156,12 +2139,13 @@ export function CalendlyEmbed({
   const params = new URLSearchParams({
     hide_gdpr_banner: "1",
     primary_color: "0D3B66",
-    name: prefill.name,
-    email: prefill.email,
+    ...(prefill.name ? { name: prefill.name } : {}),
+    ...(prefill.email ? { email: prefill.email } : {}),
     // Calendly invitee question prefills (a1 = first question, a2 = second, ...)
-    a1: prefill.phone,
-    a2: details,
-    location: prefill.phone,
+    // Only send when we have a real value — an empty a1 makes Calendly shift
+    // a2 into the phone field.
+    ...(prefill.phone ? { a1: prefill.phone, location: prefill.phone } : {}),
+    ...(prefill.phone && details ? { a2: details } : {}),
     utm_campaign: attribution.utm_campaign ?? prefill.offer ?? "Website Estimate",
     utm_source: attribution.utm_source ?? "texasbathsolutions.com",
     utm_medium: attribution.utm_medium ?? (prefill.offer ? "offer-claim" : "main-form"),
@@ -2196,7 +2180,7 @@ export function CalendlyEmbed({
       <div className="flex items-center justify-between gap-3">
         <div>
           <h3 className="text-xl font-display font-semibold text-navy">
-            {title ?? `Almost done, ${prefill.name.split(" ")[0]} — pick your time`}
+            {title ?? (prefill.name ? `Almost done, ${prefill.name.split(" ")[0]} — pick your time` : "Pick a time for your free estimate")}
           </h3>
           <p className="mt-1 text-sm text-muted-foreground">
             {subtitle ?? "Choose any open slot."}
