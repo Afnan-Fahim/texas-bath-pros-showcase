@@ -70,7 +70,7 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
-  const currentStep = calendlyCompleted ? 4 : step;
+  const currentStep = calendlyCompleted ? totalSteps : Math.min(step, totalSteps);
 
   const handleNext = () => setStep((s) => s + 1);
   const handleBack = () => setStep((s) => Math.max(1, s - 1));
