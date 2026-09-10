@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabasePublic as supabase } from "@/integrations/supabase/public-client";
-import { fetchQuizImages, resolveQuizImageUrl } from "@/lib/quiz-images";
+import { resolveQuizImageUrl } from "@/lib/quiz-images";
 
 export type QuizAnswerKey = "desiredUpgrade" | "mainProblem" | "timeline";
 
@@ -136,7 +136,10 @@ export async function fetchQuizConfig(): Promise<QuizConfig> {
   const saved = data?.config as Record<string, unknown> | undefined;
   if (error || !saved || !Array.isArray(saved.steps) || saved.steps.length === 0) {
     // No saved content yet: keep any photos uploaded with the old step 1 editor.
-    const legacy = await fetchQuizImages().catch(() => ({}) as Record<string, string>);
+    const { data: legacyRows } = await supabase.from("quiz_images").select("slot, image_url");
+    const legacy: Record<string, string> = Object.fromEntries(
+      (legacyRows ?? []).filter((r) => !!r.image_url).map((r) => [r.slot, r.image_url]),
+    );
     if (!Object.keys(legacy).length) return DEFAULT_QUIZ_CONFIG;
     return {
       ...DEFAULT_QUIZ_CONFIG,
