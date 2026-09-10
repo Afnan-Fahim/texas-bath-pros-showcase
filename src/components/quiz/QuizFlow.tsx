@@ -23,6 +23,7 @@ interface QuizFlowProps {
   calendlyCompleted?: boolean;
   showStartCue?: boolean;
   photoFill?: boolean;
+  compact?: boolean;
   labelOverrides?: Record<string, string>;
   extraSubline?: string;
 }
