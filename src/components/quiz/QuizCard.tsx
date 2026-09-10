@@ -8,9 +8,10 @@ interface QuizCardProps {
   selected: boolean;
   onClick: () => void;
   index?: number;
+  fill?: boolean;
 }
 
-export function QuizCard({ title, description, image, selected, onClick }: QuizCardProps) {
+export function QuizCard({ title, description, image, selected, onClick, fill = false }: QuizCardProps) {
   return (
     <div
       onClick={onClick}
@@ -24,7 +25,10 @@ export function QuizCard({ title, description, image, selected, onClick }: QuizC
       )}
     >
       {image ? (
-        <div className="w-full aspect-video sm:aspect-[4/3] bg-muted/30 relative overflow-hidden flex items-center justify-center p-2 group">
+        <div className={cn(
+          "w-full aspect-video sm:aspect-[4/3] bg-muted/30 relative overflow-hidden flex items-center justify-center group",
+          !fill && "p-2"
+        )}>
           {/* Premium blurred background effect */}
           <div 
             className="absolute inset-0 blur-2xl opacity-50 bg-cover bg-center scale-110" 
@@ -33,7 +37,10 @@ export function QuizCard({ title, description, image, selected, onClick }: QuizC
           <img
             src={image}
             alt={title}
-            className="relative w-full h-full object-contain rounded-md drop-shadow-md z-10 transition-transform duration-500 ease-out group-hover:scale-105"
+            className={cn(
+              "relative w-full h-full rounded-md drop-shadow-md z-10 transition-transform duration-500 ease-out group-hover:scale-105",
+              fill ? "object-cover" : "object-contain"
+            )}
             loading="eager"
             decoding="sync"
             onError={(e) => {

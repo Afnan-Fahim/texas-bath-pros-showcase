@@ -21,9 +21,22 @@ interface QuizFlowProps {
   onComplete?: (data: QuizState) => Promise<void> | void;
   onContactSubmit?: (data: QuizState) => Promise<void> | void;
   calendlyCompleted?: boolean;
+  showStartCue?: boolean;
+  photoFill?: boolean;
+  labelOverrides?: Record<string, string>;
+  extraSubline?: string;
 }
 
-export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendlyCompleted = false }: QuizFlowProps) {
+export function QuizFlow({
+  onShowCalendly,
+  onComplete,
+  onContactSubmit,
+  calendlyCompleted = false,
+  showStartCue = true,
+  photoFill = false,
+  labelOverrides = {},
+  extraSubline,
+}: QuizFlowProps) {
   const [step, setStep] = useState(1);
   const [cueDismissed, setCueDismissed] = useState(false);
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -112,21 +125,23 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
 
         <div className="relative z-10 p-4 sm:p-7 md:p-8">
           {/* Start here cue */}
-          <div
-            className={`flex flex-col items-center justify-center transition-all duration-300 ease-out ${
-              cueDismissed || step !== 1 ? "pointer-events-none mb-0 max-h-0 opacity-0" : "mb-6 max-h-56 opacity-100"
-            }`}
-            aria-hidden={cueDismissed || step !== 1}
-          >
-            <button
-              type="button"
-              onClick={() => setCueDismissed(true)}
-              className="group inline-flex flex-col items-center justify-center rounded-full bg-navy px-12 py-2 text-lg font-sans font-semibold tracking-wide text-white shadow-md transition-all duration-200 animate-soft-bounce min-w-[16rem] sm:min-w-[22rem] sm:px-14 sm:py-2.5 sm:text-xl"
+          {showStartCue && (
+            <div
+              className={`flex flex-col items-center justify-center transition-all duration-300 ease-out ${
+                cueDismissed || step !== 1 ? "pointer-events-none mb-0 max-h-0 opacity-0" : "mb-6 max-h-56 opacity-100"
+              }`}
+              aria-hidden={cueDismissed || step !== 1}
             >
-              <span>Start here</span>
-              <ChevronDown className="mt-0.5 h-4 w-4 text-white" strokeWidth={2.5} />
-            </button>
-          </div>
+              <button
+                type="button"
+                onClick={() => setCueDismissed(true)}
+                className="group inline-flex flex-col items-center justify-center rounded-full bg-navy px-12 py-2 text-lg font-sans font-semibold tracking-wide text-white shadow-md transition-all duration-200 animate-soft-bounce min-w-[16rem] sm:min-w-[22rem] sm:px-14 sm:py-2.5 sm:text-xl"
+              >
+                <span>Start here</span>
+                <ChevronDown className="mt-0.5 h-4 w-4 text-white" strokeWidth={2.5} />
+              </button>
+            </div>
+          )}
 
           {/* Progress */}
           {currentStep <= totalSteps && (
@@ -156,17 +171,22 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
                     <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{stepConfig.title}</h2>
                   )}
                   <p className="text-muted-foreground">{stepConfig.description}</p>
+                  {stepIdx === 0 && extraSubline && (
+                    <p className="mt-1 text-sm text-muted-foreground">{extraSubline}</p>
+                  )}
                 </div>
                 <div className="grid grid-cols-2 gap-3 sm:gap-4">
-                  {stepConfig.options.map((opt, idx) =>
-                    opt.image || opt.imagePending ? (
+                  {stepConfig.options.map((opt, idx) => {
+                    const optionLabel = labelOverrides[opt.id] ?? opt.label;
+                    return opt.image || opt.imagePending ? (
                       <QuizCard
                         key={opt.id}
                         index={idx}
-                        title={opt.label}
+                        title={optionLabel}
                         image={opt.image}
-                        selected={state[stepConfig.key] === opt.label}
-                        onClick={() => handleOptionSelect(stepConfig.key, opt.label)}
+                        fill={photoFill}
+                        selected={state[stepConfig.key] === optionLabel}
+                        onClick={() => handleOptionSelect(stepConfig.key, optionLabel)}
                       />
                     ) : (
                       <button
@@ -177,16 +197,16 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
                           stepIdx === 0
                             ? "border-navy/30 bg-card px-4 py-2.5 text-base font-medium text-navy hover:bg-navy/5 hover:border-navy/50 sm:text-lg"
                             : "min-h-14 border-2 py-3 text-base sm:py-4 sm:text-lg",
-                          state[stepConfig.key] === opt.label
+                          state[stepConfig.key] === optionLabel
                             ? "border-primary bg-primary/5"
                             : "border-border hover:border-primary/50"
                         )}
-                        onClick={() => handleOptionSelect(stepConfig.key, opt.label)}
+                        onClick={() => handleOptionSelect(stepConfig.key, optionLabel)}
                       >
-                        {opt.label}
+                        {optionLabel}
                       </button>
-                    ),
-                  )}
+                    );
+                  })}
                 </div>
               </div>
             ) : null,
