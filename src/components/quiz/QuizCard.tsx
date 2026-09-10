@@ -14,11 +14,9 @@ export function QuizCard({ title, description, image, selected, onClick, index =
   return (
     <div
       onClick={onClick}
-      style={{ animationDelay: `${index * 0.15}s` }}
       className={cn(
-        "cursor-pointer rounded-xl border-2 overflow-hidden transition-all duration-300 ease-in-out",
+        "cursor-pointer rounded-xl border-2 overflow-hidden transition-colors duration-150",
         "flex flex-col items-center text-center",
-        "motion-safe:animate-subtle-float",
         "hover:border-primary/40 hover:shadow-lg hover:-translate-y-1 hover:scale-[1.02]",
         selected
           ? "border-primary bg-primary/5 shadow-[0_0_15px_rgba(var(--color-primary),0.15)] scale-[1.02]"
