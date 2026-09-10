@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { QuizFlow, QuizState } from "@/components/quiz/QuizFlow";
 import { CalendlyEmbed, trackLeadEvent, captureAttribution, attributionNote } from "./index";
-import logoImg from "@/assets/logo-header.webp";
+
 import { useQuizConfig, DEFAULT_CALENDLY_URL } from "@/lib/quiz-content";
 import { scheduleLead } from "@/lib/leads.functions";
 
