@@ -1939,12 +1939,11 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
       const leadData = {
         name: quizData.name || "Provided in Calendly",
         email: "calendly@provided.com",
-        phone: quizData.phone,
-        address: quizData.address,
+        phone: quizData.phone || "See Calendly",
+        address: quizData.address || "Provided in Calendly",
         timeframe: quizData.timeline,
         notes:
           [
-            `Homeowner: ${quizData.homeowner}`,
             `Upgrade: ${quizData.desiredUpgrade}`,
             `Problem: ${quizData.mainProblem}`,
           ].join("\n") + attributionNote(),
@@ -1959,37 +1958,10 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
   };
 
   const handleQuizComplete = async (finalData: QuizState) => {
-    try {
-      const notes = [
-        `Homeowner: ${finalData.homeowner}`,
-        `Upgrade: ${finalData.desiredUpgrade}`,
-        `Problem: ${finalData.mainProblem}`
-      ].join('\n') + attributionNote();
-
-      const leadData = {
-        name: finalData.name || "Provided in Calendly", 
-        email: "calendly@provided.com",
-        phone: finalData.phone,
-        address: finalData.address,
-        timeframe: finalData.timeline,
-        notes: notes,
-        source: "Website quiz form",
-      };
-
-      // Save the lead immediately — before any time is picked.
-      setQuizData(finalData);
-      setShowCalendly(true);
-
-      if (eventUri) {
-        await scheduleLead({ data: { leadData, eventUri } });
-      } else {
-        await submitLead({ data: leadData });
-      }
-
-      trackLeadEvent(`quiz:${finalData.phone}`, { phone: finalData.phone });
-    } catch (e) {
-      console.error(e);
-    }
+    // The quiz only asks the photo questions; Calendly collects personal details.
+    setQuizData(finalData);
+    setShowCalendly(true);
+    trackLeadEvent(`quiz:${finalData.desiredUpgrade}:${Date.now()}`, {});
   };
 
   return (
