@@ -40,7 +40,7 @@ function QuizPage() {
 
   const buildLead = (d: QuizState, booked: boolean) => ({
     name: d.name || `Quiz lead ${d.phone}`,
-    email: "quiz@provided.com",
+    email: d.email || "quiz@provided.com",
     phone: d.phone,
     address: d.address,
     timeframe: d.timeline,
@@ -102,7 +102,7 @@ function QuizPage() {
               url={calendlyUrl}
               prefill={{
                 name: quizData?.name || "",
-                email: "",
+                email: quizData?.email || "",
                 phone: quizData?.phone || "",
                 project: quizData?.timeline || "",
                 address: quizData?.address || "",

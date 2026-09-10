@@ -11,6 +11,7 @@ export type QuizState = {
   mainProblem: string;
   timeline: string;
   name: string;
+  email: string;
   phone: string;
   address: string;
   homeowner: "Yes" | "No" | "";
@@ -88,6 +89,7 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
     mainProblem: "",
     timeline: "",
     name: "",
+    email: "",
     phone: "",
     address: "",
     homeowner: "",
@@ -112,7 +114,7 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!state.name || !state.phone || !state.address || !state.homeowner) {
+    if (!state.name || !state.email || !state.phone || !state.address || !state.homeowner) {
       setError("Please fill out all fields.");
       return;
     }
@@ -237,7 +239,7 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
           {currentStep === 4 && (
             <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
               <div className="mb-8">
-                <h2 className="text-3xl sm:text-4xl font-bold text-navy mb-2 leading-tight">You're all set —<br />where should we come look?</h2>
+                <h2 className="text-3xl sm:text-4xl font-bold text-navy mb-2 leading-tight">Where should we come look?</h2>
                 <p className="text-muted-foreground text-base mt-4">Free estimate at your house from a local Texas company. No pressure.</p>
               </div>
 
@@ -253,6 +255,18 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
                     className="h-12 text-base"
                     value={state.name}
                     onChange={(e) => updateState("name", e.target.value)}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="quiz-email" className="text-base font-semibold text-navy">Email *</Label>
+                  <Input
+                    id="quiz-email"
+                    type="email"
+                    placeholder="you@example.com"
+                    className="h-12 text-base"
+                    value={state.email}
+                    onChange={(e) => updateState("email", e.target.value)}
                   />
                 </div>
 
@@ -282,7 +296,7 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
                 </div>
 
                 <div className="space-y-4 pt-2">
-                  <Label className="text-base font-semibold text-navy">Are you the homeowner?</Label>
+                  <Label className="text-base font-semibold text-navy">Are you the homeowner? *</Label>
                   <div className="flex gap-8">
                     {(["Yes", "No"] as const).map((val) => (
                       <button
@@ -304,6 +318,8 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
                 <Button type="submit" size="lg" className="w-full h-14 text-lg bg-[#0d2240] hover:bg-[#0d2240]/90 text-white mt-8" disabled={submitting}>
                   {submitting ? "Saving..." : "See available times"}
                 </Button>
+
+                <p className="text-center text-sm text-muted-foreground">Next you’ll pick a time. No charge, no obligation.</p>
               </form>
             </div>
           )}
