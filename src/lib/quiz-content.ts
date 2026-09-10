@@ -140,7 +140,7 @@ export async function fetchQuizConfig(): Promise<QuizConfig> {
 export async function saveQuizConfig(config: QuizConfig) {
   const { error } = await supabase
     .from("quiz_content")
-    .upsert({ id: "default", config: config as unknown as Record<string, unknown> });
+    .upsert({ id: "default", config: JSON.parse(JSON.stringify(config)) });
   if (error) throw error;
 }
 
