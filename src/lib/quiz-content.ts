@@ -9,6 +9,8 @@ export type QuizOptionConfig = {
   label: string;
   /** Storage path, absolute URL, or public /images path. Empty = text button. */
   image?: string;
+  /** True while the saved photo is still loading: render a blank card, not an old photo. */
+  imagePending?: boolean;
 };
 
 export type QuizStepConfig = {
@@ -186,22 +188,56 @@ export async function resolveConfigImages(config: QuizConfig): Promise<QuizConfi
   return { ...config, steps };
 }
 
+/** Same layout as the defaults, but with no photo shown yet. */
+function blankImages(config: QuizConfig): QuizConfig {
+  return {
+    ...config,
+    steps: config.steps.map((step) => ({
+      ...step,
+      options: step.options.map((opt) => ({
+        ...opt,
+        image: "",
+        imagePending: !!opt.image,
+      })),
+    })),
+  };
+}
+
+/** Decodes every photo so the cards paint with the final image in one go. */
+async function preloadConfigImages(config: QuizConfig): Promise<QuizConfig> {
+  if (typeof window === "undefined") return config;
+  const urls = config.steps.flatMap((s) => s.options.map((o) => o.image).filter(Boolean) as string[]);
+  await Promise.all(
+    urls.map(
+      (url) =>
+        new Promise<void>((resolve) => {
+          const img = new Image();
+          img.onload = () => resolve();
+          img.onerror = () => resolve();
+          img.src = url;
+        }),
+    ),
+  );
+  return config;
+}
+
 /**
- * Renders defaults instantly, then swaps in the admin-edited content.
- * Never blocks the quiz on a network request.
+ * Renders the quiz layout instantly with blank photo cards, then paints the
+ * admin-saved photos once they are fully loaded. Never shows old/default photos.
  */
 export function useQuizConfig(): QuizConfig {
-  const [config, setConfig] = useState<QuizConfig>(DEFAULT_QUIZ_CONFIG);
+  const [config, setConfig] = useState<QuizConfig>(() => blankImages(DEFAULT_QUIZ_CONFIG));
 
   useEffect(() => {
     let active = true;
     fetchQuizConfig()
       .then(resolveConfigImages)
+      .then(preloadConfigImages)
       .then((next) => {
         if (active) setConfig(next);
       })
       .catch(() => {
-        /* keep defaults */
+        /* keep blank cards */
       });
     return () => {
       active = false;
