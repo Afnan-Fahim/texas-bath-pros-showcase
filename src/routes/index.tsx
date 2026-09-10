@@ -2091,7 +2091,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
                     handleCalendlyScheduled(eventUri);
                   }}
                   title="Pick a time for your free estimate"
-                  subtitle="No pressure. Takes about 45 minutes."
+                  subtitle="After you tap a time, scroll is not needed — fill in your name and phone to lock it in."
                 />
               </LazyMount>
             </div>
