@@ -2179,6 +2179,8 @@ export function CalendlyEmbed({
     hide_gdpr_banner: "1",
     // Hides the big profile/logo side panel so the form fills the frame.
     hide_event_type_details: "1",
+    // Removes the top logo/title block and trims empty padding above the form.
+    hide_landing_page_details: "1",
     primary_color: "0D3B66",
     ...(prefill.name ? { name: prefill.name } : {}),
     ...(prefill.email ? { email: prefill.email } : {}),
