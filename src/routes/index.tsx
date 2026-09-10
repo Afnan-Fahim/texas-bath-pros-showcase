@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import logoImg from "@/assets/logo-header.webp";
 import logoFooterImg from "@/assets/logo-footer.webp";
+import aboutBgAsset from "@/assets/about-bg.jpg.asset.json";
 
 import heroPoster from "@/assets/hero-video-poster.avif";
 
