@@ -1139,7 +1139,7 @@ function About() {
         <h2 className="mt-4 text-3xl md:text-4xl text-navy text-balance">
           A local San Antonio family, transforming bathrooms our neighbors love.
         </h2>
-        <p className="mt-5 text-lg text-muted-foreground text-balance">
+        <p className="mt-5 text-lg text-navy/80 text-balance">
           We're a family business dedicated to turning outdated bathrooms into beautiful,
           functional spaces. We believe in clean, honest, upfront pricing and doing the job right
           the first time.
