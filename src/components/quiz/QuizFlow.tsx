@@ -83,6 +83,7 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
   const handleBack = () => setStep((s) => Math.max(1, s - 1));
 
   const handleOptionSelect = (key: keyof QuizState, value: string) => {
+    setCueDismissed(true);
     const next = { ...state, [key]: value };
     setState(next);
     const isLastQuestion = step >= steps.length;
