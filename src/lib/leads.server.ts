@@ -24,7 +24,31 @@ function isRealEmail(email?: string) {
   return !PLACEHOLDER_EMAILS.includes(email.toLowerCase())
 }
 
+/** Stores the lead so it shows up in the /admin lead list. Never blocks the emails. */
+async function storeLead(lead: LeadInput) {
+  try {
+    const { supabaseAdmin } = await import('@/integrations/supabase/client.server')
+    const booked = Boolean(lead.appointmentDate) || /calendly|scheduled/i.test(lead.source ?? '')
+    const { error } = await supabaseAdmin.from('leads').insert({
+      name: lead.name ?? '',
+      email: isRealEmail(lead.email) ? lead.email : '',
+      phone: lead.phone ?? '',
+      address: lead.address ?? '',
+      timeframe: lead.timeframe ?? '',
+      notes: lead.notes ?? '',
+      source: lead.source ?? '',
+      booked,
+      appointment_date: lead.appointmentDate ?? '',
+    })
+    if (error) console.error('[leads] failed to store lead', error)
+  } catch (e) {
+    console.error('[leads] failed to store lead', e)
+  }
+}
+
 export async function notifyLead(lead: LeadInput) {
+  await storeLead(lead)
+
   const submittedAt = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/Chicago',
     dateStyle: 'medium',

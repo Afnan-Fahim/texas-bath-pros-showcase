@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { QuizCard } from "./QuizCard";
 import brandLogo from "@/assets/texas-bath-solutions-logo-transparent.png.asset.json";
+import { useQuizImages } from "@/lib/quiz-images";
 
 export type QuizState = {
   desiredUpgrade: string;
@@ -21,8 +22,8 @@ const QUIZ_DATA = {
     title: "Tap the one that looks like your project.",
     description: "15 seconds. We’ll come look at it and give you a straight price — no pressure.",
     options: [
-      { id: "Walk-in shower", label: "Walk-in shower", image: "/images/quiz/walk-in-shower.jpg" },
-      { id: "New tub remodel", label: "New tub remodel", image: "/images/quiz/new-tub.jpg" },
+      { id: "Walk-in shower", label: "Walk-in shower", slot: "walk-in-shower", image: "/images/quiz/walk-in-shower.jpg" },
+      { id: "New tub remodel", label: "New tub remodel", slot: "new-tub", image: "/images/quiz/new-tub.jpg" },
       { id: "Not sure yet", label: "Not sure yet" },
     ],
   },
@@ -58,6 +59,8 @@ interface QuizFlowProps {
 export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendlyCompleted = false }: QuizFlowProps) {
   const [step, setStep] = useState(1);
   const quizData = QUIZ_DATA;
+  // Step 1 photos are managed from /admin.
+  const uploadedImages = useQuizImages();
 
   // Warm up the booking calendar as soon as the quiz is on screen, so it is
   // ready by the time the visitor finishes the questions.
@@ -165,12 +168,12 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {quizData.question1.options.map((opt: any, idx: number) => (
-                  opt.image ? (
+                  opt.image || uploadedImages[opt.slot] ? (
                     <QuizCard
                       key={opt.id}
                       index={idx}
                       title={opt.label}
-                      image={opt.image}
+                      image={uploadedImages[opt.slot] || opt.image}
                       brandLogo={brandLogo.url}
                       selected={state.desiredUpgrade === opt.label}
                       onClick={() => handleOptionSelect("desiredUpgrade", opt.label)}
