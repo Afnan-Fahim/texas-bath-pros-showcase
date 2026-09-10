@@ -25,6 +25,7 @@ interface QuizFlowProps {
 
 export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendlyCompleted = false }: QuizFlowProps) {
   const [step, setStep] = useState(1);
+  const [cueDismissed, setCueDismissed] = useState(false);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const hasMountedRef = React.useRef(false);
 
