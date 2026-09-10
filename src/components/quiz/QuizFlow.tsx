@@ -169,14 +169,22 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
                         onClick={() => handleOptionSelect(stepConfig.key, opt.label)}
                       />
                     ) : (
-                      <Button
+                      <button
                         key={opt.id}
-                        variant={state[stepConfig.key] === opt.label ? "default" : "outline"}
-                        className={`h-auto border-2 text-base sm:text-lg ${stepIdx === 0 ? "col-span-2 min-h-16 py-4 sm:min-h-20 sm:py-6" : "min-h-14 py-3 sm:py-4"} ${state[stepConfig.key] === opt.label ? "border-primary" : "border-border hover:border-primary/50"}`}
+                        type="button"
+                        className={cn(
+                          "col-span-2 w-full rounded-xl border text-center transition-colors",
+                          stepIdx === 0
+                            ? "border-navy/30 bg-card px-4 py-2.5 text-base font-medium text-navy hover:bg-navy/5 hover:border-navy/50 sm:text-lg"
+                            : "min-h-14 border-2 py-3 text-base sm:py-4 sm:text-lg",
+                          state[stepConfig.key] === opt.label
+                            ? "border-primary bg-primary/5"
+                            : "border-border hover:border-primary/50"
+                        )}
                         onClick={() => handleOptionSelect(stepConfig.key, opt.label)}
                       >
                         {opt.label}
-                      </Button>
+                      </button>
                     ),
                   )}
                 </div>
