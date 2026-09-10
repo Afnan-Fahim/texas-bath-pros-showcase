@@ -24,6 +24,18 @@ interface QuizFlowProps {
 
 export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendlyCompleted = false }: QuizFlowProps) {
   const [step, setStep] = useState(1);
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const hasMountedRef = React.useRef(false);
+
+  // Keep the quiz card in view after each answer so the next question is
+  // already in front of the visitor without manual scrolling.
+  useEffect(() => {
+    if (!hasMountedRef.current) {
+      hasMountedRef.current = true;
+      return;
+    }
+    containerRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, [step]);
   // All quiz steps, questions and photos are managed from /admin.
   const quizConfig = useQuizConfig();
   const steps = quizConfig.steps;
@@ -86,8 +98,8 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
   };
 
   return (
-    <div className="relative w-full max-w-4xl mx-auto z-40">
-      <div className="w-full relative overflow-hidden transition-all duration-500">
+    <div ref={containerRef} className="relative w-full max-w-4xl mx-auto z-40 scroll-mt-4">
+      <div className="w-full relative overflow-hidden">
         {/* Decorative gradient backgrounds */}
         <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-teal/10 blur-3xl opacity-50 pointer-events-none"></div>
         <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 rounded-full bg-navy/5 blur-3xl opacity-50 pointer-events-none"></div>
