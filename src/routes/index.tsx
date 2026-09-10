@@ -59,6 +59,7 @@ import {
 import { cn } from "@/lib/utils";
 import { LegalTerms } from "@/components/LegalTerms";
 import type { QuizState } from "@/components/quiz/QuizFlow";
+import { useQuizConfig, DEFAULT_CALENDLY_URL } from "@/lib/quiz-content";
 import { LazyMount } from "@/components/LazyMount";
 import { OptimizedImage } from "@/components/OptimizedImage";
 
@@ -1917,7 +1918,9 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
   const [calendlyCompleted, setCalendlyCompleted] = useState(false);
   const [showCalendly, setShowCalendly] = useState(false);
   const [quizData, setQuizData] = useState<QuizState | null>(null);
-  const [calendlyUrl, setCalendlyUrl] = useState<string>("https://calendly.com/rugsafari/texas-bath-solutions");
+  const quizConfig = useQuizConfig();
+  const [calendlyOverride, setCalendlyUrl] = useState<string>("");
+  const calendlyUrl = calendlyOverride || quizConfig.calendlyUrl || DEFAULT_CALENDLY_URL;
   const [eventUri, setEventUri] = useState<string>("");
   const [isQuizOpen, setIsQuizOpen] = useState(false);
 
