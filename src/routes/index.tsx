@@ -2185,8 +2185,11 @@ export function CalendlyEmbed({
 
   const finalUrl = `${url}?${params.toString()}`;
 
+  const [calendarReady, setCalendarReady] = useState(false);
+
   useEffect(() => {
     let cancelled = false;
+    let observer: MutationObserver | undefined;
     const tryInit = () => {
       if (cancelled) return;
       const host = hostRef.current;
@@ -2195,15 +2198,27 @@ export function CalendlyEmbed({
       if (host && C) {
         host.innerHTML = "";
         C.initInlineWidget({ url: finalUrl, parentElement: host });
+        // Hide the "Loading calendar…" note as soon as the calendar frame shows up.
+        observer = new MutationObserver(() => {
+          const frame = host.querySelector("iframe");
+          if (frame) {
+            frame.addEventListener("load", () => !cancelled && setCalendarReady(true), { once: true });
+            setTimeout(() => !cancelled && setCalendarReady(true), 1200);
+            observer?.disconnect();
+          }
+        });
+        observer.observe(host, { childList: true, subtree: true });
       } else {
-        setTimeout(tryInit, 200);
+        setTimeout(tryInit, 50);
       }
     };
     tryInit();
     return () => {
       cancelled = true;
+      observer?.disconnect();
     };
   }, [url]);
+
 
   return (
     <div>
@@ -2221,8 +2236,13 @@ export function CalendlyEmbed({
         </Button>
       </div>
 
-      <div className="mt-4 overflow-hidden rounded-2xl border border-border">
+      <div className="relative mt-4 overflow-hidden rounded-2xl border border-border bg-card">
         <div ref={hostRef} style={{ minWidth: "300px", height: "760px" }} />
+        {!calendarReady && (
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-card text-sm text-muted-foreground">
+            Loading calendar…
+          </div>
+        )}
       </div>
 
       <noscript>
