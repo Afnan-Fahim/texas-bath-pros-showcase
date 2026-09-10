@@ -44,10 +44,8 @@ export function QuizCard({ title, description, image, selected, onClick, index =
           />
         </div>
       ) : (
-        // Placeholder if no image provided
-        <div className="w-full aspect-video sm:aspect-[4/3] bg-muted flex items-center justify-center">
-          <span className="text-muted-foreground text-sm">Image Pending</span>
-        </div>
+        // Neutral placeholder while the saved photo loads
+        <div className="w-full aspect-video sm:aspect-[4/3] bg-muted/40" />
       )}
       <div className="p-3 w-full">
         <h3 className="font-medium text-base sm:text-lg">{title}</h3>
