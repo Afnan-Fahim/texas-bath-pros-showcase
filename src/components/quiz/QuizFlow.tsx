@@ -113,19 +113,21 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
         <div className="relative z-10 p-4 sm:p-7 md:p-8">
           {/* Start here cue */}
           <div
-            className={`flex justify-center transition-all duration-300 ease-out ${
-              cueDismissed || step !== 1 ? "pointer-events-none mb-0 max-h-0 opacity-0" : "mb-6 max-h-40 opacity-100"
+            className={`flex flex-col items-center justify-center transition-all duration-300 ease-out ${
+              cueDismissed || step !== 1 ? "pointer-events-none mb-0 max-h-0 opacity-0" : "mb-6 max-h-56 opacity-100"
             }`}
             aria-hidden={cueDismissed || step !== 1}
           >
             <button
               type="button"
               onClick={() => setCueDismissed(true)}
-              className="group inline-flex flex-col items-center gap-1 rounded-full border-2 border-navy/40 bg-card px-8 py-3 text-base font-semibold text-navy shadow-sm transition-colors hover:border-navy hover:bg-navy/5"
+              className="btn-3d-navy group inline-flex items-center justify-center rounded-2xl px-10 py-4 text-lg font-bold text-white shadow-lg transition-transform duration-150 active:translate-y-1 active:shadow-md sm:px-12 sm:py-5 sm:text-xl"
             >
-              <span>Start here</span>
-              <ChevronDown className="h-6 w-6 animate-soft-bounce" />
+              <span className="drop-shadow-sm">Start here</span>
             </button>
+            <div className="mt-2 flex justify-center">
+              <ChevronDown className="h-7 w-7 text-navy animate-soft-bounce" strokeWidth={2.5} />
+            </div>
           </div>
 
           {/* Progress */}
