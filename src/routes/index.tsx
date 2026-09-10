@@ -499,7 +499,7 @@ function Logo({
 }
 
 /* ---------------- NAVBAR ---------------- */
-function Navbar({ onBook, onContact }: { onBook: () => void; onContact: () => void }) {
+function Navbar({ onBook, onContact, forceHidden = false }: { onBook: () => void; onContact: () => void; forceHidden?: boolean }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
