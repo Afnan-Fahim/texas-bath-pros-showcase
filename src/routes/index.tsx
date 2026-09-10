@@ -2058,19 +2058,29 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
                 </Suspense>
               </LazyMount>
             </div>
-            {showCalendly && (
+            {showCalendly && calendlyCompleted && (
               <div className="block min-h-full w-full p-4 md:p-6">
-                {calendlyCompleted ? (
-                  <div className="py-6 text-center">
-                    <h3 className="text-2xl font-display font-semibold text-navy">
-                      You're confirmed — thank you!
-                    </h3>
-                    <p className="mt-2 text-muted-foreground">
-                      We have your details and your time slot. We'll call to confirm before we head out.
-                    </p>
-                  </div>
-                ) : (
-                  <CalendlyEmbed
+                <div className="py-6 text-center">
+                  <h3 className="text-2xl font-display font-semibold text-navy">
+                    You're confirmed — thank you!
+                  </h3>
+                  <p className="mt-2 text-muted-foreground">
+                    We have your details and your time slot. We'll call to confirm before we head out.
+                  </p>
+                </div>
+              </div>
+            )}
+            {/* Calendar stays mounted from the start so the switch from step 3 is instant. */}
+            <div
+              className={
+                showCalendly && !calendlyCompleted
+                  ? "block min-h-full w-full p-4 md:p-6"
+                  : "pointer-events-none absolute inset-0 -z-10 w-full overflow-hidden p-4 opacity-0 md:p-6"
+              }
+              aria-hidden={!showCalendly || calendlyCompleted}
+            >
+              <LazyMount placeholder={<div className="h-0 w-full" />}>
+                <CalendlyEmbed
                   url={calendlyUrl}
                   prefill={{
                     name: quizData?.name || "",
@@ -2082,10 +2092,9 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
                   }}
                   title="Pick a time for your free estimate"
                   subtitle="No pressure. Takes about 45 minutes."
-                    />
-                )}
-              </div>
-            )}
+                />
+              </LazyMount>
+            </div>
           </div>
         </div>
       </div>
