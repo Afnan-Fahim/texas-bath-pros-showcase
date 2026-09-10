@@ -125,7 +125,9 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
           {/* PHOTO / CHOICE QUESTIONS — every step is editable in /admin */}
           {steps.map((stepConfig, stepIdx) =>
             currentStep === stepIdx + 1 ? (
-              <div key={stepConfig.id} className="animate-in fade-in duration-150">
+              // Stable height across steps so the next question appears in the
+              // same spot with no vertical jump.
+              <div key={stepConfig.id} className="min-h-[420px] sm:min-h-[460px]">
                 <div className="text-center mb-4 sm:mb-5">
                   {stepIdx === 0 ? (
                     <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{stepConfig.title}</h1>
