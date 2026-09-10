@@ -10,7 +10,7 @@ interface QuizCardProps {
   index?: number;
 }
 
-export function QuizCard({ title, description, image, selected, onClick, index = 0 }: QuizCardProps) {
+export function QuizCard({ title, description, image, selected, onClick }: QuizCardProps) {
   return (
     <div
       onClick={onClick}
