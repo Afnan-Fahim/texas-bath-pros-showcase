@@ -1043,7 +1043,7 @@ function TrustBar() {
     { icon: MapPin, label: "Local Service", sub: "San Antonio Area" },
   ];
   return (
-    <section className="border-y border-border/30">
+    <section className="bg-sand">
       <div className="container-x py-6 md:py-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
         {items.map((it) => (
           <div key={it.label} className="flex items-center gap-3">
