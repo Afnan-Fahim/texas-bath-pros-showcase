@@ -285,15 +285,15 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="quiz-address" className="text-base font-semibold text-navy">ZIP code *</Label>
+                  <Label htmlFor="quiz-address" className="text-base font-semibold text-navy">Address *</Label>
                   <Input
                     id="quiz-address"
                     type="text"
-                    inputMode="numeric"
-                    placeholder="78216"
+                    placeholder="Street address, city, ZIP"
                     className="h-12 text-base"
                     value={state.address}
                     onChange={(e) => updateState("address", e.target.value)}
+                    required
                   />
                 </div>
 
