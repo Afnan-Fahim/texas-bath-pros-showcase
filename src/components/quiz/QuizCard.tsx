@@ -5,13 +5,12 @@ interface QuizCardProps {
   title: string;
   description?: string;
   image?: string;
-  brandLogo?: string;
   selected: boolean;
   onClick: () => void;
   index?: number;
 }
 
-export function QuizCard({ title, description, image, brandLogo, selected, onClick, index = 0 }: QuizCardProps) {
+export function QuizCard({ title, description, image, selected, onClick, index = 0 }: QuizCardProps) {
   return (
     <div
       onClick={onClick}
@@ -43,14 +42,6 @@ export function QuizCard({ title, description, image, brandLogo, selected, onCli
               (e.target as HTMLImageElement).style.display = "none";
             }}
           />
-           {brandLogo && (
-             <img
-               src={brandLogo}
-               alt=""
-               aria-hidden="true"
-               className="absolute bottom-2 right-2 z-20 h-auto w-16 sm:w-20 drop-shadow-md"
-             />
-           )}
         </div>
       ) : (
         // Placeholder if no image provided

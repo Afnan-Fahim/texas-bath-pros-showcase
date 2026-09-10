@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { QuizCard } from "./QuizCard";
-import brandLogo from "@/assets/texas-bath-solutions-logo-transparent.png.asset.json";
 import { useQuizConfig } from "@/lib/quiz-content";
 
 export type QuizState = {
@@ -150,7 +149,6 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
                         index={idx}
                         title={opt.label}
                         image={opt.image}
-                        brandLogo={stepIdx === 0 ? brandLogo.url : undefined}
                         selected={state[stepConfig.key] === opt.label}
                         onClick={() => handleOptionSelect(stepConfig.key, opt.label)}
                       />
@@ -158,7 +156,7 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
                       <Button
                         key={opt.id}
                         variant={state[stepConfig.key] === opt.label ? "default" : "outline"}
-                        className={`h-auto py-4 text-lg border-2 ${state[stepConfig.key] === opt.label ? "border-primary" : "border-border hover:border-primary/50"}`}
+                        className={`h-auto border-2 text-lg ${stepIdx === 0 ? "min-h-20 py-6 sm:col-span-2" : "py-4"} ${state[stepConfig.key] === opt.label ? "border-primary" : "border-border hover:border-primary/50"}`}
                         onClick={() => handleOptionSelect(stepConfig.key, opt.label)}
                       >
                         {opt.label}
