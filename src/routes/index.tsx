@@ -1137,7 +1137,6 @@ function About() {
         alt=""
         width={1920}
         height={725}
-        loading="lazy"
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 h-full w-full object-cover object-right select-none"
       />
