@@ -2248,11 +2248,13 @@ export function CalendlyEmbed({
       <div className="relative mt-4 overflow-hidden rounded-2xl border border-border bg-card">
         <div ref={hostRef} style={{ minWidth: "300px", height: "760px" }} />
         {!calendarReady && (
-          <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-card text-sm text-muted-foreground">
+          <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-3 bg-card text-sm text-muted-foreground">
+            <span className="h-6 w-6 animate-spin rounded-full border-2 border-navy/25 border-t-navy" />
             Loading calendar…
           </div>
         )}
       </div>
+
 
       <noscript>
         <a href={CALENDLY_URL} target="_blank" rel="noreferrer">
