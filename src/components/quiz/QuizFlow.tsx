@@ -121,7 +121,7 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
             <button
               type="button"
               onClick={() => setCueDismissed(true)}
-              className="group inline-flex flex-col items-center justify-center rounded-full bg-navy px-12 py-2.5 text-base font-semibold text-white shadow-md transition-all duration-200 animate-soft-bounce sm:px-14 sm:py-3 sm:text-lg"
+              className="group inline-flex flex-col items-center justify-center rounded-full bg-navy px-12 py-2.5 text-base font-semibold text-white shadow-md transition-all duration-200 animate-soft-bounce min-w-[16rem] sm:min-w-[22rem] sm:px-14 sm:py-3 sm:text-lg"
             >
               <span>Start here</span>
               <ChevronDown className="mt-0.5 h-4 w-4 text-white" strokeWidth={2.5} />
