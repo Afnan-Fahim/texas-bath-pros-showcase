@@ -2177,6 +2177,8 @@ export function CalendlyEmbed({
   const attribution = getAttribution();
   const params = new URLSearchParams({
     hide_gdpr_banner: "1",
+    // Hides the big profile/logo side panel so the form fills the frame.
+    hide_event_type_details: "1",
     primary_color: "0D3B66",
     ...(prefill.name ? { name: prefill.name } : {}),
     ...(prefill.email ? { email: prefill.email } : {}),
@@ -2269,7 +2271,12 @@ export function CalendlyEmbed({
       )}
 
       <div className="relative mt-4 overflow-hidden rounded-2xl border border-border bg-card">
-        <div ref={hostRef} style={{ minWidth: "300px", height: "760px" }} />
+        {/* Compact frame: never taller than the viewport, so the form fields
+            are visible without scrolling inside a huge empty iframe. */}
+        <div
+          ref={hostRef}
+          style={{ minWidth: "300px", height: "clamp(460px, calc(100dvh - 260px), 600px)" }}
+        />
       </div>
 
 
