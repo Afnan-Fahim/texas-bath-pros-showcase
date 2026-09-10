@@ -51,7 +51,7 @@ function QuizPage() {
         `Upgrade: ${d.desiredUpgrade}`,
         `Problem: ${d.mainProblem}`,
         `Timeline: ${d.timeline}`,
-        `ZIP: ${d.address}`,
+        `Address: ${d.address}`,
         `Page: ${typeof window !== "undefined" ? window.location.href : "/quiz"}`,
       ].join("\n") + attributionNote(),
     source: booked ? "Facebook/Messenger Quiz — Booked" : "Facebook/Messenger Quiz",
