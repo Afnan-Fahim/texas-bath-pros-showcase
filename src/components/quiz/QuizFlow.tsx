@@ -126,7 +126,7 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
               <span className="drop-shadow-sm">Start here</span>
             </button>
             <div className="mt-2 flex justify-center">
-              <ChevronDown className="h-7 w-7 text-navy animate-soft-bounce" strokeWidth={2.5} />
+              <ChevronDown className="h-7 w-7 text-white animate-soft-bounce" strokeWidth={2.5} />
             </div>
           </div>
 
