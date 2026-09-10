@@ -124,7 +124,7 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {stepConfig.options.map((opt, idx) =>
-                    opt.image ? (
+                    opt.image || opt.imagePending ? (
                       <QuizCard
                         key={opt.id}
                         index={idx}
