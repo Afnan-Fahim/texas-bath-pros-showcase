@@ -151,7 +151,7 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
               <div key={stepConfig.id} className="flex min-h-[25rem] flex-col justify-center sm:min-h-[27rem]">
                 <div className="text-center mb-4 sm:mb-5">
                   {stepIdx === 0 ? (
-                    <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{stepConfig.title}</h1>
+                    <h1 className="text-2xl sm:text-3xl font-sans font-bold text-navy leading-snug mb-2">{stepConfig.title}</h1>
                   ) : (
                     <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{stepConfig.title}</h2>
                   )}
