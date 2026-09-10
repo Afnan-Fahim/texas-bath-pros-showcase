@@ -192,6 +192,7 @@ export function QuizFlow({
                         title={optionLabel}
                         image={opt.image}
                         fill={photoFill}
+                        compact={compact}
                         selected={state[stepConfig.key] === optionLabel}
                         onClick={() => handleOptionSelect(stepConfig.key, optionLabel)}
                       />
@@ -202,8 +203,12 @@ export function QuizFlow({
                         className={cn(
                           "col-span-2 w-full rounded-xl border text-center transition-colors",
                           stepIdx === 0
-                            ? "border-navy/30 bg-card px-4 py-2.5 text-base font-medium text-navy hover:bg-navy/5 hover:border-navy/50 sm:text-lg"
-                            : "min-h-14 border-2 py-3 text-base sm:py-4 sm:text-lg",
+                            ? compact
+                              ? "border-navy/30 bg-card px-4 py-2 text-sm font-medium text-navy hover:bg-navy/5 hover:border-navy/50 sm:text-base"
+                              : "border-navy/30 bg-card px-4 py-2.5 text-base font-medium text-navy hover:bg-navy/5 hover:border-navy/50 sm:text-lg"
+                            : compact
+                              ? "min-h-10 border-2 py-2 text-sm sm:py-2.5 sm:text-base"
+                              : "min-h-14 border-2 py-3 text-base sm:py-4 sm:text-lg",
                           state[stepConfig.key] === optionLabel
                             ? "border-primary bg-primary/5"
                             : "border-border hover:border-primary/50"
