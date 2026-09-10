@@ -77,6 +77,27 @@ export type Database = {
         }
         Relationships: []
       }
+      quiz_content: {
+        Row: {
+          config: Json
+          created_at: string
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          config?: Json
+          created_at?: string
+          id?: string
+          updated_at?: string
+        }
+        Update: {
+          config?: Json
+          created_at?: string
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       quiz_images: {
         Row: {
           image_url: string
