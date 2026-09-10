@@ -114,7 +114,7 @@ function QuizPage() {
             onBack={handleCalendlyBack}
             onScheduled={handleCalendlyScheduled}
             title="Pick a time for your free estimate"
-            subtitle="No pressure. Takes about 45 minutes."
+            subtitle="After you tap a time, scroll is not needed — fill in your name and phone to lock it in."
           />
         </div>
       </main>

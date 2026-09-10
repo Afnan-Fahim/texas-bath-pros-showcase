@@ -2091,7 +2091,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
                     handleCalendlyScheduled(eventUri);
                   }}
                   title="Pick a time for your free estimate"
-                  subtitle="No pressure. Takes about 45 minutes."
+                  subtitle="After you tap a time, scroll is not needed — fill in your name and phone to lock it in."
                 />
               </LazyMount>
             </div>
@@ -2131,6 +2131,7 @@ export function CalendlyEmbed({
   subtitle?: string;
 }) {
   const hostRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const id = "calendly-widget-script";
     if (!document.getElementById(id)) {
@@ -2141,11 +2142,12 @@ export function CalendlyEmbed({
       document.body.appendChild(s);
     }
     const onMessage = (e: MessageEvent) => {
-      if (
-        typeof e.origin === "string" &&
-        e.origin.includes("calendly.com") &&
-        e.data?.event === "calendly.event_scheduled"
-      ) {
+      if (typeof e.origin !== "string" || !e.origin.includes("calendly.com")) return;
+      if (e.data?.event === "calendly.date_and_time_selected") {
+        // After a time is tapped, bring the "Enter Details" form into view.
+        rootRef.current?.scrollIntoView({ block: "start", behavior: "smooth" });
+      }
+      if (e.data?.event === "calendly.event_scheduled") {
         const identity = {
           email: prefill.email,
           phone: prefill.phone,
@@ -2179,6 +2181,8 @@ export function CalendlyEmbed({
     hide_gdpr_banner: "1",
     // Hides the big profile/logo side panel so the form fills the frame.
     hide_event_type_details: "1",
+    // Removes the top logo/title block and trims empty padding above the form.
+    hide_landing_page_details: "1",
     primary_color: "0D3B66",
     ...(prefill.name ? { name: prefill.name } : {}),
     ...(prefill.email ? { email: prefill.email } : {}),
@@ -2244,7 +2248,7 @@ export function CalendlyEmbed({
 
 
   return (
-    <div>
+    <div ref={rootRef}>
       <div className="flex items-center justify-between gap-3">
         <div>
           <h3 className="text-xl font-display font-semibold text-navy">
