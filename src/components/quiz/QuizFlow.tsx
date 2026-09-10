@@ -118,7 +118,12 @@ export function QuizFlow({
   return (
     <div
       ref={containerRef}
-      className="relative z-40 mx-auto flex max-h-[calc(100svh-1.5rem)] min-h-[34rem] w-full max-w-4xl items-center justify-center overflow-y-auto overscroll-contain scroll-m-0"
+      className={cn(
+        "relative z-40 mx-auto flex w-full items-center justify-center overflow-y-auto overscroll-contain scroll-m-0",
+        compact
+          ? "max-h-[calc(100svh-0.5rem)] max-w-2xl"
+          : "max-h-[calc(100svh-1.5rem)] min-h-[34rem] max-w-4xl"
+      )}
     >
       <div className="w-full relative overflow-hidden">
         {/* Decorative gradient backgrounds */}
