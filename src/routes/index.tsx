@@ -2236,8 +2236,13 @@ export function CalendlyEmbed({
         </Button>
       </div>
 
-      <div className="mt-4 overflow-hidden rounded-2xl border border-border">
+      <div className="relative mt-4 overflow-hidden rounded-2xl border border-border bg-card">
         <div ref={hostRef} style={{ minWidth: "300px", height: "760px" }} />
+        {!calendarReady && (
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-card text-sm text-muted-foreground">
+            Loading calendar…
+          </div>
+        )}
       </div>
 
       <noscript>
