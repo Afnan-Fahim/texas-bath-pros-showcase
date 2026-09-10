@@ -1153,15 +1153,15 @@ function About() {
             aria-hidden
           />
           {/* About words directly on the photo, upper-right / open wall area */}
-          <div className="absolute inset-0 flex items-start justify-end p-5 sm:p-8 md:p-10 lg:p-14">
-            <div className="max-w-[15rem] text-right sm:max-w-xs md:max-w-sm lg:max-w-md">
-              <span className="inline-flex items-center gap-2 rounded-full bg-white/60 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-navy sm:text-xs">
+          <div className="absolute inset-0 flex items-start justify-end p-3 sm:p-6 md:p-10 lg:p-14">
+            <div className="max-w-[11rem] text-right sm:max-w-[16rem] md:max-w-sm lg:max-w-md">
+              <span className="inline-flex items-center gap-2 rounded-full bg-white/60 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-navy sm:px-3 sm:py-1 sm:text-[11px] md:text-xs">
                 About Us
               </span>
-              <h2 className="mt-2 text-xl font-semibold leading-snug text-navy text-balance sm:text-2xl md:mt-3 md:text-3xl lg:text-4xl">
+              <h2 className="mt-1.5 text-base font-semibold leading-snug text-navy text-balance sm:text-xl md:mt-2 md:text-3xl lg:text-4xl">
                 A local San Antonio family, transforming bathrooms our neighbors love.
               </h2>
-              <p className="mt-2 text-sm leading-relaxed text-navy/90 text-balance sm:text-base md:mt-3 md:text-lg">
+              <p className="mt-1.5 text-[11px] leading-relaxed text-navy/90 text-balance sm:text-sm md:mt-3 md:text-base lg:text-lg">
                 We're a family business dedicated to turning outdated bathrooms into beautiful,
                 functional spaces. We believe in clean, honest, upfront pricing and doing the job right
                 the first time.
