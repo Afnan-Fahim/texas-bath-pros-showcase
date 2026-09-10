@@ -2248,7 +2248,7 @@ export function CalendlyEmbed({
 
 
   return (
-    <div>
+    <div ref={rootRef}>
       <div className="flex items-center justify-between gap-3">
         <div>
           <h3 className="text-xl font-display font-semibold text-navy">
