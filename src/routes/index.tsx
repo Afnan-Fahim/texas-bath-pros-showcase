@@ -2044,22 +2044,12 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
         </div>
         <div ref={stageRef} className="w-full">
           <div className="relative mx-auto w-full overflow-hidden rounded-3xl border border-teal/20 bg-card shadow-2xl">
-            <div className={showCalendly ? "hidden" : "flex h-full w-full items-center justify-center"}>
+            <div className={showCalendly ? "hidden" : "flex w-full items-center justify-center"}>
               <LazyMount
-                placeholderClassName="h-full w-full"
-                placeholder={
-                  <div className="w-full max-w-2xl mx-auto p-12 text-center text-muted-foreground">
-                    Loading quiz...
-                  </div>
-                }
+                placeholderClassName="w-full"
+                placeholder={<div className="min-h-[34rem] w-full" />}
               >
-                <Suspense
-                  fallback={
-                    <div className="w-full max-w-2xl mx-auto p-12 text-center text-muted-foreground">
-                      Loading quiz...
-                    </div>
-                  }
-                >
+                <Suspense fallback={<div className="min-h-[34rem] w-full" />}>
                   <QuizFlow
                     onShowCalendly={handleShowCalendly}
                     onComplete={handleQuizComplete}
