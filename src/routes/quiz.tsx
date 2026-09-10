@@ -96,14 +96,11 @@ function QuizPage() {
               prefill={{
                 name: quizData?.name || "",
                 email: quizData?.email || "",
-                phone: quizData?.phone || "",
-                project: quizData?.timeline || "",
-                address: quizData?.address || "",
               }}
               onBack={handleCalendlyBack}
               onScheduled={handleCalendlyScheduled}
-              title="Last step — pick a time for your free in-home estimate."
-              subtitle="No pressure."
+              title="Pick a time for your free estimate"
+              subtitle="No pressure. Takes about 45 minutes."
             />
           </div>
         )}
