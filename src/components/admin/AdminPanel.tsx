@@ -3,7 +3,14 @@ import type { FormEvent } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { supabasePublic as supabase } from "@/integrations/supabase/public-client";
 import { claimAdmin } from "@/lib/admin.functions";
-import { QUIZ_IMAGE_SLOTS, resolveQuizImageUrl } from "@/lib/quiz-images";
+import { resolveQuizImageUrl } from "@/lib/quiz-images";
+import {
+  DEFAULT_QUIZ_CONFIG,
+  fetchQuizConfig,
+  saveQuizConfig,
+  type QuizConfig,
+} from "@/lib/quiz-content";
+import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -22,8 +29,6 @@ type Lead = {
   appointment_date: string;
   created_at: string;
 };
-
-type SlotState = { path: string; preview: string; busy: boolean };
 
 const REQUEST_TIMEOUT_MS = 1900;
 
@@ -50,7 +55,10 @@ export function AdminPanel() {
 
   const [leads, setLeads] = useState<Lead[]>([]);
   const [leadsError, setLeadsError] = useState("");
-  const [slots, setSlots] = useState<Record<string, SlotState>>({});
+  const [quizConfig, setQuizConfig] = useState<QuizConfig>(DEFAULT_QUIZ_CONFIG);
+  const [previews, setPreviews] = useState<Record<string, string>>({});
+  const [uploading, setUploading] = useState<string>("");
+  const [savingQuiz, setSavingQuiz] = useState(false);
   const [saveMessage, setSaveMessage] = useState("");
 
   useEffect(() => {
@@ -123,27 +131,23 @@ export function AdminPanel() {
           setIsAdmin(admin);
           if (!admin) return;
 
-          const [leadResult, imageResult] = await Promise.all([
+          const [leadResult, config] = await Promise.all([
             supabase.from("leads").select("*").order("created_at", { ascending: false }).limit(500),
-            supabase.from("quiz_images").select("slot, image_url"),
+            fetchQuizConfig(),
           ]);
 
           if (leadResult.error) setLeadsError(leadResult.error.message);
           else setLeads((leadResult.data ?? []) as Lead[]);
 
-          if (imageResult.error) {
-            setAdminError(`Quiz photos could not load: ${imageResult.error.message}`);
-            return;
-          }
-
-          const entries = await Promise.all(
-            QUIZ_IMAGE_SLOTS.map(async (slot) => {
-              const row = imageResult.data?.find((image) => image.slot === slot.slot);
-              const path = row?.image_url ?? "";
-              return [slot.slot, { path, preview: await resolveQuizImageUrl(path), busy: false }] as const;
-            }),
+          setQuizConfig(config);
+          const previewEntries = await Promise.all(
+            config.steps.flatMap((step) =>
+              step.options
+                .filter((opt) => !!opt.image)
+                .map(async (opt) => [opt.image as string, await resolveQuizImageUrl(opt.image as string)] as const),
+            ),
           );
-          setSlots(Object.fromEntries(entries));
+          setPreviews(Object.fromEntries(previewEntries));
         })(),
         "Admin service did not respond within two seconds.",
       );
@@ -189,36 +193,81 @@ export function AdminPanel() {
     }
   };
 
-  const uploadSlot = async (slot: string, file: File) => {
+  const updateStep = (stepIdx: number, patch: Partial<QuizConfig["steps"][number]>) => {
+    setQuizConfig((cfg) => ({
+      ...cfg,
+      steps: cfg.steps.map((s, i) => (i === stepIdx ? { ...s, ...patch } : s)),
+    }));
+  };
+
+  const updateOption = (stepIdx: number, optIdx: number, patch: { label?: string; image?: string }) => {
+    setQuizConfig((cfg) => ({
+      ...cfg,
+      steps: cfg.steps.map((s, i) =>
+        i === stepIdx
+          ? { ...s, options: s.options.map((o, j) => (j === optIdx ? { ...o, ...patch } : o)) }
+          : s,
+      ),
+    }));
+  };
+
+  const addOption = (stepIdx: number) => {
+    setQuizConfig((cfg) => ({
+      ...cfg,
+      steps: cfg.steps.map((s, i) =>
+        i === stepIdx
+          ? { ...s, options: [...s.options, { id: `option-${Date.now()}`, label: "New choice", image: "" }] }
+          : s,
+      ),
+    }));
+  };
+
+  const removeOption = (stepIdx: number, optIdx: number) => {
+    setQuizConfig((cfg) => ({
+      ...cfg,
+      steps: cfg.steps.map((s, i) =>
+        i === stepIdx ? { ...s, options: s.options.filter((_, j) => j !== optIdx) } : s,
+      ),
+    }));
+  };
+
+  const updateContact = (patch: Partial<QuizConfig["contact"]>) => {
+    setQuizConfig((cfg) => ({ ...cfg, contact: { ...cfg.contact, ...patch } }));
+  };
+
+  const uploadOptionPhoto = async (stepIdx: number, optIdx: number, file: File) => {
+    const key = `${stepIdx}-${optIdx}`;
+    setUploading(key);
     setSaveMessage("");
-    setSlots((current) => {
-      const existing = current[slot] ?? { path: "", preview: "", busy: false };
-      return { ...current, [slot]: { ...existing, busy: true } };
-    });
     try {
       const ext = file.name.split(".").pop() ?? "jpg";
-      const path = `step1/${slot}-${Date.now()}.${ext}`;
-
+      const path = `quiz/${quizConfig.steps[stepIdx].id}-${optIdx}-${Date.now()}.${ext}`;
       const { error: upErr } = await supabase.storage
         .from("quiz-assets")
         .upload(path, file, { cacheControl: "3600", upsert: false });
       if (upErr) throw upErr;
 
-      const { error: dbErr } = await supabase
-        .from("quiz_images")
-        .update({ image_url: path })
-        .eq("slot", slot);
-      if (dbErr) throw dbErr;
-
       const preview = await resolveQuizImageUrl(path);
-      setSlots((s) => ({ ...s, [slot]: { path, preview, busy: false } }));
-      setSaveMessage("Saved. The new photo is live on /quiz.");
+      setPreviews((p) => ({ ...p, [path]: preview }));
+      updateOption(stepIdx, optIdx, { image: path });
+      setSaveMessage("Photo uploaded. Click “Save quiz” to publish it to /quiz.");
     } catch (err) {
-      setSlots((current) => {
-        const existing = current[slot] ?? { path: "", preview: "", busy: false };
-        return { ...current, [slot]: { ...existing, busy: false } };
-      });
       setSaveMessage(`Upload failed: ${(err as Error).message}`);
+    } finally {
+      setUploading("");
+    }
+  };
+
+  const handleSaveQuiz = async () => {
+    setSavingQuiz(true);
+    setSaveMessage("");
+    try {
+      await saveQuizConfig(quizConfig);
+      setSaveMessage("Saved. /quiz is updated.");
+    } catch (err) {
+      setSaveMessage(`Save failed: ${(err as Error).message}`);
+    } finally {
+      setSavingQuiz(false);
     }
   };
 
