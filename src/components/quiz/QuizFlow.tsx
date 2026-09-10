@@ -111,6 +111,23 @@ export function QuizFlow({ onShowCalendly, onComplete, onContactSubmit, calendly
         <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 rounded-full bg-navy/5 blur-3xl opacity-50 pointer-events-none"></div>
 
         <div className="relative z-10 p-4 sm:p-7 md:p-8">
+          {/* Start here cue */}
+          <div
+            className={`flex justify-center transition-all duration-300 ease-out ${
+              cueDismissed || step !== 1 ? "pointer-events-none mb-0 max-h-0 opacity-0" : "mb-6 max-h-40 opacity-100"
+            }`}
+            aria-hidden={cueDismissed || step !== 1}
+          >
+            <button
+              type="button"
+              onClick={() => setCueDismissed(true)}
+              className="group inline-flex flex-col items-center gap-0.5 rounded-full border border-navy/20 bg-card px-5 py-2 text-sm font-medium text-navy transition-colors hover:border-navy/40"
+            >
+              <span>Start here</span>
+              <ChevronDown className="h-4 w-4 animate-soft-bounce" />
+            </button>
+          </div>
+
           {/* Progress */}
           {currentStep <= totalSteps && (
             <div className="mb-4 flex items-center justify-between">
