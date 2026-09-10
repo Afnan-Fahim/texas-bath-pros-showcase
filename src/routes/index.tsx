@@ -502,13 +502,29 @@ function Logo({
 function Navbar({ onBook, onContact }: { onBook: () => void; onContact: () => void }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const lastY = useRef(0);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 8);
+      const delta = y - lastY.current;
+      if (y < 20) {
+        setHidden(false);
+      } else if (delta > 5) {
+        setHidden(true);
+      } else if (delta < -50) {
+        setHidden(false);
+      }
+      lastY.current = y;
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  const isHidden = hidden && !open;
 
   const links = [
     { href: "#work", label: "Our Work" },
