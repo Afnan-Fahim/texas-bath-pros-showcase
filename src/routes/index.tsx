@@ -1143,28 +1143,18 @@ function About() {
             className="h-auto w-full object-cover"
             style={{ aspectRatio: "1920 / 725" }}
           />
-          {/* Soft light fade only behind the text */}
-          <div
-            className="pointer-events-none absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(ellipse 62% 46% at bottom left, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.58) 30%, rgba(255,255,255,0.18) 56%, transparent 76%)",
-            }}
-            aria-hidden
-          />
-          {/* About words directly on the photo, bottom-left / shower tile area */}
-          <div className="absolute inset-0 flex items-end justify-start p-2.5 sm:p-6 md:p-10 lg:p-12">
-            <div className="max-w-[9rem] text-left sm:max-w-[17rem] md:max-w-sm lg:max-w-md">
-              <span className="inline-flex items-center gap-2 rounded-full bg-white/60 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-navy sm:px-3 sm:py-1 sm:text-[11px] md:text-xs">
+          {/* Small cream box on the bottom-left / shower area */}
+          <div className="absolute inset-0 flex items-end justify-start p-3 sm:p-5 md:p-8 lg:p-10">
+            <div className="max-w-[10.5rem] rounded-xl bg-[#f7f4ef] p-3 shadow-lg sm:max-w-[15rem] sm:p-4 md:max-w-[17rem] md:p-5 lg:max-w-xs">
+              <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-navy sm:text-[11px] md:text-xs">
                 About Us
               </span>
-              <h2 className="mt-0.5 text-[11px] font-semibold leading-tight text-navy text-balance sm:text-base sm:leading-snug md:mt-2 md:text-xl lg:text-2xl">
+              <h2 className="mt-1.5 text-sm font-semibold leading-snug text-navy text-balance sm:text-base md:mt-2 md:text-lg lg:text-xl">
                 A local San Antonio family, transforming bathrooms our neighbors love.
               </h2>
-              <p className="mt-0.5 text-[9px] leading-tight text-navy/90 text-balance sm:text-xs sm:leading-relaxed md:mt-2 md:text-sm lg:text-base">
-                We're a family business dedicated to turning outdated bathrooms into beautiful,
-                functional spaces. We believe in clean, honest, upfront pricing and doing the job right
-                the first time.
+              <p className="mt-1.5 text-[11px] leading-relaxed text-navy/85 text-balance sm:text-xs md:mt-2 md:text-sm">
+                We're a family business dedicated to beautiful, functional bathrooms. Clean, honest,
+                upfront pricing — done right the first time.
               </p>
             </div>
           </div>
