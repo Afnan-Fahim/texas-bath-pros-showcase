@@ -145,7 +145,7 @@ export function QuizFlow({
           className={cn(
             "relative z-10",
             compact
-              ? "px-3 pb-3 pt-0 sm:px-5 sm:pb-5 sm:pt-1 md:px-8 md:pb-8 md:pt-2"
+              ? "p-4 sm:p-6 md:p-8"
               : "p-4 sm:p-7 md:p-8"
           )}
         >
@@ -170,7 +170,7 @@ export function QuizFlow({
 
           {/* Progress */}
           {currentStep <= totalSteps && (
-            <div className={cn("flex items-center justify-between", compact ? "mb-1 md:mb-2" : "mb-4")}>
+            <div className={cn("flex items-center justify-between", "mb-4")}>
               <button
                 onClick={handleBack}
                 disabled={currentStep === 1}
