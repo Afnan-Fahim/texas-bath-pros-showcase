@@ -152,7 +152,7 @@ export function CalendlyEmbed({
     <div ref={rootRef}>
       <div className="flex items-center justify-between gap-3">
         <div>
-          <h3 className="text-xl font-display font-semibold text-navy">
+          <h3 className={cn("font-display font-semibold text-navy", compact ? "text-lg sm:text-xl" : "text-xl")}>
             {title ?? (prefill.name ? `Almost done, ${prefill.name.split(" ")[0]} — pick your time` : "Pick a time for your free estimate")}
           </h3>
           <p className="mt-1 text-sm text-muted-foreground">
@@ -180,7 +180,10 @@ export function CalendlyEmbed({
             are visible without scrolling inside a huge empty iframe. */}
         <div
           ref={hostRef}
-          style={{ minWidth: "300px", height: "clamp(460px, calc(100dvh - 260px), 600px)" }}
+          style={{
+            minWidth: "300px",
+            height: compact ? "clamp(360px, 50dvh, 460px)" : "clamp(460px, calc(100dvh - 260px), 600px)",
+          }}
         />
       </div>
 
