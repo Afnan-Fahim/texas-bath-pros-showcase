@@ -224,16 +224,27 @@ export function CalendlyEmbed({
       <div
         className={cn(
           "relative mt-4 overflow-hidden rounded-2xl border border-border bg-card",
-          mobileDetailsSelected && "max-sm:h-[430px]"
+          mobileDetailsSelected && "max-sm:h-auto max-sm:overflow-visible"
         )}
+        style={
+          mobileDetailsSelected
+            ? { paddingBottom: "calc(2.5rem + env(safe-area-inset-bottom, 0px))" }
+            : undefined
+        }
       >
         {/* Compact frame: never taller than the viewport, so the form fields
-            are visible without scrolling inside a huge empty iframe. */}
+            are visible without scrolling inside a huge empty iframe. On mobile
+            after a time is picked, let the frame keep its full height and the
+            page scroll, so the Schedule Event button is never clipped. */}
         <div
           ref={hostRef}
           style={{
             minWidth: "300px",
-            height: compact ? "clamp(360px, 50dvh, 460px)" : "clamp(460px, calc(100dvh - 260px), 600px)",
+            height: mobileDetailsSelected
+              ? "530px"
+              : compact
+                ? "clamp(360px, 50dvh, 460px)"
+                : "clamp(460px, calc(100dvh - 260px), 600px)",
           }}
         />
         {/* Mobile-only scroll target: after a time is selected we center this
