@@ -36,6 +36,7 @@ export function CalendlyEmbed({
 }) {
   const hostRef = useRef<HTMLDivElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
+  const mobileScrollTargetRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const id = "calendly-widget-script";
     if (!document.getElementById(id)) {
@@ -49,7 +50,11 @@ export function CalendlyEmbed({
       if (typeof e.origin !== "string" || !e.origin.includes("calendly.com")) return;
       if (e.data?.event === "calendly.date_and_time_selected") {
         // After a time is tapped, bring the "Enter Details" form into view.
-        rootRef.current?.scrollIntoView({ block: "start", behavior: "smooth" });
+        if (typeof window !== "undefined" && window.innerWidth < 640 && mobileScrollTargetRef.current) {
+          mobileScrollTargetRef.current.scrollIntoView({ block: "center", behavior: "smooth" });
+        } else {
+          rootRef.current?.scrollIntoView({ block: "start", behavior: "smooth" });
+        }
       }
       if (e.data?.event === "calendly.event_scheduled") {
         const identity = {
