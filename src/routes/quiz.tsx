@@ -39,7 +39,7 @@ function QuizPage() {
   const [calendlyCompleted, setCalendlyCompleted] = useState(false);
   const [showCalendly, setShowCalendly] = useState(false);
   const [quizData, setQuizData] = useState<QuizState | null>(null);
-  const quizConfig = useQuizConfig();
+  const { config: quizConfig } = useQuizConfig();
   const calendlyUrl = quizConfig.calendlyUrl || DEFAULT_CALENDLY_URL;
 
   const [mountCalendly, setMountCalendly] = useState(false);

@@ -1770,7 +1770,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
   const [calendlyCompleted, setCalendlyCompleted] = useState(false);
   const [showCalendly, setShowCalendly] = useState(false);
   const [quizData, setQuizData] = useState<QuizState | null>(null);
-  const quizConfig = useQuizConfig();
+  const { config: quizConfig } = useQuizConfig();
   const [calendlyOverride, setCalendlyUrl] = useState<string>("");
   const calendlyUrl = calendlyOverride || quizConfig.calendlyUrl || DEFAULT_CALENDLY_URL;
   const [eventUri, setEventUri] = useState<string>("");
