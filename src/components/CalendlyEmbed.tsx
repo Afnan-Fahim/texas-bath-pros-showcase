@@ -71,6 +71,13 @@ export function CalendlyEmbed({
         if (typeof window !== "undefined" && window.innerWidth < 640 && compact) {
           // Calendly updates the iframe asynchronously. Re-apply the crop and
           // page alignment after each likely render pass so it cannot reset.
+          const frame = hostRef.current?.querySelector("iframe");
+          if (frame) {
+            calendlyFrame = frame;
+            frame.onload = () => {
+              mobileAlignmentTimers.push(window.setTimeout(alignMobileDetails, 120));
+            };
+          }
           [0, 180, 500, 1000, 1800].forEach((delay) => {
             mobileAlignmentTimers.push(window.setTimeout(alignMobileDetails, delay));
           });
