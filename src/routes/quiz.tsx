@@ -26,6 +26,11 @@ export const Route = createFileRoute("/quiz")({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [
+      // The step 1 photos come from the backend — open that connection early.
+      { rel: "preconnect", href: "https://xbfbqbytfzwjqpovuiff.supabase.co", crossOrigin: "" },
+      { rel: "dns-prefetch", href: "https://xbfbqbytfzwjqpovuiff.supabase.co" },
+    ],
   }),
 });
 
