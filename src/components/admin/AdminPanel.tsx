@@ -508,32 +508,6 @@ export function AdminPanel() {
             </div>
           ))}
 
-          {/* Contact step */}
-          <div className="border rounded-lg p-4 bg-background space-y-4">
-            <h3 className="font-semibold text-lg">Step {quizConfig.steps.length + 1} — contact form</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {([
-                ["headline", "Headline"],
-                ["subline", "Subline"],
-                ["nameLabel", "Name field label"],
-                ["emailLabel", "Email field label"],
-                ["phoneLabel", "Phone field label"],
-                ["addressLabel", "Address field label"],
-                ["homeownerLabel", "Homeowner question label"],
-                ["submitLabel", "Button text"],
-                ["footnote", "Text under the button"],
-              ] as const).map(([field, label]) => (
-                <div key={field} className="space-y-1">
-                  <Label className="text-xs">{label}</Label>
-                  <Input
-                    value={quizConfig.contact[field]}
-                    disabled={!isAdmin}
-                    onChange={(e) => updateContact({ [field]: e.target.value })}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </section>
 
