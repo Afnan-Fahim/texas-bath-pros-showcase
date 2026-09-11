@@ -42,10 +42,18 @@ function QuizPage() {
   const quizConfig = useQuizConfig();
   const calendlyUrl = quizConfig.calendlyUrl || DEFAULT_CALENDLY_URL;
 
+  const [mountCalendly, setMountCalendly] = useState(false);
+
   useEffect(() => {
     captureAttribution();
     const w = window as unknown as { fbq?: (...args: unknown[]) => void };
     w.fbq?.("track", "PageView");
+  }, []);
+
+  // Prepare the calendar in the background once the first question is on screen.
+  useEffect(() => {
+    const t = window.setTimeout(() => setMountCalendly(true), 2500);
+    return () => window.clearTimeout(t);
   }, []);
 
   const buildLead = (d: QuizState, booked: boolean) => ({
