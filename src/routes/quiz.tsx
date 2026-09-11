@@ -113,7 +113,9 @@ function QuizPage() {
           />
         </div>
 
-        {/* Calendar mounts with the quiz so finishing step 3 reveals it instantly. */}
+        {/* Calendar mounts hidden shortly AFTER step 1 paints, so finishing
+            step 3 reveals it instantly without slowing the first screen. */}
+        {(mountCalendly || showCalendly) && (
         <div
           className={
             showCalendly
