@@ -104,11 +104,11 @@ function QuizPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col items-center">
-      <header className="w-full flex justify-center py-0.5 sm:py-1">
+      <header className="relative z-20 w-full flex justify-center py-0.5 sm:py-1">
         <img
           src={logoImg}
           alt="Texas Bath Solutions — Trusted Shower Experts"
-          className="h-14 w-auto translate-y-5 sm:h-16 sm:translate-y-6 md:h-20 md:translate-y-8"
+          className="relative z-20 h-14 w-auto translate-y-36 sm:h-16 sm:translate-y-14 md:h-20 md:translate-y-14"
           width={400}
           height={80}
           fetchPriority="high"
