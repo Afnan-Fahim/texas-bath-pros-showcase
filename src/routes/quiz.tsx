@@ -3,6 +3,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { QuizFlow, QuizState } from "@/components/quiz/QuizFlow";
 import { CalendlyEmbed } from "@/components/CalendlyEmbed";
 import { trackLeadEvent, captureAttribution, attributionNote } from "@/lib/tracking";
+import { cn } from "@/lib/utils";
 import logoImg from "@/assets/logo-footer.webp";
 
 import { useQuizConfig, DEFAULT_CALENDLY_URL } from "@/lib/quiz-content";
@@ -104,7 +105,12 @@ function QuizPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col items-center">
-      <header className="relative z-20 w-full flex justify-center py-0.5 sm:py-1">
+      <header
+        className={cn(
+          "relative z-20 w-full flex justify-center py-0.5 sm:py-1",
+          showCalendly && "hidden sm:flex"
+        )}
+      >
         <img
           src={logoImg}
           alt="Texas Bath Solutions — Trusted Shower Experts"
