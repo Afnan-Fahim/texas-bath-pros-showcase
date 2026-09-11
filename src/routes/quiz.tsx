@@ -157,6 +157,7 @@ function QuizPage() {
                 onScheduled={handleCalendlyScheduled}
                 title="Pick a time for your free estimate"
                 subtitle="After you tap a time, scroll is not needed — fill in your name and phone to lock it in."
+                mobileSubtitle="Fill in your info below to lock the time."
                 compact={true}
               />
             </div>
