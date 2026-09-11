@@ -32,7 +32,7 @@ export function QuizCard({ title, description, image, selected, onClick, fill = 
         <div className={cn(
           "w-full bg-muted/30 relative overflow-hidden flex items-center justify-center group",
           isDense
-            ? "aspect-[4/3]"
+            ? "aspect-video"
             : compact
               ? "aspect-square"
               : "aspect-video sm:aspect-[4/3]",
@@ -60,7 +60,7 @@ export function QuizCard({ title, description, image, selected, onClick, fill = 
         </div>
       ) : (
         // Neutral placeholder while the saved photo loads
-        <div className={cn("w-full bg-muted/40", isDense ? "aspect-[4/3]" : compact ? "aspect-square" : "aspect-video sm:aspect-[4/3]")} />
+        <div className={cn("w-full bg-muted/40", isDense ? "aspect-video" : compact ? "aspect-square" : "aspect-video sm:aspect-[4/3]")} />
       )}
       <div className={cn("w-full", isDense ? "p-1.5 md:p-2" : compact ? "p-2 md:p-3" : "p-3")}>
         <h3 className={cn("font-medium", isDense ? "text-xs sm:text-sm md:text-base" : compact ? "text-sm sm:text-base md:text-lg" : "text-base sm:text-lg")}>{title}</h3>
