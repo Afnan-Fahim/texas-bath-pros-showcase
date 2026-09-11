@@ -37,6 +37,7 @@ export function CalendlyEmbed({
   const hostRef = useRef<HTMLDivElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   const mobileScrollTargetRef = useRef<HTMLDivElement>(null);
+  const [mobileDetailsSelected, setMobileDetailsSelected] = useState(false);
   useEffect(() => {
     const id = "calendly-widget-script";
     if (!document.getElementById(id)) {
@@ -46,12 +47,33 @@ export function CalendlyEmbed({
       s.async = true;
       document.body.appendChild(s);
     }
+    const mobileAlignmentTimers: number[] = [];
+    let calendlyFrame: HTMLIFrameElement | null = null;
+    const alignMobileDetails = () => {
+      if (typeof window === "undefined" || window.innerWidth >= 640 || !compact) return;
+
+      setMobileDetailsSelected(true);
+      calendlyFrame = hostRef.current?.querySelector("iframe") ?? null;
+      if (calendlyFrame) {
+        // Calendly is cross-origin, so its inner document cannot be scrolled.
+        // On phones, crop its redundant confirmation header and expose the
+        // invitee form by making the frame taller and shifting it upward.
+        calendlyFrame.style.height = "760px";
+        calendlyFrame.style.minHeight = "760px";
+        calendlyFrame.style.transform = "translateY(-230px)";
+        calendlyFrame.style.transformOrigin = "top center";
+      }
+      mobileScrollTargetRef.current?.scrollIntoView({ block: "center", behavior: "smooth" });
+    };
     const onMessage = (e: MessageEvent) => {
       if (typeof e.origin !== "string" || !e.origin.includes("calendly.com")) return;
       if (e.data?.event === "calendly.date_and_time_selected") {
-        // After a time is tapped, bring the "Enter Details" form into view.
-        if (typeof window !== "undefined" && window.innerWidth < 640 && mobileScrollTargetRef.current) {
-          mobileScrollTargetRef.current.scrollIntoView({ block: "center", behavior: "smooth" });
+        if (typeof window !== "undefined" && window.innerWidth < 640 && compact) {
+          // Calendly updates the iframe asynchronously. Re-apply the crop and
+          // page alignment after each likely render pass so it cannot reset.
+          [0, 180, 500, 1000, 1800].forEach((delay) => {
+            mobileAlignmentTimers.push(window.setTimeout(alignMobileDetails, delay));
+          });
         } else {
           rootRef.current?.scrollIntoView({ block: "start", behavior: "smooth" });
         }
@@ -72,8 +94,12 @@ export function CalendlyEmbed({
       }
     };
     window.addEventListener("message", onMessage);
-    return () => window.removeEventListener("message", onMessage);
-  }, [onScheduled]);
+    return () => {
+      window.removeEventListener("message", onMessage);
+      mobileAlignmentTimers.forEach((timer) => window.clearTimeout(timer));
+      if (calendlyFrame) calendlyFrame.onload = null;
+    };
+  }, [compact, onScheduled]);
 
   const details = [
     prefill.offer ? `Offer claimed: ${prefill.offer}` : "",
@@ -188,7 +214,12 @@ export function CalendlyEmbed({
         </a>
       )}
 
-      <div className="relative mt-4 overflow-hidden rounded-2xl border border-border bg-card">
+      <div
+        className={cn(
+          "relative mt-4 overflow-hidden rounded-2xl border border-border bg-card",
+          mobileDetailsSelected && "max-sm:h-[430px]"
+        )}
+      >
         {/* Compact frame: never taller than the viewport, so the form fields
             are visible without scrolling inside a huge empty iframe. */}
         <div
