@@ -236,8 +236,12 @@ async function resolveStepImages(step: QuizStepConfig): Promise<QuizStepConfig> 
  * soon as its own two photos are decoded, then fills the later steps in the
  * background. Never shows old/default photos.
  */
-export function useQuizConfig(): QuizConfig {
-  const [config, setConfig] = useState<QuizConfig>(() => blankImages(DEFAULT_QUIZ_CONFIG));
+export function useQuizConfig(): { config: QuizConfig; ready: boolean } {
+  const [{ config, ready }, setState] = useState<{ config: QuizConfig; ready: boolean }>(() => ({
+    config: blankImages(DEFAULT_QUIZ_CONFIG),
+    ready: false,
+  }));
+  const setConfig = (next: QuizConfig) => setState({ config: next, ready: true });
 
   useEffect(() => {
     let active = true;
