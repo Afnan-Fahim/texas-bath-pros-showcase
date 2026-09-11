@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { getAttribution, trackLeadEvent, trackScheduleEvent } from "@/lib/tracking";
 
 const CALENDLY_URL = "https://calendly.com/rugsafari/texas-bath-solutions";
