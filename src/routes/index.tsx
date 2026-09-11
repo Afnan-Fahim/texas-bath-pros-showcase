@@ -942,16 +942,14 @@ function About() {
       <div className="container-x">
         {/* Mobile: stacked photo + text card */}
         <div className="md:hidden">
-          <div className="overflow-hidden rounded-2xl">
-            <div className="aspect-[4/3] w-full">
-              <OptimizedImage
-                src={aboutBgAsset.url}
-                alt="Bathroom with walk-in shower and vanity"
-                width={1920}
-                height={725}
-                className="h-full w-full object-cover object-[65%_center]"
-              />
-            </div>
+          <div className="overflow-hidden rounded-2xl bg-[#edeae5]">
+            <OptimizedImage
+              src={aboutBgAsset.url}
+              alt="Bathroom with walk-in shower and vanity"
+              width={1920}
+              height={725}
+              className="h-auto w-full object-contain"
+            />
           </div>
           <div className="mt-4 rounded-2xl bg-[#f7f4ef] p-5 sm:p-6 shadow-lg">
             {aboutLabel}
