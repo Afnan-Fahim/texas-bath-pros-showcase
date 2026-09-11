@@ -56,12 +56,12 @@ export function CalendlyEmbed({
       calendlyFrame = hostRef.current?.querySelector("iframe") ?? null;
       if (calendlyFrame) {
         // Calendly is cross-origin, so its inner document cannot be scrolled.
-        // On phones, crop its redundant confirmation header and expose the
-        // invitee form by making the frame taller and shifting it upward.
-        calendlyFrame.style.height = "760px";
-        calendlyFrame.style.minHeight = "760px";
-        calendlyFrame.style.transform = "translateY(-230px)";
-        calendlyFrame.style.transformOrigin = "top center";
+        // Give the complete invitee form enough room in the page instead of
+        // translating/cropping it. The initial page scroll reveals the fields,
+        // then normal page scrolling remains free in both directions.
+        calendlyFrame.style.height = "1100px";
+        calendlyFrame.style.minHeight = "1100px";
+        calendlyFrame.style.transform = "none";
       }
       mobileScrollTargetRef.current?.scrollIntoView({ block: "center", behavior: "smooth" });
     };
@@ -78,7 +78,9 @@ export function CalendlyEmbed({
               mobileAlignmentTimers.push(window.setTimeout(alignMobileDetails, 120));
             };
           }
-          [0, 180, 500, 1000, 1800].forEach((delay) => {
+          // Calendly renders the invitee fields in two passes. Align once for
+          // each pass, then stop so the visitor can freely scroll the page.
+          [180, 700].forEach((delay) => {
             mobileAlignmentTimers.push(window.setTimeout(alignMobileDetails, delay));
           });
         } else {
@@ -224,11 +226,11 @@ export function CalendlyEmbed({
       <div
         className={cn(
           "relative mt-4 overflow-hidden rounded-2xl border border-border bg-card",
-          mobileDetailsSelected && "max-sm:h-auto max-sm:overflow-visible"
+          mobileDetailsSelected && "max-sm:h-auto max-sm:overflow-visible max-sm:pt-4"
         )}
         style={
           mobileDetailsSelected
-            ? { paddingBottom: "calc(2.5rem + env(safe-area-inset-bottom, 0px))" }
+            ? { paddingBottom: "calc(3rem + env(safe-area-inset-bottom, 0px))" }
             : undefined
         }
       >
@@ -241,7 +243,7 @@ export function CalendlyEmbed({
           style={{
             minWidth: "300px",
             height: mobileDetailsSelected
-              ? "530px"
+              ? "1100px"
               : compact
                 ? "clamp(360px, 50dvh, 460px)"
                 : "clamp(460px, calc(100dvh - 260px), 600px)",
@@ -253,7 +255,7 @@ export function CalendlyEmbed({
         <div
           ref={mobileScrollTargetRef}
           className="pointer-events-none absolute left-0 right-0 h-px"
-          style={{ top: "58%" }}
+          style={{ top: "44%" }}
           aria-hidden="true"
         />
       </div>
