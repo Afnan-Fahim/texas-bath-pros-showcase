@@ -203,12 +203,11 @@ function blankImages(config: QuizConfig): QuizConfig {
   };
 }
 
-/** Decodes every photo so the cards paint with the final image in one go. */
-async function preloadConfigImages(config: QuizConfig): Promise<QuizConfig> {
-  if (typeof window === "undefined") return config;
-  const urls = config.steps.flatMap((s) => s.options.map((o) => o.image).filter(Boolean) as string[]);
+/** Decodes the given photos so cards paint with the final image in one go. */
+async function preloadImages(urls: string[]): Promise<void> {
+  if (typeof window === "undefined") return;
   await Promise.all(
-    urls.map(
+    urls.filter(Boolean).map(
       (url) =>
         new Promise<void>((resolve) => {
           const img = new Image();
@@ -218,27 +217,50 @@ async function preloadConfigImages(config: QuizConfig): Promise<QuizConfig> {
         }),
     ),
   );
-  return config;
+}
+
+async function resolveStepImages(step: QuizStepConfig): Promise<QuizStepConfig> {
+  return {
+    ...step,
+    options: await Promise.all(
+      step.options.map(async (opt) => ({
+        ...opt,
+        image: opt.image ? await resolveQuizImageUrl(opt.image) : "",
+      })),
+    ),
+  };
 }
 
 /**
- * Renders the quiz layout instantly with blank photo cards, then paints the
- * admin-saved photos once they are fully loaded. Never shows old/default photos.
+ * Renders the quiz layout instantly with blank photo cards, paints step 1 as
+ * soon as its own two photos are decoded, then fills the later steps in the
+ * background. Never shows old/default photos.
  */
 export function useQuizConfig(): QuizConfig {
   const [config, setConfig] = useState<QuizConfig>(() => blankImages(DEFAULT_QUIZ_CONFIG));
 
   useEffect(() => {
     let active = true;
-    fetchQuizConfig()
-      .then(resolveConfigImages)
-      .then(preloadConfigImages)
-      .then((next) => {
-        if (active) setConfig(next);
-      })
-      .catch(() => {
-        /* keep blank cards */
-      });
+    (async () => {
+      const raw = await fetchQuizConfig();
+      const blank = blankImages(raw);
+      const firstStep = raw.steps[0];
+      if (!firstStep) return;
+      const first = await resolveStepImages(firstStep);
+      if (!active) return;
+      await preloadImages(first.options.map((o) => o.image ?? ""));
+      if (!active) return;
+      // First screen is ready — show it before touching later steps.
+      setConfig({ ...blank, steps: blank.steps.map((s, i) => (i === 0 ? first : s)) });
+
+      const restSteps = await Promise.all(raw.steps.slice(1).map(resolveStepImages));
+      if (!active) return;
+      await preloadImages(restSteps.flatMap((s) => s.options.map((o) => o.image ?? "")));
+      if (!active) return;
+      setConfig({ ...raw, steps: [first, ...restSteps] });
+    })().catch(() => {
+      /* keep blank cards */
+    });
     return () => {
       active = false;
     };
