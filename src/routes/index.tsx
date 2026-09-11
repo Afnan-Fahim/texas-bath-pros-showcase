@@ -928,11 +928,42 @@ function FinancingBanner({ onBook }: { onBook: () => void }) {
 
 /* ---------------- ABOUT ---------------- */
 function About() {
+  const aboutLabel = (
+    <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-navy sm:text-[11px] md:text-xs">
+      About Us
+    </span>
+  );
+  const aboutHeadline = "A local San Antonio family, transforming bathrooms our neighbors love.";
+  const aboutBody =
+    "We're a family business dedicated to beautiful, functional bathrooms. Clean, honest, upfront pricing — done right the first time.";
+
   return (
     <section className="py-2 md:py-12">
       <div className="container-x">
-        <div className="relative overflow-hidden rounded-2xl">
-          {/* Full photo, edge to edge in this section */}
+        {/* Mobile: stacked photo + text card */}
+        <div className="md:hidden">
+          <div className="overflow-hidden rounded-2xl">
+            <div className="aspect-[4/3] w-full">
+              <OptimizedImage
+                src={aboutBgAsset.url}
+                alt="Bathroom with walk-in shower and vanity"
+                width={1920}
+                height={725}
+                className="h-full w-full object-cover object-[65%_center]"
+              />
+            </div>
+          </div>
+          <div className="mt-4 rounded-2xl bg-[#f7f4ef] p-5 sm:p-6 shadow-lg">
+            {aboutLabel}
+            <h2 className="mt-3 text-lg font-semibold leading-snug text-navy text-balance sm:text-xl">
+              {aboutHeadline}
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed text-navy/85 text-balance">{aboutBody}</p>
+          </div>
+        </div>
+
+        {/* Desktop: photo with overlay text card (unchanged) */}
+        <div className="hidden md:block relative overflow-hidden rounded-2xl">
           <OptimizedImage
             src={aboutBgAsset.url}
             alt="Bathroom with walk-in shower and vanity"
@@ -944,15 +975,12 @@ function About() {
           {/* Small cream box on the bottom-left / shower area */}
           <div className="absolute inset-0 flex items-end justify-start p-3 sm:p-5 md:p-8 lg:p-10">
             <div className="max-w-[10.5rem] rounded-xl bg-[#f7f4ef] p-3 shadow-lg sm:max-w-[15rem] sm:p-4 md:max-w-[17rem] md:p-5 lg:max-w-xs">
-              <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-navy sm:text-[11px] md:text-xs">
-                About Us
-              </span>
+              {aboutLabel}
               <h2 className="mt-1.5 text-sm font-semibold leading-snug text-navy text-balance sm:text-base md:mt-2 md:text-lg lg:text-xl">
-                A local San Antonio family, transforming bathrooms our neighbors love.
+                {aboutHeadline}
               </h2>
               <p className="mt-1.5 text-[11px] leading-relaxed text-navy/85 text-balance sm:text-xs md:mt-2 md:text-sm">
-                We're a family business dedicated to beautiful, functional bathrooms. Clean, honest,
-                upfront pricing — done right the first time.
+                {aboutBody}
               </p>
             </div>
           </div>
