@@ -218,7 +218,7 @@ export function QuizFlow({
                               ? "border-navy/30 bg-card px-4 py-2 text-sm font-medium text-navy hover:bg-navy/5 hover:border-navy/50 sm:text-base md:py-3 md:text-lg"
                               : "border-navy/30 bg-card px-4 py-2.5 text-base font-medium text-navy hover:bg-navy/5 hover:border-navy/50 sm:text-lg"
                             : compact
-                              ? "min-h-10 border-2 py-2 text-sm sm:py-2.5 sm:text-base"
+                              ? "min-h-10 border-2 py-2 text-sm sm:py-2.5 sm:text-base md:min-h-12 md:py-3 md:text-base"
                               : "min-h-14 border-2 py-3 text-base sm:py-4 sm:text-lg",
                           state[stepConfig.key] === optionLabel
                             ? "border-primary bg-primary/5"
