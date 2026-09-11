@@ -136,6 +136,7 @@ function QuizPage() {
             subtitle="After you tap a time, scroll is not needed — fill in your name and phone to lock it in."
           />
         </div>
+        )}
       </main>
     </div>
   );
