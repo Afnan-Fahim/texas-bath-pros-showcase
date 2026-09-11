@@ -123,7 +123,7 @@ function QuizPage() {
             showStartCue={false}
             photoFill={false}
             compact={true}
-            labelOverrides={{ "new-tub": "New bathtub" }}
+            
             extraSubline="Free in-home estimate • San Antonio • No pressure"
           />
         </div>

@@ -263,7 +263,31 @@ export function AdminPanel() {
     setSaveMessage("");
     try {
       await saveQuizConfig(quizConfig);
-      setSaveMessage("Saved. /quiz is updated.");
+      setSaveMessage("Saving… checking the live quiz page.");
+
+      // Only claim success once the quiz page's own data source returns the new values.
+      const expected = JSON.stringify(
+        quizConfig.steps.map((s) => [s.title, s.description, s.options.map((o) => [o.label, o.image])]),
+      );
+      let confirmed = false;
+      for (let attempt = 0; attempt < 5; attempt++) {
+        const live = await fetchQuizConfig().catch(() => null);
+        const actual = live
+          ? JSON.stringify(
+              live.steps.map((s) => [s.title, s.description, s.options.map((o) => [o.label, o.image])]),
+            )
+          : "";
+        if (actual === expected && live?.calendlyUrl === quizConfig.calendlyUrl) {
+          confirmed = true;
+          break;
+        }
+        await new Promise((r) => setTimeout(r, 600));
+      }
+      setSaveMessage(
+        confirmed
+          ? "Saved. /quiz updated."
+          : "Saved, but the live quiz page has not picked it up yet — refresh /quiz in a moment.",
+      );
     } catch (err) {
       setSaveMessage(`Save failed: ${(err as Error).message}`);
     } finally {
