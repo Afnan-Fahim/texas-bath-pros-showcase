@@ -111,7 +111,7 @@ function QuizPage() {
           className="h-14 w-auto sm:h-16 md:h-20"
           width={400}
           height={80}
-          fetchpriority="high"
+          fetchPriority="high"
         />
       </header>
 
