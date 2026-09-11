@@ -24,7 +24,7 @@ function getFbq() {
 }
 
 /** TEMP: verifies the base pixel loaded and PageView fired on this page load. */
-function usePixelInitCheck() {
+export function usePixelInitCheck() {
   useEffect(() => {
     let tries = 0;
     const id = window.setInterval(() => {
@@ -130,7 +130,7 @@ export function trackLeadEvent(dedupeKey = "default", identity: LeadIdentity = {
   });
 }
 
-function trackContactEvent() {
+export function trackContactEvent() {
   if (typeof window === "undefined") return;
   const eventId = newEventId("contact");
   const w = getFbq();
