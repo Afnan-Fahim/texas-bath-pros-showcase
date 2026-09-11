@@ -22,6 +22,7 @@ export function CalendlyEmbed({
   onScheduled,
   title,
   subtitle,
+  mobileSubtitle,
   compact = false,
 }: {
   url?: string;
@@ -30,6 +31,7 @@ export function CalendlyEmbed({
   onScheduled: (eventUri: string) => void;
   title?: string;
   subtitle?: string;
+  mobileSubtitle?: string;
   compact?: boolean;
 }) {
   const hostRef = useRef<HTMLDivElement>(null);
