@@ -231,6 +231,9 @@ export function QuizFlow({
                   {stepIdx === 0 && extraSubline && (
                     <p className={cn("text-muted-foreground", compact ? "mt-0.5 text-xs md:text-sm" : "mt-1 text-sm")}>{extraSubline}</p>
                   )}
+                  {stepIdx === 0 && trustLine && (
+                    <p className={cn("text-muted-foreground/70", compact ? "mt-1 text-[10px] sm:text-xs" : "mt-1 text-xs")}>{trustLine}</p>
+                  )}
                 </div>
                 <div className={cn("grid grid-cols-2", compact ? "gap-2 sm:gap-3 md:gap-4" : "gap-3 sm:gap-4")}>
                   {stepConfig.options.map((opt, idx) => {
