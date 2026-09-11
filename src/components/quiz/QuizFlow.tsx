@@ -145,7 +145,7 @@ export function QuizFlow({
           className={cn(
             "relative z-10",
             compact
-              ? "px-3 pb-3 pt-1 sm:px-5 sm:pb-5 sm:pt-2 md:px-8 md:pb-8 md:pt-3"
+              ? "px-3 pb-3 pt-0 sm:px-5 sm:pb-5 sm:pt-1 md:px-8 md:pb-8 md:pt-2"
               : "p-4 sm:p-7 md:p-8"
           )}
         >
