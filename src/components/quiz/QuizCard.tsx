@@ -29,7 +29,7 @@ export function QuizCard({ title, description, image, selected, onClick, fill = 
         <div className={cn(
           "w-full bg-muted/30 relative overflow-hidden flex items-center justify-center group",
           compact
-            ? "aspect-square md:aspect-[4/3]"
+            ? "aspect-square"
             : "aspect-video sm:aspect-[4/3]",
           !fill && !compact && "p-2"
         )}>
