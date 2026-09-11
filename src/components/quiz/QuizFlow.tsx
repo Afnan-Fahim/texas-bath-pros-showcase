@@ -132,7 +132,7 @@ export function QuizFlow({
       className={cn(
         "relative z-40 mx-auto flex w-full justify-center overflow-y-auto overscroll-contain scroll-m-0",
         compact
-          ? "h-full max-h-[calc(100svh-0.5rem)] max-w-xl items-center"
+          ? "h-full max-h-[calc(100svh-0.5rem)] max-w-xl items-center md:max-w-3xl"
           : "max-h-[calc(100svh-1.5rem)] min-h-[34rem] max-w-4xl items-start"
       )}
     >
@@ -141,7 +141,7 @@ export function QuizFlow({
         <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-teal/10 blur-3xl opacity-50 pointer-events-none"></div>
         <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 rounded-full bg-navy/5 blur-3xl opacity-50 pointer-events-none"></div>
 
-        <div className={cn("relative z-10", compact ? "p-3 sm:p-5" : "p-4 sm:p-7 md:p-8")}>
+        <div className={cn("relative z-10", compact ? "p-3 sm:p-5 md:p-8" : "p-4 sm:p-7 md:p-8")}>
           {/* Start here cue */}
           {showStartCue && (
             <div
@@ -163,7 +163,7 @@ export function QuizFlow({
 
           {/* Progress */}
           {currentStep <= totalSteps && (
-            <div className={cn("flex items-center justify-between", compact ? "mb-2" : "mb-4")}>
+            <div className={cn("flex items-center justify-between", compact ? "mb-2 md:mb-4" : "mb-4")}>
               <button
                 onClick={handleBack}
                 disabled={currentStep === 1}
@@ -182,18 +182,18 @@ export function QuizFlow({
           {steps.map((stepConfig, stepIdx) =>
             currentStep === stepIdx + 1 ? (
               <div key={stepConfig.id} className={cn("flex flex-col justify-center", compact ? "" : "min-h-[25rem] sm:min-h-[27rem]")}>
-                <div className={cn("text-center", compact ? "mb-2 sm:mb-3" : "mb-4 sm:mb-5")}>
+                <div className={cn("text-center", compact ? "mb-2 sm:mb-3 md:mb-5" : "mb-4 sm:mb-5")}>
                   {stepIdx === 0 ? (
-                    <h1 className={cn("font-sans font-bold text-navy leading-snug mb-1", compact ? "text-xl sm:text-2xl" : "text-2xl sm:text-3xl")}>{stepConfig.title}</h1>
+                    <h1 className={cn("font-sans font-bold text-navy leading-snug mb-1", compact ? "text-xl sm:text-2xl md:text-3xl" : "text-2xl sm:text-3xl")}>{stepConfig.title}</h1>
                   ) : (
-                    <h2 className={cn("font-bold text-foreground mb-1", compact ? "text-xl sm:text-2xl" : "text-2xl sm:text-3xl")}>{stepConfig.title}</h2>
+                    <h2 className={cn("font-bold text-foreground mb-1", compact ? "text-xl sm:text-2xl md:text-3xl" : "text-2xl sm:text-3xl")}>{stepConfig.title}</h2>
                   )}
-                  <p className={cn("text-muted-foreground", compact ? "text-sm" : "")}>{stepConfig.description}</p>
+                  <p className={cn("text-muted-foreground", compact ? "text-sm md:text-base" : "")}>{stepConfig.description}</p>
                   {stepIdx === 0 && extraSubline && (
-                    <p className={cn("text-muted-foreground", compact ? "mt-0.5 text-xs" : "mt-1 text-sm")}>{extraSubline}</p>
+                    <p className={cn("text-muted-foreground", compact ? "mt-0.5 text-xs md:text-sm" : "mt-1 text-sm")}>{extraSubline}</p>
                   )}
                 </div>
-                <div className={cn("grid grid-cols-2", compact ? "gap-2 sm:gap-3" : "gap-3 sm:gap-4")}>
+                <div className={cn("grid grid-cols-2", compact ? "gap-2 sm:gap-3 md:gap-4" : "gap-3 sm:gap-4")}>
                   {stepConfig.options.map((opt, idx) => {
                     const optionLabel = labelOverrides[opt.id] ?? opt.label;
                     return opt.image || opt.imagePending ? (
@@ -215,10 +215,10 @@ export function QuizFlow({
                           "col-span-2 w-full rounded-xl border text-center transition-colors",
                           stepIdx === 0
                             ? compact
-                              ? "border-navy/30 bg-card px-4 py-2 text-sm font-medium text-navy hover:bg-navy/5 hover:border-navy/50 sm:text-base"
+                              ? "border-navy/30 bg-card px-4 py-2 text-sm font-medium text-navy hover:bg-navy/5 hover:border-navy/50 sm:text-base md:py-3 md:text-lg"
                               : "border-navy/30 bg-card px-4 py-2.5 text-base font-medium text-navy hover:bg-navy/5 hover:border-navy/50 sm:text-lg"
                             : compact
-                              ? "min-h-10 border-2 py-2 text-sm sm:py-2.5 sm:text-base"
+                              ? "min-h-10 border-2 py-2 text-sm sm:py-2.5 sm:text-base md:min-h-12 md:py-3 md:text-base"
                               : "min-h-14 border-2 py-3 text-base sm:py-4 sm:text-lg",
                           state[stepConfig.key] === optionLabel
                             ? "border-primary bg-primary/5"
