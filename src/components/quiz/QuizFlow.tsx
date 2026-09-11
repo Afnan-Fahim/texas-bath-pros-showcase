@@ -215,7 +215,7 @@ export function QuizFlow({
                           "col-span-2 w-full rounded-xl border text-center transition-colors",
                           stepIdx === 0
                             ? compact
-                              ? "border-navy/30 bg-card px-4 py-2 text-sm font-medium text-navy hover:bg-navy/5 hover:border-navy/50 sm:text-base"
+                              ? "border-navy/30 bg-card px-4 py-2 text-sm font-medium text-navy hover:bg-navy/5 hover:border-navy/50 sm:text-base md:py-3 md:text-lg"
                               : "border-navy/30 bg-card px-4 py-2.5 text-base font-medium text-navy hover:bg-navy/5 hover:border-navy/50 sm:text-lg"
                             : compact
                               ? "min-h-10 border-2 py-2 text-sm sm:py-2.5 sm:text-base"
