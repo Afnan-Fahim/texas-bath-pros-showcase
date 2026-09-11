@@ -58,8 +58,8 @@ export function QuizFlow({
   const steps = quizConfig.steps;
   const totalSteps = steps.length;
 
-  // Warm up the booking calendar as soon as the quiz is on screen, so it is
-  // ready by the time the visitor finishes the questions.
+  // Warm up the booking calendar only AFTER the first question has painted, so
+  // Calendly never competes with the first screen on a slow ad-click load.
   useEffect(() => {
     if (typeof document === "undefined") return;
     const addLink = (rel: string, href: string, id: string) => {
