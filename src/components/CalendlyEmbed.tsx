@@ -73,6 +73,15 @@ export function CalendlyEmbed({
           if (detailsAlignmentStarted) return;
           detailsAlignmentStarted = true;
           calendlyFrame = hostRef.current?.querySelector("iframe") ?? null;
+          // Expand the already-mounted widget immediately, before Calendly's
+          // details view paints, so its internal transition never exposes a
+          // clipped or empty card.
+          setMobileDetailsSelected(true);
+          if (calendlyFrame) {
+            calendlyFrame.style.height = "1400px";
+            calendlyFrame.style.minHeight = "1400px";
+            calendlyFrame.style.transform = "none";
+          }
           // Keep the current calendar viewport stable while Calendly swaps in
           // its already-preloaded details form. Then align twice and stop, so
           // the visitor retains unrestricted page scrolling afterward.
