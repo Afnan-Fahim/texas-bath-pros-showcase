@@ -141,7 +141,14 @@ export function QuizFlow({
         <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-teal/10 blur-3xl opacity-50 pointer-events-none"></div>
         <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 rounded-full bg-navy/5 blur-3xl opacity-50 pointer-events-none"></div>
 
-        <div className={cn("relative z-10", compact ? "p-3 sm:p-5 md:p-8" : "p-4 sm:p-7 md:p-8")}>
+        <div
+          className={cn(
+            "relative z-10",
+            compact
+              ? "px-3 pb-3 pt-2 sm:px-5 sm:pb-5 sm:pt-3 md:px-8 md:pb-8 md:pt-4"
+              : "p-4 sm:p-7 md:p-8"
+          )}
+        >
           {/* Start here cue */}
           {showStartCue && (
             <div
