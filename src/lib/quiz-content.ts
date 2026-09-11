@@ -263,12 +263,13 @@ export function useQuizConfig(): { config: QuizConfig; ready: boolean } {
       if (!active) return;
       setConfig({ ...raw, steps: [first, ...restSteps] });
     })().catch(() => {
-      /* keep blank cards */
+      // Even on failure, stop blocking: fall back to blank-image defaults.
+      setState((s) => ({ ...s, ready: true }));
     });
     return () => {
       active = false;
     };
   }, []);
 
-  return config;
+  return { config, ready };
 }
