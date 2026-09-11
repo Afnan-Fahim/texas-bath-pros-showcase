@@ -3,7 +3,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { QuizFlow, QuizState } from "@/components/quiz/QuizFlow";
 import { CalendlyEmbed } from "@/components/CalendlyEmbed";
 import { trackLeadEvent, captureAttribution, attributionNote } from "@/lib/tracking";
-import logoImg from "@/assets/logo-header.webp";
+import logoImg from "@/assets/logo-footer.webp";
 
 import { useQuizConfig, DEFAULT_CALENDLY_URL } from "@/lib/quiz-content";
 import { scheduleLead } from "@/lib/leads.functions";
@@ -104,8 +104,15 @@ function QuizPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col items-center">
-      <header className="w-full flex justify-center py-2 sm:py-2">
-        <img src={logoImg} alt="Texas Bath Solutions" className="h-10 sm:h-12 w-auto" />
+      <header className="w-full flex justify-center py-3 sm:py-4">
+        <img
+          src={logoImg}
+          alt="Texas Bath Solutions — Trusted Shower Experts"
+          className="h-14 w-auto sm:h-16 md:h-20"
+          width={400}
+          height={80}
+          fetchpriority="high"
+        />
       </header>
 
       <main ref={stageRef} className="flex w-full flex-1 items-center justify-center px-3 sm:px-6 relative">
