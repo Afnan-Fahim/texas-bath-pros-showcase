@@ -71,15 +71,26 @@ export function QuizFlow({
       if (rel === "preconnect") l.crossOrigin = "";
       document.head.appendChild(l);
     };
-    addLink("preconnect", "https://assets.calendly.com", "calendly-preconnect-assets");
-    addLink("preconnect", "https://calendly.com", "calendly-preconnect-app");
-    if (!document.getElementById("calendly-widget-script")) {
-      const s = document.createElement("script");
-      s.id = "calendly-widget-script";
-      s.src = "https://assets.calendly.com/assets/external/widget.js";
-      s.async = true;
-      document.body.appendChild(s);
-    }
+    const warm = () => {
+      addLink("preconnect", "https://assets.calendly.com", "calendly-preconnect-assets");
+      addLink("preconnect", "https://calendly.com", "calendly-preconnect-app");
+      if (!document.getElementById("calendly-widget-script")) {
+        const s = document.createElement("script");
+        s.id = "calendly-widget-script";
+        s.src = "https://assets.calendly.com/assets/external/widget.js";
+        s.async = true;
+        document.body.appendChild(s);
+      }
+    };
+    const w = window as unknown as { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number };
+    const timer = w.requestIdleCallback
+      ? w.requestIdleCallback(warm, { timeout: 4000 })
+      : window.setTimeout(warm, 2500);
+    return () => {
+      const cancel = (window as unknown as { cancelIdleCallback?: (id: number) => void }).cancelIdleCallback;
+      if (w.requestIdleCallback && cancel) cancel(timer);
+      else window.clearTimeout(timer);
+    };
   }, []);
 
   const [state, setState] = useState<QuizState>({
