@@ -188,7 +188,7 @@ export function QuizFlow({
                   ) : (
                     <h2 className={cn("font-bold text-foreground mb-1", compact ? "text-xl sm:text-2xl md:text-3xl" : "text-2xl sm:text-3xl")}>{stepConfig.title}</h2>
                   )}
-                  <p className={cn("text-muted-foreground", compact ? "text-sm" : "")}>{stepConfig.description}</p>
+                  <p className={cn("text-muted-foreground", compact ? "text-sm md:text-base" : "")}>{stepConfig.description}</p>
                   {stepIdx === 0 && extraSubline && (
                     <p className={cn("text-muted-foreground", compact ? "mt-0.5 text-xs" : "mt-1 text-sm")}>{extraSubline}</p>
                   )}
