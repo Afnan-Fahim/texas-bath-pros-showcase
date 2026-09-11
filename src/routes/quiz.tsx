@@ -132,26 +132,29 @@ function QuizPage() {
         {/* Calendar mounts hidden shortly AFTER step 1 paints, so finishing
             step 3 reveals it instantly without slowing the first screen. */}
         {(mountCalendly || showCalendly) && (
-        <div
-          className={
-            showCalendly
-              ? "mx-auto h-[calc(100svh-1.5rem)] w-full max-w-3xl overflow-y-auto overscroll-contain rounded-2xl border border-border bg-background p-4 shadow-sm sm:p-6"
-              : "pointer-events-none absolute inset-0 -z-10 w-full overflow-hidden p-4 opacity-0"
-          }
-          aria-hidden={!showCalendly}
-        >
-          <CalendlyEmbed
-            url={calendlyUrl}
-            prefill={{
-              name: quizData?.name || "",
-              email: quizData?.email || "",
-            }}
-            onBack={handleCalendlyBack}
-            onScheduled={handleCalendlyScheduled}
-            title="Pick a time for your free estimate"
-            subtitle="After you tap a time, scroll is not needed — fill in your name and phone to lock it in."
-          />
-        </div>
+          <div
+            className={
+              showCalendly
+                ? "mx-auto w-full max-w-xl md:max-w-3xl px-4 sm:px-6 md:px-8"
+                : "pointer-events-none absolute inset-0 -z-10 w-full overflow-hidden p-4 opacity-0"
+            }
+            aria-hidden={!showCalendly}
+          >
+            <div className="rounded-2xl border border-border bg-background p-4 shadow-sm sm:p-6 md:p-8">
+              <CalendlyEmbed
+                url={calendlyUrl}
+                prefill={{
+                  name: quizData?.name || "",
+                  email: quizData?.email || "",
+                }}
+                onBack={handleCalendlyBack}
+                onScheduled={handleCalendlyScheduled}
+                title="Pick a time for your free estimate"
+                subtitle="After you tap a time, scroll is not needed — fill in your name and phone to lock it in."
+                compact={true}
+              />
+            </div>
+          </div>
         )}
       </main>
     </div>
