@@ -129,6 +129,33 @@ export function QuizFlow({
     handleNext();
   };
 
+  // On /quiz, never paint default or previously-saved wording: render a blank
+  // neutral card until the saved admin content (text + decoded photos) is ready.
+  if (waitForContent && !quizContentReady) {
+    return (
+      <div
+        ref={containerRef}
+        className={cn(
+          "relative z-40 mx-auto flex w-full justify-center overflow-hidden",
+          compact ? "h-full max-h-[calc(100svh-0.5rem)] max-w-xl items-center md:max-w-3xl" : "max-w-4xl items-start"
+        )}
+        aria-busy="true"
+      >
+        <div className="w-full p-4 sm:p-6 md:p-8">
+          <div className="mx-auto w-full max-w-2xl animate-pulse rounded-2xl border border-navy/10 bg-white/60 p-6 sm:p-8">
+            <div className="mx-auto mb-5 h-6 w-2/3 rounded-full bg-navy/10" />
+            <div className="mx-auto mb-6 h-4 w-1/2 rounded-full bg-navy/5" />
+            <div className="grid grid-cols-2 gap-4">
+              <div className="aspect-square rounded-xl bg-navy/5" />
+              <div className="aspect-square rounded-xl bg-navy/5" />
+            </div>
+            <div className="mx-auto mt-4 h-11 w-full rounded-full bg-navy/5" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       ref={containerRef}
