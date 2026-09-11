@@ -231,10 +231,6 @@ export function AdminPanel() {
     }));
   };
 
-  const updateContact = (patch: Partial<QuizConfig["contact"]>) => {
-    setQuizConfig((cfg) => ({ ...cfg, contact: { ...cfg.contact, ...patch } }));
-  };
-
   const uploadOptionPhoto = async (stepIdx: number, optIdx: number, file: File) => {
     const key = `${stepIdx}-${optIdx}`;
     setUploading(key);
