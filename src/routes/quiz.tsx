@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { QuizFlow, QuizState } from "@/components/quiz/QuizFlow";
-import { CalendlyEmbed, trackLeadEvent, captureAttribution, attributionNote } from "./index";
+import { CalendlyEmbed } from "@/components/CalendlyEmbed";
+import { trackLeadEvent, captureAttribution, attributionNote } from "@/lib/tracking";
 import logoImg from "@/assets/logo-header.webp";
 
 import { useQuizConfig, DEFAULT_CALENDLY_URL } from "@/lib/quiz-content";
@@ -25,6 +26,11 @@ export const Route = createFileRoute("/quiz")({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [
+      // The step 1 photos come from the backend — open that connection early.
+      { rel: "preconnect", href: "https://xbfbqbytfzwjqpovuiff.supabase.co", crossOrigin: "" },
+      { rel: "dns-prefetch", href: "https://xbfbqbytfzwjqpovuiff.supabase.co" },
+    ],
   }),
 });
 
@@ -36,10 +42,18 @@ function QuizPage() {
   const quizConfig = useQuizConfig();
   const calendlyUrl = quizConfig.calendlyUrl || DEFAULT_CALENDLY_URL;
 
+  const [mountCalendly, setMountCalendly] = useState(false);
+
   useEffect(() => {
     captureAttribution();
     const w = window as unknown as { fbq?: (...args: unknown[]) => void };
     w.fbq?.("track", "PageView");
+  }, []);
+
+  // Prepare the calendar in the background once the first question is on screen.
+  useEffect(() => {
+    const t = window.setTimeout(() => setMountCalendly(true), 2500);
+    return () => window.clearTimeout(t);
   }, []);
 
   const buildLead = (d: QuizState, booked: boolean) => ({
@@ -107,7 +121,9 @@ function QuizPage() {
           />
         </div>
 
-        {/* Calendar mounts with the quiz so finishing step 3 reveals it instantly. */}
+        {/* Calendar mounts hidden shortly AFTER step 1 paints, so finishing
+            step 3 reveals it instantly without slowing the first screen. */}
+        {(mountCalendly || showCalendly) && (
         <div
           className={
             showCalendly
@@ -128,6 +144,7 @@ function QuizPage() {
             subtitle="After you tap a time, scroll is not needed — fill in your name and phone to lock it in."
           />
         </div>
+        )}
       </main>
     </div>
   );
