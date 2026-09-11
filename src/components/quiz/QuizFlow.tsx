@@ -184,7 +184,7 @@ export function QuizFlow({
               <div key={stepConfig.id} className={cn("flex flex-col justify-center", compact ? "" : "min-h-[25rem] sm:min-h-[27rem]")}>
                 <div className={cn("text-center", compact ? "mb-2 sm:mb-3 md:mb-5" : "mb-4 sm:mb-5")}>
                   {stepIdx === 0 ? (
-                    <h1 className={cn("font-sans font-bold text-navy leading-snug mb-1", compact ? "text-xl sm:text-2xl" : "text-2xl sm:text-3xl")}>{stepConfig.title}</h1>
+                    <h1 className={cn("font-sans font-bold text-navy leading-snug mb-1", compact ? "text-xl sm:text-2xl md:text-3xl" : "text-2xl sm:text-3xl")}>{stepConfig.title}</h1>
                   ) : (
                     <h2 className={cn("font-bold text-foreground mb-1", compact ? "text-xl sm:text-2xl" : "text-2xl sm:text-3xl")}>{stepConfig.title}</h2>
                   )}
