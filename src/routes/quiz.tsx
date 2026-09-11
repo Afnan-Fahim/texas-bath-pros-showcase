@@ -123,6 +123,7 @@ function QuizPage() {
             showStartCue={false}
             photoFill={false}
             compact={true}
+            waitForContent={true}
             
             extraSubline="Free in-home estimate • San Antonio • No pressure"
           />
