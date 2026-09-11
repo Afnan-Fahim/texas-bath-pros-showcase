@@ -51,9 +51,10 @@ function QuizPage() {
     w.fbq?.("track", "PageView");
   }, []);
 
-  // Prepare the calendar in the background once the first question is on screen.
+  // Prepare the calendar in the background immediately after the first paint,
+  // well before the visitor reaches the final step.
   useEffect(() => {
-    const t = window.setTimeout(() => setMountCalendly(true), 2500);
+    const t = window.setTimeout(() => setMountCalendly(true), 250);
     return () => window.clearTimeout(t);
   }, []);
 
