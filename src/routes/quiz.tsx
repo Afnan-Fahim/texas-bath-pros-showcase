@@ -104,7 +104,7 @@ function QuizPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col items-center">
-      <header className="w-full flex justify-center py-3 sm:py-4">
+      <header className="w-full flex justify-center py-0.5 sm:py-1">
         <img
           src={logoImg}
           alt="Texas Bath Solutions — Trusted Shower Experts"
@@ -115,7 +115,7 @@ function QuizPage() {
         />
       </header>
 
-      <main ref={stageRef} className="flex w-full flex-1 items-center justify-center px-3 sm:px-6 relative">
+      <main ref={stageRef} className="flex w-full flex-1 items-start justify-center px-3 sm:px-6 pt-1 sm:pt-2 relative">
         <div className={showCalendly ? "hidden" : "contents"}>
           <QuizFlow
             onComplete={handleQuizComplete}
