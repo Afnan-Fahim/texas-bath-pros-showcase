@@ -190,7 +190,7 @@ export function QuizFlow({
                   )}
                   <p className={cn("text-muted-foreground", compact ? "text-sm md:text-base" : "")}>{stepConfig.description}</p>
                   {stepIdx === 0 && extraSubline && (
-                    <p className={cn("text-muted-foreground", compact ? "mt-0.5 text-xs" : "mt-1 text-sm")}>{extraSubline}</p>
+                    <p className={cn("text-muted-foreground", compact ? "mt-0.5 text-xs md:text-sm" : "mt-1 text-sm")}>{extraSubline}</p>
                   )}
                 </div>
                 <div className={cn("grid grid-cols-2", compact ? "gap-2 sm:gap-3" : "gap-3 sm:gap-4")}>
