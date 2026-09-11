@@ -22,6 +22,7 @@ export function CalendlyEmbed({
   onScheduled,
   title,
   subtitle,
+  mobileSubtitle,
   compact = false,
 }: {
   url?: string;
@@ -30,10 +31,12 @@ export function CalendlyEmbed({
   onScheduled: (eventUri: string) => void;
   title?: string;
   subtitle?: string;
+  mobileSubtitle?: string;
   compact?: boolean;
 }) {
   const hostRef = useRef<HTMLDivElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
+  const mobileScrollTargetRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const id = "calendly-widget-script";
     if (!document.getElementById(id)) {
@@ -47,7 +50,11 @@ export function CalendlyEmbed({
       if (typeof e.origin !== "string" || !e.origin.includes("calendly.com")) return;
       if (e.data?.event === "calendly.date_and_time_selected") {
         // After a time is tapped, bring the "Enter Details" form into view.
-        rootRef.current?.scrollIntoView({ block: "start", behavior: "smooth" });
+        if (typeof window !== "undefined" && window.innerWidth < 640 && mobileScrollTargetRef.current) {
+          mobileScrollTargetRef.current.scrollIntoView({ block: "center", behavior: "smooth" });
+        } else {
+          rootRef.current?.scrollIntoView({ block: "start", behavior: "smooth" });
+        }
       }
       if (e.data?.event === "calendly.event_scheduled") {
         const identity = {
@@ -156,9 +163,14 @@ export function CalendlyEmbed({
           <h3 className={cn("font-display font-semibold text-navy", compact ? "text-lg sm:text-xl" : "text-xl")}>
             {title ?? (prefill.name ? `Almost done, ${prefill.name.split(" ")[0]} — pick your time` : "Pick a time for your free estimate")}
           </h3>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className={cn("mt-1 text-sm text-muted-foreground", mobileSubtitle && "hidden sm:block")}>
             {subtitle ?? "Choose any open slot."}
           </p>
+          {mobileSubtitle && (
+            <p className="mt-1 text-sm font-medium text-navy sm:hidden">
+              {mobileSubtitle}
+            </p>
+          )}
         </div>
         <Button type="button" variant="outline" className="shrink-0 border-navy/25 text-navy" onClick={onBack}>
           Back
@@ -185,6 +197,15 @@ export function CalendlyEmbed({
             minWidth: "300px",
             height: compact ? "clamp(360px, 50dvh, 460px)" : "clamp(460px, calc(100dvh - 260px), 600px)",
           }}
+        />
+        {/* Mobile-only scroll target: after a time is selected we center this
+            marker so the Name/Email/Phone fields land near the middle of the
+            phone screen while our headline stays visible above. */}
+        <div
+          ref={mobileScrollTargetRef}
+          className="pointer-events-none absolute left-0 right-0 h-px"
+          style={{ top: "58%" }}
+          aria-hidden="true"
         />
       </div>
 
