@@ -28,6 +28,7 @@ interface QuizFlowProps {
   waitForContent?: boolean;
   labelOverrides?: Record<string, string>;
   extraSubline?: string;
+  trustLine?: string;
 }
 
 export function QuizFlow({
@@ -41,6 +42,7 @@ export function QuizFlow({
   waitForContent = false,
   labelOverrides = {},
   extraSubline,
+  trustLine,
 }: QuizFlowProps) {
   const [step, setStep] = useState(1);
   const [cueDismissed, setCueDismissed] = useState(false);
@@ -228,6 +230,9 @@ export function QuizFlow({
                   <p className={cn("text-muted-foreground", compact ? "text-sm md:text-base" : "")}>{stepConfig.description}</p>
                   {stepIdx === 0 && extraSubline && (
                     <p className={cn("text-muted-foreground", compact ? "mt-0.5 text-xs md:text-sm" : "mt-1 text-sm")}>{extraSubline}</p>
+                  )}
+                  {stepIdx === 0 && trustLine && (
+                    <p className={cn("text-muted-foreground/70", compact ? "mt-1 text-[10px] sm:text-xs" : "mt-1 text-xs")}>{trustLine}</p>
                   )}
                 </div>
                 <div className={cn("grid grid-cols-2", compact ? "gap-2 sm:gap-3 md:gap-4" : "gap-3 sm:gap-4")}>

@@ -124,8 +124,8 @@ function QuizPage() {
             photoFill={false}
             compact={true}
             waitForContent={true}
-            
             extraSubline="Free in-home estimate • San Antonio • (210) 702-0753"
+            trustLine="Family-owned · A+ BBB · Licensed"
           />
         </div>
 
