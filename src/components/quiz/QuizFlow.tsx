@@ -28,6 +28,7 @@ interface QuizFlowProps {
   waitForContent?: boolean;
   labelOverrides?: Record<string, string>;
   extraSubline?: string;
+  trustLine?: string;
 }
 
 export function QuizFlow({
@@ -41,6 +42,7 @@ export function QuizFlow({
   waitForContent = false,
   labelOverrides = {},
   extraSubline,
+  trustLine,
 }: QuizFlowProps) {
   const [step, setStep] = useState(1);
   const [cueDismissed, setCueDismissed] = useState(false);
