@@ -24,6 +24,8 @@ interface QuizFlowProps {
   showStartCue?: boolean;
   photoFill?: boolean;
   compact?: boolean;
+  /** When true, never render default/old wording — show a blank card until the saved admin content is loaded. */
+  waitForContent?: boolean;
   labelOverrides?: Record<string, string>;
   extraSubline?: string;
 }
@@ -36,6 +38,7 @@ export function QuizFlow({
   showStartCue = true,
   photoFill = false,
   compact = false,
+  waitForContent = false,
   labelOverrides = {},
   extraSubline,
 }: QuizFlowProps) {
@@ -54,7 +57,7 @@ export function QuizFlow({
     hasMountedRef.current = true;
   }, [step]);
   // All quiz steps, questions and photos are managed from /admin.
-  const quizConfig = useQuizConfig();
+  const { config: quizConfig, ready: quizContentReady } = useQuizConfig();
   const steps = quizConfig.steps;
   const totalSteps = steps.length;
 
