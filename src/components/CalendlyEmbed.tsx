@@ -49,6 +49,7 @@ export function CalendlyEmbed({
     }
     const mobileAlignmentTimers: number[] = [];
     let calendlyFrame: HTMLIFrameElement | null = null;
+    let detailsAlignmentStarted = false;
     const alignMobileDetails = () => {
       if (typeof window === "undefined" || window.innerWidth >= 640 || !compact) return;
 
@@ -59,8 +60,8 @@ export function CalendlyEmbed({
         // Give the complete invitee form enough room in the page instead of
         // translating/cropping it. The initial page scroll reveals the fields,
         // then normal page scrolling remains free in both directions.
-        calendlyFrame.style.height = "1100px";
-        calendlyFrame.style.minHeight = "1100px";
+        calendlyFrame.style.height = "1400px";
+        calendlyFrame.style.minHeight = "1400px";
         calendlyFrame.style.transform = "none";
       }
       mobileScrollTargetRef.current?.scrollIntoView({ block: "center", behavior: "smooth" });
@@ -69,18 +70,22 @@ export function CalendlyEmbed({
       if (typeof e.origin !== "string" || !e.origin.includes("calendly.com")) return;
       if (e.data?.event === "calendly.date_and_time_selected") {
         if (typeof window !== "undefined" && window.innerWidth < 640 && compact) {
-          // Calendly updates the iframe asynchronously. Re-apply the crop and
-          // page alignment after each likely render pass so it cannot reset.
-          const frame = hostRef.current?.querySelector("iframe");
-          if (frame) {
-            calendlyFrame = frame;
-            frame.onload = () => {
-              mobileAlignmentTimers.push(window.setTimeout(alignMobileDetails, 120));
-            };
+          if (detailsAlignmentStarted) return;
+          detailsAlignmentStarted = true;
+          calendlyFrame = hostRef.current?.querySelector("iframe") ?? null;
+          // Expand the already-mounted widget immediately, before Calendly's
+          // details view paints, so its internal transition never exposes a
+          // clipped or empty card.
+          setMobileDetailsSelected(true);
+          if (calendlyFrame) {
+            calendlyFrame.style.height = "1400px";
+            calendlyFrame.style.minHeight = "1400px";
+            calendlyFrame.style.transform = "none";
           }
-          // Calendly renders the invitee fields in two passes. Align once for
-          // each pass, then stop so the visitor can freely scroll the page.
-          [180, 700].forEach((delay) => {
+          // Keep the current calendar viewport stable while Calendly swaps in
+          // its already-preloaded details form. Then align twice and stop, so
+          // the visitor retains unrestricted page scrolling afterward.
+          [650, 1250].forEach((delay) => {
             mobileAlignmentTimers.push(window.setTimeout(alignMobileDetails, delay));
           });
         } else {
@@ -230,7 +235,7 @@ export function CalendlyEmbed({
         )}
         style={
           mobileDetailsSelected
-            ? { paddingBottom: "calc(3rem + env(safe-area-inset-bottom, 0px))" }
+            ? { paddingBottom: "calc(8rem + env(safe-area-inset-bottom, 0px))" }
             : undefined
         }
       >
@@ -243,7 +248,7 @@ export function CalendlyEmbed({
           style={{
             minWidth: "300px",
             height: mobileDetailsSelected
-              ? "1100px"
+              ? "1400px"
               : compact
                 ? "clamp(360px, 50dvh, 460px)"
                 : "clamp(460px, calc(100dvh - 260px), 600px)",
