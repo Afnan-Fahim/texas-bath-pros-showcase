@@ -914,6 +914,8 @@ function Gallery() {
   const galleryRef = useViewContentTracking("Bathroom Inspiration");
   const [activeIndex, setActiveIndex] = useState(0);
   const touchStartX = useRef<number | null>(null);
+  const activeImage = INSPIRATION_IMAGES[activeIndex] ?? INSPIRATION_IMAGES[0];
+  const activeAspect = activeImage.width / activeImage.height;
 
   const showPrevious = () => {
     setActiveIndex((current) => (current - 1 + INSPIRATION_IMAGES.length) % INSPIRATION_IMAGES.length);
