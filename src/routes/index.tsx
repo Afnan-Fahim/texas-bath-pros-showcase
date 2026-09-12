@@ -922,7 +922,7 @@ function Gallery() {
   };
 
   return (
-    <section ref={galleryRef} id="work" className="bg-secondary/40 py-8 md:py-16">
+    <section ref={galleryRef} id="work" className="scroll-mt-28 bg-secondary/40 py-8 md:scroll-mt-0 md:py-16">
       <div className="container-x">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-3xl leading-tight text-navy text-balance md:text-5xl">
