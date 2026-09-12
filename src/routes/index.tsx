@@ -1995,7 +1995,7 @@ function Index() {
         <WhyUs />
         <Process />
         <FAQ />
-        <Testimonials />
+        
       </main>
       <FinancingBanner onBook={scrollToBook} />
       <Footer />
