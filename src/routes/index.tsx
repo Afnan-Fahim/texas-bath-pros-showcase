@@ -956,14 +956,14 @@ function Gallery() {
             style={{ transform: `translateX(-${activeIndex * 100}%)` }}
           >
             {INSPIRATION_IMAGES.map((image, index) => (
-              <div key={image.src} className="grid h-full w-full shrink-0 place-items-center bg-card">
+              <div key={image.src} className="relative h-full min-h-0 w-full shrink-0 bg-card">
                 <OptimizedImage
                   src={image.src}
                   alt={image.alt}
                   width={index > 4 ? 1368 : 768}
                   height={index > 4 ? 768 : 1152}
                   sizes="(min-width: 1024px) 896px, 100vw"
-                  className="h-full w-full object-contain"
+                  className="absolute inset-0 h-full w-full object-contain"
                 />
               </div>
             ))}
