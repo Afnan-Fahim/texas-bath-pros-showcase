@@ -23,6 +23,7 @@ import {
   Ruler,
   ShowerHead,
   Mail,
+  Image as ImageIcon,
 } from "lucide-react";
 import logoImg from "@/assets/logo-header.webp";
 import logoFooterImg from "@/assets/logo-footer.webp";
@@ -65,21 +66,10 @@ import { LazyMount } from "@/components/LazyMount";
 import { OptimizedImage } from "@/components/OptimizedImage";
 
 import heroShower from "@/assets/hero-shower.avif";
-import afterSubway from "@/assets/after-subway.avif";
-import afterSubway2 from "@/assets/after-subway-2.avif";
-import afterSubway3 from "@/assets/after-subway-3.avif";
-import afterMarble from "@/assets/after-marble.avif";
-import afterVenatino from "@/assets/after-venatino.avif";
-import afterModern from "@/assets/after-modern.avif";
-import afterModern2 from "@/assets/after-modern-2.avif";
 import offerTeachers from "@/assets/offer-teachers-first-responders.avif";
 import offerMilitary from "@/assets/offer-military-veterans.avif";
 import offerSeniors from "@/assets/offer-seniors.avif";
 import offerSummer from "@/assets/offer-summer-sale.avif";
-import beforeBeige from "@/assets/before-beige.avif";
-import beforeFiberglass from "@/assets/before-fiberglass.avif";
-import beforePink from "@/assets/before-pink.avif";
-import beforeWhiteTile from "@/assets/before-white-tile.avif";
 
 import {
   captureAttribution,
@@ -337,7 +327,7 @@ function Navbar({ onBook, onContact, forceHidden = false }: { onBook: () => void
   const isHidden = (forceHidden || hidden) && !open;
 
   const links = [
-    { href: "#work", label: "Our Work" },
+    { href: "#work", label: "Inspiration" },
     { href: "#offers", label: "Offers" },
     { href: "#why", label: "Why Us" },
     { href: "#process", label: "The Process" },
@@ -483,7 +473,7 @@ function Hero({ onBook }: { onBook: () => void }) {
                 variant="outline"
                 className="border-navy/25 text-navy hover:bg-navy/5 text-base h-12 px-6"
               >
-                See Our Transformations
+                Browse Inspiration
               </Button>
             </a>
           </div>
@@ -729,108 +719,6 @@ function HeroVideo() {
   );
 }
 
-/* ---------------- BEFORE/AFTER REEL (auto-play) ---------------- */
-const REEL_PAIRS = [
-  { before: beforeFiberglass, after: afterMarble, label: "Fiberglass → Marble" },
-  { before: beforePink, after: afterSubway, label: "Dated Tile → Modern Subway" },
-  { before: beforeBeige, after: afterVenatino, label: "Beige Tub → Venatino Walk-In" },
-  { before: beforeWhiteTile, after: afterSubway2, label: "Tired Tile → Bright White Subway" },
-];
-
-function BeforeAfterReel() {
-  const [i, setI] = useState(0);
-  const [phase, setPhase] = useState<"before" | "after">("before");
-  useEffect(() => {
-    const t = setInterval(() => {
-      setPhase((p) => {
-        if (p === "before") return "after";
-        setI((n) => (n + 1) % REEL_PAIRS.length);
-        return "before";
-      });
-    }, 2400);
-    return () => clearInterval(t);
-  }, []);
-  const pair = REEL_PAIRS[i];
-  return (
-    <div className="relative overflow-hidden rounded-2xl shadow-elegant ring-1 ring-black/5 aspect-[4/3] bg-navy">
-      {REEL_PAIRS.map((p, idx) => (
-        <div
-          key={idx}
-          className={cn(
-            "absolute inset-0 transition-opacity duration-700",
-            idx === i ? "opacity-100" : "opacity-0",
-          )}
-        >
-          <img
-            src={p.before}
-            alt={`${p.label} — before`}
-            loading="lazy"
-            decoding="async"
-            width={1200}
-            height={900}
-            className={cn(
-              "absolute inset-0 h-full w-full object-cover transition-opacity duration-700",
-              idx === i && phase === "before" ? "opacity-100" : "opacity-0",
-            )}
-          />
-          <img
-            src={p.after}
-            alt={`${p.label} — after`}
-            loading="lazy"
-            decoding="async"
-            width={1200}
-            height={900}
-            className={cn(
-              "absolute inset-0 h-full w-full object-cover transition-opacity duration-700",
-              idx === i && phase === "after" ? "opacity-100" : "opacity-0",
-            )}
-          />
-        </div>
-      ))}
-      {/* corner label */}
-      <div className="absolute left-4 top-4 rounded-full bg-black/60 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white backdrop-blur">
-        {phase === "before" ? "Before" : "After"}
-      </div>
-      <div className="absolute right-4 top-4 rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold text-navy shadow">
-        {pair.label}
-      </div>
-      {/* pricing overlay */}
-      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/50 to-transparent p-5 md:p-6 text-white">
-        <div className="flex items-end justify-between gap-4 flex-wrap">
-          <div>
-            <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-teal-foreground/90 text-white/80">
-              Acrylic Shower Remodel
-            </div>
-            <div className="mt-1 font-display text-2xl md:text-3xl font-bold leading-tight">
-              Starting at <span className="text-gold">$8,477</span>
-            </div>
-            <div className="mt-1 text-xs md:text-sm text-white/80">
-              Full walk-in conversion • Installed in as little as 1 day
-            </div>
-          </div>
-          <ul className="grid grid-cols-1 gap-1 text-xs md:text-sm text-white/90">
-            <li className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-teal" /> Lifetime warranty</li>
-            <li className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-teal" /> Mold Resistant</li>
-            <li className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-teal" /> $0 down financing</li>
-          </ul>
-        </div>
-        {/* progress dots */}
-        <div className="mt-4 flex items-center gap-1.5">
-          {REEL_PAIRS.map((_, idx) => (
-            <span
-              key={idx}
-              className={cn(
-                "h-1 rounded-full transition-all",
-                idx === i ? "w-8 bg-gold" : "w-3 bg-white/40",
-              )}
-            />
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
 /* ---------------- TRUST BAR ---------------- */
 function TrustBar() {
   const items = [
@@ -998,259 +886,62 @@ function AboutBlock() {
   );
 }
 
-/* ---------------- GALLERY ---------------- */
-type GalleryItem = {
-  id: string;
-  category: "subway" | "marble" | "modern";
-  after: string;
-  before?: string;
-  title: string;
-  location: string;
+/* ---------------- INSPIRATION GALLERY ---------------- */
+type InspirationImage = {
+  src: string;
+  alt: string;
 };
 
-const GALLERY: GalleryItem[] = [
-  {
-    id: "1",
-    category: "marble",
-    before: beforeBeige,
-    after: heroShower,
-    title: "Tub-to-Shower Conversion",
-    location: "Alamo Heights",
-  },
-  {
-    id: "2",
-    category: "subway",
-    before: beforeFiberglass,
-    after: afterSubway,
-    title: "Full Shower Update",
-    location: "Stone Oak",
-  },
-  {
-    id: "3",
-    category: "marble",
-    before: beforePink,
-    after: afterMarble,
-    title: "Master Bath Remodel",
-    location: "Terrell Hills",
-  },
-  {
-    id: "5",
-    category: "marble",
-    after: afterVenatino,
-    title: "Walk-In Shower with Bench",
-    location: "Helotes",
-  },
-  {
-    id: "9",
-    category: "subway",
-    after: afterSubway2,
-    title: "Bright White Subway Conversion",
-    location: "Alamo Ranch",
-  },
-  {
-    id: "10",
-    category: "subway",
-    after: afterSubway3,
-    title: "Vertical Subway with Bench",
-    location: "Schertz",
-  },
-  {
-    id: "11",
-    category: "modern",
-    before: beforeWhiteTile,
-    after: afterModern,
-    title: "Modern Minimal Walk-In",
-    location: "Boerne",
-  },
-  {
-    id: "12",
-    category: "modern",
-    after: afterModern2,
-    title: "Seamless White Shower Conversion",
-    location: "Converse",
-  },
-];
-
-const FILTERS = [
-  { id: "all", label: "All" },
-  { id: "subway", label: "Subway Tile" },
-  { id: "marble", label: "Marble & Stone" },
-  { id: "modern", label: "Modern Minimal" },
-] as const;
-
+// Add approved inspiration photos here as they are supplied.
+const INSPIRATION_IMAGES: InspirationImage[] = [];
+const GALLERY_SLOT_COUNT = 6;
 
 function Gallery() {
-  const galleryRef = useViewContentTracking("Bathroom Transformations");
-  const [filter, setFilter] = useState<(typeof FILTERS)[number]["id"]>("all");
-  const [activeIdx, setActiveIdx] = useState<number | null>(null);
-  const [sliderPos, setSliderPos] = useState(50);
-
-  const items = useMemo(
-    () => (filter === "all" ? GALLERY : GALLERY.filter((g) => g.category === filter)),
-    [filter],
-  );
-
-  const active = activeIdx !== null ? items[activeIdx] : null;
-
-  useEffect(() => {
-    setSliderPos(50);
-  }, [activeIdx]);
-
-  const next = () =>
-    setActiveIdx((i) => (i === null ? 0 : (i + 1) % items.length));
-  const prev = () =>
-    setActiveIdx((i) => (i === null ? 0 : (i - 1 + items.length) % items.length));
+  const galleryRef = useViewContentTracking("Bathroom Inspiration");
 
   return (
-    <section ref={galleryRef} id="work" className="pt-8 pb-12 md:pt-12 md:pb-16 bg-gradient-to-b from-secondary/40 to-background">
+    <section ref={galleryRef} id="work" className="bg-secondary/40 py-12 md:py-16">
       <div className="container-x">
-        <div className="max-w-3xl mx-auto text-center">
-          <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-navy">
-            Our Work
-          </span>
-          <h2 className="mt-4 text-3xl md:text-5xl text-navy text-balance">
-            See the Difference — Real San Antonio Bathroom Transformations
+        <div className="mx-auto max-w-3xl text-center">
+          <h2 className="text-3xl text-navy text-balance md:text-5xl">
+            What your bathroom could look like
           </h2>
-          <p className="mt-4 text-lg text-muted-foreground text-balance">
-            Every project starts with a Free Estimate. Here's what we deliver.
+          <p className="mt-4 text-base text-muted-foreground text-balance md:text-lg">
+            Real styles we install. Tap through, then book a free estimate.
           </p>
         </div>
 
-        <div className="mt-10 mx-auto max-w-3xl">
-          <BeforeAfterReel />
-        </div>
+        <div className="mt-9 grid grid-cols-1 gap-4 min-[420px]:grid-cols-2 lg:grid-cols-3 md:gap-6">
+          {Array.from({ length: GALLERY_SLOT_COUNT }, (_, index) => {
+            const image = INSPIRATION_IMAGES[index];
 
-        <div className="mt-8 flex flex-wrap justify-center gap-2">
-          {FILTERS.map((f) => (
-            <button
-              key={f.id}
-              onClick={() => setFilter(f.id)}
-              className={cn(
-                "rounded-full px-4 py-2 text-sm font-medium transition-colors border",
-                filter === f.id
-                  ? "bg-navy text-navy-foreground border-navy"
-                  : "bg-card text-foreground border-border hover:border-navy/40",
-              )}
-            >
-              {f.label}
-            </button>
-          ))}
-        </div>
-
-        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {items.map((item, idx) => (
-            <button
-              key={item.id}
-              onClick={() => setActiveIdx(idx)}
-              className="group relative overflow-hidden rounded-2xl bg-card shadow-card ring-1 ring-border text-left"
-            >
-              <div className="relative aspect-[4/5] overflow-hidden">
-                <OptimizedImage
-                  src={item.after}
-                  alt={`${item.title} — ${item.location}`}
-                  width={1200}
-                  height={1200}
-                  sizes="(min-width: 1024px) 380px, (min-width: 640px) 45vw, 92vw"
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-
-                {item.before && (
-                  <span className="absolute left-3 top-3 rounded-full bg-navy/90 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-navy-foreground">
-                    Before & After
-                  </span>
-                )}
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy/85 via-navy/40 to-transparent p-4">
-                  <div className="text-navy-foreground">
-                    <div className="text-sm font-semibold">{item.title}</div>
-                    <div className="text-xs opacity-90">{item.location}</div>
-                  </div>
-                </div>
-              </div>
-            </button>
-          ))}
-        </div>
-
-        <p className="mt-10 text-center text-sm text-muted-foreground max-w-2xl mx-auto">
-          All showers feature durable, leak-resistant premium acrylic or Onyx shower systems — Professionally Installed.
-        </p>
-      </div>
-
-      <Dialog open={active !== null} onOpenChange={(o) => !o && setActiveIdx(null)}>
-        <DialogContent className="max-w-5xl p-0 overflow-hidden bg-background">
-          <DialogTitle className="sr-only">
-            {active ? `${active.title} — ${active.location}` : "Project photo"}
-          </DialogTitle>
-          {active && (
-            <div className="relative">
-              {active.before ? (
-                <div
-                  className="relative aspect-[16/10] select-none"
-                  onMouseMove={(e) => {
-                    const r = e.currentTarget.getBoundingClientRect();
-                    setSliderPos(Math.max(0, Math.min(100, ((e.clientX - r.left) / r.width) * 100)));
-                  }}
-                  onTouchMove={(e) => {
-                    const r = e.currentTarget.getBoundingClientRect();
-                    const x = e.touches[0].clientX - r.left;
-                    setSliderPos(Math.max(0, Math.min(100, (x / r.width) * 100)));
-                  }}
-                >
-                  <img src={active.after} alt="After" decoding="async" width={1200} height={1200} className="absolute inset-0 h-full w-full object-cover" />
-                  <div
-                    className="absolute inset-0 overflow-hidden"
-                    style={{ width: `${sliderPos}%` }}
-                  >
-                    <img
-                      src={active.before}
-                      alt="Before"
-                      decoding="async"
-                      width={1200}
-                      height={1200}
-                      className="absolute inset-0 h-full object-cover"
-                      style={{ width: `${100 / (sliderPos / 100 || 0.001)}%`, maxWidth: "none" }}
-                    />
-                  </div>
-                  <div
-                    className="absolute inset-y-0 w-0.5 bg-white shadow-lg"
-                    style={{ left: `${sliderPos}%` }}
-                  >
-                    <div className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 grid h-10 w-10 place-items-center rounded-full bg-white text-navy shadow-lg">
-                      <ChevronLeft className="h-4 w-4" />
+            return (
+              <div
+                key={image?.src ?? `gallery-slot-${index + 1}`}
+                className="overflow-hidden rounded-lg border border-border bg-card shadow-card"
+              >
+                {image ? (
+                  <OptimizedImage
+                    src={image.src}
+                    alt={image.alt}
+                    width={1200}
+                    height={1500}
+                    sizes="(min-width: 1024px) 30vw, (min-width: 420px) 48vw, 100vw"
+                    className="aspect-[4/5] h-auto w-full object-contain"
+                  />
+                ) : (
+                  <div className="grid aspect-[4/5] place-items-center bg-muted/60" aria-label="Gallery photo coming soon">
+                    <div className="flex flex-col items-center gap-3 text-muted-foreground/65">
+                      <ImageIcon className="h-7 w-7" strokeWidth={1.5} aria-hidden="true" />
+                      <span className="text-xs font-medium">Inspiration photo coming soon</span>
                     </div>
                   </div>
-                  <span className="absolute left-4 top-4 rounded-full bg-black/70 px-3 py-1 text-xs font-bold text-white">
-                    BEFORE
-                  </span>
-                  <span className="absolute right-4 top-4 rounded-full bg-navy px-3 py-1 text-xs font-bold text-navy-foreground">
-                    AFTER
-                  </span>
-                </div>
-              ) : (
-                <img src={active.after} alt={active.title} decoding="async" width={1200} height={1200} className="w-full h-auto" />
-              )}
-              <div className="flex items-center justify-between p-5 border-t border-border">
-                <div>
-                  <div className="font-display text-lg font-semibold text-navy">{active.title}</div>
-                  <div className="text-sm text-muted-foreground">{active.location}</div>
-                </div>
-                <div className="flex gap-2">
-                  <Button variant="outline" size="icon" onClick={prev}>
-                    <ChevronLeft className="h-4 w-4" />
-                  </Button>
-                  <Button variant="outline" size="icon" onClick={next}>
-                    <ChevronRight className="h-4 w-4" />
-                  </Button>
-                </div>
+                )}
               </div>
-              {active.before && (
-                <p className="px-5 pb-5 text-xs text-muted-foreground">
-                  Drag across the image to compare before and after.
-                </p>
-              )}
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
+            );
+          })}
+        </div>
+      </div>
     </section>
   );
 }
