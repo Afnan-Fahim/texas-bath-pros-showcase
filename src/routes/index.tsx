@@ -922,7 +922,7 @@ function Gallery() {
   };
 
   return (
-    <section ref={galleryRef} id="work" className="scroll-mt-28 bg-secondary/40 py-8 md:scroll-mt-0 md:py-16">
+    <section ref={galleryRef} id="work" className="scroll-mt-28 bg-secondary/40 py-7 md:scroll-mt-0 md:py-10">
       <div className="container-x">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-3xl leading-tight text-navy text-balance md:text-5xl">
@@ -935,8 +935,8 @@ function Gallery() {
 
         <div
           className={cn(
-            "relative mx-auto mt-6 max-w-4xl touch-pan-y overflow-hidden rounded-lg border border-border bg-card shadow-card md:mt-9",
-            "aspect-[4/3] md:aspect-[16/10] max-h-[55vh] md:max-h-[70vh]",
+            "relative left-1/2 mt-5 h-[min(75vw,48dvh)] w-[calc(100vw-1rem)] max-w-4xl -translate-x-1/2 touch-pan-y overflow-hidden rounded-lg border border-border bg-card shadow-card",
+            "md:left-auto md:mx-auto md:mt-6 md:h-[min(58vw,58dvh)] md:max-h-[460px] md:w-full md:translate-x-0",
           )}
           onTouchStart={(event) => {
             touchStartX.current = event.touches[0]?.clientX ?? null;
@@ -952,7 +952,7 @@ function Gallery() {
           }}
         >
           <div
-            className="flex transition-transform duration-500 ease-out motion-reduce:transition-none"
+            className="flex h-full transition-transform duration-500 ease-out motion-reduce:transition-none"
             style={{ transform: `translateX(-${activeIndex * 100}%)` }}
           >
             {INSPIRATION_IMAGES.map((image, index) => (
