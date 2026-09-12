@@ -901,13 +901,13 @@ type InspirationImage = {
 };
 
 const INSPIRATION_IMAGES: InspirationImage[] = [
-  { src: inspirationGlacier.url, alt: "Glacier Ice walk-in shower inspiration", width: 768, height: 1152 },
-  { src: inspirationTravertine.url, alt: "Bianco Travertine walk-in shower inspiration", width: 768, height: 1152 },
-  { src: inspirationMarble.url, alt: "White marble walk-in shower inspiration", width: 768, height: 1152 },
-  { src: inspirationGray.url, alt: "Gray stone walk-in shower inspiration", width: 768, height: 1152 },
-  { src: inspirationTub.url, alt: "White freestanding bathtub inspiration", width: 768, height: 1152 },
-  { src: inspirationVersailles.url, alt: "Versailles acrylic wall system inspiration", width: 1368, height: 768 },
-  { src: inspirationHorizon.url, alt: "Horizon Beige acrylic wall system inspiration", width: 1368, height: 768 },
+  { src: inspirationGlacier.url, alt: "Glacier Ice walk-in shower inspiration", width: 1152, height: 1712 },
+  { src: inspirationTravertine.url, alt: "Bianco Travertine walk-in shower inspiration", width: 1152, height: 1712 },
+  { src: inspirationMarble.url, alt: "White marble walk-in shower inspiration", width: 1152, height: 1712 },
+  { src: inspirationGray.url, alt: "Gray stone walk-in shower inspiration", width: 1152, height: 1712 },
+  { src: inspirationTub.url, alt: "White freestanding bathtub inspiration", width: 1152, height: 1712 },
+  { src: inspirationVersailles.url, alt: "Versailles acrylic wall system inspiration", width: 1792, height: 1008 },
+  { src: inspirationHorizon.url, alt: "Horizon Beige acrylic wall system inspiration", width: 1792, height: 1008 },
 ];
 
 function Gallery() {
@@ -984,8 +984,8 @@ function Gallery() {
                   <OptimizedImage
                     src={image.src}
                     alt={image.alt}
-                    width={index > 4 ? 1368 : 768}
-                    height={index > 4 ? 768 : 1152}
+                     width={image.width}
+                     height={image.height}
                     sizes="(min-width: 1024px) 896px, 100vw"
                     className="absolute inset-0 h-full w-full object-contain"
                   />
