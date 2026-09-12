@@ -23,13 +23,19 @@ import {
   Ruler,
   ShowerHead,
   Mail,
-  Image as ImageIcon,
 } from "lucide-react";
 import logoImg from "@/assets/logo-header.webp";
 import logoFooterImg from "@/assets/logo-footer.webp";
 import aboutBgAsset from "@/assets/about-bg.jpg.asset.json";
 
 import heroPoster from "@/assets/hero-video-poster.avif";
+import inspirationGlacier from "@/assets/inspiration/grok-image-9cfd268e-f2e2-4178-95e4-5919f5cb5ab1-2.jpg.asset.json";
+import inspirationTravertine from "@/assets/inspiration/788641034_122106367562588540_4141436483953783347_n-2.jpg.asset.json";
+import inspirationMarble from "@/assets/inspiration/787726868_122106369626588540_9222586880756702135_n-2.jpg.asset.json";
+import inspirationGray from "@/assets/inspiration/798047077_122106977966588540_5958046283204508744_n-2.jpg.asset.json";
+import inspirationTub from "@/assets/inspiration/802964770_122107069166588540_8048500090487694760_n-2.jpg.asset.json";
+import inspirationVersailles from "@/assets/inspiration/grok-image-b484baec-a7f9-4504-bcc2-1d7229047ab0_1-2.jpg.asset.json";
+import inspirationHorizon from "@/assets/inspiration/grok-image-8e98888b-4785-4e9b-a498-bc6bea0d7a1f-2.jpg.asset.json";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -892,12 +898,28 @@ type InspirationImage = {
   alt: string;
 };
 
-// Add approved inspiration photos here as they are supplied.
-const INSPIRATION_IMAGES: InspirationImage[] = [];
-const GALLERY_SLOT_COUNT = 6;
+const INSPIRATION_IMAGES: InspirationImage[] = [
+  { src: inspirationGlacier.url, alt: "Glacier Ice walk-in shower inspiration" },
+  { src: inspirationTravertine.url, alt: "Bianco Travertine walk-in shower inspiration" },
+  { src: inspirationMarble.url, alt: "White marble walk-in shower inspiration" },
+  { src: inspirationGray.url, alt: "Gray stone walk-in shower inspiration" },
+  { src: inspirationTub.url, alt: "White freestanding bathtub inspiration" },
+  { src: inspirationVersailles.url, alt: "Versailles acrylic wall system inspiration" },
+  { src: inspirationHorizon.url, alt: "Horizon Beige acrylic wall system inspiration" },
+];
 
 function Gallery() {
   const galleryRef = useViewContentTracking("Bathroom Inspiration");
+  const [activeIndex, setActiveIndex] = useState(0);
+  const touchStartX = useRef<number | null>(null);
+
+  const showPrevious = () => {
+    setActiveIndex((current) => (current - 1 + INSPIRATION_IMAGES.length) % INSPIRATION_IMAGES.length);
+  };
+
+  const showNext = () => {
+    setActiveIndex((current) => (current + 1) % INSPIRATION_IMAGES.length);
+  };
 
   return (
     <section ref={galleryRef} id="work" className="bg-secondary/40 py-12 md:py-16">
@@ -911,35 +933,75 @@ function Gallery() {
           </p>
         </div>
 
-        <div className="mt-9 grid grid-cols-1 gap-4 min-[420px]:grid-cols-2 lg:grid-cols-3 md:gap-6">
-          {Array.from({ length: GALLERY_SLOT_COUNT }, (_, index) => {
-            const image = INSPIRATION_IMAGES[index];
-
-            return (
-              <div
-                key={image?.src ?? `gallery-slot-${index + 1}`}
-                className="overflow-hidden rounded-lg border border-border bg-card shadow-card"
-              >
-                {image ? (
-                  <OptimizedImage
-                    src={image.src}
-                    alt={image.alt}
-                    width={1200}
-                    height={1500}
-                    sizes="(min-width: 1024px) 30vw, (min-width: 420px) 48vw, 100vw"
-                    className="aspect-[4/5] h-auto w-full object-contain"
-                  />
-                ) : (
-                  <div className="grid aspect-[4/5] place-items-center bg-muted/60" aria-label="Gallery photo coming soon">
-                    <div className="flex flex-col items-center gap-3 text-muted-foreground/65">
-                      <ImageIcon className="h-7 w-7" strokeWidth={1.5} aria-hidden="true" />
-                      <span className="text-xs font-medium">Inspiration photo coming soon</span>
-                    </div>
-                  </div>
-                )}
+        <div
+          className="relative mx-auto mt-9 max-w-4xl overflow-hidden rounded-lg border border-border bg-card shadow-card"
+          onTouchStart={(event) => {
+            touchStartX.current = event.touches[0]?.clientX ?? null;
+          }}
+          onTouchEnd={(event) => {
+            if (touchStartX.current === null) return;
+            const endX = event.changedTouches[0]?.clientX ?? touchStartX.current;
+            const distance = endX - touchStartX.current;
+            touchStartX.current = null;
+            if (Math.abs(distance) < 45) return;
+            if (distance > 0) showPrevious();
+            else showNext();
+          }}
+        >
+          <div
+            className="flex transition-transform duration-500 ease-out motion-reduce:transition-none"
+            style={{ transform: `translateX(-${activeIndex * 100}%)` }}
+          >
+            {INSPIRATION_IMAGES.map((image, index) => (
+              <div key={image.src} className="grid aspect-[4/5] w-full shrink-0 place-items-center bg-card md:aspect-[16/10]">
+                <OptimizedImage
+                  src={image.src}
+                  alt={image.alt}
+                  width={index > 4 ? 1368 : 768}
+                  height={index > 4 ? 768 : 1152}
+                  sizes="(min-width: 1024px) 896px, 100vw"
+                  className="h-full w-full object-contain"
+                />
               </div>
-            );
-          })}
+            ))}
+          </div>
+
+          <Button
+            type="button"
+            variant="outline"
+            size="icon"
+            onClick={showPrevious}
+            aria-label="Previous inspiration photo"
+            className="absolute left-3 top-1/2 h-10 w-10 -translate-y-1/2 rounded-full border-border bg-background/90 text-navy shadow-card hover:bg-background sm:left-5 sm:h-11 sm:w-11"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="icon"
+            onClick={showNext}
+            aria-label="Next inspiration photo"
+            className="absolute right-3 top-1/2 h-10 w-10 -translate-y-1/2 rounded-full border-border bg-background/90 text-navy shadow-card hover:bg-background sm:right-5 sm:h-11 sm:w-11"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </Button>
+        </div>
+
+        <div className="mt-5 flex justify-center gap-2" aria-label="Choose an inspiration photo">
+          {INSPIRATION_IMAGES.map((image, index) => (
+            <button
+              key={image.src}
+              type="button"
+              onClick={() => setActiveIndex(index)}
+              aria-label={`Show photo ${index + 1}`}
+              aria-current={activeIndex === index ? "true" : undefined}
+              className={cn(
+                "h-2.5 rounded-full transition-all duration-300",
+                activeIndex === index ? "w-7 bg-navy" : "w-2.5 bg-navy/25 hover:bg-navy/45",
+              )}
+            />
+          ))}
         </div>
       </div>
     </section>
