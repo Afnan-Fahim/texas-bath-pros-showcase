@@ -939,63 +939,68 @@ function Gallery() {
 
         <div
           className={cn(
-            "relative mx-auto mt-5 w-[calc(100vw-1rem)] touch-pan-y overflow-hidden rounded-lg border border-border bg-card shadow-card transition-[width] duration-300",
+            "mx-auto mt-5 flex w-full items-center justify-center gap-1 px-1 sm:gap-2 sm:px-2 md:gap-3 md:px-3",
             "[--gallery-h:min(100vw,60dvh)] md:mt-6 md:[--gallery-h:min(58dvh,460px)]",
           )}
-          style={{
-            aspectRatio: `${activeImage.width} / ${activeImage.height}`,
-            width: `min(100%, calc(var(--gallery-h) * ${activeAspect}))`,
-            maxWidth: "56rem",
-            maxHeight: "var(--gallery-h)",
-          }}
-          onTouchStart={(event) => {
-            touchStartX.current = event.touches[0]?.clientX ?? null;
-          }}
-          onTouchEnd={(event) => {
-            if (touchStartX.current === null) return;
-            const endX = event.changedTouches[0]?.clientX ?? touchStartX.current;
-            const distance = endX - touchStartX.current;
-            touchStartX.current = null;
-            if (Math.abs(distance) < 45) return;
-            if (distance > 0) showPrevious();
-            else showNext();
-          }}
         >
-          <div
-            className="flex h-full transition-transform duration-500 ease-out motion-reduce:transition-none"
-            style={{ transform: `translateX(-${activeIndex * 100}%)` }}
-          >
-            {INSPIRATION_IMAGES.map((image, index) => (
-              <div key={image.src} className="relative h-full min-h-0 w-full shrink-0 bg-card">
-                <OptimizedImage
-                  src={image.src}
-                  alt={image.alt}
-                  width={index > 4 ? 1368 : 768}
-                  height={index > 4 ? 768 : 1152}
-                  sizes="(min-width: 1024px) 896px, 100vw"
-                  className="absolute inset-0 h-full w-full object-contain"
-                />
-              </div>
-            ))}
-          </div>
-
           <Button
             type="button"
             variant="outline"
             size="icon"
             onClick={showPrevious}
             aria-label="Previous inspiration photo"
-            className="absolute left-2 top-1/2 h-12 w-12 -translate-y-1/2 rounded-full border-border bg-background/90 text-navy shadow-card hover:bg-background sm:left-5 sm:h-11 sm:w-11"
+            className="shrink-0 h-12 w-12 rounded-full border-border bg-background/90 text-navy shadow-card hover:bg-background sm:h-11 sm:w-11"
           >
             <ChevronLeft className="h-6 w-6 sm:h-5 sm:w-5" />
           </Button>
+
+          <div
+            className="touch-pan-y overflow-hidden rounded-lg border border-border bg-card shadow-card transition-[width] duration-300"
+            style={{
+              aspectRatio: `${activeImage.width} / ${activeImage.height}`,
+              width: `min(100%, calc(var(--gallery-h) * ${activeAspect}))`,
+              maxWidth: "56rem",
+              maxHeight: "var(--gallery-h)",
+            }}
+            onTouchStart={(event) => {
+              touchStartX.current = event.touches[0]?.clientX ?? null;
+            }}
+            onTouchEnd={(event) => {
+              if (touchStartX.current === null) return;
+              const endX = event.changedTouches[0]?.clientX ?? touchStartX.current;
+              const distance = endX - touchStartX.current;
+              touchStartX.current = null;
+              if (Math.abs(distance) < 45) return;
+              if (distance > 0) showPrevious();
+              else showNext();
+            }}
+          >
+            <div
+              className="flex h-full transition-transform duration-500 ease-out motion-reduce:transition-none"
+              style={{ transform: `translateX(-${activeIndex * 100}%)` }}
+            >
+              {INSPIRATION_IMAGES.map((image, index) => (
+                <div key={image.src} className="relative h-full min-h-0 w-full shrink-0 bg-card">
+                  <OptimizedImage
+                    src={image.src}
+                    alt={image.alt}
+                    width={index > 4 ? 1368 : 768}
+                    height={index > 4 ? 768 : 1152}
+                    sizes="(min-width: 1024px) 896px, 100vw"
+                    className="absolute inset-0 h-full w-full object-contain"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
           <Button
             type="button"
             variant="outline"
             size="icon"
             onClick={showNext}
             aria-label="Next inspiration photo"
-            className="absolute right-2 top-1/2 h-12 w-12 -translate-y-1/2 rounded-full border-border bg-background/90 text-navy shadow-card hover:bg-background sm:right-5 sm:h-11 sm:w-11"
+            className="shrink-0 h-12 w-12 rounded-full border-border bg-background/90 text-navy shadow-card hover:bg-background sm:h-11 sm:w-11"
           >
             <ChevronRight className="h-6 w-6 sm:h-5 sm:w-5" />
           </Button>
