@@ -939,9 +939,15 @@ function Gallery() {
 
         <div
           className={cn(
-            "relative left-1/2 mt-5 h-[min(75vw,48dvh)] w-[calc(100vw-1rem)] max-w-4xl -translate-x-1/2 touch-pan-y overflow-hidden rounded-lg border border-border bg-card shadow-card",
-            "md:left-auto md:mx-auto md:mt-6 md:h-[min(58vw,58dvh)] md:max-h-[460px] md:w-full md:translate-x-0",
+            "relative mx-auto mt-5 w-[calc(100vw-1rem)] touch-pan-y overflow-hidden rounded-lg border border-border bg-card shadow-card transition-[width] duration-300",
+            "[--gallery-h:min(100vw,60dvh)] md:mt-6 md:[--gallery-h:min(58dvh,460px)]",
           )}
+          style={{
+            aspectRatio: `${activeImage.width} / ${activeImage.height}`,
+            width: `min(100%, calc(var(--gallery-h) * ${activeAspect}))`,
+            maxWidth: "56rem",
+            maxHeight: "var(--gallery-h)",
+          }}
           onTouchStart={(event) => {
             touchStartX.current = event.touches[0]?.clientX ?? null;
           }}
