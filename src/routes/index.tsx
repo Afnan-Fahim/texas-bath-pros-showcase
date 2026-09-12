@@ -896,16 +896,18 @@ function AboutBlock() {
 type InspirationImage = {
   src: string;
   alt: string;
+  width: number;
+  height: number;
 };
 
 const INSPIRATION_IMAGES: InspirationImage[] = [
-  { src: inspirationGlacier.url, alt: "Glacier Ice walk-in shower inspiration" },
-  { src: inspirationTravertine.url, alt: "Bianco Travertine walk-in shower inspiration" },
-  { src: inspirationMarble.url, alt: "White marble walk-in shower inspiration" },
-  { src: inspirationGray.url, alt: "Gray stone walk-in shower inspiration" },
-  { src: inspirationTub.url, alt: "White freestanding bathtub inspiration" },
-  { src: inspirationVersailles.url, alt: "Versailles acrylic wall system inspiration" },
-  { src: inspirationHorizon.url, alt: "Horizon Beige acrylic wall system inspiration" },
+  { src: inspirationGlacier.url, alt: "Glacier Ice walk-in shower inspiration", width: 768, height: 1152 },
+  { src: inspirationTravertine.url, alt: "Bianco Travertine walk-in shower inspiration", width: 768, height: 1152 },
+  { src: inspirationMarble.url, alt: "White marble walk-in shower inspiration", width: 768, height: 1152 },
+  { src: inspirationGray.url, alt: "Gray stone walk-in shower inspiration", width: 768, height: 1152 },
+  { src: inspirationTub.url, alt: "White freestanding bathtub inspiration", width: 768, height: 1152 },
+  { src: inspirationVersailles.url, alt: "Versailles acrylic wall system inspiration", width: 1368, height: 768 },
+  { src: inspirationHorizon.url, alt: "Horizon Beige acrylic wall system inspiration", width: 1368, height: 768 },
 ];
 
 function Gallery() {
