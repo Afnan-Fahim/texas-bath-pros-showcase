@@ -1,4 +1,4 @@
-# San Antonio Shower Showcase
+# Texas Bath Solutions
 
 Build a modern, professional, high-converting, fully responsive single-page marketing website for www.TexasBathPros.com — a local family-owned bathroom remodeling company based in San Antonio, Texas.
 
