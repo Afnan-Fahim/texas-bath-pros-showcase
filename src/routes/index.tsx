@@ -922,19 +922,22 @@ function Gallery() {
   };
 
   return (
-    <section ref={galleryRef} id="work" className="bg-secondary/40 py-12 md:py-16">
+    <section ref={galleryRef} id="work" className="bg-secondary/40 py-8 md:py-16">
       <div className="container-x">
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-3xl text-navy text-balance md:text-5xl">
+          <h2 className="text-3xl leading-tight text-navy text-balance md:text-5xl">
             What your bathroom could look like
           </h2>
-          <p className="mt-4 text-base text-muted-foreground text-balance md:text-lg">
+          <p className="mt-3 text-base leading-relaxed text-muted-foreground text-balance md:mt-4 md:text-lg">
             Real styles we install. Tap through, then book a free estimate.
           </p>
         </div>
 
         <div
-          className="relative mx-auto mt-9 max-w-4xl overflow-hidden rounded-lg border border-border bg-card shadow-card"
+          className={cn(
+            "relative mx-auto mt-6 max-w-4xl touch-pan-y overflow-hidden rounded-lg border border-border bg-card shadow-card md:mt-9 md:aspect-[16/10]",
+            activeIndex <= 4 ? "aspect-[2/3]" : "aspect-[16/9]",
+          )}
           onTouchStart={(event) => {
             touchStartX.current = event.touches[0]?.clientX ?? null;
           }}
@@ -953,7 +956,7 @@ function Gallery() {
             style={{ transform: `translateX(-${activeIndex * 100}%)` }}
           >
             {INSPIRATION_IMAGES.map((image, index) => (
-              <div key={image.src} className="grid aspect-[4/5] w-full shrink-0 place-items-center bg-card md:aspect-[16/10]">
+              <div key={image.src} className="grid h-full w-full shrink-0 place-items-center bg-card">
                 <OptimizedImage
                   src={image.src}
                   alt={image.alt}
@@ -972,9 +975,9 @@ function Gallery() {
             size="icon"
             onClick={showPrevious}
             aria-label="Previous inspiration photo"
-            className="absolute left-3 top-1/2 h-10 w-10 -translate-y-1/2 rounded-full border-border bg-background/90 text-navy shadow-card hover:bg-background sm:left-5 sm:h-11 sm:w-11"
+            className="absolute left-2 top-1/2 h-12 w-12 -translate-y-1/2 rounded-full border-border bg-background/90 text-navy shadow-card hover:bg-background sm:left-5 sm:h-11 sm:w-11"
           >
-            <ChevronLeft className="h-5 w-5" />
+            <ChevronLeft className="h-6 w-6 sm:h-5 sm:w-5" />
           </Button>
           <Button
             type="button"
@@ -982,13 +985,13 @@ function Gallery() {
             size="icon"
             onClick={showNext}
             aria-label="Next inspiration photo"
-            className="absolute right-3 top-1/2 h-10 w-10 -translate-y-1/2 rounded-full border-border bg-background/90 text-navy shadow-card hover:bg-background sm:right-5 sm:h-11 sm:w-11"
+            className="absolute right-2 top-1/2 h-12 w-12 -translate-y-1/2 rounded-full border-border bg-background/90 text-navy shadow-card hover:bg-background sm:right-5 sm:h-11 sm:w-11"
           >
-            <ChevronRight className="h-5 w-5" />
+            <ChevronRight className="h-6 w-6 sm:h-5 sm:w-5" />
           </Button>
         </div>
 
-        <div className="mt-5 flex justify-center gap-2" aria-label="Choose an inspiration photo">
+        <div className="mt-3 flex justify-center gap-2 md:mt-5" aria-label="Choose an inspiration photo">
           {INSPIRATION_IMAGES.map((image, index) => (
             <button
               key={image.src}
@@ -997,8 +1000,8 @@ function Gallery() {
               aria-label={`Show photo ${index + 1}`}
               aria-current={activeIndex === index ? "true" : undefined}
               className={cn(
-                "h-2.5 rounded-full transition-all duration-300",
-                activeIndex === index ? "w-7 bg-navy" : "w-2.5 bg-navy/25 hover:bg-navy/45",
+                "h-3 rounded-full transition-all duration-300 md:h-2.5",
+                activeIndex === index ? "w-8 bg-navy md:w-7" : "w-3 bg-navy/25 hover:bg-navy/45 md:w-2.5",
               )}
             />
           ))}
