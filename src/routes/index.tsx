@@ -23,6 +23,7 @@ import {
   Ruler,
   ShowerHead,
   Mail,
+  Image as ImageIcon,
 } from "lucide-react";
 import logoImg from "@/assets/logo-header.webp";
 import logoFooterImg from "@/assets/logo-footer.webp";
@@ -65,21 +66,10 @@ import { LazyMount } from "@/components/LazyMount";
 import { OptimizedImage } from "@/components/OptimizedImage";
 
 import heroShower from "@/assets/hero-shower.avif";
-import afterSubway from "@/assets/after-subway.avif";
-import afterSubway2 from "@/assets/after-subway-2.avif";
-import afterSubway3 from "@/assets/after-subway-3.avif";
-import afterMarble from "@/assets/after-marble.avif";
-import afterVenatino from "@/assets/after-venatino.avif";
-import afterModern from "@/assets/after-modern.avif";
-import afterModern2 from "@/assets/after-modern-2.avif";
 import offerTeachers from "@/assets/offer-teachers-first-responders.avif";
 import offerMilitary from "@/assets/offer-military-veterans.avif";
 import offerSeniors from "@/assets/offer-seniors.avif";
 import offerSummer from "@/assets/offer-summer-sale.avif";
-import beforeBeige from "@/assets/before-beige.avif";
-import beforeFiberglass from "@/assets/before-fiberglass.avif";
-import beforePink from "@/assets/before-pink.avif";
-import beforeWhiteTile from "@/assets/before-white-tile.avif";
 
 import {
   captureAttribution,
@@ -337,7 +327,7 @@ function Navbar({ onBook, onContact, forceHidden = false }: { onBook: () => void
   const isHidden = (forceHidden || hidden) && !open;
 
   const links = [
-    { href: "#work", label: "Our Work" },
+    { href: "#work", label: "Inspiration" },
     { href: "#offers", label: "Offers" },
     { href: "#why", label: "Why Us" },
     { href: "#process", label: "The Process" },
@@ -483,7 +473,7 @@ function Hero({ onBook }: { onBook: () => void }) {
                 variant="outline"
                 className="border-navy/25 text-navy hover:bg-navy/5 text-base h-12 px-6"
               >
-                See Our Transformations
+                Browse Inspiration
               </Button>
             </a>
           </div>
