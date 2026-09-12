@@ -1377,9 +1377,6 @@ function Process() {
   );
 }
 
-/* ---------------- TESTIMONIALS ---------------- */
-}
-
 /* ---------------- BOOKING FORM ---------------- */
 function formatPhone(input: string) {
   const digits = input.replace(/\D/g, "").slice(0, 10);
