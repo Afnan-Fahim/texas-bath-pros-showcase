@@ -935,8 +935,8 @@ function Gallery() {
 
         <div
           className={cn(
-            "relative mx-auto mt-6 max-w-4xl touch-pan-y overflow-hidden rounded-lg border border-border bg-card shadow-card md:mt-9 md:aspect-[16/10]",
-            activeIndex <= 4 ? "aspect-[2/3]" : "aspect-[16/9]",
+            "relative mx-auto mt-6 max-w-4xl touch-pan-y overflow-hidden rounded-lg border border-border bg-card shadow-card md:mt-9",
+            "aspect-[4/3] md:aspect-[16/10] max-h-[55vh] md:max-h-[70vh]",
           )}
           onTouchStart={(event) => {
             touchStartX.current = event.touches[0]?.clientX ?? null;
