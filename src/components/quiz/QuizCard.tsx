@@ -29,43 +29,45 @@ export function QuizCard({ title, description, image, selected, onClick, fill = 
       )}
     >
       {image ? (
-        <div className={cn(
-          "relative flex w-full items-center justify-center overflow-hidden p-0",
-          fill ? "bg-transparent" : "bg-muted/30 group",
-          !fill && (isDense
-            ? "aspect-video"
-            : compact
-              ? "aspect-square"
-              : "aspect-video sm:aspect-[4/3]")
-        )}>
-          {/* Premium blurred background effect */}
-          <div
-            className={cn(
-              "absolute inset-0 blur-2xl opacity-50 bg-cover bg-center scale-110",
-              fill && "hidden"
-            )}
-            style={{ backgroundImage: `url(${image})` }}
-          />
-          <img
-            src={image}
-            alt={title}
-            className={cn(
-              "relative z-10 block w-full",
-              fill
-                ? "h-auto object-cover object-center"
-                : "h-full object-contain transition-transform duration-500 ease-out group-hover:scale-105"
-            )}
-            loading="eager"
-            decoding="sync"
-            onError={(e) => {
-              // Fallback if image fails to load
-              (e.target as HTMLImageElement).style.display = "none";
-            }}
-          />
-        </div>
+        compact || isDense ? (
+          // Compact /quiz rendering — unchanged
+          <div className={cn(
+            "relative flex w-full items-center justify-center overflow-hidden p-0 bg-muted/30 group",
+            isDense ? "aspect-video" : "aspect-square"
+          )}>
+            <div
+              className="absolute inset-0 blur-2xl opacity-50 bg-cover bg-center scale-110"
+              style={{ backgroundImage: `url(${image})` }}
+            />
+            <img
+              src={image}
+              alt={title}
+              className="relative z-10 block w-full h-full object-contain transition-transform duration-500 ease-out group-hover:scale-105"
+              loading="eager"
+              decoding="sync"
+              onError={(e) => {
+                (e.target as HTMLImageElement).style.display = "none";
+              }}
+            />
+          </div>
+        ) : (
+          // Homepage rendering: fixed 4:5 photo area, image fills it completely
+          <div className="relative w-full aspect-[4/5] overflow-hidden">
+            <img
+              src={image}
+              alt={title}
+              className="absolute inset-0 block w-full h-full object-cover object-center transition-transform duration-500 ease-out hover:scale-105"
+              loading="eager"
+              decoding="sync"
+              onError={(e) => {
+                (e.target as HTMLImageElement).style.display = "none";
+              }}
+            />
+          </div>
+        )
       ) : (
         // Neutral placeholder while the saved photo loads
-        <div className={cn("w-full bg-muted/40", isDense ? "aspect-video" : compact ? "aspect-square" : "aspect-video sm:aspect-[4/3]")} />
+        <div className={cn("w-full", isDense ? "aspect-video bg-muted/40" : compact ? "aspect-square bg-muted/40" : "aspect-[4/5] bg-muted/40")} />
       )}
       <div className={cn("w-full", isDense ? "p-1.5 md:p-2" : compact ? "p-2 md:p-3" : "p-3")}>
         <h3 className={cn("font-medium", isDense ? "text-xs sm:text-sm md:text-base" : compact ? "text-sm sm:text-base md:text-lg" : "text-base sm:text-lg")}>{title}</h3>
