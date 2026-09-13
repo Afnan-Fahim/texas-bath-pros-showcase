@@ -13,6 +13,7 @@ interface QuizCardProps {
   compact?: boolean;
   /** Even smaller rendering for later quiz steps with a 2x2 photo grid. */
   dense?: boolean;
+  stretchImage?: boolean;
 }
 
 export function QuizCard({
@@ -24,7 +25,7 @@ export function QuizCard({
   onClick,
   compact = false,
   dense = false,
-  fill = false,
+  stretchImage = false,
 }: QuizCardProps) {
   const isDense = compact && dense;
   const hasImage = !!image;
@@ -33,7 +34,6 @@ export function QuizCard({
       onClick={onClick}
       className={cn(
         "cursor-pointer rounded-xl border-2 overflow-hidden transition-colors duration-150 text-center flex flex-col",
-        fill && "md:h-full",
         "hover:border-primary/40 hover:shadow-lg hover:-translate-y-1 hover:scale-[1.02]",
         selected
           ? "border-primary bg-primary/5 shadow-[0_0_15px_rgba(var(--color-primary),0.15)] scale-[1.02]"
@@ -48,11 +48,11 @@ export function QuizCard({
           )}
         />
       ) : (
-        <div className={cn("w-full shrink-0 overflow-hidden", fill && "md:min-h-0 md:flex-1")}>
+        <div className={cn("w-full shrink-0 overflow-hidden", stretchImage && "flex-1 min-h-0")}>
           <img
             src={image}
             alt={title}
-            className={cn("block h-auto w-full", fill && "md:h-full md:object-fill")}
+            className={cn("block h-auto w-full", stretchImage && "h-full object-fill")}
             loading="eager"
             decoding="sync"
             onError={(e) => {
