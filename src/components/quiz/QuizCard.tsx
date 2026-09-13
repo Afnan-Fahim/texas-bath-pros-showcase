@@ -28,16 +28,23 @@ export function QuizCard({ title, description, image, selected, onClick, compact
       )}
     >
       {image && (
-        <img
-          src={image}
-          alt={title}
-          className="block h-auto w-full"
-          loading="eager"
-          decoding="sync"
-          onError={(e) => {
-            (e.target as HTMLImageElement).style.display = "none";
-          }}
-        />
+        <div
+          className={cn(
+            "w-full shrink-0 overflow-hidden bg-card",
+            isDense ? "aspect-square" : "aspect-[4/5]"
+          )}
+        >
+          <img
+            src={image}
+            alt={title}
+            className="h-full w-full object-fill"
+            loading="eager"
+            decoding="sync"
+            onError={(e) => {
+              (e.target as HTMLImageElement).style.display = "none";
+            }}
+          />
+        </div>
       )}
       <div className={cn("w-full mt-auto", isDense ? "p-1.5 md:p-2" : compact ? "p-2 md:p-3" : "p-3")}>
         <h3 className={cn("font-medium", isDense ? "text-xs sm:text-sm md:text-base" : compact ? "text-sm sm:text-base md:text-lg" : "text-base sm:text-lg")}>{title}</h3>
