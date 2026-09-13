@@ -63,6 +63,8 @@ export function QuizFlow({
   const steps = quizConfig.steps;
   const totalSteps = steps.length;
 
+  const isUnsureOption = (label: string) => /unsure|deciding|not sure/i.test(label);
+
   // Warm up the booking calendar only AFTER the first question has painted, so
   // Calendly never competes with the first screen on a slow ad-click load.
   useEffect(() => {
@@ -238,7 +240,8 @@ export function QuizFlow({
                 <div className={cn("grid grid-cols-2 items-stretch", compact ? "gap-2 sm:gap-3 md:gap-4" : "gap-3 sm:gap-4")}>
                   {stepConfig.options.map((opt, idx) => {
                     const optionLabel = labelOverrides[opt.id] ?? opt.label;
-                    return opt.image || opt.imagePending ? (
+                    const isUnsure = isUnsureOption(optionLabel);
+                    return (opt.image || opt.imagePending) && !isUnsure ? (
                       <QuizCard
                         key={opt.id}
                         index={idx}
