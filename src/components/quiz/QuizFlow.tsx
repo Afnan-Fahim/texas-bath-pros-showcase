@@ -208,7 +208,7 @@ export function QuizFlow({
               <button
                 onClick={handleBack}
                 disabled={currentStep === 1}
-                className={`text-sm font-medium transition-opacity ${currentStep === 1 ? "opacity-0" : "opacity-100 text-muted-foreground hover:text-foreground`}`}
+                className={`text-sm font-medium transition-opacity ${currentStep === 1 ? "opacity-0" : "opacity-100 text-muted-foreground hover:text-foreground"}`}
               >
                 ← Back
               </button>
