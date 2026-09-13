@@ -115,14 +115,14 @@ function QuizPage() {
         <img
           src={logoImg}
           alt="Texas Bath Solutions — Trusted Shower Experts"
-          className="relative z-20 h-12 w-auto translate-y-4 sm:h-14 sm:translate-y-6 md:h-16 md:translate-y-6"
+          className="relative z-20 h-12 w-auto translate-y-4 sm:h-14 sm:translate-y-6 md:h-14 md:translate-y-5"
           width={400}
           height={80}
           fetchPriority="high"
         />
       </header>
 
-      <main ref={stageRef} className="flex w-full flex-1 items-center justify-center px-4 sm:px-6 py-3 sm:py-5 relative">
+      <main ref={stageRef} className="flex w-full flex-1 items-center justify-center px-4 sm:px-6 py-3 sm:py-5 md:py-4 relative">
         <div className={showCalendly ? "hidden" : "contents"}>
           <QuizFlow
             onComplete={handleQuizComplete}
