@@ -35,7 +35,8 @@ export function QuizCard({ title, description, image, selected, onClick, fill = 
             ? "aspect-video"
             : compact
               ? "aspect-square"
-              : "aspect-video sm:aspect-[4/3]"
+              : "aspect-video sm:aspect-[4/3]",
+          !fill && !compact && "p-0"
         )}>
           {/* Premium blurred background effect */}
           <div
