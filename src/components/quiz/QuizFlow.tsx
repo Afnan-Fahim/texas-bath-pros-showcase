@@ -63,6 +63,8 @@ export function QuizFlow({
   const steps = quizConfig.steps;
   const totalSteps = steps.length;
 
+  const isUnsureOption = (label: string) => /unsure|deciding|not sure/i.test(label);
+
   // Warm up the booking calendar only AFTER the first question has painted, so
   // Calendly never competes with the first screen on a slow ad-click load.
   useEffect(() => {
