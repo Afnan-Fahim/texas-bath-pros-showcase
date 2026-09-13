@@ -21,7 +21,7 @@ export function QuizCard({ title, description, image, selected, onClick, fill = 
       onClick={onClick}
       className={cn(
         "cursor-pointer rounded-xl border-2 overflow-hidden transition-colors duration-150",
-        "flex flex-col items-center text-center",
+        "flex flex-col text-center",
         "hover:border-primary/40 hover:shadow-lg hover:-translate-y-1 hover:scale-[1.02]",
         selected
           ? "border-primary bg-primary/5 shadow-[0_0_15px_rgba(var(--color-primary),0.15)] scale-[1.02]"
@@ -33,7 +33,7 @@ export function QuizCard({ title, description, image, selected, onClick, fill = 
         <img
           src={image}
           alt={title}
-          className="block w-full h-auto transition-transform duration-500 ease-out hover:scale-[1.02]"
+          className="block w-full h-auto"
           loading="eager"
           decoding="sync"
           onError={(e) => {
