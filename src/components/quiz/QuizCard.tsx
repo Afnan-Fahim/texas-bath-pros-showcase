@@ -33,24 +33,29 @@ export function QuizCard({ title, description, image, selected, onClick, fill = 
       {image ? (
         <div className={cn(
           "w-full bg-muted/30 relative overflow-hidden flex items-center justify-center group",
-          isDense
-            ? "aspect-video"
-            : compact
-              ? "aspect-square"
-              : "aspect-video sm:aspect-[4/3]",
-          !fill && !compact && "p-2"
+          mobileHomeCover
+            ? "aspect-square"
+            : isDense
+              ? "aspect-video"
+              : compact
+                ? "aspect-square"
+                : "aspect-video sm:aspect-[4/3]",
+          !fill && !compact && !mobileHomeCover && "p-2"
         )}>
           {/* Premium blurred background effect */}
-          <div 
-            className="absolute inset-0 blur-2xl opacity-50 bg-cover bg-center scale-110" 
-            style={{ backgroundImage: `url(${image})` }} 
+          <div
+            className={cn(
+              "absolute inset-0 blur-2xl opacity-50 bg-cover bg-center scale-110",
+              mobileHomeCover && "hidden"
+            )}
+            style={{ backgroundImage: `url(${image})` }}
           />
           <img
             src={image}
             alt={title}
             className={cn(
               "relative w-full h-full rounded-md drop-shadow-md z-10 transition-transform duration-500 ease-out group-hover:scale-105",
-              fill ? "object-cover" : "object-contain"
+              mobileHomeCover ? "object-cover" : fill ? "object-cover" : "object-contain"
             )}
             loading="eager"
             decoding="sync"
@@ -62,7 +67,7 @@ export function QuizCard({ title, description, image, selected, onClick, fill = 
         </div>
       ) : (
         // Neutral placeholder while the saved photo loads
-        <div className={cn("w-full bg-muted/40", isDense ? "aspect-video" : compact ? "aspect-square" : "aspect-video sm:aspect-[4/3]")} />
+        <div className={cn("w-full bg-muted/40", mobileHomeCover ? "aspect-square" : isDense ? "aspect-video" : compact ? "aspect-square" : "aspect-video sm:aspect-[4/3]")} />
       )}
       <div className={cn("w-full", isDense ? "p-1.5 md:p-2" : compact ? "p-2 md:p-3" : "p-3")}>
         <h3 className={cn("font-medium", isDense ? "text-xs sm:text-sm md:text-base" : compact ? "text-sm sm:text-base md:text-lg" : "text-base sm:text-lg")}>{title}</h3>
