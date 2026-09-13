@@ -30,7 +30,8 @@ export function QuizCard({ title, description, image, selected, onClick, fill = 
     >
       {image ? (
         <div className={cn(
-          "w-full bg-muted/30 relative overflow-hidden flex items-center justify-center group",
+          "relative flex w-full items-center justify-center overflow-hidden p-0",
+          fill ? "bg-transparent" : "bg-muted/30 group",
           isDense
             ? "aspect-video"
             : compact
@@ -49,8 +50,8 @@ export function QuizCard({ title, description, image, selected, onClick, fill = 
             src={image}
             alt={title}
             className={cn(
-              "relative w-full h-full z-10 transition-transform duration-500 ease-out group-hover:scale-105",
-              fill ? "object-cover" : "object-contain"
+              "relative z-10 block h-full w-full",
+              fill ? "object-cover object-center" : "object-contain transition-transform duration-500 ease-out group-hover:scale-105"
             )}
             loading="eager"
             decoding="sync"
