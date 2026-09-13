@@ -147,7 +147,7 @@ export function QuizFlow({
           <div className="mx-auto w-full max-w-2xl animate-pulse rounded-2xl border border-navy/10 bg-white/60 p-6 sm:p-8">
             <div className="mx-auto mb-5 h-6 w-2/3 rounded-full bg-navy/10" />
             <div className="mx-auto mb-6 h-4 w-1/2 rounded-full bg-navy/5" />
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4 items-start">
               <div className="aspect-square rounded-xl bg-navy/5" />
               <div className="aspect-square rounded-xl bg-navy/5" />
             </div>
@@ -235,7 +235,7 @@ export function QuizFlow({
                     <p className={cn("text-muted-foreground/70", compact ? "mt-1 text-[10px] sm:text-xs" : "mt-1 text-xs")}>{trustLine}</p>
                   )}
                 </div>
-                <div className={cn("grid grid-cols-2", compact ? "gap-2 sm:gap-3 md:gap-4" : "gap-3 sm:gap-4")}>
+                <div className={cn("grid grid-cols-2 items-start", compact ? "gap-2 sm:gap-3 md:gap-4" : "gap-3 sm:gap-4")}>
                   {stepConfig.options.map((opt, idx) => {
                     const optionLabel = labelOverrides[opt.id] ?? opt.label;
                     return opt.image || opt.imagePending ? (
