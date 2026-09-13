@@ -28,22 +28,21 @@ export function QuizCard({ title, description, image, selected, onClick, fill = 
           : "border-border bg-card"
       )}
     >
-      {image ? (
-        // Full photo at natural aspect — width 100%, height auto, no cropping
-        <img
-          src={image}
-          alt={title}
-          className="block w-full h-auto"
-          loading="eager"
-          decoding="sync"
-          onError={(e) => {
-            (e.target as HTMLImageElement).style.display = "none";
-          }}
-        />
-      ) : (
-        // Neutral placeholder while the saved photo loads
-        <div className={cn("w-full", isDense ? "aspect-video bg-muted/40" : compact ? "aspect-square bg-muted/40" : "aspect-[4/5] bg-muted/40")} />
-      )}
+      {/* Fixed photo box — every card in a row is the same size */}
+      <div className={cn("w-full overflow-hidden bg-muted/40", isDense ? "aspect-video" : compact ? "aspect-square" : "aspect-[4/5]")}>
+        {image && (
+          <img
+            src={image}
+            alt={title}
+            className="block w-full h-full object-cover object-center"
+            loading="eager"
+            decoding="sync"
+            onError={(e) => {
+              (e.target as HTMLImageElement).style.display = "none";
+            }}
+          />
+        )}
+      </div>
       <div className={cn("w-full", isDense ? "p-1.5 md:p-2" : compact ? "p-2 md:p-3" : "p-3")}>
         <h3 className={cn("font-medium", isDense ? "text-xs sm:text-sm md:text-base" : compact ? "text-sm sm:text-base md:text-lg" : "text-base sm:text-lg")}>{title}</h3>
         {description && <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">{description}</p>}
