@@ -34,7 +34,7 @@ export function QuizCard({ title, description, image, selected, onClick, fill = 
           <img
             src={image}
             alt={title}
-            className="block w-full h-full object-cover object-center"
+            className="block w-full h-full object-cover object-[center_bottom]"
             loading="eager"
             decoding="sync"
             onError={(e) => {
