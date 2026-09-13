@@ -166,7 +166,7 @@ export function QuizFlow({
       className={cn(
         "relative z-40 mx-auto flex w-full justify-center overflow-hidden scroll-m-0",
         compact
-          ? "max-w-lg items-center md:max-w-2xl"
+          ? "max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl items-center"
           : "min-h-[34rem] max-w-4xl items-start"
       )}
     >
