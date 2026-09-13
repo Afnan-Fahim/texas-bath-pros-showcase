@@ -237,7 +237,7 @@ export function QuizFlow({
                     <p className={cn("text-muted-foreground/70", compact ? "mt-1 text-[10px] sm:text-xs" : "mt-1 text-xs")}>{trustLine}</p>
                   )}
                 </div>
-                <div className={cn("grid grid-cols-2 items-start", compact ? "gap-2 sm:gap-3 md:gap-4" : "gap-3 sm:gap-4")}>
+                <div className={cn("grid grid-cols-2 items-stretch", compact ? "gap-2 sm:gap-3 md:gap-4" : "gap-3 sm:gap-4")}>
                   {stepConfig.options.map((opt, idx) => {
                     const optionLabel = labelOverrides[opt.id] ?? opt.label;
                     const isUnsure = isUnsureOption(optionLabel);
@@ -250,7 +250,7 @@ export function QuizFlow({
                         imagePending={opt.imagePending}
                         compact={compact}
                         dense={compact && stepIdx > 0}
-                        stretchImage={compact && (opt.id === "walk-in-shower" || opt.id === "hard-step")}
+                        stretchImage={opt.id === "walk-in-shower" || opt.id === "hard-step"}
                         selected={state[stepConfig.key] === optionLabel}
                         onClick={() => handleOptionSelect(stepConfig.key, optionLabel)}
                       />
