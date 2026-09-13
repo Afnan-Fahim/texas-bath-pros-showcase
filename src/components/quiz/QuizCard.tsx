@@ -69,7 +69,9 @@ export function QuizCard({
       <div
         className={cn(
           "w-full",
-          isDense ? "p-1.5 md:p-2" : compact ? "p-2 md:p-3" : "p-3"
+          isDense ? "p-1.5 md:p-2" : compact ? "p-2 md:p-3" : "p-3",
+          stretchImage &&
+            "max-md:flex max-md:items-center max-md:justify-center max-md:p-1.5"
         )}
       >
         <h3
@@ -79,7 +81,9 @@ export function QuizCard({
               ? "text-xs sm:text-sm md:text-base"
               : compact
                 ? "text-sm sm:text-base md:text-lg"
-                : "text-base sm:text-lg"
+                : "text-base sm:text-lg",
+            stretchImage &&
+              "max-md:truncate max-md:text-nowrap max-md:text-[11px] max-md:leading-tight"
           )}
         >
           {title}
