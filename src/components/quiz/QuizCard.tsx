@@ -47,7 +47,7 @@ export function QuizCard({
         <div
           className={cn(
             "w-full shrink-0 animate-pulse bg-muted/30",
-            isDense ? "aspect-[4/3]" : "aspect-[4/5]"
+            isDense ? "aspect-[16/10]" : "aspect-[4/5]"
           )}
         />
       ) : (
@@ -55,7 +55,7 @@ export function QuizCard({
           className={cn(
             "w-full overflow-hidden",
             isDense
-              ? "aspect-[4/3]"
+              ? "aspect-[16/10]"
               : stretchImage
                 ? "flex-1 min-h-0"
                 : "shrink-0"
@@ -83,13 +83,13 @@ export function QuizCard({
       <div
         className={cn(
           "w-full",
-          isDense ? "p-1 md:p-1.5" : compact ? "p-2 md:p-3" : "p-3",
+          isDense ? "p-1 md:p-1" : compact ? "p-1.5 md:p-2" : "p-3",
           uniformLabels && "max-md:flex max-md:items-center max-md:justify-center",
           uniformLabels &&
             (isDense
-              ? "max-md:min-h-[2.25rem]"
+              ? "max-md:min-h-[2rem]"
               : compact
-                ? "max-md:min-h-[3.5rem]"
+                ? "max-md:min-h-[3rem]"
                 : "max-md:min-h-[4.5rem]")
         )}
       >
@@ -97,9 +97,9 @@ export function QuizCard({
           className={cn(
             "font-medium leading-tight",
             isDense
-              ? "text-[11px] sm:text-xs md:text-sm"
+              ? "text-[10px] sm:text-xs md:text-xs"
               : compact
-                ? "text-sm sm:text-base md:text-lg"
+                ? "text-sm sm:text-sm md:text-base"
                 : "text-base sm:text-lg",
             uniformLabels && "max-md:line-clamp-2"
           )}

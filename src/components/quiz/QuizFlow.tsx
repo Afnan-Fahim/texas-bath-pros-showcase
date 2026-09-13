@@ -166,7 +166,7 @@ export function QuizFlow({
       className={cn(
         "relative z-40 mx-auto flex w-full justify-center overflow-hidden scroll-m-0",
         compact
-          ? "max-w-xl items-center md:max-w-3xl"
+          ? "max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl 2xl:max-w-3xl items-center"
           : "min-h-[34rem] max-w-4xl items-start"
       )}
     >
@@ -179,7 +179,7 @@ export function QuizFlow({
           className={cn(
             "relative z-10",
             compact
-              ? "p-4 sm:p-6 md:p-8"
+              ? "p-2 sm:p-3 md:p-4"
               : "p-4 sm:p-7 md:p-8"
           )}
         >
@@ -204,7 +204,7 @@ export function QuizFlow({
 
           {/* Progress */}
           {currentStep <= totalSteps && (
-            <div className={cn("flex items-center justify-between", "mb-4")}>
+            <div className={cn("flex items-center justify-between", compact ? "mb-1.5" : "mb-4")}>
               <button
                 onClick={handleBack}
                 disabled={currentStep === 1}
@@ -223,21 +223,21 @@ export function QuizFlow({
           {steps.map((stepConfig, stepIdx) =>
             currentStep === stepIdx + 1 ? (
               <div key={stepConfig.id} className={cn("flex flex-col justify-center", compact ? "" : "min-h-[25rem] sm:min-h-[27rem]")}>
-                <div className={cn("text-center", compact ? (stepIdx > 0 ? "mb-1.5" : "mb-2 sm:mb-3 md:mb-4") : "mb-2 sm:mb-3")}>
+                <div className={cn("text-center", compact ? "mb-1" : "mb-2 sm:mb-3")}>
                   {stepIdx === 0 ? (
-                    <h1 className={cn("font-sans font-bold text-navy leading-snug mb-0.5", compact ? "text-xl sm:text-2xl md:text-3xl" : "text-2xl sm:text-3xl")}>{stepConfig.title}</h1>
+                    <h1 className={cn("font-sans font-bold text-navy leading-snug mb-0.5", compact ? "text-lg sm:text-xl md:text-xl" : "text-2xl sm:text-3xl")}>{stepConfig.title}</h1>
                   ) : (
-                    <h2 className={cn("font-bold text-foreground mb-0.5", compact && stepIdx > 0 ? "text-lg sm:text-xl md:text-2xl" : compact ? "text-xl sm:text-2xl md:text-3xl" : "text-2xl sm:text-3xl")}>{stepConfig.title}</h2>
+                    <h2 className={cn("font-bold text-foreground mb-0.5", compact && stepIdx > 0 ? "text-base sm:text-lg md:text-xl" : compact ? "text-lg sm:text-xl md:text-2xl" : "text-2xl sm:text-3xl")}>{stepConfig.title}</h2>
                   )}
-                  <p className={cn("text-muted-foreground", compact && stepIdx > 0 ? "text-xs md:text-sm" : compact ? "text-sm md:text-base" : "")}>{stepConfig.description}</p>
+                  <p className={cn("text-muted-foreground", compact ? "text-xs md:text-sm" : "")}>{stepConfig.description}</p>
                   {stepIdx === 0 && extraSubline && (
-                    <p className={cn("text-muted-foreground", compact ? "mt-0.5 text-xs md:text-sm" : "mt-0.5 text-sm")}>{extraSubline}</p>
+                    <p className={cn("text-muted-foreground", compact ? "mt-0 text-[11px] md:text-xs" : "mt-0.5 text-sm")}>{extraSubline}</p>
                   )}
                   {stepIdx === 0 && trustLine && (
-                    <p className={cn("text-muted-foreground/70", compact ? "mt-0.5 text-[10px] sm:text-xs" : "mt-0.5 text-xs")}>{trustLine}</p>
+                    <p className={cn("text-muted-foreground/70", compact ? "mt-0 text-[10px] sm:text-xs" : "mt-0.5 text-xs")}>{trustLine}</p>
                   )}
                 </div>
-                <div className={cn("grid grid-cols-2 items-stretch", compact && stepIdx > 0 ? "gap-2" : compact ? "gap-2 sm:gap-3 md:gap-4" : "gap-3 sm:gap-4")}>
+                <div className={cn("grid grid-cols-2 items-stretch", compact ? "gap-2" : "gap-3 sm:gap-4")}>
                   {stepConfig.options.map((opt, idx) => {
                     const optionLabel = labelOverrides[opt.id] ?? opt.label;
                     const isUnsure = isUnsureOption(optionLabel);
@@ -263,7 +263,7 @@ export function QuizFlow({
                           "col-span-2 w-full rounded-xl border text-center transition-colors",
                           stepIdx === 0
                             ? compact
-                              ? "border-navy/30 bg-card px-4 py-2 text-sm font-medium text-navy hover:bg-navy/5 hover:border-navy/50 sm:text-base md:py-3 md:text-lg"
+                              ? "border-navy/30 bg-card px-4 py-2 text-sm font-medium text-navy hover:bg-navy/5 hover:border-navy/50 sm:text-base md:py-2 md:text-base"
                               : "border-navy/30 bg-card px-4 py-2.5 text-base font-medium text-navy hover:bg-navy/5 hover:border-navy/50 sm:text-lg"
                             : compact
                               ? "min-h-10 border-2 py-2 text-sm sm:py-2.5 sm:text-base md:min-h-12 md:py-3 md:text-base"
