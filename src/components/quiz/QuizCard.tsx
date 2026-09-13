@@ -12,9 +12,11 @@ interface QuizCardProps {
   compact?: boolean;
   /** Even smaller rendering for later quiz steps with a 2x2 photo grid. */
   dense?: boolean;
+  /** Mobile homepage-only: force a uniform cover-filled frame so row cards align. */
+  mobileHomeCover?: boolean;
 }
 
-export function QuizCard({ title, description, image, selected, onClick, fill = false, compact = false, dense = false }: QuizCardProps) {
+export function QuizCard({ title, description, image, selected, onClick, fill = false, compact = false, dense = false, mobileHomeCover = false }: QuizCardProps) {
   const isDense = compact && dense;
   return (
     <div
