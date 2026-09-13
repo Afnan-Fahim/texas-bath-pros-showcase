@@ -35,19 +35,21 @@ export function QuizCard({ title, description, image, selected, onClick, fill = 
             ? "aspect-video"
             : compact
               ? "aspect-square"
-              : "aspect-video sm:aspect-[4/3]",
-          !fill && !compact && "p-2"
+              : "aspect-video sm:aspect-[4/3]"
         )}>
           {/* Premium blurred background effect */}
-          <div 
-            className="absolute inset-0 blur-2xl opacity-50 bg-cover bg-center scale-110" 
-            style={{ backgroundImage: `url(${image})` }} 
+          <div
+            className={cn(
+              "absolute inset-0 blur-2xl opacity-50 bg-cover bg-center scale-110",
+              fill && "hidden"
+            )}
+            style={{ backgroundImage: `url(${image})` }}
           />
           <img
             src={image}
             alt={title}
             className={cn(
-              "relative w-full h-full rounded-md drop-shadow-md z-10 transition-transform duration-500 ease-out group-hover:scale-105",
+              "relative w-full h-full z-10 transition-transform duration-500 ease-out group-hover:scale-105",
               fill ? "object-cover" : "object-contain"
             )}
             loading="eager"
