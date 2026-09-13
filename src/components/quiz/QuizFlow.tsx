@@ -204,11 +204,11 @@ export function QuizFlow({
 
           {/* Progress */}
           {currentStep <= totalSteps && (
-            <div className={cn("flex items-center justify-between", "mb-4")}>
+            <div className={cn("flex items-center justify-between", compact ? "mb-2" : "mb-4")}>
               <button
                 onClick={handleBack}
                 disabled={currentStep === 1}
-                className={`text-sm font-medium transition-opacity ${currentStep === 1 ? "opacity-0" : "opacity-100 text-muted-foreground hover:text-foreground"}`}
+                className={`text-sm font-medium transition-opacity ${currentStep === 1 ? "opacity-0" : "opacity-100 text-muted-foreground hover:text-foreground`}`}
               >
                 ← Back
               </button>
@@ -223,21 +223,21 @@ export function QuizFlow({
           {steps.map((stepConfig, stepIdx) =>
             currentStep === stepIdx + 1 ? (
               <div key={stepConfig.id} className={cn("flex flex-col justify-center", compact ? "" : "min-h-[25rem] sm:min-h-[27rem]")}>
-                <div className={cn("text-center", compact ? (stepIdx > 0 ? "mb-1.5" : "mb-2 sm:mb-3 md:mb-4") : "mb-2 sm:mb-3")}>
+                <div className={cn("text-center", compact ? (stepIdx > 0 ? "mb-1" : "mb-1.5 sm:mb-2 md:mb-2") : "mb-2 sm:mb-3")}>
                   {stepIdx === 0 ? (
-                    <h1 className={cn("font-sans font-bold text-navy leading-snug mb-0.5", compact ? "text-xl sm:text-2xl md:text-3xl" : "text-2xl sm:text-3xl")}>{stepConfig.title}</h1>
+                    <h1 className={cn("font-sans font-bold text-navy leading-snug mb-0.5", compact ? "text-lg sm:text-xl md:text-2xl" : "text-2xl sm:text-3xl")}>{stepConfig.title}</h1>
                   ) : (
-                    <h2 className={cn("font-bold text-foreground mb-0.5", compact && stepIdx > 0 ? "text-lg sm:text-xl md:text-2xl" : compact ? "text-xl sm:text-2xl md:text-3xl" : "text-2xl sm:text-3xl")}>{stepConfig.title}</h2>
+                    <h2 className={cn("font-bold text-foreground mb-0.5", compact && stepIdx > 0 ? "text-base sm:text-lg md:text-xl" : compact ? "text-lg sm:text-xl md:text-2xl" : "text-2xl sm:text-3xl")}>{stepConfig.title}</h2>
                   )}
-                  <p className={cn("text-muted-foreground", compact && stepIdx > 0 ? "text-xs md:text-sm" : compact ? "text-sm md:text-base" : "")}>{stepConfig.description}</p>
+                  <p className={cn("text-muted-foreground", compact ? "text-xs md:text-sm" : "")}>{stepConfig.description}</p>
                   {stepIdx === 0 && extraSubline && (
-                    <p className={cn("text-muted-foreground", compact ? "mt-0.5 text-xs md:text-sm" : "mt-0.5 text-sm")}>{extraSubline}</p>
+                    <p className={cn("text-muted-foreground", compact ? "mt-0.5 text-[11px] md:text-xs" : "mt-0.5 text-sm")}>{extraSubline}</p>
                   )}
                   {stepIdx === 0 && trustLine && (
                     <p className={cn("text-muted-foreground/70", compact ? "mt-0.5 text-[10px] sm:text-xs" : "mt-0.5 text-xs")}>{trustLine}</p>
                   )}
                 </div>
-                <div className={cn("grid grid-cols-2 items-stretch", compact && stepIdx > 0 ? "gap-2" : compact ? "gap-2 sm:gap-3 md:gap-4" : "gap-3 sm:gap-4")}>
+                <div className={cn("grid grid-cols-2 items-stretch", compact ? "gap-2" : "gap-3 sm:gap-4")}>
                   {stepConfig.options.map((opt, idx) => {
                     const optionLabel = labelOverrides[opt.id] ?? opt.label;
                     const isUnsure = isUnsureOption(optionLabel);
