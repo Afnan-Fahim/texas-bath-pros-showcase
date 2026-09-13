@@ -34,6 +34,7 @@ export function QuizCard({
   const hasImage = !!image;
   return (
     <div
+      data-quiz-card
       onClick={onClick}
       className={cn(
         "cursor-pointer rounded-xl border-2 overflow-hidden transition-colors duration-150 text-center flex flex-col",
