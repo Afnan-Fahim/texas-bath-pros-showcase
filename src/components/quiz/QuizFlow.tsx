@@ -148,8 +148,8 @@ export function QuizFlow({
             <div className="mx-auto mb-5 h-6 w-2/3 rounded-full bg-navy/10" />
             <div className="mx-auto mb-6 h-4 w-1/2 rounded-full bg-navy/5" />
             <div className="grid grid-cols-2 gap-4 items-start">
-              <div className="aspect-square rounded-xl bg-navy/5" />
-              <div className="aspect-square rounded-xl bg-navy/5" />
+              <div className="aspect-[4/5] rounded-xl bg-navy/5" />
+              <div className="aspect-[4/5] rounded-xl bg-navy/5" />
             </div>
             <div className="mx-auto mt-4 h-11 w-full rounded-full bg-navy/5" />
           </div>
