@@ -32,11 +32,11 @@ export function QuizCard({ title, description, image, selected, onClick, fill = 
         <div className={cn(
           "relative flex w-full items-center justify-center overflow-hidden p-0",
           fill ? "bg-transparent" : "bg-muted/30 group",
-          isDense
+          !fill && (isDense
             ? "aspect-video"
             : compact
               ? "aspect-square"
-              : "aspect-video sm:aspect-[4/3]"
+              : "aspect-video sm:aspect-[4/3]")
         )}>
           {/* Premium blurred background effect */}
           <div
@@ -50,8 +50,10 @@ export function QuizCard({ title, description, image, selected, onClick, fill = 
             src={image}
             alt={title}
             className={cn(
-              "relative z-10 block h-full w-full",
-              fill ? "object-cover object-center" : "object-contain transition-transform duration-500 ease-out group-hover:scale-105"
+              "relative z-10 block w-full",
+              fill
+                ? "h-auto object-cover object-center"
+                : "h-full object-contain transition-transform duration-500 ease-out group-hover:scale-105"
             )}
             loading="eager"
             decoding="sync"
