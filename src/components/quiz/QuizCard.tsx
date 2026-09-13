@@ -55,7 +55,7 @@ export function QuizCard({ title, description, image, selected, onClick, fill = 
             alt={title}
             className={cn(
               "relative w-full h-full rounded-md drop-shadow-md z-10 transition-transform duration-500 ease-out group-hover:scale-105",
-              mobileHomeCover ? "object-cover" : fill ? "object-cover" : "object-contain"
+              mobileHomeCover ? "object-cover object-center" : fill ? "object-cover" : "object-contain"
             )}
             loading="eager"
             decoding="sync"
