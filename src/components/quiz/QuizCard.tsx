@@ -29,22 +29,17 @@ export function QuizCard({ title, description, image, selected, onClick, fill = 
       )}
     >
       {image ? (
-        // Photo fills the top of the card edge to edge — cover, centered, no bars
-        <div className={cn(
-          "relative w-full overflow-hidden p-0",
-          isDense ? "aspect-video" : compact ? "aspect-square" : "aspect-[4/5]"
-        )}>
-          <img
-            src={image}
-            alt={title}
-            className="absolute inset-0 block w-full h-full object-cover object-center transition-transform duration-500 ease-out hover:scale-105"
-            loading="eager"
-            decoding="sync"
-            onError={(e) => {
-              (e.target as HTMLImageElement).style.display = "none";
-            }}
-          />
-        </div>
+        // Full photo at natural aspect — width 100%, height auto, no cropping
+        <img
+          src={image}
+          alt={title}
+          className="block w-full h-auto transition-transform duration-500 ease-out hover:scale-[1.02]"
+          loading="eager"
+          decoding="sync"
+          onError={(e) => {
+            (e.target as HTMLImageElement).style.display = "none";
+          }}
+        />
       ) : (
         // Neutral placeholder while the saved photo loads
         <div className={cn("w-full", isDense ? "aspect-video bg-muted/40" : compact ? "aspect-square bg-muted/40" : "aspect-[4/5] bg-muted/40")} />
