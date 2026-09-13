@@ -28,13 +28,13 @@ export function QuizCard({ title, description, image, selected, onClick, fill = 
           : "border-border bg-card"
       )}
     >
-      {/* Fixed photo box — every card in a row is the same size */}
-      <div className={cn("w-full overflow-hidden bg-muted/40", isDense ? "aspect-video" : compact ? "aspect-square" : "aspect-[4/5]")}>
+      {/* Mobile: natural full photo (no crop). Desktop (sm+): fixed box, cover, even cards */}
+      <div className={cn("w-full overflow-hidden bg-muted/40", isDense ? "sm:aspect-video" : compact ? "sm:aspect-square" : "sm:aspect-[4/5]")}>
         {image && (
           <img
             src={image}
             alt={title}
-            className="block w-full h-full object-cover object-center"
+            className="block w-full h-auto sm:h-full sm:object-cover sm:object-center"
             loading="eager"
             decoding="sync"
             onError={(e) => {
