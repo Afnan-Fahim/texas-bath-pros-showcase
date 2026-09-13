@@ -122,7 +122,7 @@ function QuizPage() {
         />
       </header>
 
-      <main ref={stageRef} className="flex w-full flex-1 items-center justify-center px-4 sm:px-6 py-3 sm:py-5 relative">
+      <main ref={stageRef} className="flex w-full flex-1 items-center justify-center px-4 sm:px-6 py-3 sm:py-5 md:py-4 relative">
         <div className={showCalendly ? "hidden" : "contents"}>
           <QuizFlow
             onComplete={handleQuizComplete}
