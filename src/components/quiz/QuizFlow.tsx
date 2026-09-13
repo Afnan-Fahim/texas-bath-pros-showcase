@@ -164,10 +164,10 @@ export function QuizFlow({
     <div
       ref={containerRef}
       className={cn(
-        "relative z-40 mx-auto flex w-full justify-center overflow-y-auto overscroll-contain scroll-m-0",
+        "relative z-40 mx-auto flex w-full justify-center overflow-hidden scroll-m-0",
         compact
-          ? "h-full max-h-[calc(100svh-0.5rem)] max-w-xl items-center md:max-w-3xl"
-          : "max-h-[calc(100svh-1.5rem)] min-h-[34rem] max-w-4xl items-start"
+          ? "max-w-xl items-center md:max-w-3xl"
+          : "min-h-[34rem] max-w-4xl items-start"
       )}
     >
       <div className="w-full relative overflow-hidden">
@@ -223,18 +223,18 @@ export function QuizFlow({
           {steps.map((stepConfig, stepIdx) =>
             currentStep === stepIdx + 1 ? (
               <div key={stepConfig.id} className={cn("flex flex-col justify-center", compact ? "" : "min-h-[25rem] sm:min-h-[27rem]")}>
-                <div className={cn("text-center", compact ? (stepIdx > 0 ? "mb-2 sm:mb-3" : "mb-2 sm:mb-3 md:mb-5") : "mb-4 sm:mb-5")}>
+                <div className={cn("text-center", compact ? (stepIdx > 0 ? "mb-2" : "mb-2 sm:mb-3 md:mb-4") : "mb-2 sm:mb-3")}>
                   {stepIdx === 0 ? (
-                    <h1 className={cn("font-sans font-bold text-navy leading-snug mb-1", compact ? "text-xl sm:text-2xl md:text-3xl" : "text-2xl sm:text-3xl")}>{stepConfig.title}</h1>
+                    <h1 className={cn("font-sans font-bold text-navy leading-snug mb-0.5", compact ? "text-xl sm:text-2xl md:text-3xl" : "text-2xl sm:text-3xl")}>{stepConfig.title}</h1>
                   ) : (
-                    <h2 className={cn("font-bold text-foreground mb-1", compact ? "text-xl sm:text-2xl md:text-3xl" : "text-2xl sm:text-3xl")}>{stepConfig.title}</h2>
+                    <h2 className={cn("font-bold text-foreground mb-0.5", compact ? "text-xl sm:text-2xl md:text-3xl" : "text-2xl sm:text-3xl")}>{stepConfig.title}</h2>
                   )}
                   <p className={cn("text-muted-foreground", compact ? "text-sm md:text-base" : "")}>{stepConfig.description}</p>
                   {stepIdx === 0 && extraSubline && (
-                    <p className={cn("text-muted-foreground", compact ? "mt-0.5 text-xs md:text-sm" : "mt-1 text-sm")}>{extraSubline}</p>
+                    <p className={cn("text-muted-foreground", compact ? "mt-0.5 text-xs md:text-sm" : "mt-0.5 text-sm")}>{extraSubline}</p>
                   )}
                   {stepIdx === 0 && trustLine && (
-                    <p className={cn("text-muted-foreground/70", compact ? "mt-1 text-[10px] sm:text-xs" : "mt-1 text-xs")}>{trustLine}</p>
+                    <p className={cn("text-muted-foreground/70", compact ? "mt-0.5 text-[10px] sm:text-xs" : "mt-0.5 text-xs")}>{trustLine}</p>
                   )}
                 </div>
                 <div className={cn("grid grid-cols-2 items-stretch", compact ? "gap-2 sm:gap-3 md:gap-4" : "gap-3 sm:gap-4")}>
