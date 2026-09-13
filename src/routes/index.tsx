@@ -1542,7 +1542,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
                     onShowCalendly={handleShowCalendly}
                     onComplete={handleQuizComplete}
                     calendlyCompleted={calendlyCompleted}
-                    photoFill={true}
+                    photoFill={false}
                   />
                 </Suspense>
               </LazyMount>
