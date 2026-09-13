@@ -29,7 +29,7 @@ import logoFooterImg from "@/assets/logo-footer.webp";
 import aboutBgAsset from "@/assets/about-bg.jpg.asset.json";
 
 import heroPoster from "@/assets/hero-video-poster.avif";
-import inspirationGlacier from "@/assets/inspiration/grok-image-9cfd268e-f2e2-4178-95e4-5919f5cb5ab1-2.jpg.asset.json";
+import inspirationGlacier from "@/assets/inspiration/glacier-ice.jpg.asset.json";
 import inspirationTravertine from "@/assets/inspiration/788641034_122106367562588540_4141436483953783347_n-2.jpg.asset.json";
 import inspirationMarble from "@/assets/inspiration/787726868_122106369626588540_9222586880756702135_n-2.jpg.asset.json";
 import inspirationGray from "@/assets/inspiration/798047077_122106977966588540_5958046283204508744_n-2.jpg.asset.json";
