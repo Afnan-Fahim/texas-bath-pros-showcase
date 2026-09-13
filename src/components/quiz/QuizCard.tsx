@@ -14,6 +14,8 @@ interface QuizCardProps {
   /** Even smaller rendering for later quiz steps with a 2x2 photo grid. */
   dense?: boolean;
   stretchImage?: boolean;
+  /** When true, force every label in the mobile row to the same height so photo areas line up. */
+  uniformLabels?: boolean;
 }
 
 export function QuizCard({
@@ -26,6 +28,7 @@ export function QuizCard({
   compact = false,
   dense = false,
   stretchImage = false,
+  uniformLabels = false,
 }: QuizCardProps) {
   const isDense = compact && dense;
   const hasImage = !!image;
@@ -70,8 +73,13 @@ export function QuizCard({
         className={cn(
           "w-full",
           isDense ? "p-1.5 md:p-2" : compact ? "p-2 md:p-3" : "p-3",
-          stretchImage &&
-            "max-md:flex max-md:items-center max-md:justify-center max-md:p-1.5"
+          uniformLabels && "max-md:flex max-md:items-center max-md:justify-center",
+          uniformLabels &&
+            (isDense
+              ? "max-md:min-h-[2.75rem]"
+              : compact
+                ? "max-md:min-h-[3.5rem]"
+                : "max-md:min-h-[4.5rem]")
         )}
       >
         <h3
@@ -82,8 +90,7 @@ export function QuizCard({
               : compact
                 ? "text-sm sm:text-base md:text-lg"
                 : "text-base sm:text-lg",
-            stretchImage &&
-              "max-md:truncate max-md:text-nowrap max-md:text-[11px] max-md:leading-tight"
+            uniformLabels && "max-md:line-clamp-2"
           )}
         >
           {title}
