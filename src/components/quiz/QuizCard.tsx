@@ -14,6 +14,8 @@ interface QuizCardProps {
   /** Even smaller rendering for later quiz steps with a 2x2 photo grid. */
   dense?: boolean;
   stretchImage?: boolean;
+  /** When true, force every label in the mobile row to the same height so photo areas line up. */
+  uniformLabels?: boolean;
 }
 
 export function QuizCard({
@@ -26,6 +28,7 @@ export function QuizCard({
   compact = false,
   dense = false,
   stretchImage = false,
+  uniformLabels = false,
 }: QuizCardProps) {
   const isDense = compact && dense;
   const hasImage = !!image;
