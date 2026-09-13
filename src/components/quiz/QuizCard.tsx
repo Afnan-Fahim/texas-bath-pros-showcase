@@ -40,7 +40,10 @@ export function QuizCard({ title, description, image, selected, onClick, fill = 
         )}>
           {/* Premium blurred background effect */}
           <div
-            className="absolute inset-0 blur-2xl opacity-50 bg-cover bg-center scale-110"
+            className={cn(
+              "absolute inset-0 blur-2xl opacity-50 bg-cover bg-center scale-110",
+              fill && "hidden"
+            )}
             style={{ backgroundImage: `url(${image})` }}
           />
           <img
