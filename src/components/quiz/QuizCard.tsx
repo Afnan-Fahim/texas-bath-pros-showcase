@@ -24,6 +24,7 @@ export function QuizCard({
   onClick,
   compact = false,
   dense = false,
+  fill = false,
 }: QuizCardProps) {
   const isDense = compact && dense;
   const hasImage = !!image;
@@ -32,6 +33,7 @@ export function QuizCard({
       onClick={onClick}
       className={cn(
         "cursor-pointer rounded-xl border-2 overflow-hidden transition-colors duration-150 text-center flex flex-col",
+        fill && "md:h-full",
         "hover:border-primary/40 hover:shadow-lg hover:-translate-y-1 hover:scale-[1.02]",
         selected
           ? "border-primary bg-primary/5 shadow-[0_0_15px_rgba(var(--color-primary),0.15)] scale-[1.02]"
@@ -46,11 +48,11 @@ export function QuizCard({
           )}
         />
       ) : (
-        <div className="w-full shrink-0 overflow-hidden">
+        <div className={cn("w-full shrink-0 overflow-hidden", fill && "md:min-h-0 md:flex-1")}>
           <img
             src={image}
             alt={title}
-            className="block h-auto w-full"
+            className={cn("block h-auto w-full", fill && "md:h-full md:object-fill")}
             loading="eager"
             decoding="sync"
             onError={(e) => {
