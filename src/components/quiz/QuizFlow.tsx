@@ -247,6 +247,7 @@ export function QuizFlow({
                         fill={photoFill}
                         compact={compact}
                         dense={compact && stepIdx > 0}
+                        mobileHomeCover={!compact}
                         selected={state[stepConfig.key] === optionLabel}
                         onClick={() => handleOptionSelect(stepConfig.key, optionLabel)}
                       />
