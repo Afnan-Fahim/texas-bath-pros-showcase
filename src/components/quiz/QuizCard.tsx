@@ -48,7 +48,12 @@ export function QuizCard({
           )}
         />
       ) : (
-        <div className={cn("w-full shrink-0 overflow-hidden", stretchImage && "flex-1 min-h-0")}>
+        <div
+          className={cn(
+            "w-full overflow-hidden",
+            stretchImage ? "flex-1 min-h-0" : "shrink-0"
+          )}
+        >
           <img
             src={image}
             alt={title}
