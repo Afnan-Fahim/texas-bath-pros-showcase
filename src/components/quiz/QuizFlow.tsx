@@ -223,7 +223,7 @@ export function QuizFlow({
           {steps.map((stepConfig, stepIdx) =>
             currentStep === stepIdx + 1 ? (
               <div key={stepConfig.id} className={cn("flex flex-col justify-center", compact ? "" : "min-h-[25rem] sm:min-h-[27rem]")}>
-                <div className={cn("text-center", compact ? (stepIdx > 0 ? "mb-1" : "mb-1 sm:mb-1.5 md:mb-2") : "mb-2 sm:mb-3")}>
+                <div className={cn("text-center", compact ? "mb-1" : "mb-2 sm:mb-3")}>
                   {stepIdx === 0 ? (
                     <h1 className={cn("font-sans font-bold text-navy leading-snug mb-0.5", compact ? "text-lg sm:text-xl md:text-2xl" : "text-2xl sm:text-3xl")}>{stepConfig.title}</h1>
                   ) : (
@@ -231,10 +231,10 @@ export function QuizFlow({
                   )}
                   <p className={cn("text-muted-foreground", compact ? "text-xs md:text-sm" : "")}>{stepConfig.description}</p>
                   {stepIdx === 0 && extraSubline && (
-                    <p className={cn("text-muted-foreground", compact ? "mt-0.5 text-[11px] md:text-xs" : "mt-0.5 text-sm")}>{extraSubline}</p>
+                    <p className={cn("text-muted-foreground", compact ? "mt-0 text-[11px] md:text-xs" : "mt-0.5 text-sm")}>{extraSubline}</p>
                   )}
                   {stepIdx === 0 && trustLine && (
-                    <p className={cn("text-muted-foreground/70", compact ? "mt-0.5 text-[10px] sm:text-xs" : "mt-0.5 text-xs")}>{trustLine}</p>
+                    <p className={cn("text-muted-foreground/70", compact ? "mt-0 text-[10px] sm:text-xs" : "mt-0.5 text-xs")}>{trustLine}</p>
                   )}
                 </div>
                 <div className={cn("grid grid-cols-2 items-stretch", compact ? "gap-2" : "gap-3 sm:gap-4")}>
