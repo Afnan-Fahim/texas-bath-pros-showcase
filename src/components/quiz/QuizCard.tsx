@@ -47,20 +47,31 @@ export function QuizCard({
         <div
           className={cn(
             "w-full shrink-0 animate-pulse bg-muted/30",
-            isDense ? "aspect-square" : "aspect-[4/5]"
+            isDense ? "aspect-[4/3]" : "aspect-[4/5]"
           )}
         />
       ) : (
         <div
           className={cn(
             "w-full overflow-hidden",
-            stretchImage ? "flex-1 min-h-0" : "shrink-0"
+            isDense
+              ? "aspect-[4/3]"
+              : stretchImage
+                ? "flex-1 min-h-0"
+                : "shrink-0"
           )}
         >
           <img
             src={image}
             alt={title}
-            className={cn("block h-auto w-full", stretchImage && "h-full object-fill")}
+            className={cn(
+              "block h-auto w-full",
+              isDense
+                ? stretchImage
+                  ? "h-full w-full object-fill"
+                  : "h-full w-full object-cover object-center"
+                : stretchImage && "h-full object-fill"
+            )}
             loading="eager"
             decoding="sync"
             onError={(e) => {
@@ -72,11 +83,11 @@ export function QuizCard({
       <div
         className={cn(
           "w-full",
-          isDense ? "p-1.5 md:p-2" : compact ? "p-2 md:p-3" : "p-3",
+          isDense ? "p-1 md:p-1.5" : compact ? "p-2 md:p-3" : "p-3",
           uniformLabels && "max-md:flex max-md:items-center max-md:justify-center",
           uniformLabels &&
             (isDense
-              ? "max-md:min-h-[2.75rem]"
+              ? "max-md:min-h-[2.25rem]"
               : compact
                 ? "max-md:min-h-[3.5rem]"
                 : "max-md:min-h-[4.5rem]")
@@ -84,9 +95,9 @@ export function QuizCard({
       >
         <h3
           className={cn(
-            "font-medium",
+            "font-medium leading-tight",
             isDense
-              ? "text-xs sm:text-sm md:text-base"
+              ? "text-[11px] sm:text-xs md:text-sm"
               : compact
                 ? "text-sm sm:text-base md:text-lg"
                 : "text-base sm:text-lg",
@@ -96,7 +107,7 @@ export function QuizCard({
           {title}
         </h3>
         {description && (
-          <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
+          <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5">
             {description}
           </p>
         )}
