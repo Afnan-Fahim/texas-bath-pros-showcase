@@ -926,13 +926,13 @@ function Gallery() {
   };
 
   return (
-    <section ref={galleryRef} id="work" className="scroll-mt-28 bg-secondary/40 py-7 md:scroll-mt-0 md:py-6">
+    <section ref={galleryRef} id="work" className="scroll-mt-28 bg-secondary/40 py-7 md:scroll-mt-0 md:py-5">
       <div className="container-x">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-3xl leading-tight text-navy text-balance md:text-5xl">
             What your bathroom could look like
           </h2>
-          <p className="mt-3 text-base leading-relaxed text-muted-foreground text-balance md:mt-2 md:text-lg">
+          <p className="mt-3 text-base leading-relaxed text-muted-foreground text-balance md:mt-1 md:text-lg">
             Real styles we install. Tap through, then book a free estimate.
           </p>
         </div>
@@ -940,7 +940,7 @@ function Gallery() {
         <div
           className={cn(
             "mx-auto mt-5 flex w-full items-center justify-center gap-1 px-1 sm:gap-2 sm:px-2 md:gap-3 md:px-3",
-            "[--gallery-h:min(100vw,60dvh)] md:mt-3 md:[--gallery-h:min(62dvh,470px)]",
+            "[--gallery-h:min(100vw,60dvh)] md:mt-2 md:[--gallery-h:min(64dvh,480px)]",
           )}
         >
           <Button
