@@ -1006,7 +1006,7 @@ function Gallery() {
           </Button>
         </div>
 
-        <div className="mt-3 flex justify-center gap-2 md:mt-5" aria-label="Choose an inspiration photo">
+        <div className="mt-3 flex justify-center gap-2 md:mt-4" aria-label="Choose an inspiration photo">
           {INSPIRATION_IMAGES.map((image, index) => (
             <button
               key={image.src}
