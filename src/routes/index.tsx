@@ -926,13 +926,13 @@ function Gallery() {
   };
 
   return (
-    <section ref={galleryRef} id="work" className="scroll-mt-28 bg-secondary/40 py-7 md:scroll-mt-0 md:py-5">
+    <section ref={galleryRef} id="work" className="scroll-mt-28 bg-secondary/40 py-7 md:scroll-mt-0 md:py-4">
       <div className="container-x">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-3xl leading-tight text-navy text-balance md:text-5xl">
             What your bathroom could look like
           </h2>
-          <p className="mt-3 text-base leading-relaxed text-muted-foreground text-balance md:mt-1 md:text-lg">
+          <p className="mt-3 text-base leading-relaxed text-muted-foreground text-balance md:mt-0.5 md:text-lg">
             Real styles we install. Tap through, then book a free estimate.
           </p>
         </div>
