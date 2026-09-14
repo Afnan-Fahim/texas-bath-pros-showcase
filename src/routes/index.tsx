@@ -926,13 +926,13 @@ function Gallery() {
   };
 
   return (
-    <section ref={galleryRef} id="work" className="scroll-mt-28 bg-secondary/40 py-7 md:scroll-mt-0 md:py-10">
+    <section ref={galleryRef} id="work" className="scroll-mt-28 bg-secondary/40 py-7 md:scroll-mt-0 md:py-4">
       <div className="container-x">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-3xl leading-tight text-navy text-balance md:text-5xl">
             What your bathroom could look like
           </h2>
-          <p className="mt-3 text-base leading-relaxed text-muted-foreground text-balance md:mt-4 md:text-lg">
+          <p className="mt-3 text-base leading-relaxed text-muted-foreground text-balance md:mt-0.5 md:text-lg">
             Real styles we install. Tap through, then book a free estimate.
           </p>
         </div>
@@ -940,7 +940,7 @@ function Gallery() {
         <div
           className={cn(
             "mx-auto mt-5 flex w-full items-center justify-center gap-1 px-1 sm:gap-2 sm:px-2 md:gap-3 md:px-3",
-            "[--gallery-h:min(100vw,60dvh)] md:mt-6 md:[--gallery-h:min(58dvh,460px)]",
+            "[--gallery-h:min(100vw,60dvh)] md:mt-2 md:[--gallery-h:min(64dvh,480px)]",
           )}
         >
           <Button
@@ -1006,7 +1006,7 @@ function Gallery() {
           </Button>
         </div>
 
-        <div className="mt-3 flex justify-center gap-2 md:mt-5" aria-label="Choose an inspiration photo">
+        <div className="mt-3 flex justify-center gap-2 md:mt-2" aria-label="Choose an inspiration photo">
           {INSPIRATION_IMAGES.map((image, index) => (
             <button
               key={image.src}
