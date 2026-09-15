@@ -231,13 +231,8 @@ export function CalendlyEmbed({
       <div
         className={cn(
           "relative mt-4 overflow-hidden rounded-2xl border border-border bg-card",
-          mobileDetailsSelected && "max-sm:h-auto max-sm:overflow-visible max-sm:pt-4"
+          mobileDetailsSelected && "h-auto overflow-visible pt-4"
         )}
-        style={
-          mobileDetailsSelected
-            ? { paddingBottom: "calc(8rem + env(safe-area-inset-bottom, 0px))" }
-            : undefined
-        }
       >
         {/* Compact frame: never taller than the viewport, so the form fields
             are visible without scrolling inside a huge empty iframe. On mobile
