@@ -1,6 +1,5 @@
 import {
   Body,
-  Button,
   Container,
   Head,
   Heading,
@@ -51,44 +50,16 @@ function AppointmentConfirmation({
 
           <Section style={{ backgroundColor: '#F8FAFC', borderRadius: '12px', padding: '20px 24px', margin: '0 0 20px' }}>
             {appointmentDate && (
-              <Text style={{ ...paragraph, margin: '0 0 8px' }}>
-                <strong style={{ color: '#0D3B66' }}>When:</strong> {appointmentDate} (Central Time)
-              </Text>
-            )}
-            {address && (
-              <Text style={{ ...paragraph, margin: '0 0 8px' }}>
-                <strong style={{ color: '#0D3B66' }}>Where:</strong> {address}
-              </Text>
-            )}
-            {phone && (
               <Text style={{ ...paragraph, margin: 0 }}>
-                <strong style={{ color: '#0D3B66' }}>Phone on file:</strong> {phone}
+                <strong style={{ color: '#0D3B66' }}>When:</strong> {appointmentDate} (Central Time)
               </Text>
             )}
           </Section>
 
           <Text style={paragraph}>
-            A design consultant will call before arriving. The visit takes about 60–90 minutes and includes
+            We’ll text you about 24 hours before your appointment. The visit takes about 30–45 minutes and includes
             measurements, product options, and an exact price — no obligation.
           </Text>
-
-          {rescheduleUrl && (
-            <Button
-              href={rescheduleUrl}
-              style={{
-                backgroundColor: '#0D3B66',
-                color: '#ffffff',
-                borderRadius: '8px',
-                padding: '12px 22px',
-                fontSize: '15px',
-                fontWeight: 'bold',
-                textDecoration: 'none',
-                display: 'inline-block',
-              }}
-            >
-              Reschedule or cancel
-            </Button>
-          )}
 
           <Hr style={{ borderColor: '#E4E9EF', margin: '28px 0 16px' }} />
           <Text style={{ fontSize: '13px', color: '#5A6B7B', margin: '0 0 6px' }}>
