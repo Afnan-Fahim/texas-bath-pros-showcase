@@ -48,15 +48,15 @@ export function QuizCard({
         <div
           className={cn(
             "w-full shrink-0 animate-pulse bg-muted/30",
-            isDense ? "aspect-[16/10]" : "aspect-[4/5]"
+            isDense ? "aspect-square" : "aspect-[4/5]"
           )}
         />
       ) : (
         <div
           className={cn(
-            "w-full overflow-hidden",
+            "w-full overflow-hidden bg-card",
             isDense
-              ? "aspect-[16/10]"
+              ? "aspect-square"
               : stretchImage
                 ? "flex-1 min-h-0"
                 : "shrink-0"
@@ -68,9 +68,7 @@ export function QuizCard({
             className={cn(
               "block h-auto w-full",
               isDense
-                ? stretchImage
-                  ? "h-full w-full object-fill"
-                  : "h-full w-full object-cover object-center"
+                ? "h-full w-full object-contain object-center"
                 : stretchImage && "h-full object-fill"
             )}
             loading="eager"
