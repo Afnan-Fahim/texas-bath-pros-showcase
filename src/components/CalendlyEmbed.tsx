@@ -51,7 +51,7 @@ export function CalendlyEmbed({
     let calendlyFrame: HTMLIFrameElement | null = null;
     let detailsAlignmentStarted = false;
     const alignMobileDetails = () => {
-      if (typeof window === "undefined" || window.innerWidth >= 640 || !compact) return;
+      if (typeof window === "undefined" || !compact) return;
 
       setMobileDetailsSelected(true);
       calendlyFrame = hostRef.current?.querySelector("iframe") ?? null;
@@ -69,7 +69,7 @@ export function CalendlyEmbed({
     const onMessage = (e: MessageEvent) => {
       if (typeof e.origin !== "string" || !e.origin.includes("calendly.com")) return;
       if (e.data?.event === "calendly.date_and_time_selected") {
-        if (typeof window !== "undefined" && window.innerWidth < 640 && compact) {
+        if (compact) {
           if (detailsAlignmentStarted) return;
           detailsAlignmentStarted = true;
           calendlyFrame = hostRef.current?.querySelector("iframe") ?? null;
