@@ -82,7 +82,11 @@ export function QuizCard({
       <div
         className={cn(
           "w-full",
-          isDense ? "p-1 md:p-1" : compact ? "p-1.5 md:p-2" : "p-3",
+          isDense
+            ? "flex flex-1 items-center justify-center p-1 md:p-1"
+            : compact
+              ? "p-1.5 md:p-2"
+              : "p-3",
           uniformLabels && "max-md:flex max-md:items-center max-md:justify-center",
           uniformLabels &&
             (isDense
@@ -96,7 +100,7 @@ export function QuizCard({
           className={cn(
             "font-medium leading-tight",
             isDense
-              ? "text-[10px] sm:text-xs md:text-xs"
+              ? "line-clamp-2 text-[10px] sm:text-xs md:text-xs"
               : compact
                 ? "text-sm sm:text-sm md:text-base"
                 : "text-base sm:text-lg",
