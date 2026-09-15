@@ -251,7 +251,7 @@ export function QuizFlow({
                         compact={compact}
                         dense={compact && stepIdx > 0}
                         stretchImage={opt.id === "walk-in-shower" || opt.id === "hard-step"}
-                        uniformLabels={stepIdx === 0 || stepIdx === 1}
+                        uniformLabels={stepIdx === 0 || stepIdx === 1 || (compact && stepIdx === 2)}
                         selected={state[stepConfig.key] === optionLabel}
                         onClick={() => handleOptionSelect(stepConfig.key, optionLabel)}
                       />

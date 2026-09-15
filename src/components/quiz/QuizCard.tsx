@@ -48,15 +48,15 @@ export function QuizCard({
         <div
           className={cn(
             "w-full shrink-0 animate-pulse bg-muted/30",
-            isDense ? "aspect-[16/10]" : "aspect-[4/5]"
+            isDense ? "aspect-square" : "aspect-[4/5]"
           )}
         />
       ) : (
         <div
           className={cn(
-            "w-full overflow-hidden",
+            "w-full overflow-hidden bg-card",
             isDense
-              ? "aspect-[16/10]"
+              ? "aspect-square"
               : stretchImage
                 ? "flex-1 min-h-0"
                 : "shrink-0"
@@ -68,9 +68,7 @@ export function QuizCard({
             className={cn(
               "block h-auto w-full",
               isDense
-                ? stretchImage
-                  ? "h-full w-full object-fill"
-                  : "h-full w-full object-cover object-center"
+                ? "h-full w-full object-contain object-center"
                 : stretchImage && "h-full object-fill"
             )}
             loading="eager"
@@ -84,7 +82,11 @@ export function QuizCard({
       <div
         className={cn(
           "w-full",
-          isDense ? "p-1 md:p-1" : compact ? "p-1.5 md:p-2" : "p-3",
+          isDense
+            ? "flex flex-1 items-center justify-center p-1 md:p-1"
+            : compact
+              ? "p-1.5 md:p-2"
+              : "p-3",
           uniformLabels && "max-md:flex max-md:items-center max-md:justify-center",
           uniformLabels &&
             (isDense
@@ -98,7 +100,7 @@ export function QuizCard({
           className={cn(
             "font-medium leading-tight",
             isDense
-              ? "text-[10px] sm:text-xs md:text-xs"
+              ? "line-clamp-2 text-[10px] sm:text-xs md:text-xs"
               : compact
                 ? "text-sm sm:text-sm md:text-base"
                 : "text-base sm:text-lg",
