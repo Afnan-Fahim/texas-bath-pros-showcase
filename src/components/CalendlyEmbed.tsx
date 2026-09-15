@@ -5,6 +5,14 @@ import { getAttribution, trackLeadEvent, trackScheduleEvent } from "@/lib/tracki
 
 const CALENDLY_URL = "https://calendly.com/rugsafari/texas-bath-solutions";
 
+// After a time is picked, the details form gets a tall frame so every field
+// (Address, Phone, Homeowner) and the Schedule button sit on screen at once.
+// Phones need more room because the fields stack full-width.
+function detailsFrameHeight() {
+  if (typeof window !== "undefined" && window.innerWidth >= 640) return "1000px";
+  return "1400px";
+}
+
 export type Prefill = {
   name: string;
   email: string;
@@ -51,7 +59,7 @@ export function CalendlyEmbed({
     let calendlyFrame: HTMLIFrameElement | null = null;
     let detailsAlignmentStarted = false;
     const alignMobileDetails = () => {
-      if (typeof window === "undefined" || window.innerWidth >= 640 || !compact) return;
+      if (typeof window === "undefined" || !compact) return;
 
       setMobileDetailsSelected(true);
       calendlyFrame = hostRef.current?.querySelector("iframe") ?? null;
@@ -60,8 +68,8 @@ export function CalendlyEmbed({
         // Give the complete invitee form enough room in the page instead of
         // translating/cropping it. The initial page scroll reveals the fields,
         // then normal page scrolling remains free in both directions.
-        calendlyFrame.style.height = "1400px";
-        calendlyFrame.style.minHeight = "1400px";
+        calendlyFrame.style.height = detailsFrameHeight();
+        calendlyFrame.style.minHeight = detailsFrameHeight();
         calendlyFrame.style.transform = "none";
       }
       mobileScrollTargetRef.current?.scrollIntoView({ block: "center", behavior: "smooth" });
@@ -69,7 +77,7 @@ export function CalendlyEmbed({
     const onMessage = (e: MessageEvent) => {
       if (typeof e.origin !== "string" || !e.origin.includes("calendly.com")) return;
       if (e.data?.event === "calendly.date_and_time_selected") {
-        if (typeof window !== "undefined" && window.innerWidth < 640 && compact) {
+        if (compact) {
           if (detailsAlignmentStarted) return;
           detailsAlignmentStarted = true;
           calendlyFrame = hostRef.current?.querySelector("iframe") ?? null;
@@ -78,8 +86,8 @@ export function CalendlyEmbed({
           // clipped or empty card.
           setMobileDetailsSelected(true);
           if (calendlyFrame) {
-            calendlyFrame.style.height = "1400px";
-            calendlyFrame.style.minHeight = "1400px";
+            calendlyFrame.style.height = detailsFrameHeight();
+            calendlyFrame.style.minHeight = detailsFrameHeight();
             calendlyFrame.style.transform = "none";
           }
           // Keep the current calendar viewport stable while Calendly swaps in
@@ -231,13 +239,8 @@ export function CalendlyEmbed({
       <div
         className={cn(
           "relative mt-4 overflow-hidden rounded-2xl border border-border bg-card",
-          mobileDetailsSelected && "max-sm:h-auto max-sm:overflow-visible max-sm:pt-4"
+          mobileDetailsSelected && "h-auto overflow-visible pt-4"
         )}
-        style={
-          mobileDetailsSelected
-            ? { paddingBottom: "calc(8rem + env(safe-area-inset-bottom, 0px))" }
-            : undefined
-        }
       >
         {/* Compact frame: never taller than the viewport, so the form fields
             are visible without scrolling inside a huge empty iframe. On mobile
@@ -248,7 +251,7 @@ export function CalendlyEmbed({
           style={{
             minWidth: "300px",
             height: mobileDetailsSelected
-              ? "1400px"
+              ? detailsFrameHeight()
               : compact
                 ? "clamp(360px, 50dvh, 460px)"
                 : "clamp(460px, calc(100dvh - 260px), 600px)",
