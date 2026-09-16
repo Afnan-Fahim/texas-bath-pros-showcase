@@ -211,14 +211,9 @@ export function CalendlyEmbed({
           <h3 className={cn("font-display font-semibold text-navy", compact ? "text-lg sm:text-xl" : "text-xl")}>
             {title ?? (prefill.name ? `Almost done, ${prefill.name.split(" ")[0]} — pick your time` : "Pick a time for your free estimate")}
           </h3>
-          <p className={cn("mt-1 text-sm text-muted-foreground", mobileSubtitle && "hidden sm:block")}>
+          <p className={cn("mt-1 text-sm text-muted-foreground", compact && "whitespace-pre-line")}>
             {subtitle ?? "Choose any open slot."}
           </p>
-          {mobileSubtitle && (
-            <p className="mt-1 text-sm font-medium text-navy sm:hidden">
-              {mobileSubtitle}
-            </p>
-          )}
         </div>
         <Button type="button" variant="outline" className="shrink-0 border-navy/25 text-navy" onClick={onBack}>
           Back

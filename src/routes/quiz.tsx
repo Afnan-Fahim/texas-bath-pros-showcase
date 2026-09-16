@@ -158,8 +158,9 @@ function QuizPage() {
                 onBack={handleCalendlyBack}
                 onScheduled={handleCalendlyScheduled}
                 title="Pick a time for your free estimate"
-                subtitle="After you tap a time, scroll is not needed — fill in your name and phone to lock it in."
-                mobileSubtitle="Fill in your info below to lock the time."
+                subtitle={
+                  "We come to your house, measure, and give you a straight price. No pressure.\n15-minute visit. You’ll enter your name and phone on the next screen."
+                }
                 compact={true}
               />
             </div>
