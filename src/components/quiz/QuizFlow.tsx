@@ -215,10 +215,14 @@ export function QuizFlow({
               >
                 ← Back
               </button>
-              <span className="text-sm font-medium text-muted-foreground">
-                Step {currentStep} of {totalSteps}
-              </span>
-              <div className="w-12"></div>
+              {maxSteps === 1 ? (
+                // /quiz is a single step — no counter shown.
+                <div className="w-12"></div>
+              ) : (
+                <span className="text-sm font-medium text-muted-foreground">
+                  Step {currentStep} of {totalSteps}
+                </span>
+              )}
             </div>
           )}
 
