@@ -29,6 +29,8 @@ interface QuizFlowProps {
   labelOverrides?: Record<string, string>;
   extraSubline?: string;
   trustLine?: string;
+  /** /quiz only: cap the flow at the first N steps (later steps stay saved for the homepage). */
+  maxSteps?: number;
 }
 
 export function QuizFlow({
@@ -43,6 +45,7 @@ export function QuizFlow({
   labelOverrides = {},
   extraSubline,
   trustLine,
+  maxSteps,
 }: QuizFlowProps) {
   const [step, setStep] = useState(1);
   const [cueDismissed, setCueDismissed] = useState(false);
@@ -60,7 +63,7 @@ export function QuizFlow({
   }, [step]);
   // All quiz steps, questions and photos are managed from /admin.
   const { config: quizConfig, ready: quizContentReady } = useQuizConfig();
-  const steps = quizConfig.steps;
+  const steps = maxSteps ? quizConfig.steps.slice(0, maxSteps) : quizConfig.steps;
   const totalSteps = steps.length;
 
   const isUnsureOption = (label: string) => /unsure|deciding|not sure/i.test(label);
