@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { QuizFlow, QuizState } from "@/components/quiz/QuizFlow";
 import { CalendlyEmbed } from "@/components/CalendlyEmbed";
-import { trackLeadEvent, captureAttribution, attributionNote } from "@/lib/tracking";
+import { captureAttribution, attributionNote } from "@/lib/tracking";
 import { cn } from "@/lib/utils";
 import logoImg from "@/assets/logo-footer.webp";
 

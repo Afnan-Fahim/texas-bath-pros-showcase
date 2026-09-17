@@ -101,6 +101,9 @@ export function CalendlyEmbed({
         }
       }
       if (e.data?.event === "calendly.event_scheduled") {
+        // Fire Lead + Schedule exactly once per successful booking.
+        if (bookingTrackedRef.current) return;
+        bookingTrackedRef.current = true;
         const identity = {
           email: prefill.email,
           phone: prefill.phone,
