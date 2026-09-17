@@ -91,8 +91,8 @@ export function QuizCard({
           uniformLabels &&
             (isDense
               ? "max-md:min-h-[2rem]"
-              : compact
-                ? "max-md:min-h-[3rem]"
+                 : compact
+                 ? "max-md:min-h-[3.25rem]"
                 : "max-md:min-h-[4.5rem]")
         )}
       >
