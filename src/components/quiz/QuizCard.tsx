@@ -61,7 +61,7 @@ export function QuizCard({
             "w-full overflow-hidden bg-card",
             isDense
               ? "aspect-square"
-              : stretchImage
+              : matchRowHeight
                 ? "flex-1 min-h-0"
                 : "shrink-0"
           )}
@@ -73,7 +73,9 @@ export function QuizCard({
               "block h-auto w-full",
               isDense
                 ? "h-full w-full object-contain object-center"
-                : stretchImage && "h-full object-fill"
+                : coverImage
+                  ? "h-full w-full object-cover object-center"
+                  : stretchImage && "h-full object-fill"
             )}
             loading="eager"
             decoding="sync"
