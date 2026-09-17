@@ -30,10 +30,12 @@ export function QuizCard({
   compact = false,
   dense = false,
   stretchImage = false,
+  coverImage = false,
   uniformLabels = false,
 }: QuizCardProps) {
   const isDense = compact && dense;
   const hasImage = !!image;
+  const matchRowHeight = stretchImage || coverImage;
   return (
     <div
       data-quiz-card
