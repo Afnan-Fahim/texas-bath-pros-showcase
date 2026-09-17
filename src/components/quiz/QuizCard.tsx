@@ -14,6 +14,8 @@ interface QuizCardProps {
   /** Even smaller rendering for later quiz steps with a 2x2 photo grid. */
   dense?: boolean;
   stretchImage?: boolean;
+  /** Like stretchImage, but the image fills via object-fit: cover (no distortion). */
+  coverImage?: boolean;
   /** When true, force every label in the mobile row to the same height so photo areas line up. */
   uniformLabels?: boolean;
 }
@@ -28,10 +30,12 @@ export function QuizCard({
   compact = false,
   dense = false,
   stretchImage = false,
+  coverImage = false,
   uniformLabels = false,
 }: QuizCardProps) {
   const isDense = compact && dense;
   const hasImage = !!image;
+  const matchRowHeight = stretchImage || coverImage;
   return (
     <div
       data-quiz-card
@@ -57,7 +61,7 @@ export function QuizCard({
             "w-full overflow-hidden bg-card",
             isDense
               ? "aspect-square"
-              : stretchImage
+              : matchRowHeight
                 ? "flex-1 min-h-0"
                 : "shrink-0"
           )}
@@ -69,7 +73,9 @@ export function QuizCard({
               "block h-auto w-full",
               isDense
                 ? "h-full w-full object-contain object-center"
-                : stretchImage && "h-full object-fill"
+                : coverImage
+                  ? "h-full w-full object-cover object-center"
+                  : stretchImage && "h-full object-fill"
             )}
             loading="eager"
             decoding="sync"
