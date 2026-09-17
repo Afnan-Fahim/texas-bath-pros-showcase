@@ -1490,9 +1490,9 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
 
   const handleQuizComplete = async (finalData: QuizState) => {
     // The quiz only asks the photo questions; Calendly collects personal details.
+    // Meta Lead/Schedule fire ONLY on a completed Calendly booking (see CalendlyEmbed).
     setQuizData(finalData);
     setShowCalendly(true);
-    trackLeadEvent(`quiz:${finalData.desiredUpgrade}:${Date.now()}`, {});
   };
 
   return (

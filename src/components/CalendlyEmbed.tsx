@@ -45,6 +45,7 @@ export function CalendlyEmbed({
   const hostRef = useRef<HTMLDivElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   const mobileScrollTargetRef = useRef<HTMLDivElement>(null);
+  const bookingTrackedRef = useRef(false);
   const [mobileDetailsSelected, setMobileDetailsSelected] = useState(false);
   useEffect(() => {
     const id = "calendly-widget-script";
@@ -101,6 +102,9 @@ export function CalendlyEmbed({
         }
       }
       if (e.data?.event === "calendly.event_scheduled") {
+        // Fire Lead + Schedule exactly once per successful booking.
+        if (bookingTrackedRef.current) return;
+        bookingTrackedRef.current = true;
         const identity = {
           email: prefill.email,
           phone: prefill.phone,
