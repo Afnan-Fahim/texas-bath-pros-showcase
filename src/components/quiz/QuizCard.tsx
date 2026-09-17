@@ -74,7 +74,7 @@ export function QuizCard({
               isDense
                 ? "h-full w-full object-contain object-center"
                 : coverImage
-                  ? "h-full w-full object-cover object-[center_bottom]"
+                  ? "h-full w-full object-cover object-[left_bottom]"
                   : stretchImage && "h-full object-fill"
             )}
             loading="eager"
