@@ -91,9 +91,9 @@ function QuizPage() {
 
   const handleQuizComplete = async (finalData: QuizState) => {
     // Straight to the calendar after the last photo question.
+    // Meta Lead/Schedule fire ONLY on a completed Calendly booking (see CalendlyEmbed).
     setQuizData(finalData);
     setShowCalendly(true);
-    trackLeadEvent(`quiz:${finalData.desiredUpgrade}:${Date.now()}`, {});
   };
 
   useLayoutEffect(() => {
