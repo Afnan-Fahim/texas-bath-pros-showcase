@@ -164,15 +164,15 @@ export function QuizFlow({
   }
 
   return (
-    <div
-      ref={containerRef}
-      className={cn(
-        "relative z-40 mx-auto flex w-full justify-center overflow-hidden scroll-m-0",
-        compact
-          ? "max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl 2xl:max-w-3xl items-center"
-          : "min-h-[34rem] max-w-4xl items-start"
-      )}
-    >
+      <div
+        ref={containerRef}
+        className={cn(
+          "relative z-40 mx-auto flex w-full justify-center overflow-hidden scroll-m-0",
+          compact
+            ? "max-w-md md:max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl items-center"
+            : "min-h-[34rem] max-w-4xl items-start"
+        )}
+      >
       <div className="w-full relative overflow-hidden">
         {/* Decorative gradient backgrounds */}
         <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-teal/10 blur-3xl opacity-50 pointer-events-none"></div>
@@ -182,7 +182,7 @@ export function QuizFlow({
           className={cn(
             "relative z-10",
             compact
-              ? "p-2 sm:p-3 md:p-4"
+              ? "p-2 sm:p-3 md:p-2"
               : "p-4 sm:p-7 md:p-8"
           )}
         >
@@ -232,7 +232,7 @@ export function QuizFlow({
               <div key={stepConfig.id} className={cn("flex flex-col justify-center", compact ? "" : "min-h-[25rem] sm:min-h-[27rem]")}>
                 <div className={cn("text-center", compact ? "mb-1" : "mb-2 sm:mb-3")}>
                   {stepIdx === 0 ? (
-                    <h1 className={cn("font-sans font-bold text-navy leading-snug mb-0.5", compact ? "text-lg sm:text-xl md:text-xl" : "text-2xl sm:text-3xl")}>{stepConfig.title}</h1>
+                    <h1 className={cn("font-sans font-bold text-navy leading-snug mb-0.5", compact ? "text-lg sm:text-xl md:text-lg" : "text-2xl sm:text-3xl")}>{stepConfig.title}</h1>
                   ) : (
                     <h2 className={cn("font-bold text-foreground mb-0.5", compact && stepIdx > 0 ? "text-base sm:text-lg md:text-xl" : compact ? "text-lg sm:text-xl md:text-2xl" : "text-2xl sm:text-3xl")}>{stepConfig.title}</h2>
                   )}
