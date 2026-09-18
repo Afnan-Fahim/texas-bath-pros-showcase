@@ -115,7 +115,7 @@ function QuizPage() {
         <img
           src={logoImg}
           alt="Texas Bath Solutions — Trusted Shower Experts"
-          className="relative z-20 h-12 w-auto translate-y-4 sm:h-14 sm:translate-y-6 md:h-14 md:translate-y-5"
+          className="relative z-20 h-36 w-auto max-w-[94vw] translate-y-1 sm:h-[10.5rem] sm:max-w-none sm:translate-y-2 md:h-[10.5rem] md:translate-y-2"
           width={400}
           height={80}
           fetchPriority="high"
