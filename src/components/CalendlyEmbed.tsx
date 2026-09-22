@@ -109,6 +109,14 @@ export function CalendlyEmbed({
         // Fire Lead + Schedule exactly once per successful booking.
         if (bookingTrackedRef.current) return;
         bookingTrackedRef.current = true;
+        try {
+          // Survives refreshes / remounts within the same session so the
+          // same booking can never be tracked twice.
+          if (window.sessionStorage.getItem(BOOKING_TRACKED_KEY)) return;
+          window.sessionStorage.setItem(BOOKING_TRACKED_KEY, "1");
+        } catch {
+          /* storage unavailable — the ref guard still prevents dupes */
+        }
         const identity = {
           email: prefill.email,
           phone: prefill.phone,
