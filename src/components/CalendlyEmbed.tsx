@@ -36,6 +36,9 @@ export function CalendlyEmbed({
   subtitle,
   mobileSubtitle,
   compact = false,
+  // /quiz only: small progress note under the headline ("Three easy steps · 2 of 3" / "· 3 of 3").
+  progressLabel,
+  detailsProgressLabel,
   fireBookingEvents = false,
 }: {
   url?: string;
