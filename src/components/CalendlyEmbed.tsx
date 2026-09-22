@@ -240,9 +240,6 @@ export function CalendlyEmbed({
               <h3 className="font-display font-semibold text-navy text-lg sm:text-xl">
                 Confirm your in-home visit
               </h3>
-              {detailsProgressLabel && (
-                <p className="text-[10px] font-medium text-muted-foreground/70 sm:text-[11px]">{detailsProgressLabel}</p>
-              )}
               <p className="mt-1 text-sm text-muted-foreground">
                 Thanks. We just need this so we can go to the right house!
               </p>
@@ -252,18 +249,22 @@ export function CalendlyEmbed({
               <h3 className={cn("font-display font-semibold text-navy", compact ? "text-lg sm:text-xl" : "text-xl")}>
                 {title ?? (prefill.name ? `Almost done, ${prefill.name.split(" ")[0]} — pick your time` : "Pick a time for your free estimate")}
               </h3>
-              {progressLabel && (
-                <p className="text-[10px] font-medium text-muted-foreground/70 sm:text-[11px]">{progressLabel}</p>
-              )}
               <p className={cn("mt-1 text-sm text-muted-foreground", compact && "whitespace-pre-line")}>
                 {subtitle ?? "Choose any open slot."}
               </p>
             </>
           )}
         </div>
-        <Button type="button" variant="outline" className="shrink-0 border-navy/25 text-navy" onClick={onBack}>
-          Back
-        </Button>
+        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+          {(compact && mobileDetailsSelected ? detailsProgressLabel : progressLabel) && (
+            <span className="whitespace-nowrap text-[10px] font-bold text-navy/70 sm:text-[11px]">
+              {compact && mobileDetailsSelected ? detailsProgressLabel : progressLabel}
+            </span>
+          )}
+          <Button type="button" variant="outline" className="shrink-0 border-navy/25 text-navy" onClick={onBack}>
+            Back
+          </Button>
+        </div>
       </div>
 
       {!calendarReady && showFallback && (
