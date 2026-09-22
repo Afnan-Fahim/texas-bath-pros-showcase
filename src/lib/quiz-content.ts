@@ -231,22 +231,62 @@ async function resolveStepImages(step: QuizStepConfig): Promise<QuizStepConfig> 
   };
 }
 
+// ---------------------------------------------------------------------------
+// Fast first paint: start the backend fetch the moment this module evaluates
+// (before React even mounts), and remember the last fully-resolved config in
+// localStorage so returning visitors paint the real photos immediately.
+// ---------------------------------------------------------------------------
+
+const RESOLVED_CACHE_KEY = "quiz-resolved-config-v1";
+const RESOLVED_CACHE_TTL = 1000 * 60 * 60 * 6; // 6h: instant paint on return visits, admin edits still land quickly
+
+// Kicked off at import time so the network request overlaps app startup.
+const earlyFetch: Promise<QuizConfig> | null =
+  typeof window !== "undefined" ? fetchQuizConfig().catch(() => DEFAULT_QUIZ_CONFIG) : null;
+
+function readResolvedCache(): QuizConfig | null {
+  try {
+    const rawText = window.localStorage.getItem(RESOLVED_CACHE_KEY);
+    if (!rawText) return null;
+    const parsed = JSON.parse(rawText) as { at?: number; config?: QuizConfig };
+    if (!parsed.at || Date.now() - parsed.at > RESOLVED_CACHE_TTL || !parsed.config) return null;
+    return parsed.config;
+  } catch {
+    return null;
+  }
+}
+
+function writeResolvedCache(config: QuizConfig) {
+  try {
+    window.localStorage.setItem(RESOLVED_CACHE_KEY, JSON.stringify({ at: Date.now(), config }));
+  } catch {
+    // Storage full/blocked — caching is best-effort only.
+  }
+}
+
 /**
  * Renders the quiz layout instantly with blank photo cards, paints step 1 as
  * soon as its own two photos are decoded, then fills the later steps in the
  * background. Never shows old/default photos.
  */
 export function useQuizConfig(): { config: QuizConfig; ready: boolean } {
-  const [{ config, ready }, setState] = useState<{ config: QuizConfig; ready: boolean }>(() => ({
-    config: blankImages(DEFAULT_QUIZ_CONFIG),
-    ready: false,
-  }));
-  const setConfig = (next: QuizConfig) => setState({ config: next, ready: true });
+  const [{ config, ready }, setState] = useState<{ config: QuizConfig; ready: boolean }>(() => {
+    // Returning visit within this tab session: the real photos are already
+    // resolved (and almost certainly still in the browser cache), so paint
+    // them on the very first frame — no blank cards, no lag.
+    const cached = typeof window !== "undefined" ? readResolvedCache() : null;
+    if (cached) return { config: cached, ready: true };
+    return { config: blankImages(DEFAULT_QUIZ_CONFIG), ready: false };
+  });
+  const setConfig = (next: QuizConfig) => {
+    writeResolvedCache(next);
+    setState({ config: next, ready: true });
+  };
 
   useEffect(() => {
     let active = true;
     (async () => {
-      const raw = await fetchQuizConfig();
+      const raw = await (earlyFetch ?? fetchQuizConfig());
       const blank = blankImages(raw);
       const firstStep = raw.steps[0];
       if (!firstStep) return;
