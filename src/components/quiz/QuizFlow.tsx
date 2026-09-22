@@ -2,7 +2,7 @@ import React, { useState, useEffect, useLayoutEffect } from "react";
 import { cn } from "@/lib/utils";
 import { ChevronDown } from "lucide-react";
 import { QuizCard } from "./QuizCard";
-import { useQuizConfig } from "@/lib/quiz-content";
+import { useQuizConfig, type QuizConfig } from "@/lib/quiz-content";
 
 export type QuizState = {
   desiredUpgrade: string;
@@ -31,6 +31,8 @@ interface QuizFlowProps {
   trustLine?: string;
   /** /quiz only: cap the flow at the first N steps (later steps stay saved for the homepage). */
   maxSteps?: number;
+  /** Server-resolved content so step 1 photos paint on the first frame. */
+  initialConfig?: QuizConfig;
 }
 
 export function QuizFlow({
@@ -46,6 +48,7 @@ export function QuizFlow({
   extraSubline,
   trustLine,
   maxSteps,
+  initialConfig,
 }: QuizFlowProps) {
   const [step, setStep] = useState(1);
   const [cueDismissed, setCueDismissed] = useState(false);
@@ -62,7 +65,7 @@ export function QuizFlow({
     hasMountedRef.current = true;
   }, [step]);
   // All quiz steps, questions and photos are managed from /admin.
-  const { config: quizConfig, ready: quizContentReady } = useQuizConfig();
+  const { config: quizConfig, ready: quizContentReady } = useQuizConfig(initialConfig);
   const steps = maxSteps ? quizConfig.steps.slice(0, maxSteps) : quizConfig.steps;
   const totalSteps = steps.length;
 

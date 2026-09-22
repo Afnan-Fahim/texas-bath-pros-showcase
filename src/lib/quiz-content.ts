@@ -269,8 +269,11 @@ function writeResolvedCache(config: QuizConfig) {
  * soon as its own two photos are decoded, then fills the later steps in the
  * background. Never shows old/default photos.
  */
-export function useQuizConfig(): { config: QuizConfig; ready: boolean } {
+export function useQuizConfig(initial?: QuizConfig): { config: QuizConfig; ready: boolean } {
   const [{ config, ready }, setState] = useState<{ config: QuizConfig; ready: boolean }>(() => {
+    // Server-resolved step 1 (ad clicks): paint the real photos in the very
+    // first HTML frame — no blank screen, no wrong photos.
+    if (initial?.steps?.length) return { config: initial, ready: true };
     // Returning visit within this tab session: the real photos are already
     // resolved (and almost certainly still in the browser cache), so paint
     // them on the very first frame — no blank cards, no lag.

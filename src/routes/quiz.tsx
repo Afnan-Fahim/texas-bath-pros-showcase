@@ -6,12 +6,22 @@ import { captureAttribution, attributionNote } from "@/lib/tracking";
 import { cn } from "@/lib/utils";
 import logoImg from "@/assets/logo-footer.webp";
 
-import { useQuizConfig, DEFAULT_CALENDLY_URL } from "@/lib/quiz-content";
+import { useQuizConfig, DEFAULT_CALENDLY_URL, type QuizConfig } from "@/lib/quiz-content";
+import { loadQuizConfigWithStepOne } from "@/lib/quiz-preload";
 import { scheduleLead } from "@/lib/leads.functions";
 
 export const Route = createFileRoute("/quiz")({
   component: QuizPage,
-  head: () => ({
+  // Resolve the saved content + step 1 photo URLs before the page is sent, so
+  // an ad click (…?fbclid=…) paints the real photos on the first frame.
+  loader: async () => {
+    try {
+      return { quizConfig: await loadQuizConfigWithStepOne() };
+    } catch {
+      return { quizConfig: null as QuizConfig | null };
+    }
+  },
+  head: ({ loaderData }) => ({
     meta: [
       { title: "Free Bathroom Remodel Estimate Quiz | Texas Bath Solutions" },
       {
@@ -31,6 +41,11 @@ export const Route = createFileRoute("/quiz")({
       // The step 1 photos come from the backend — open that connection early.
       { rel: "preconnect", href: "https://xbfbqbytfzwjqpovuiff.supabase.co", crossOrigin: "" },
       { rel: "dns-prefetch", href: "https://xbfbqbytfzwjqpovuiff.supabase.co" },
+      // Start downloading the step 1 photos with the document itself.
+      ...((loaderData?.quizConfig?.steps?.[0]?.options ?? [])
+        .map((o) => o.image)
+        .filter((src): src is string => !!src)
+        .map((href) => ({ rel: "preload", as: "image", href, fetchpriority: "high" }))),
     ],
   }),
 });
@@ -40,7 +55,8 @@ function QuizPage() {
   const [calendlyCompleted, setCalendlyCompleted] = useState(false);
   const [showCalendly, setShowCalendly] = useState(false);
   const [quizData, setQuizData] = useState<QuizState | null>(null);
-  const { config: quizConfig } = useQuizConfig();
+  const { quizConfig: initialQuizConfig } = Route.useLoaderData();
+  const { config: quizConfig } = useQuizConfig(initialQuizConfig ?? undefined);
   const calendlyUrl = quizConfig.calendlyUrl || DEFAULT_CALENDLY_URL;
 
   const [mountCalendly, setMountCalendly] = useState(false);
@@ -125,6 +141,7 @@ function QuizPage() {
       <main ref={stageRef} className="flex w-full flex-1 items-center justify-center px-4 sm:px-6 py-3 sm:py-5 md:py-1 relative">
         <div className={showCalendly ? "hidden" : "contents"}>
           <QuizFlow
+            initialConfig={initialQuizConfig ?? undefined}
             onComplete={handleQuizComplete}
             calendlyCompleted={calendlyCompleted}
             showStartCue={false}
