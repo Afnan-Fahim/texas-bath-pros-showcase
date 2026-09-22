@@ -31,6 +31,8 @@ interface QuizFlowProps {
   trustLine?: string;
   /** /quiz only: cap the flow at the first N steps (later steps stay saved for the homepage). */
   maxSteps?: number;
+  /** /quiz only: small progress note rendered under the headline (e.g. "Three easy steps · 1 of 3"). */
+  progressLabel?: string;
   /** Server-resolved content so step 1 photos paint on the first frame. */
   initialConfig?: QuizConfig;
 }
@@ -48,6 +50,7 @@ export function QuizFlow({
   extraSubline,
   trustLine,
   maxSteps,
+  progressLabel,
   initialConfig,
 }: QuizFlowProps) {
   const [step, setStep] = useState(1);
@@ -236,6 +239,9 @@ export function QuizFlow({
                 <div className={cn("text-center", compact ? "mb-1" : "mb-2 sm:mb-3")}>
                   {stepIdx === 0 ? (
                     <h1 className={cn("font-sans font-bold text-navy leading-snug mb-0.5", compact ? "text-lg sm:text-xl md:text-lg" : "text-2xl sm:text-3xl")}>{stepConfig.title}</h1>
+                    {progressLabel && (
+                      <p className={cn("font-medium text-muted-foreground/70", compact ? "text-[10px] sm:text-[11px]" : "text-xs")}>{progressLabel}</p>
+                    )}
                   ) : (
                     <h2 className={cn("font-bold text-foreground mb-0.5", compact && stepIdx > 0 ? "text-base sm:text-lg md:text-xl" : compact ? "text-lg sm:text-xl md:text-2xl" : "text-2xl sm:text-3xl")}>{stepConfig.title}</h2>
                   )}
