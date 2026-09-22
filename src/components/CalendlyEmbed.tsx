@@ -233,6 +233,14 @@ export function CalendlyEmbed({
 
   return (
     <div ref={rootRef}>
+      {/* /quiz only: counter alone in the top-right corner, above the headline row. */}
+      {(compact && mobileDetailsSelected ? detailsProgressLabel : progressLabel) && (
+        <div className="flex justify-end">
+          <span className="shrink-0 whitespace-nowrap text-[9px] font-bold text-navy/70 sm:text-[10px]">
+            {compact && mobileDetailsSelected ? detailsProgressLabel : progressLabel}
+          </span>
+        </div>
+      )}
       <div className="flex items-center justify-between gap-3">
         <div className="min-w-0 flex-1">
           {compact && mobileDetailsSelected ? (
@@ -255,18 +263,9 @@ export function CalendlyEmbed({
             </>
           )}
         </div>
-        {/* /quiz only: counter sits right of the headline (next to Back). On
-            phones it stacks above Back so the headline keeps its width. */}
-        <div className="flex shrink-0 flex-col items-end gap-1.5 sm:flex-row sm:items-center sm:gap-3">
-          {(compact && mobileDetailsSelected ? detailsProgressLabel : progressLabel) && (
-            <span className="whitespace-nowrap text-[10px] font-bold text-navy/70 sm:text-[11px]">
-              {compact && mobileDetailsSelected ? detailsProgressLabel : progressLabel}
-            </span>
-          )}
-          <Button type="button" variant="outline" className="shrink-0 border-navy/25 text-navy" onClick={onBack}>
-            Back
-          </Button>
-        </div>
+        <Button type="button" variant="outline" className="shrink-0 border-navy/25 text-navy" onClick={onBack}>
+          Back
+        </Button>
       </div>
 
       {!calendarReady && showFallback && (

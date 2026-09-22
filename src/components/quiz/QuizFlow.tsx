@@ -239,11 +239,11 @@ export function QuizFlow({
                 <div className={cn("text-center", compact ? "mb-1" : "mb-2 sm:mb-3")}>
                   {stepIdx === 0 && progressLabel ? (
                     <>
-                      {/* /quiz: headline left, counter right on the same row. */}
-                      <div className="flex items-baseline justify-between gap-3">
-                        <h1 className="font-sans font-bold text-navy leading-snug text-left text-lg sm:text-xl md:text-lg">{stepConfig.title}</h1>
-                        <span className="shrink-0 whitespace-nowrap text-[10px] font-bold text-navy/70 sm:text-[11px]">{progressLabel}</span>
+                      {/* /quiz: counter alone in the top-right corner, headline centered. */}
+                      <div className="flex justify-end">
+                        <span className="shrink-0 whitespace-nowrap text-[9px] font-bold text-navy/70 sm:text-[10px]">{progressLabel}</span>
                       </div>
+                      <h1 className="font-sans font-bold text-navy leading-snug text-center text-lg sm:text-xl md:text-lg">{stepConfig.title}</h1>
                     </>
                   ) : stepIdx === 0 ? (
                     <>
