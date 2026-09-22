@@ -12,10 +12,20 @@ export type QuizImageMap = Record<string, string>;
 export async function resolveQuizImageUrl(path: string): Promise<string> {
   if (!path) return "";
   if (path.startsWith("http") || path.startsWith("/")) return path;
-  const { data } = await supabase.storage
+  // Ask the backend for a right-sized copy of the same photo (no crop) so the
+  // quiz paints fast on mobile connections instead of pulling multi-MB files.
+  const { data, error } = await supabase.storage
     .from("quiz-assets")
-    .createSignedUrl(path, 60 * 60 * 24 * 7);
-  return data?.signedUrl ?? "";
+    .createSignedUrl(path, 60 * 60 * 24 * 7, {
+      transform: { width: 900, resize: "contain", quality: 80 },
+    });
+  if (error || !data?.signedUrl) {
+    const fallback = await supabase.storage
+      .from("quiz-assets")
+      .createSignedUrl(path, 60 * 60 * 24 * 7);
+    return fallback.data?.signedUrl ?? "";
+  }
+  return data.signedUrl;
 }
 
 export async function fetchQuizImages(): Promise<QuizImageMap> {
