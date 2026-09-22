@@ -3,6 +3,10 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { getAttribution, trackLeadEvent, trackScheduleEvent } from "@/lib/tracking";
 
+// Set once a booking's Lead/Schedule events have fired, so a page refresh or
+// component remount after the booking never re-fires them in the same session.
+const BOOKING_TRACKED_KEY = "tbs_booking_tracked";
+
 const CALENDLY_URL = "https://calendly.com/rugsafari/texas-bath-solutions";
 
 // After a time is picked, the details form gets a tall frame so every field
@@ -105,6 +109,14 @@ export function CalendlyEmbed({
         // Fire Lead + Schedule exactly once per successful booking.
         if (bookingTrackedRef.current) return;
         bookingTrackedRef.current = true;
+        try {
+          // Survives refreshes / remounts within the same session so the
+          // same booking can never be tracked twice.
+          if (window.sessionStorage.getItem(BOOKING_TRACKED_KEY)) return;
+          window.sessionStorage.setItem(BOOKING_TRACKED_KEY, "1");
+        } catch {
+          /* storage unavailable — the ref guard still prevents dupes */
+        }
         const identity = {
           email: prefill.email,
           phone: prefill.phone,
