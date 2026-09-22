@@ -125,8 +125,10 @@ export function CalendlyEmbed({
           phone: prefill.phone,
           name: prefill.name,
         };
-        trackScheduleEvent(identity);
-        trackLeadEvent(`calendly:${prefill.email}:${prefill.phone}`, identity);
+        if (fireBookingEvents) {
+          trackScheduleEvent(identity);
+          trackLeadEvent(`calendly:${prefill.email}:${prefill.phone}`, identity);
+        }
         if (e.data?.payload?.event?.uri) {
           onScheduled(e.data.payload.event.uri);
         } else {
@@ -140,7 +142,7 @@ export function CalendlyEmbed({
       mobileAlignmentTimers.forEach((timer) => window.clearTimeout(timer));
       if (calendlyFrame) calendlyFrame.onload = null;
     };
-  }, [compact, onScheduled]);
+  }, [compact, onScheduled, fireBookingEvents]);
 
   const details = [
     prefill.offer ? `Offer claimed: ${prefill.offer}` : "",
