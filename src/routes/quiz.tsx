@@ -41,6 +41,11 @@ export const Route = createFileRoute("/quiz")({
       // The step 1 photos come from the backend — open that connection early.
       { rel: "preconnect", href: "https://xbfbqbytfzwjqpovuiff.supabase.co", crossOrigin: "" },
       { rel: "dns-prefetch", href: "https://xbfbqbytfzwjqpovuiff.supabase.co" },
+      // Start downloading the step 1 photos with the document itself.
+      ...((loaderData?.quizConfig?.steps?.[0]?.options ?? [])
+        .map((o) => o.image)
+        .filter((src): src is string => !!src)
+        .map((href) => ({ rel: "preload", as: "image", href, fetchpriority: "high" }))),
     ],
   }),
 });
