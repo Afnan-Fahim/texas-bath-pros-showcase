@@ -333,6 +333,39 @@ export function AdminPanel() {
     }
   };
 
+  if (recoveryMode && session) {
+    return (
+      <div className="max-w-md mx-auto mt-12 p-6 bg-card border rounded-xl shadow-sm">
+        <h1 className="text-2xl font-bold mb-2">Set a new password</h1>
+        <p className="text-sm text-muted-foreground mb-6">
+          Choose a new password for {session.user.email}.
+        </p>
+        <form className="space-y-4" onSubmit={handleSetNewPassword}>
+          <div>
+            <Label htmlFor="admin-new-password">New password</Label>
+            <Input
+              id="admin-new-password"
+              type="password"
+              autoComplete="new-password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              required
+              minLength={6}
+            />
+          </div>
+          {authMessage && (
+            <p className={`text-sm ${authMessage.includes("updated") ? "text-primary" : "text-destructive"}`}>
+              {authMessage}
+            </p>
+          )}
+          <Button type="submit" className="w-full" disabled={authBusy}>
+            {authBusy ? "Please wait…" : "Save new password"}
+          </Button>
+        </form>
+      </div>
+    );
+  }
+
   if (!session) {
     return (
       <div className="max-w-md mx-auto mt-12 p-6 bg-card border rounded-xl shadow-sm">
@@ -381,6 +414,14 @@ export function AdminPanel() {
           >
             Create admin account
           </Button>
+          <button
+            type="button"
+            className="w-full text-sm text-muted-foreground underline underline-offset-2 hover:text-foreground"
+            disabled={authBusy}
+            onClick={() => void handleForgotPassword()}
+          >
+            Forgot password?
+          </button>
         </form>
       </div>
     );
