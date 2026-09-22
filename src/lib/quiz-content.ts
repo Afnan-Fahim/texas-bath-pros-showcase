@@ -246,7 +246,7 @@ const earlyFetch: Promise<QuizConfig> | null =
 
 function readResolvedCache(): QuizConfig | null {
   try {
-    const rawText = window.sessionStorage.getItem(RESOLVED_CACHE_KEY);
+    const rawText = window.localStorage.getItem(RESOLVED_CACHE_KEY);
     if (!rawText) return null;
     const parsed = JSON.parse(rawText) as { at?: number; config?: QuizConfig };
     if (!parsed.at || Date.now() - parsed.at > RESOLVED_CACHE_TTL || !parsed.config) return null;
@@ -258,7 +258,7 @@ function readResolvedCache(): QuizConfig | null {
 
 function writeResolvedCache(config: QuizConfig) {
   try {
-    window.sessionStorage.setItem(RESOLVED_CACHE_KEY, JSON.stringify({ at: Date.now(), config }));
+    window.localStorage.setItem(RESOLVED_CACHE_KEY, JSON.stringify({ at: Date.now(), config }));
   } catch {
     // Storage full/blocked — caching is best-effort only.
   }
