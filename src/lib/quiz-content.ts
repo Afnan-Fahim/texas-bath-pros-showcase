@@ -238,7 +238,7 @@ async function resolveStepImages(step: QuizStepConfig): Promise<QuizStepConfig> 
 // ---------------------------------------------------------------------------
 
 const RESOLVED_CACHE_KEY = "quiz-resolved-config-v1";
-const RESOLVED_CACHE_TTL = 1000 * 60 * 60 * 24 * 3; // signed URLs last 7 days; re-check sooner
+const RESOLVED_CACHE_TTL = 1000 * 60 * 60 * 6; // 6h: instant paint on return visits, admin edits still land quickly
 
 // Kicked off at import time so the network request overlaps app startup.
 const earlyFetch: Promise<QuizConfig> | null =
