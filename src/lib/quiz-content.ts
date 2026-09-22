@@ -234,7 +234,7 @@ async function resolveStepImages(step: QuizStepConfig): Promise<QuizStepConfig> 
 // ---------------------------------------------------------------------------
 // Fast first paint: start the backend fetch the moment this module evaluates
 // (before React even mounts), and remember the last fully-resolved config in
-// sessionStorage so returning visitors paint the real photos immediately.
+// localStorage so returning visitors paint the real photos immediately.
 // ---------------------------------------------------------------------------
 
 const RESOLVED_CACHE_KEY = "quiz-resolved-config-v1";
