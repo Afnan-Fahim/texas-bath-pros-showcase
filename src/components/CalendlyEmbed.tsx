@@ -36,6 +36,7 @@ export function CalendlyEmbed({
   subtitle,
   mobileSubtitle,
   compact = false,
+  fireBookingEvents = false,
 }: {
   url?: string;
   prefill: Prefill;
@@ -45,6 +46,8 @@ export function CalendlyEmbed({
   subtitle?: string;
   mobileSubtitle?: string;
   compact?: boolean;
+  // Meta Pixel Lead + Schedule fire ONLY on /quiz (per tracking spec).
+  fireBookingEvents?: boolean;
 }) {
   const hostRef = useRef<HTMLDivElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
