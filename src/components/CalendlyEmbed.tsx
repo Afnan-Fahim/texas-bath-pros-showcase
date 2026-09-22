@@ -3,6 +3,10 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { getAttribution, trackLeadEvent, trackScheduleEvent } from "@/lib/tracking";
 
+// Set once a booking's Lead/Schedule events have fired, so a page refresh or
+// component remount after the booking never re-fires them in the same session.
+const BOOKING_TRACKED_KEY = "tbs_booking_tracked";
+
 const CALENDLY_URL = "https://calendly.com/rugsafari/texas-bath-solutions";
 
 // After a time is picked, the details form gets a tall frame so every field

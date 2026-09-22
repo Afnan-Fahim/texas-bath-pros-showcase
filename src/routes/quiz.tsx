@@ -47,8 +47,8 @@ function QuizPage() {
 
   useEffect(() => {
     captureAttribution();
-    const w = window as unknown as { fbq?: (...args: unknown[]) => void };
-    w.fbq?.("track", "PageView");
+    // PageView is fired once by the base Meta Pixel in the site head
+    // (__root.tsx). Do not fire it again here — that would double-count.
   }, []);
 
   // Prepare the calendar in the background immediately after the first paint,
