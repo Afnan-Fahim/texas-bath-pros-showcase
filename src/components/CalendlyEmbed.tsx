@@ -234,7 +234,7 @@ export function CalendlyEmbed({
   return (
     <div ref={rootRef}>
       <div className="flex items-center justify-between gap-3">
-        <div>
+        <div className="min-w-0 flex-1">
           {compact && mobileDetailsSelected ? (
             <>
               <h3 className="font-display font-semibold text-navy text-lg sm:text-xl">
@@ -255,7 +255,9 @@ export function CalendlyEmbed({
             </>
           )}
         </div>
-        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+        {/* /quiz only: counter sits right of the headline (next to Back). On
+            phones it stacks above Back so the headline keeps its width. */}
+        <div className="flex shrink-0 flex-col items-end gap-1.5 sm:flex-row sm:items-center sm:gap-3">
           {(compact && mobileDetailsSelected ? detailsProgressLabel : progressLabel) && (
             <span className="whitespace-nowrap text-[10px] font-bold text-navy/70 sm:text-[11px]">
               {compact && mobileDetailsSelected ? detailsProgressLabel : progressLabel}
