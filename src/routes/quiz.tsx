@@ -149,6 +149,7 @@ function QuizPage() {
             compact={true}
             waitForContent={true}
             maxSteps={1}
+            progressLabel="Three easy steps · 1 of 3"
             extraSubline="Free in-home estimate • San Antonio • (210) 702-0753"
             trustLine="Family-owned · A+ BBB · Licensed"
           />
@@ -179,6 +180,8 @@ function QuizPage() {
                   "We come to your house, measure, and give you a straight price. No pressure.\nVisit takes about 30–45 minutes. Next you’ll enter your name and phone."
                 }
                 compact={true}
+                progressLabel="Three easy steps · 2 of 3"
+                detailsProgressLabel="Three easy steps · 3 of 3"
                 fireBookingEvents={true}
               />
             </div>
