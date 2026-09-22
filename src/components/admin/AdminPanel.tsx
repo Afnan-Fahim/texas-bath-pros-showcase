@@ -85,8 +85,9 @@ export function AdminPanel() {
       if (active) setAuthReady(true);
     });
 
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, next) => {
+    const { data: listener } = supabase.auth.onAuthStateChange((event, next) => {
       if (!active) return;
+      if (event === "PASSWORD_RECOVERY") setRecoveryMode(true);
       setSession(next);
       setAuthReady(true);
     });
@@ -190,6 +191,45 @@ export function AdminPanel() {
       }
     } catch (err) {
       setAuthMessage(err instanceof Error ? err.message : "Authentication failed.");
+    } finally {
+      setAuthBusy(false);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    if (!email) {
+      setAuthMessage("Enter your email above, then tap Forgot password.");
+      return;
+    }
+    setAuthBusy(true);
+    setAuthMessage("");
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/admin`,
+      });
+      setAuthMessage(error ? error.message : "Password reset email sent — check your inbox.");
+    } catch (err) {
+      setAuthMessage(err instanceof Error ? err.message : "Could not send reset email.");
+    } finally {
+      setAuthBusy(false);
+    }
+  };
+
+  const handleSetNewPassword = async (e: FormEvent) => {
+    e.preventDefault();
+    setAuthBusy(true);
+    setAuthMessage("");
+    try {
+      const { error } = await supabase.auth.updateUser({ password: newPassword });
+      if (error) {
+        setAuthMessage(error.message);
+      } else {
+        setRecoveryMode(false);
+        setNewPassword("");
+        setAuthMessage("Password updated. You are logged in.");
+      }
+    } catch (err) {
+      setAuthMessage(err instanceof Error ? err.message : "Could not update password.");
     } finally {
       setAuthBusy(false);
     }
