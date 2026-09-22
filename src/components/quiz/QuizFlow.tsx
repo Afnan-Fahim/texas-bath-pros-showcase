@@ -237,7 +237,15 @@ export function QuizFlow({
             currentStep === stepIdx + 1 ? (
               <div key={stepConfig.id} className={cn("flex flex-col justify-center", compact ? "" : "min-h-[25rem] sm:min-h-[27rem]")}>
                 <div className={cn("text-center", compact ? "mb-1" : "mb-2 sm:mb-3")}>
-                  {stepIdx === 0 ? (
+                  {stepIdx === 0 && progressLabel ? (
+                    <>
+                      {/* /quiz: headline left, counter right on the same row. */}
+                      <div className="flex items-baseline justify-between gap-3">
+                        <h1 className="font-sans font-bold text-navy leading-snug text-left text-lg sm:text-xl md:text-lg">{stepConfig.title}</h1>
+                        <span className="shrink-0 whitespace-nowrap text-[10px] font-bold text-navy/70 sm:text-[11px]">{progressLabel}</span>
+                      </div>
+                    </>
+                  ) : stepIdx === 0 ? (
                     <>
                       <h1 className={cn("font-sans font-bold text-navy leading-snug mb-0.5", compact ? "text-lg sm:text-xl md:text-lg" : "text-2xl sm:text-3xl")}>{stepConfig.title}</h1>
                       {progressLabel && (
