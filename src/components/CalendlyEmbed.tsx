@@ -49,6 +49,9 @@ export function CalendlyEmbed({
   subtitle?: string;
   mobileSubtitle?: string;
   compact?: boolean;
+  // /quiz only: small progress note under the headline ("Three easy steps · 2 of 3" / "· 3 of 3").
+  progressLabel?: string;
+  detailsProgressLabel?: string;
   // Meta Pixel Lead + Schedule fire ONLY on /quiz (per tracking spec).
   fireBookingEvents?: boolean;
 }) {
