@@ -52,6 +52,8 @@ export function AdminPanel() {
   const [password, setPassword] = useState("");
   const [authBusy, setAuthBusy] = useState(false);
   const [authMessage, setAuthMessage] = useState("");
+  const [recoveryMode, setRecoveryMode] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
 
   const [leads, setLeads] = useState<Lead[]>([]);
   const [leadsError, setLeadsError] = useState("");
@@ -83,8 +85,9 @@ export function AdminPanel() {
       if (active) setAuthReady(true);
     });
 
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, next) => {
+    const { data: listener } = supabase.auth.onAuthStateChange((event, next) => {
       if (!active) return;
+      if (event === "PASSWORD_RECOVERY") setRecoveryMode(true);
       setSession(next);
       setAuthReady(true);
     });
@@ -193,6 +196,45 @@ export function AdminPanel() {
     }
   };
 
+  const handleForgotPassword = async () => {
+    if (!email) {
+      setAuthMessage("Enter your email above, then tap Forgot password.");
+      return;
+    }
+    setAuthBusy(true);
+    setAuthMessage("");
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/admin`,
+      });
+      setAuthMessage(error ? error.message : "Password reset email sent — check your inbox.");
+    } catch (err) {
+      setAuthMessage(err instanceof Error ? err.message : "Could not send reset email.");
+    } finally {
+      setAuthBusy(false);
+    }
+  };
+
+  const handleSetNewPassword = async (e: FormEvent) => {
+    e.preventDefault();
+    setAuthBusy(true);
+    setAuthMessage("");
+    try {
+      const { error } = await supabase.auth.updateUser({ password: newPassword });
+      if (error) {
+        setAuthMessage(error.message);
+      } else {
+        setRecoveryMode(false);
+        setNewPassword("");
+        setAuthMessage("Password updated. You are logged in.");
+      }
+    } catch (err) {
+      setAuthMessage(err instanceof Error ? err.message : "Could not update password.");
+    } finally {
+      setAuthBusy(false);
+    }
+  };
+
   const updateStep = (stepIdx: number, patch: Partial<QuizConfig["steps"][number]>) => {
     setQuizConfig((cfg) => ({
       ...cfg,
@@ -291,6 +333,39 @@ export function AdminPanel() {
     }
   };
 
+  if (recoveryMode && session) {
+    return (
+      <div className="max-w-md mx-auto mt-12 p-6 bg-card border rounded-xl shadow-sm">
+        <h1 className="text-2xl font-bold mb-2">Set a new password</h1>
+        <p className="text-sm text-muted-foreground mb-6">
+          Choose a new password for {session.user.email}.
+        </p>
+        <form className="space-y-4" onSubmit={handleSetNewPassword}>
+          <div>
+            <Label htmlFor="admin-new-password">New password</Label>
+            <Input
+              id="admin-new-password"
+              type="password"
+              autoComplete="new-password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              required
+              minLength={6}
+            />
+          </div>
+          {authMessage && (
+            <p className={`text-sm ${authMessage.includes("updated") ? "text-primary" : "text-destructive"}`}>
+              {authMessage}
+            </p>
+          )}
+          <Button type="submit" className="w-full" disabled={authBusy}>
+            {authBusy ? "Please wait…" : "Save new password"}
+          </Button>
+        </form>
+      </div>
+    );
+  }
+
   if (!session) {
     return (
       <div className="max-w-md mx-auto mt-12 p-6 bg-card border rounded-xl shadow-sm">
@@ -339,6 +414,14 @@ export function AdminPanel() {
           >
             Create admin account
           </Button>
+          <button
+            type="button"
+            className="w-full text-sm text-muted-foreground underline underline-offset-2 hover:text-foreground"
+            disabled={authBusy}
+            onClick={() => void handleForgotPassword()}
+          >
+            Forgot password?
+          </button>
         </form>
       </div>
     );
