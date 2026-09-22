@@ -162,6 +162,7 @@ function QuizPage() {
                   "We come to your house, measure, and give you a straight price. No pressure.\nVisit takes about 30–45 minutes. Next you’ll enter your name and phone."
                 }
                 compact={true}
+                fireBookingEvents={true}
               />
             </div>
           </div>

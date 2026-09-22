@@ -36,6 +36,7 @@ export function CalendlyEmbed({
   subtitle,
   mobileSubtitle,
   compact = false,
+  fireBookingEvents = false,
 }: {
   url?: string;
   prefill: Prefill;
@@ -45,6 +46,8 @@ export function CalendlyEmbed({
   subtitle?: string;
   mobileSubtitle?: string;
   compact?: boolean;
+  // Meta Pixel Lead + Schedule fire ONLY on /quiz (per tracking spec).
+  fireBookingEvents?: boolean;
 }) {
   const hostRef = useRef<HTMLDivElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -122,8 +125,10 @@ export function CalendlyEmbed({
           phone: prefill.phone,
           name: prefill.name,
         };
-        trackScheduleEvent(identity);
-        trackLeadEvent(`calendly:${prefill.email}:${prefill.phone}`, identity);
+        if (fireBookingEvents) {
+          trackScheduleEvent(identity);
+          trackLeadEvent(`calendly:${prefill.email}:${prefill.phone}`, identity);
+        }
         if (e.data?.payload?.event?.uri) {
           onScheduled(e.data.payload.event.uri);
         } else {
@@ -137,7 +142,7 @@ export function CalendlyEmbed({
       mobileAlignmentTimers.forEach((timer) => window.clearTimeout(timer));
       if (calendlyFrame) calendlyFrame.onload = null;
     };
-  }, [compact, onScheduled]);
+  }, [compact, onScheduled, fireBookingEvents]);
 
   const details = [
     prefill.offer ? `Offer claimed: ${prefill.offer}` : "",
