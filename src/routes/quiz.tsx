@@ -6,12 +6,22 @@ import { captureAttribution, attributionNote } from "@/lib/tracking";
 import { cn } from "@/lib/utils";
 import logoImg from "@/assets/logo-footer.webp";
 
-import { useQuizConfig, DEFAULT_CALENDLY_URL } from "@/lib/quiz-content";
+import { useQuizConfig, DEFAULT_CALENDLY_URL, type QuizConfig } from "@/lib/quiz-content";
+import { loadQuizConfigWithStepOne } from "@/lib/quiz-preload";
 import { scheduleLead } from "@/lib/leads.functions";
 
 export const Route = createFileRoute("/quiz")({
   component: QuizPage,
-  head: () => ({
+  // Resolve the saved content + step 1 photo URLs before the page is sent, so
+  // an ad click (…?fbclid=…) paints the real photos on the first frame.
+  loader: async () => {
+    try {
+      return { quizConfig: await loadQuizConfigWithStepOne() };
+    } catch {
+      return { quizConfig: null as QuizConfig | null };
+    }
+  },
+  head: ({ loaderData }) => ({
     meta: [
       { title: "Free Bathroom Remodel Estimate Quiz | Texas Bath Solutions" },
       {
