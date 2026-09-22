@@ -238,10 +238,12 @@ export function QuizFlow({
               <div key={stepConfig.id} className={cn("flex flex-col justify-center", compact ? "" : "min-h-[25rem] sm:min-h-[27rem]")}>
                 <div className={cn("text-center", compact ? "mb-1" : "mb-2 sm:mb-3")}>
                   {stepIdx === 0 ? (
-                    <h1 className={cn("font-sans font-bold text-navy leading-snug mb-0.5", compact ? "text-lg sm:text-xl md:text-lg" : "text-2xl sm:text-3xl")}>{stepConfig.title}</h1>
-                    {progressLabel && (
-                      <p className={cn("font-medium text-muted-foreground/70", compact ? "text-[10px] sm:text-[11px]" : "text-xs")}>{progressLabel}</p>
-                    )}
+                    <>
+                      <h1 className={cn("font-sans font-bold text-navy leading-snug mb-0.5", compact ? "text-lg sm:text-xl md:text-lg" : "text-2xl sm:text-3xl")}>{stepConfig.title}</h1>
+                      {progressLabel && (
+                        <p className={cn("font-medium text-muted-foreground/70", compact ? "text-[10px] sm:text-[11px]" : "text-xs")}>{progressLabel}</p>
+                      )}
+                    </>
                   ) : (
                     <h2 className={cn("font-bold text-foreground mb-0.5", compact && stepIdx > 0 ? "text-base sm:text-lg md:text-xl" : compact ? "text-lg sm:text-xl md:text-2xl" : "text-2xl sm:text-3xl")}>{stepConfig.title}</h2>
                   )}
