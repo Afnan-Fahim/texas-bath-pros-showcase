@@ -52,6 +52,8 @@ export function AdminPanel() {
   const [password, setPassword] = useState("");
   const [authBusy, setAuthBusy] = useState(false);
   const [authMessage, setAuthMessage] = useState("");
+  const [recoveryMode, setRecoveryMode] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
 
   const [leads, setLeads] = useState<Lead[]>([]);
   const [leadsError, setLeadsError] = useState("");
