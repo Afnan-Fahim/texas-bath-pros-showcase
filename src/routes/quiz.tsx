@@ -178,32 +178,94 @@ function QuizPage() {
           />
         </div>
 
-        {/* Calendar mounts hidden shortly AFTER step 1 paints, so finishing
-            step 3 reveals it instantly without slowing the first screen. */}
-        {(mountCalendly || showCalendly) && (
-          <div
-            className={
-              showCalendly
-                ? "mx-auto w-full max-w-xl md:max-w-3xl px-4 sm:px-6 md:px-8"
-                : "pointer-events-none absolute inset-0 -z-10 w-full overflow-hidden p-4 opacity-0"
-            }
-            aria-hidden={!showCalendly}
-          >
+        {stage === 2 && (
+          <div className="mx-auto w-full max-w-xl px-4 sm:px-6">
+            <form
+              onSubmit={handleContactSubmit}
+              noValidate
+              className="rounded-2xl border border-border bg-background p-4 shadow-sm sm:p-6"
+            >
+              <div className="flex justify-end">
+                <span className="whitespace-nowrap text-[9px] font-bold text-navy/70 sm:text-[10px]">
+                  Three easy steps · 2 of 3
+                </span>
+              </div>
+              <div className="flex items-center justify-between gap-3">
+                <div className="min-w-0 flex-1">
+                  <h3 className="font-display text-lg font-semibold text-navy sm:text-xl">Confirm your in-home visit</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Thanks. We just need this so we can go to the right house!
+                  </p>
+                </div>
+                <Button type="button" variant="outline" className="shrink-0 border-navy/25 text-navy" onClick={() => setStage(1)}>
+                  Back
+                </Button>
+              </div>
+              <div className="mt-4 grid gap-3">
+                {([
+                  ["name", "Name", "text", "name"],
+                  ["email", "Email", "email", "email"],
+                  ["phone", "Phone", "tel", "tel"],
+                  ["address", "Address", "text", "street-address"],
+                ] as const).map(([key, label, type, ac]) => (
+                  <label key={key} className="grid gap-1 text-sm font-medium text-navy">
+                    {label}
+                    <input
+                      type={type}
+                      autoComplete={ac}
+                      maxLength={key === "address" ? 240 : 160}
+                      placeholder={key === "address" ? "Street address, city, ZIP" : undefined}
+                      value={contact[key]}
+                      onChange={(e) => setContact({ ...contact, [key]: e.target.value })}
+                      className="h-11 rounded-lg border border-input bg-background px-3 text-base text-foreground outline-none focus:border-navy"
+                    />
+                  </label>
+                ))}
+                <fieldset className="grid gap-1 text-sm font-medium text-navy">
+                  <legend className="mb-1">Are you the homeowner?</legend>
+                  <div className="grid grid-cols-2 gap-2">
+                    {["Yes", "No"].map((v) => (
+                      <button
+                        key={v}
+                        type="button"
+                        onClick={() => setContact({ ...contact, homeowner: v })}
+                        className={cn(
+                          "h-11 rounded-lg border text-base",
+                          contact.homeowner === v ? "border-navy bg-navy text-primary-foreground" : "border-input bg-background text-navy"
+                        )}
+                      >
+                        {v}
+                      </button>
+                    ))}
+                  </div>
+                </fieldset>
+              </div>
+              {formError && <p className="mt-3 text-sm text-destructive">{formError}</p>}
+              <Button type="submit" className="mt-4 h-12 w-full bg-navy text-base font-semibold text-primary-foreground">
+                Continue
+              </Button>
+            </form>
+          </div>
+        )}
+
+        {stage === 3 && (
+          <div className="mx-auto w-full max-w-xl md:max-w-3xl px-4 sm:px-6 md:px-8">
             <div className="rounded-2xl border border-border bg-background p-4 shadow-sm sm:p-6 md:p-8">
               <CalendlyEmbed
                 url={calendlyUrl}
                 prefill={{
-                  name: quizData?.name || "",
-                  email: quizData?.email || "",
+                  name: contact.name,
+                  email: contact.email,
+                  phone: contact.phone,
+                  address: contact.address,
+                  notes: `Homeowner: ${contact.homeowner}`,
                 }}
-                onBack={handleCalendlyBack}
+                onBack={() => setStage(2)}
                 onScheduled={handleCalendlyScheduled}
                 title="Pick a time for your free estimate"
-                subtitle={
-                  "We come to your house, measure, and give you a straight price. No pressure.\nVisit takes about 30–45 minutes. Next you’ll enter your name and phone."
-                }
+                subtitle={"We come to your house, measure, and give you a straight price. No pressure.\nVisit takes about 30–45 minutes."}
                 compact={true}
-                progressLabel="Three easy steps · 2 of 3"
+                progressLabel="Three easy steps · 3 of 3"
                 detailsProgressLabel="Three easy steps · 3 of 3"
                 fireBookingEvents={true}
               />
