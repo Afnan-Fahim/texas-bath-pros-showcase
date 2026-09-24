@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type FormEvent } from "react";
 import { QuizFlow, QuizState } from "@/components/quiz/QuizFlow";
 import { CalendlyEmbed } from "@/components/CalendlyEmbed";
 import { captureAttribution, attributionNote } from "@/lib/tracking";
@@ -8,7 +8,8 @@ import logoImg from "@/assets/logo-footer.webp";
 
 import { useQuizConfig, DEFAULT_CALENDLY_URL, type QuizConfig } from "@/lib/quiz-content";
 import { loadQuizConfigWithStepOne } from "@/lib/quiz-preload";
-import { scheduleLead } from "@/lib/leads.functions";
+import { scheduleLead, submitLead } from "@/lib/leads.functions";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/quiz")({
   component: QuizPage,
@@ -50,43 +51,52 @@ export const Route = createFileRoute("/quiz")({
   }),
 });
 
+type ContactForm = { name: string; email: string; phone: string; address: string; homeowner: string };
+const EMPTY_CONTACT: ContactForm = { name: "", email: "", phone: "", address: "", homeowner: "" };
+
 function QuizPage() {
   const stageRef = useRef<HTMLElement>(null);
   const [calendlyCompleted, setCalendlyCompleted] = useState(false);
-  const [showCalendly, setShowCalendly] = useState(false);
+  // 1 = photo question, 2 = our contact form, 3 = Calendly (time only)
+  const [stage, setStage] = useState<1 | 2 | 3>(1);
+  const showCalendly = stage !== 1;
   const [quizData, setQuizData] = useState<QuizState | null>(null);
+  const [contact, setContact] = useState<ContactForm>(EMPTY_CONTACT);
+  const [formError, setFormError] = useState("");
   const { quizConfig: initialQuizConfig } = Route.useLoaderData();
   const { config: quizConfig } = useQuizConfig(initialQuizConfig ?? undefined);
   const calendlyUrl = quizConfig.calendlyUrl || DEFAULT_CALENDLY_URL;
-
-  const [mountCalendly, setMountCalendly] = useState(false);
 
   useEffect(() => {
     captureAttribution();
     // PageView is fired once by the base Meta Pixel in the site head
     // (__root.tsx). Do not fire it again here — that would double-count.
-  }, []);
-
-  // Prepare the calendar in the background immediately after the first paint,
-  // well before the visitor reaches the final step.
-  useEffect(() => {
-    const t = window.setTimeout(() => setMountCalendly(true), 250);
+    // Warm the Calendly script so step 3 opens fast.
+    const t = window.setTimeout(() => {
+      const id = "calendly-widget-script";
+      if (!document.getElementById(id)) {
+        const s = document.createElement("script");
+        s.id = id;
+        s.src = "https://assets.calendly.com/assets/external/widget.js";
+        s.async = true;
+        document.body.appendChild(s);
+      }
+    }, 250);
     return () => window.clearTimeout(t);
   }, []);
 
-  const buildLead = (d: QuizState, booked: boolean) => ({
-    // Calendly collects the personal details; the quiz only carries the answers.
-    name: d.name || "Quiz lead",
-    email: d.email || "quiz@provided.com",
-    phone: d.phone || "See Calendly",
-    address: d.address || "Provided in Calendly",
+  const buildLead = (d: QuizState, c: ContactForm, booked: boolean) => ({
+    name: c.name,
+    email: c.email,
+    phone: c.phone,
+    address: c.address,
     timeframe: d.timeline,
     notes:
       [
-        `Status: ${booked ? "BOOKED" : "NOT BOOKED"}`,
+        `Status: ${booked ? "BOOKED" : "FORM SUBMITTED — NOT BOOKED YET"}`,
+        `Homeowner: ${c.homeowner}`,
         `Upgrade: ${d.desiredUpgrade}`,
         `Problem: ${d.mainProblem}`,
-        `Timeline: ${d.timeline}`,
         `Page: ${typeof window !== "undefined" ? window.location.href : "/quiz"}`,
       ].join("\n") + attributionNote(),
     source: booked ? "Facebook/Messenger Quiz — Booked" : "Facebook/Messenger Quiz",
@@ -96,20 +106,33 @@ function QuizPage() {
     setCalendlyCompleted(true);
     if (quizData) {
       scheduleLead({
-        data: { leadData: buildLead(quizData, true), eventUri: uri || "" },
+        data: { leadData: buildLead(quizData, contact, true), eventUri: uri || "" },
       }).catch((e) => console.error(e));
     }
   };
 
-  const handleCalendlyBack = () => {
-    setShowCalendly(false);
+  const handleQuizComplete = async (finalData: QuizState) => {
+    setQuizData(finalData);
+    setStage(2);
   };
 
-  const handleQuizComplete = async (finalData: QuizState) => {
-    // Straight to the calendar after the last photo question.
-    // Meta Lead/Schedule fire ONLY on a completed Calendly booking (see CalendlyEmbed).
-    setQuizData(finalData);
-    setShowCalendly(true);
+  const handleContactSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    const c = {
+      name: contact.name.trim(),
+      email: contact.email.trim(),
+      phone: contact.phone.trim(),
+      address: contact.address.trim(),
+      homeowner: contact.homeowner,
+    };
+    if (!c.name || !c.phone || !c.address || !c.homeowner) return setFormError("Please fill in every field.");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c.email)) return setFormError("Please enter a valid email.");
+    if (c.phone.replace(/\D/g, "").length < 10) return setFormError("Please enter a valid phone number.");
+    setFormError("");
+    setContact(c);
+    // Save + email right away — no Meta Lead here (Lead fires only after booking).
+    if (quizData) submitLead({ data: buildLead(quizData, c, false) }).catch((err) => console.error(err));
+    setStage(3);
   };
 
   useLayoutEffect(() => {
@@ -155,32 +178,94 @@ function QuizPage() {
           />
         </div>
 
-        {/* Calendar mounts hidden shortly AFTER step 1 paints, so finishing
-            step 3 reveals it instantly without slowing the first screen. */}
-        {(mountCalendly || showCalendly) && (
-          <div
-            className={
-              showCalendly
-                ? "mx-auto w-full max-w-xl md:max-w-3xl px-4 sm:px-6 md:px-8"
-                : "pointer-events-none absolute inset-0 -z-10 w-full overflow-hidden p-4 opacity-0"
-            }
-            aria-hidden={!showCalendly}
-          >
+        {stage === 2 && (
+          <div className="mx-auto w-full max-w-xl px-4 sm:px-6">
+            <form
+              onSubmit={handleContactSubmit}
+              noValidate
+              className="rounded-2xl border border-border bg-background p-4 shadow-sm sm:p-6"
+            >
+              <div className="flex justify-end">
+                <span className="whitespace-nowrap text-[9px] font-bold text-navy/70 sm:text-[10px]">
+                  Three easy steps · 2 of 3
+                </span>
+              </div>
+              <div className="flex items-center justify-between gap-3">
+                <div className="min-w-0 flex-1">
+                  <h3 className="font-display text-lg font-semibold text-navy sm:text-xl">Confirm your in-home visit</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Thanks. We just need this so we can go to the right house!
+                  </p>
+                </div>
+                <Button type="button" variant="outline" className="shrink-0 border-navy/25 text-navy" onClick={() => setStage(1)}>
+                  Back
+                </Button>
+              </div>
+              <div className="mt-4 grid gap-3">
+                {([
+                  ["name", "Name", "text", "name"],
+                  ["email", "Email", "email", "email"],
+                  ["phone", "Phone", "tel", "tel"],
+                  ["address", "Address", "text", "street-address"],
+                ] as const).map(([key, label, type, ac]) => (
+                  <label key={key} className="grid gap-1 text-sm font-medium text-navy">
+                    {label}
+                    <input
+                      type={type}
+                      autoComplete={ac}
+                      maxLength={key === "address" ? 240 : 160}
+                      placeholder={key === "address" ? "Street address, city, ZIP" : undefined}
+                      value={contact[key]}
+                      onChange={(e) => setContact({ ...contact, [key]: e.target.value })}
+                      className="h-11 rounded-lg border border-input bg-background px-3 text-base text-foreground outline-none focus:border-navy"
+                    />
+                  </label>
+                ))}
+                <fieldset className="grid gap-1 text-sm font-medium text-navy">
+                  <legend className="mb-1">Are you the homeowner?</legend>
+                  <div className="grid grid-cols-2 gap-2">
+                    {["Yes", "No"].map((v) => (
+                      <button
+                        key={v}
+                        type="button"
+                        onClick={() => setContact({ ...contact, homeowner: v })}
+                        className={cn(
+                          "h-11 rounded-lg border text-base",
+                          contact.homeowner === v ? "border-navy bg-navy text-primary-foreground" : "border-input bg-background text-navy"
+                        )}
+                      >
+                        {v}
+                      </button>
+                    ))}
+                  </div>
+                </fieldset>
+              </div>
+              {formError && <p className="mt-3 text-sm text-destructive">{formError}</p>}
+              <Button type="submit" className="mt-4 h-12 w-full bg-navy text-base font-semibold text-primary-foreground">
+                Continue
+              </Button>
+            </form>
+          </div>
+        )}
+
+        {stage === 3 && (
+          <div className="mx-auto w-full max-w-xl md:max-w-3xl px-4 sm:px-6 md:px-8">
             <div className="rounded-2xl border border-border bg-background p-4 shadow-sm sm:p-6 md:p-8">
               <CalendlyEmbed
                 url={calendlyUrl}
                 prefill={{
-                  name: quizData?.name || "",
-                  email: quizData?.email || "",
+                  name: contact.name,
+                  email: contact.email,
+                  phone: contact.phone,
+                  address: contact.address,
+                  notes: `Homeowner: ${contact.homeowner}`,
                 }}
-                onBack={handleCalendlyBack}
+                onBack={() => setStage(2)}
                 onScheduled={handleCalendlyScheduled}
                 title="Pick a time for your free estimate"
-                subtitle={
-                  "We come to your house, measure, and give you a straight price. No pressure.\nVisit takes about 30–45 minutes. Next you’ll enter your name and phone."
-                }
+                subtitle={"We come to your house, measure, and give you a straight price. No pressure.\nVisit takes about 30–45 minutes."}
                 compact={true}
-                progressLabel="Three easy steps · 2 of 3"
+                progressLabel="Three easy steps · 3 of 3"
                 detailsProgressLabel="Three easy steps · 3 of 3"
                 fireBookingEvents={true}
               />
