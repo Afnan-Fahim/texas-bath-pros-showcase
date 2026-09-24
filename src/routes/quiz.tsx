@@ -8,7 +8,8 @@ import logoImg from "@/assets/logo-footer.webp";
 
 import { useQuizConfig, DEFAULT_CALENDLY_URL, type QuizConfig } from "@/lib/quiz-content";
 import { loadQuizConfigWithStepOne } from "@/lib/quiz-preload";
-import { scheduleLead } from "@/lib/leads.functions";
+import { scheduleLead, submitLead } from "@/lib/leads.functions";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/quiz")({
   component: QuizPage,
@@ -50,43 +51,52 @@ export const Route = createFileRoute("/quiz")({
   }),
 });
 
+type ContactForm = { name: string; email: string; phone: string; address: string; homeowner: string };
+const EMPTY_CONTACT: ContactForm = { name: "", email: "", phone: "", address: "", homeowner: "" };
+
 function QuizPage() {
   const stageRef = useRef<HTMLElement>(null);
   const [calendlyCompleted, setCalendlyCompleted] = useState(false);
-  const [showCalendly, setShowCalendly] = useState(false);
+  // 1 = photo question, 2 = our contact form, 3 = Calendly (time only)
+  const [stage, setStage] = useState<1 | 2 | 3>(1);
+  const showCalendly = stage !== 1;
   const [quizData, setQuizData] = useState<QuizState | null>(null);
+  const [contact, setContact] = useState<ContactForm>(EMPTY_CONTACT);
+  const [formError, setFormError] = useState("");
   const { quizConfig: initialQuizConfig } = Route.useLoaderData();
   const { config: quizConfig } = useQuizConfig(initialQuizConfig ?? undefined);
   const calendlyUrl = quizConfig.calendlyUrl || DEFAULT_CALENDLY_URL;
-
-  const [mountCalendly, setMountCalendly] = useState(false);
 
   useEffect(() => {
     captureAttribution();
     // PageView is fired once by the base Meta Pixel in the site head
     // (__root.tsx). Do not fire it again here — that would double-count.
-  }, []);
-
-  // Prepare the calendar in the background immediately after the first paint,
-  // well before the visitor reaches the final step.
-  useEffect(() => {
-    const t = window.setTimeout(() => setMountCalendly(true), 250);
+    // Warm the Calendly script so step 3 opens fast.
+    const t = window.setTimeout(() => {
+      const id = "calendly-widget-script";
+      if (!document.getElementById(id)) {
+        const s = document.createElement("script");
+        s.id = id;
+        s.src = "https://assets.calendly.com/assets/external/widget.js";
+        s.async = true;
+        document.body.appendChild(s);
+      }
+    }, 250);
     return () => window.clearTimeout(t);
   }, []);
 
-  const buildLead = (d: QuizState, booked: boolean) => ({
-    // Calendly collects the personal details; the quiz only carries the answers.
-    name: d.name || "Quiz lead",
-    email: d.email || "quiz@provided.com",
-    phone: d.phone || "See Calendly",
-    address: d.address || "Provided in Calendly",
+  const buildLead = (d: QuizState, c: ContactForm, booked: boolean) => ({
+    name: c.name,
+    email: c.email,
+    phone: c.phone,
+    address: c.address,
     timeframe: d.timeline,
     notes:
       [
-        `Status: ${booked ? "BOOKED" : "NOT BOOKED"}`,
+        `Status: ${booked ? "BOOKED" : "FORM SUBMITTED — NOT BOOKED YET"}`,
+        `Homeowner: ${c.homeowner}`,
         `Upgrade: ${d.desiredUpgrade}`,
         `Problem: ${d.mainProblem}`,
-        `Timeline: ${d.timeline}`,
         `Page: ${typeof window !== "undefined" ? window.location.href : "/quiz"}`,
       ].join("\n") + attributionNote(),
     source: booked ? "Facebook/Messenger Quiz — Booked" : "Facebook/Messenger Quiz",
@@ -96,20 +106,33 @@ function QuizPage() {
     setCalendlyCompleted(true);
     if (quizData) {
       scheduleLead({
-        data: { leadData: buildLead(quizData, true), eventUri: uri || "" },
+        data: { leadData: buildLead(quizData, contact, true), eventUri: uri || "" },
       }).catch((e) => console.error(e));
     }
   };
 
-  const handleCalendlyBack = () => {
-    setShowCalendly(false);
+  const handleQuizComplete = async (finalData: QuizState) => {
+    setQuizData(finalData);
+    setStage(2);
   };
 
-  const handleQuizComplete = async (finalData: QuizState) => {
-    // Straight to the calendar after the last photo question.
-    // Meta Lead/Schedule fire ONLY on a completed Calendly booking (see CalendlyEmbed).
-    setQuizData(finalData);
-    setShowCalendly(true);
+  const handleContactSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const c = {
+      name: contact.name.trim(),
+      email: contact.email.trim(),
+      phone: contact.phone.trim(),
+      address: contact.address.trim(),
+      homeowner: contact.homeowner,
+    };
+    if (!c.name || !c.phone || !c.address || !c.homeowner) return setFormError("Please fill in every field.");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c.email)) return setFormError("Please enter a valid email.");
+    if (c.phone.replace(/\D/g, "").length < 10) return setFormError("Please enter a valid phone number.");
+    setFormError("");
+    setContact(c);
+    // Save + email right away — no Meta Lead here (Lead fires only after booking).
+    if (quizData) submitLead({ data: buildLead(quizData, c, false) }).catch((err) => console.error(err));
+    setStage(3);
   };
 
   useLayoutEffect(() => {
