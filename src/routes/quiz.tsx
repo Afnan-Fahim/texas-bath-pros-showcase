@@ -192,7 +192,7 @@ function QuizPage() {
               </div>
               <div className="flex items-center justify-between gap-3">
                 <div className="min-w-0 flex-1">
-                  <h3 className="font-display text-lg font-semibold text-navy sm:text-xl">Confirm your in-home visit</h3>
+                  <h3 className="font-display text-lg font-semibold text-navy sm:text-xl">How do we reach you?</h3>
                   <p className="mt-1 text-sm text-muted-foreground">
                     Thanks. We just need this so we can go to the right house!
                   </p>
