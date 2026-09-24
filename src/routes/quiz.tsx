@@ -245,7 +245,7 @@ function QuizPage() {
               </div>
               {formError && <p className="mt-3 text-sm text-destructive">{formError}</p>}
               <Button type="submit" className="mt-4 h-12 w-full bg-navy text-base font-semibold text-primary-foreground">
-                Continue
+                Continue to pick a time
               </Button>
             </form>
           </div>
