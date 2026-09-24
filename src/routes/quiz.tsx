@@ -196,6 +196,9 @@ function QuizPage() {
                   <p className="mt-1 text-sm text-muted-foreground">
                     Thanks. We just need this so we can go to the right house!
                   </p>
+                  <p className="mt-1 text-xs text-muted-foreground/80">
+                    We don’t sell your information. It’s only to schedule your visit.
+                  </p>
                 </div>
                 <Button type="button" variant="outline" className="shrink-0 border-navy/25 text-navy" onClick={() => setStage(1)}>
                   Back
