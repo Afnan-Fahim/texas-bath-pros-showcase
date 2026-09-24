@@ -194,10 +194,10 @@ function QuizPage() {
                 <div className="min-w-0 flex-1">
                   <h3 className="font-display text-lg font-semibold text-navy sm:text-xl">How do we reach you?</h3>
                   <p className="mt-1 text-sm text-muted-foreground">
-                    Thanks. We just need this so we can go to the right house!
+                    We’ll call to confirm your free in-home visit. Next screen you pick a time.
                   </p>
                   <p className="mt-1 text-xs text-muted-foreground/80">
-                    We don’t sell your information. It’s only to schedule your visit.
+                    We don’t sell your info. It’s only to schedule your visit.
                   </p>
                 </div>
                 <Button type="button" variant="outline" className="shrink-0 border-navy/25 text-navy" onClick={() => setStage(1)}>
