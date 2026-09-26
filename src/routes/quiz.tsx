@@ -28,17 +28,17 @@ export const Route = createFileRoute("/quiz")({
       {
         name: "description",
         content:
-          "Answer three quick questions and book a free in-home bathroom remodel estimate with Texas Bath Solutions. About 15 seconds, no pressure.",
+          "Got a Bathroom quote? Don’t Overpay: We will Beat it by $1000.+ for same Scope!",
       },
       { property: "og:title", content: "Free In-Home Estimate, San Antonio & Surrounding Areas" },
       { property: "twitter:title", content: "Free In-Home Estimate, San Antonio & Surrounding Areas" },
       {
         property: "og:description",
-        content: "Free in-home estimate. San Antonio and surrounding areas. No pressure.",
+        content: "Got a Bathroom quote? Don’t Overpay: We will Beat it by $1000.+ for same Scope!",
       },
       {
         property: "twitter:description",
-        content: "Free in-home estimate. San Antonio and surrounding areas. No pressure.",
+        content: "Got a Bathroom quote? Don’t Overpay: We will Beat it by $1000.+ for same Scope!",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://texasbathsolutions.com/quiz" },
