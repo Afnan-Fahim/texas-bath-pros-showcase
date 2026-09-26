@@ -42,8 +42,8 @@ export const Route = createFileRoute("/quiz")({
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://texasbathsolutions.com/quiz" },
-      { property: "og:image", content: "https://texasbathsolutions.com/__l5e/assets-v1/139397d5-eab5-48ba-99b3-8f8667114d19/quiz-link-preview-new.jpg" },
-      { name: "twitter:image", content: "https://texasbathsolutions.com/__l5e/assets-v1/139397d5-eab5-48ba-99b3-8f8667114d19/quiz-link-preview-new.jpg" },
+      { property: "og:image", content: "https://texasbathsolutions.com/__l5e/assets-v1/84a80dd6-704f-445a-b327-0f381919baa3/quiz-link-preview-sep26.jpg" },
+      { name: "twitter:image", content: "https://texasbathsolutions.com/__l5e/assets-v1/84a80dd6-704f-445a-b327-0f381919baa3/quiz-link-preview-sep26.jpg" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
