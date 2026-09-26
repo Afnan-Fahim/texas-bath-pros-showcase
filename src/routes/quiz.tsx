@@ -24,18 +24,26 @@ export const Route = createFileRoute("/quiz")({
   },
   head: ({ loaderData }) => ({
     meta: [
-      { title: "Free Bathroom Remodel Estimate Quiz | Texas Bath Solutions" },
+      { title: "Free In-Home Estimate, San Antonio & Surrounding Areas" },
       {
         name: "description",
         content:
           "Answer three quick questions and book a free in-home bathroom remodel estimate with Texas Bath Solutions. About 15 seconds, no pressure.",
       },
-      { property: "og:title", content: "Free Bathroom Remodel Estimate Quiz | Texas Bath Solutions" },
+      { property: "og:title", content: "Free In-Home Estimate, San Antonio & Surrounding Areas" },
+      { property: "twitter:title", content: "Free In-Home Estimate, San Antonio & Surrounding Areas" },
       {
         property: "og:description",
-        content: "Three quick questions, then pick a time for your free in-home estimate.",
+        content: "Free in-home estimate. San Antonio and surrounding areas. No pressure.",
+      },
+      {
+        property: "twitter:description",
+        content: "Free in-home estimate. San Antonio and surrounding areas. No pressure.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://texasbathsolutions.com/quiz" },
+      { property: "og:image", content: "https://texasbathsolutions.com/__l5e/assets-v1/4601e133-dfd0-4161-b153-98f57e99ecfa/quiz-link-preview.jpg" },
+      { name: "twitter:image", content: "https://texasbathsolutions.com/__l5e/assets-v1/4601e133-dfd0-4161-b153-98f57e99ecfa/quiz-link-preview.jpg" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
