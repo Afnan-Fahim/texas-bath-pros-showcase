@@ -24,14 +24,20 @@ export const Route = createFileRoute("/quiz")({
   },
   head: ({ loaderData }) => ({
     meta: [
-      { title: "Free In-Home Estimate, San Antonio & Surrounding Areas" },
+      { title: "Got a Bathroom quote? Don’t Overpay: We will Beat it by $1000.+ for same Scope!" },
       {
         name: "description",
         content:
           "Got a Bathroom quote? Don’t Overpay: We will Beat it by $1000.+ for same Scope!",
       },
-      { property: "og:title", content: "Free In-Home Estimate, San Antonio & Surrounding Areas" },
-      { property: "twitter:title", content: "Free In-Home Estimate, San Antonio & Surrounding Areas" },
+      {
+        property: "og:title",
+        content: "Got a Bathroom quote? Don’t Overpay: We will Beat it by $1000.+ for same Scope!",
+      },
+      {
+        property: "twitter:title",
+        content: "Got a Bathroom quote? Don’t Overpay: We will Beat it by $1000.+ for same Scope!",
+      },
       {
         property: "og:description",
         content: "Got a Bathroom quote? Don’t Overpay: We will Beat it by $1000.+ for same Scope!",
