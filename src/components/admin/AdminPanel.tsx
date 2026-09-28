@@ -288,7 +288,7 @@ export function AdminPanel() {
       const preview = await resolveQuizImageUrl(path);
       setPreviews((p) => ({ ...p, [path]: preview }));
       updateOption(stepIdx, optIdx, { image: path });
-      setSaveMessage("Photo uploaded. Click “Save quiz” to publish it to /quiz.");
+      setSaveMessage("Photo uploaded. Click “Save quiz” to publish it to /estimate.");
     } catch (err) {
       setSaveMessage(`Upload failed: ${(err as Error).message}`);
     } finally {
@@ -323,8 +323,8 @@ export function AdminPanel() {
       }
       setSaveMessage(
         confirmed
-          ? "Saved. /quiz updated."
-          : "Saved, but the live quiz page has not picked it up yet — refresh /quiz in a moment.",
+          ? "Saved. /estimate updated."
+          : "Saved, but the live quiz page has not picked it up yet — refresh /estimate in a moment.",
       );
     } catch (err) {
       setSaveMessage(`Save failed: ${(err as Error).message}`);
@@ -456,7 +456,7 @@ export function AdminPanel() {
           <div>
             <h2 className="text-2xl font-bold mb-1">Quiz steps</h2>
             <p className="text-sm text-muted-foreground">
-              Edit every question, description, answer label and photo. Save to publish to /quiz.
+              Edit every question, description, answer label and photo. Save to publish to /estimate.
             </p>
           </div>
           <Button onClick={() => void handleSaveQuiz()} disabled={!isAdmin || savingQuiz}>
@@ -483,7 +483,7 @@ export function AdminPanel() {
             </Button>
           </div>
           <p className="text-xs text-muted-foreground">
-            Shown on /quiz after the last photo question.
+            Shown on /estimate after the last photo question.
           </p>
         </div>
 
