@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Suspense, lazy, useEffect, useMemo, useRef, useState } from "react";
 import { format } from "date-fns";
 import {
@@ -1827,6 +1827,15 @@ function Footer() {
         </div>
       </div>
       <LegalTerms />
+      <div className="border-t border-neutral-900/10">
+        <div className="container-x py-3 text-center">
+          <p className="text-[10px] text-neutral-500/80">
+            <Link to="/privacy" className="hover:underline transition-colors">Privacy Policy</Link>
+            {"  |  "}
+            <Link to="/sms-terms" className="hover:underline transition-colors">SMS Terms</Link>
+          </p>
+        </div>
+      </div>
 
 
     </footer>
