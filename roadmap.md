@@ -1,5 +1,5 @@
 # Task roadmap
 
 ## In progress
-- On `/quiz` only, stretch the Walk-In Shower Remodel and Hard to step over photos inside their existing boxes.
-- Preserve every other photo, all box sizes/layout, homepage, `/admin`, and gallery.
+- Restore all three saved admin photo questions on `/estimate`, followed by the existing lead form and Calendly.
+- Keep five-step counters and Back navigation; verify answer capture and booking tracking, then publish.
