@@ -60,10 +60,10 @@ export function AdHeader({ className }: { className?: string }) {
           <a
             href={phone?.tel}
             aria-label="Call Texas Bath Solutions"
-            className="hidden min-[480px]:flex items-center gap-2 font-semibold text-white hover:text-white/80 transition-colors"
+            className="flex items-center gap-1.5 font-semibold text-white hover:text-white/80 transition-colors"
           >
-            <Phone className="h-4 w-4" />
-            <span className="text-sm whitespace-nowrap md:text-base">{phone?.display ?? ""}</span>
+            <Phone className="hidden min-[480px]:block h-4 w-4" />
+            <span className="whitespace-nowrap text-[13px] md:text-base">{phone?.display ?? ""}</span>
           </a>
           <Button
             asChild
