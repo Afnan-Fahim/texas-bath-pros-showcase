@@ -1037,7 +1037,7 @@ function Gallery() {
         </div>
 
         <div className="mt-6 text-center">
-          <Button asChild variant="destructive" size="lg" className="h-auto min-h-12 max-w-full whitespace-normal px-6 py-3 text-center text-base font-semibold">
+          <Button asChild size="lg" className="h-auto min-h-12 max-w-full whitespace-normal bg-primary px-6 py-3 text-center text-base font-semibold text-primary-foreground hover:bg-primary/90">
             <a href="https://texasbathsolutions.com/estimate">I want this look — book free estimate</a>
           </Button>
         </div>
