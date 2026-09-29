@@ -274,7 +274,6 @@ function Logo({
         loading={isFooter ? "lazy" : "eager"}
         className={cn(
           "w-auto object-contain",
-          plate && "logo-outline",
           isFooter ? "h-40 md:h-48" : size === "sm" ? "h-30 md:h-24 xl:h-36" : "h-60 md:h-72",
         )}
       />
@@ -285,7 +284,7 @@ function Logo({
         <span
           className={cn(
             "text-[0.78rem] md:text-[0.8775rem] font-medium tracking-wide block xl:whitespace-nowrap max-xl:w-[5.6rem]",
-            dark ? "text-white" : "text-navy/70",
+            dark ? "text-white/70" : "text-navy/70",
           )}
         >
           San Antonio, TX
@@ -348,24 +347,24 @@ function Navbar({ onBook, onContact, forceHidden = false }: { onBook: () => void
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-transform duration-300 ease-out will-change-transform",
         isHidden ? "-translate-y-full pointer-events-none" : "translate-y-0",
-        "bg-[#0B1F3A] border-b border-white/10",
+        "bg-background/95 backdrop-blur-sm border-b-[3px] border-navy",
       )}
     >
       <div className="container-x flex h-40 items-center gap-4 md:h-48">
-        <Logo size="sm" dark plate />
+        <Logo size="sm" />
         <nav className="ml-auto hidden min-[900px]:flex items-center gap-3 xl:gap-8">
           {links.map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className="text-[13px] xl:text-sm whitespace-nowrap font-medium text-white hover:text-white/80 transition-colors"
+              className="text-[13px] xl:text-sm whitespace-nowrap font-medium text-foreground/80 hover:text-navy transition-colors"
             >
               {l.label}
             </a>
           ))}
         </nav>
         <div className="ml-auto min-[900px]:ml-3 xl:ml-6 flex items-center gap-2 md:gap-3">
-          <PhoneLink className="hidden md:flex items-center gap-2 text-white font-semibold hover:text-white/80 transition-colors">
+          <PhoneLink className="hidden md:flex items-center gap-2 text-navy font-semibold hover:text-teal transition-colors">
             {(display) => (
               <>
                 <Phone className="h-4 w-4" />
@@ -377,7 +376,7 @@ function Navbar({ onBook, onContact, forceHidden = false }: { onBook: () => void
             <Button
               onClick={onBook}
               size="default"
-              className="h-9 px-3 text-xs sm:h-10 sm:px-4 sm:text-sm bg-white text-navy font-semibold rounded-lg border border-white hover:bg-white/90 shadow-sm"
+              className="h-9 px-3 text-xs sm:h-10 sm:px-4 sm:text-sm bg-navy text-navy-foreground hover:bg-navy/90 shadow-sm"
             >
               Book Free Estimate
             </Button>
@@ -385,14 +384,14 @@ function Navbar({ onBook, onContact, forceHidden = false }: { onBook: () => void
               onClick={onContact}
               size="default"
               variant="outline"
-              className="h-9 px-3 text-xs sm:h-10 sm:px-4 sm:text-sm border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white"
+              className="h-9 px-3 text-xs sm:h-10 sm:px-4 sm:text-sm border-navy/25 text-navy hover:bg-navy/5 hover:text-navy"
             >
               Contact Us
             </Button>
           </div>
           <button
             onClick={() => setOpen((v) => !v)}
-            className="min-[900px]:hidden grid h-10 w-10 place-items-center rounded-md border border-white/30 text-white"
+            className="min-[900px]:hidden grid h-10 w-10 place-items-center rounded-md border border-border text-navy"
             aria-label="Toggle menu"
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -400,19 +399,19 @@ function Navbar({ onBook, onContact, forceHidden = false }: { onBook: () => void
         </div>
       </div>
       {open && (
-        <div className="min-[900px]:hidden border-t border-white/10 bg-[#0B1F3A] text-white">
+        <div className="min-[900px]:hidden border-t border-border bg-background">
           <div className="container-x py-4 flex flex-col gap-1">
             {links.map((l) => (
               <a
                 key={l.href}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="rounded-md px-3 py-3 text-base font-medium text-white hover:bg-white/10"
+                className="rounded-md px-3 py-3 text-base font-medium hover:bg-secondary"
               >
                 {l.label}
               </a>
             ))}
-            <PhoneLink className="mt-2 flex items-center justify-center gap-2 rounded-md bg-white/10 px-3 py-3 font-semibold text-white">
+            <PhoneLink className="mt-2 flex items-center justify-center gap-2 rounded-md bg-secondary px-3 py-3 font-semibold text-navy">
               {(display) => (
                 <>
                   <Phone className="h-4 w-4" /> {display}
@@ -424,7 +423,7 @@ function Navbar({ onBook, onContact, forceHidden = false }: { onBook: () => void
                 setOpen(false);
                 onBook();
               }}
-              className="mt-2 bg-white text-navy font-semibold rounded-lg border border-white hover:bg-white/90"
+              className="mt-2 bg-navy text-navy-foreground hover:bg-navy/90"
             >
               Book Free Estimate
             </Button>
@@ -434,7 +433,7 @@ function Navbar({ onBook, onContact, forceHidden = false }: { onBook: () => void
                 onContact();
               }}
               variant="outline"
-              className="border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white"
+              className="border-navy/25 text-navy hover:bg-navy/5 hover:text-navy"
             >
               Contact Us
             </Button>
