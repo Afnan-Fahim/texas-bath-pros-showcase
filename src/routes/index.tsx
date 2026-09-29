@@ -1340,13 +1340,15 @@ function WhyUs() {
     },
   ];
   return (
-    <section ref={whyRef} id="why" className="py-12 md:py-16">
+    <section ref={whyRef} id="why" className="relative isolate overflow-hidden py-12 md:py-16">
+      <img src={inspirationGlacier.url} alt="" aria-hidden="true" loading="lazy" className="absolute inset-0 -z-20 h-full w-full scale-110 object-cover blur-sm" />
+      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-navy/80" />
       <div className="container-x">
         <div className="max-w-3xl mx-auto text-center">
-          <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-navy">
+          <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-navy-foreground">
             Why Texas Bath Solutions
           </span>
-          <h2 className="mt-4 text-3xl md:text-5xl text-navy text-balance">
+          <h2 className="mt-4 text-3xl md:text-5xl text-navy-foreground text-balance">
             Everything you'd want from a remodeler — nothing you wouldn't.
           </h2>
         </div>
