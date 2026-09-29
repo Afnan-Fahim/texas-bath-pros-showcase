@@ -1565,7 +1565,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
           </ul>
         </div>
         <div ref={stageRef} className="w-full">
-          <div className="relative mx-auto w-full overflow-hidden rounded-3xl border border-teal/20 bg-card shadow-2xl">
+          <div className="relative mx-auto w-full overflow-hidden rounded-3xl border border-navy bg-card shadow-elegant">
             <div className={showCalendly ? "hidden" : "flex w-full items-center justify-center"}>
               <LazyMount
                 placeholderClassName="w-full"
