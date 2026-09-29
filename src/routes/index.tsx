@@ -275,7 +275,7 @@ function Logo({
         className={cn(
           "w-auto object-contain",
           plate && "rounded-2xl bg-white/95 p-1.5",
-          isFooter ? "h-40 md:h-48" : size === "sm" ? "h-30 md:h-36" : "h-60 md:h-72",
+          isFooter ? "h-40 md:h-48" : size === "sm" ? "h-30 md:h-24 xl:h-36" : "h-60 md:h-72",
         )}
       />
 
@@ -353,23 +353,23 @@ function Navbar({ onBook, onContact, forceHidden = false }: { onBook: () => void
     >
       <div className="container-x flex h-40 items-center gap-4 md:h-48">
         <Logo size="sm" dark plate />
-        <nav className="ml-auto hidden lg:flex items-center gap-8">
+        <nav className="ml-auto hidden min-[900px]:flex items-center gap-3 xl:gap-8">
           {links.map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className="text-sm font-medium text-white/90 hover:text-white transition-colors"
+              className="text-[13px] xl:text-sm whitespace-nowrap font-medium text-white hover:text-white/80 transition-colors"
             >
               {l.label}
             </a>
           ))}
         </nav>
-        <div className="ml-auto lg:ml-6 flex items-center gap-2 md:gap-3">
+        <div className="ml-auto min-[900px]:ml-3 xl:ml-6 flex items-center gap-2 md:gap-3">
           <PhoneLink className="hidden md:flex items-center gap-2 text-white font-semibold hover:text-white/80 transition-colors">
             {(display) => (
               <>
                 <Phone className="h-4 w-4" />
-                <span className="text-sm md:text-base">{display}</span>
+                <span className="text-sm whitespace-nowrap xl:text-base">{display}</span>
               </>
             )}
           </PhoneLink>
@@ -392,7 +392,7 @@ function Navbar({ onBook, onContact, forceHidden = false }: { onBook: () => void
           </div>
           <button
             onClick={() => setOpen((v) => !v)}
-            className="lg:hidden grid h-10 w-10 place-items-center rounded-md border border-white/30 text-white"
+            className="min-[900px]:hidden grid h-10 w-10 place-items-center rounded-md border border-white/30 text-white"
             aria-label="Toggle menu"
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -400,7 +400,7 @@ function Navbar({ onBook, onContact, forceHidden = false }: { onBook: () => void
         </div>
       </div>
       {open && (
-        <div className="lg:hidden border-t border-white/10 bg-[#0B1F3A] text-white">
+        <div className="min-[900px]:hidden border-t border-white/10 bg-[#0B1F3A] text-white">
           <div className="container-x py-4 flex flex-col gap-1">
             {links.map((l) => (
               <a
