@@ -284,7 +284,7 @@ function Logo({
 
         <span
           className={cn(
-            "text-[0.78rem] md:text-[0.8775rem] font-medium tracking-wide block xl:whitespace-nowrap max-xl:w-[4.6rem]",
+            "text-[0.78rem] md:text-[0.8775rem] font-medium tracking-wide block xl:whitespace-nowrap max-xl:w-[5.6rem]",
             dark ? "text-white" : "text-navy/70",
           )}
         >
