@@ -1524,19 +1524,20 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
       className="bg-gradient-to-b from-background to-secondary/60"
     >
       <div className="container-x grid items-start gap-10 py-16 md:py-20 lg:grid-cols-2 lg:gap-14">
-        <div className="relative lg:sticky lg:top-24">
+        <div className="relative overflow-hidden rounded-3xl lg:sticky lg:top-24">
           {/* Soft blurred shower photo behind the text column, fading out toward the quiz card */}
           <img
             src={inspirationGlacier.url}
             alt=""
             aria-hidden="true"
             loading="lazy"
-            className="absolute inset-0 -z-20 h-full w-full scale-110 rounded-3xl object-cover blur-lg"
+            className="absolute inset-0 -z-20 h-full w-full scale-110 object-cover blur-xl"
           />
           <div
             aria-hidden="true"
-            className="absolute inset-0 -z-10 rounded-3xl bg-gradient-to-b from-background/70 via-background/80 to-background lg:bg-gradient-to-r"
+            className="absolute inset-0 -z-10 bg-gradient-to-b from-background/55 via-background/70 to-background lg:bg-gradient-to-r"
           />
+          <div className="p-6 md:p-8">
           <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold normal-case tracking-wide text-navy">
             Book Your Free Estimate
           </span>
