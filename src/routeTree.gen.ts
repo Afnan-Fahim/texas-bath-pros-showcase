@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as QuizRouteImport } from './routes/quiz'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as EstimateformRouteImport } from './routes/estimateform'
 import { Route as EstimateRouteImport } from './routes/estimate'
 import { Route as AdminRouteImport } from './routes/admin'
@@ -21,6 +22,11 @@ import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/l
 const QuizRoute = QuizRouteImport.update({
   id: '/quiz',
   path: '/quiz',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EstimateformRoute = EstimateformRouteImport.update({
@@ -65,6 +71,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRoute
   '/estimate': typeof EstimateRoute
   '/estimateform': typeof EstimateformRoute
+  '/privacy': typeof PrivacyRoute
   '/quiz': typeof QuizRoute
   '/api/manychat': typeof ApiManychatRoute
   '/api/meta-capi': typeof ApiMetaCapiRoute
@@ -75,6 +82,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminRoute
   '/estimate': typeof EstimateRoute
   '/estimateform': typeof EstimateformRoute
+  '/privacy': typeof PrivacyRoute
   '/quiz': typeof QuizRoute
   '/api/manychat': typeof ApiManychatRoute
   '/api/meta-capi': typeof ApiMetaCapiRoute
@@ -86,6 +94,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRoute
   '/estimate': typeof EstimateRoute
   '/estimateform': typeof EstimateformRoute
+  '/privacy': typeof PrivacyRoute
   '/quiz': typeof QuizRoute
   '/api/manychat': typeof ApiManychatRoute
   '/api/meta-capi': typeof ApiMetaCapiRoute
@@ -98,6 +107,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/estimate'
     | '/estimateform'
+    | '/privacy'
     | '/quiz'
     | '/api/manychat'
     | '/api/meta-capi'
@@ -108,6 +118,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/estimate'
     | '/estimateform'
+    | '/privacy'
     | '/quiz'
     | '/api/manychat'
     | '/api/meta-capi'
@@ -118,6 +129,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/estimate'
     | '/estimateform'
+    | '/privacy'
     | '/quiz'
     | '/api/manychat'
     | '/api/meta-capi'
@@ -129,6 +141,7 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRoute
   EstimateRoute: typeof EstimateRoute
   EstimateformRoute: typeof EstimateformRoute
+  PrivacyRoute: typeof PrivacyRoute
   QuizRoute: typeof QuizRoute
   ApiManychatRoute: typeof ApiManychatRoute
   ApiMetaCapiRoute: typeof ApiMetaCapiRoute
@@ -142,6 +155,13 @@ declare module '@tanstack/react-router' {
       path: '/quiz'
       fullPath: '/quiz'
       preLoaderRoute: typeof QuizRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/estimateform': {
@@ -201,6 +221,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRoute,
   EstimateRoute: EstimateRoute,
   EstimateformRoute: EstimateformRoute,
+  PrivacyRoute: PrivacyRoute,
   QuizRoute: QuizRoute,
   ApiManychatRoute: ApiManychatRoute,
   ApiMetaCapiRoute: ApiMetaCapiRoute,
