@@ -292,6 +292,13 @@ function QuizPage() {
           </div>
         )}
       </main>
+      <div className="w-full py-3 text-center">
+        <p className="text-[10px] text-neutral-500/80">
+          <Link to="/privacy" className="hover:underline transition-colors">Privacy Policy</Link>
+          {"  |  "}
+          <Link to="/sms-terms" className="hover:underline transition-colors">SMS Terms</Link>
+        </p>
+      </div>
     </div>
   );
 }
