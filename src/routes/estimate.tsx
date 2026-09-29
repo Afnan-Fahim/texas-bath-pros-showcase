@@ -173,7 +173,7 @@ function QuizPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col items-center">
-      <SiteHeader className={cn(showCalendly && "hidden sm:block")} />
+      <AdHeader className={cn(showCalendly && "hidden sm:block")} />
 
       <main ref={stageRef} className="flex w-full flex-1 items-center justify-center px-4 sm:px-6 py-3 sm:py-5 md:py-1 relative">
         <div className={showCalendly ? "hidden" : "contents"}>
