@@ -175,14 +175,14 @@ function QuizPage() {
     <div className="min-h-screen bg-background text-foreground flex flex-col items-center">
       <header
         className={cn(
-          "relative z-20 w-full flex justify-center py-0 sm:py-0.5",
+          "relative z-20 w-full flex justify-center bg-[#0B1F3A] border-b border-white/10 py-1",
           showCalendly && "hidden sm:flex"
         )}
       >
         <img
           src={logoImg}
           alt="Texas Bath Solutions — Trusted Shower Experts"
-          className="relative z-20 h-24 w-auto max-w-[94vw] translate-y-10 sm:h-[10.5rem] sm:max-w-none sm:translate-y-2 md:h-28 md:translate-y-0"
+          className="relative z-20 h-24 w-auto max-w-[94vw] sm:h-[10.5rem] sm:max-w-none md:h-28"
           width={400}
           height={80}
           fetchPriority="high"
