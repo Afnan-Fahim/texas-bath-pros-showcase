@@ -274,7 +274,6 @@ function Logo({
         loading={isFooter ? "lazy" : "eager"}
         className={cn(
           "w-auto object-contain",
-          plate && "logo-outline",
           isFooter ? "h-40 md:h-48" : size === "sm" ? "h-30 md:h-24 xl:h-36" : "h-60 md:h-72",
         )}
       />
