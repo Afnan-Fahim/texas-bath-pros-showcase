@@ -4,7 +4,7 @@ import { QuizFlow, QuizState } from "@/components/quiz/QuizFlow";
 import { CalendlyEmbed } from "@/components/CalendlyEmbed";
 import { captureAttribution, attributionNote } from "@/lib/tracking";
 import { cn } from "@/lib/utils";
-import { SiteHeader } from "@/components/SiteHeader";
+import { AdHeader } from "@/components/AdHeader";
 
 import { useQuizConfig, DEFAULT_CALENDLY_URL, type QuizConfig } from "@/lib/quiz-content";
 import { loadQuizConfigWithStepOne } from "@/lib/quiz-preload";
