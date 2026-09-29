@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SmsTermsRouteImport } from './routes/sms-terms'
 import { Route as QuizRouteImport } from './routes/quiz'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as EstimateformRouteImport } from './routes/estimateform'
@@ -19,6 +20,11 @@ import { Route as ApiMetaCapiRouteImport } from './routes/api/meta-capi'
 import { Route as ApiManychatRouteImport } from './routes/api/manychat'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 
+const SmsTermsRoute = SmsTermsRouteImport.update({
+  id: '/sms-terms',
+  path: '/sms-terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const QuizRoute = QuizRouteImport.update({
   id: '/quiz',
   path: '/quiz',
@@ -73,6 +79,7 @@ export interface FileRoutesByFullPath {
   '/estimateform': typeof EstimateformRoute
   '/privacy': typeof PrivacyRoute
   '/quiz': typeof QuizRoute
+  '/sms-terms': typeof SmsTermsRoute
   '/api/manychat': typeof ApiManychatRoute
   '/api/meta-capi': typeof ApiMetaCapiRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -84,6 +91,7 @@ export interface FileRoutesByTo {
   '/estimateform': typeof EstimateformRoute
   '/privacy': typeof PrivacyRoute
   '/quiz': typeof QuizRoute
+  '/sms-terms': typeof SmsTermsRoute
   '/api/manychat': typeof ApiManychatRoute
   '/api/meta-capi': typeof ApiMetaCapiRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -96,6 +104,7 @@ export interface FileRoutesById {
   '/estimateform': typeof EstimateformRoute
   '/privacy': typeof PrivacyRoute
   '/quiz': typeof QuizRoute
+  '/sms-terms': typeof SmsTermsRoute
   '/api/manychat': typeof ApiManychatRoute
   '/api/meta-capi': typeof ApiMetaCapiRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -109,6 +118,7 @@ export interface FileRouteTypes {
     | '/estimateform'
     | '/privacy'
     | '/quiz'
+    | '/sms-terms'
     | '/api/manychat'
     | '/api/meta-capi'
     | '/lovable/email/transactional/preview'
@@ -120,6 +130,7 @@ export interface FileRouteTypes {
     | '/estimateform'
     | '/privacy'
     | '/quiz'
+    | '/sms-terms'
     | '/api/manychat'
     | '/api/meta-capi'
     | '/lovable/email/transactional/preview'
@@ -131,6 +142,7 @@ export interface FileRouteTypes {
     | '/estimateform'
     | '/privacy'
     | '/quiz'
+    | '/sms-terms'
     | '/api/manychat'
     | '/api/meta-capi'
     | '/lovable/email/transactional/preview'
@@ -143,6 +155,7 @@ export interface RootRouteChildren {
   EstimateformRoute: typeof EstimateformRoute
   PrivacyRoute: typeof PrivacyRoute
   QuizRoute: typeof QuizRoute
+  SmsTermsRoute: typeof SmsTermsRoute
   ApiManychatRoute: typeof ApiManychatRoute
   ApiMetaCapiRoute: typeof ApiMetaCapiRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
@@ -150,6 +163,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sms-terms': {
+      id: '/sms-terms'
+      path: '/sms-terms'
+      fullPath: '/sms-terms'
+      preLoaderRoute: typeof SmsTermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/quiz': {
       id: '/quiz'
       path: '/quiz'
@@ -223,6 +243,7 @@ const rootRouteChildren: RootRouteChildren = {
   EstimateformRoute: EstimateformRoute,
   PrivacyRoute: PrivacyRoute,
   QuizRoute: QuizRoute,
+  SmsTermsRoute: SmsTermsRoute,
   ApiManychatRoute: ApiManychatRoute,
   ApiMetaCapiRoute: ApiMetaCapiRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
