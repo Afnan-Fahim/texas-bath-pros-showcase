@@ -72,12 +72,14 @@ const EMPTY_CONTACT: ContactForm = { name: "", email: "", phone: "", address: ""
 function QuizPage() {
   const stageRef = useRef<HTMLElement>(null);
   const [calendlyCompleted, setCalendlyCompleted] = useState(false);
-  // 1 = photo question, 2 = our contact form, 3 = Calendly (time only)
-  const [stage, setStage] = useState<1 | 2 | 3>(1);
+  // 1–3 = saved admin questions, 4 = contact form, 5 = Calendly.
+  const [stage, setStage] = useState<1 | 4 | 5>(1);
+  const [returnToQuestions, setReturnToQuestions] = useState(0);
   const showCalendly = stage !== 1;
   const [quizData, setQuizData] = useState<QuizState | null>(null);
   const [contact, setContact] = useState<ContactForm>(EMPTY_CONTACT);
   const [formError, setFormError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
   const { quizConfig: initialQuizConfig } = Route.useLoaderData();
   const { config: quizConfig } = useQuizConfig(initialQuizConfig ?? undefined);
   const calendlyUrl = quizConfig.calendlyUrl || DEFAULT_CALENDLY_URL;
@@ -128,11 +130,12 @@ function QuizPage() {
 
   const handleQuizComplete = async (finalData: QuizState) => {
     setQuizData(finalData);
-    setStage(2);
+    setStage(4);
   };
 
-  const handleContactSubmit = (e: FormEvent) => {
+  const handleContactSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (submitting) return;
     const c = {
       name: contact.name.trim(),
       email: contact.email.trim(),
@@ -146,8 +149,18 @@ function QuizPage() {
     setFormError("");
     setContact(c);
     // Save + email right away — no Meta Lead here (Lead fires only after booking).
-    if (quizData) submitLead({ data: buildLead(quizData, c, false) }).catch((err) => console.error(err));
-    setStage(3);
+    if (!quizData) return setFormError("Please choose a project first.");
+    setSubmitting(true);
+    try {
+      const result = await submitLead({ data: buildLead(quizData, c, false) });
+      if (!result.ok) throw new Error("Lead notification failed");
+      setStage(5);
+    } catch (err) {
+      console.error(err);
+      setFormError("We couldn't send your details. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   useLayoutEffect(() => {
@@ -186,14 +199,16 @@ function QuizPage() {
             photoFill={false}
             compact={true}
             waitForContent={true}
-            maxSteps={1}
-            progressLabel="Three easy steps · 1 of 3"
+            maxSteps={3}
+            progressLabel="Five easy steps · 1 of 5"
+            progressTotal={5}
+            returnToQuestions={returnToQuestions}
             extraSubline="Free in-home estimate • San Antonio • (210) 702-0753"
             trustLine="Family-owned · A+ BBB · Licensed"
           />
         </div>
 
-        {stage === 2 && (
+        {stage === 4 && (
           <div className="mx-auto w-full max-w-xl px-4 sm:px-6">
             <form
               onSubmit={handleContactSubmit}
@@ -202,7 +217,7 @@ function QuizPage() {
             >
               <div className="flex justify-end">
                 <span className="whitespace-nowrap text-[9px] font-bold text-navy/70 sm:text-[10px]">
-                  Three easy steps · 2 of 3
+                  Five easy steps · 4 of 5
                 </span>
               </div>
               <div className="flex items-center justify-between gap-3">
@@ -215,7 +230,7 @@ function QuizPage() {
                     We don’t sell your info. It’s only to schedule your visit.
                   </p>
                 </div>
-                <Button type="button" variant="outline" className="shrink-0 border-navy/25 text-navy" onClick={() => setStage(1)}>
+                <Button type="button" variant="outline" className="shrink-0 border-navy/25 text-navy" onClick={() => { setReturnToQuestions((n) => n + 1); setStage(1); }}>
                   Back
                 </Button>
               </div>
@@ -259,14 +274,14 @@ function QuizPage() {
                 </fieldset>
               </div>
               {formError && <p className="mt-3 text-sm text-destructive">{formError}</p>}
-              <Button type="submit" className="mt-4 h-12 w-full bg-navy text-base font-semibold text-primary-foreground">
+              <Button type="submit" disabled={submitting} className="mt-4 h-12 w-full bg-navy text-base font-semibold text-primary-foreground">
                 Continue to pick a time
               </Button>
             </form>
           </div>
         )}
 
-        {stage === 3 && (
+        {stage === 5 && (
           <div className="mx-auto w-full max-w-xl md:max-w-3xl px-4 sm:px-6 md:px-8">
             <div className="rounded-2xl border border-border bg-background p-4 shadow-sm sm:p-6 md:p-8">
               <CalendlyEmbed
@@ -278,13 +293,13 @@ function QuizPage() {
                   address: contact.address,
                   notes: `Homeowner: ${contact.homeowner}`,
                 }}
-                onBack={() => setStage(2)}
+                onBack={() => setStage(4)}
                 onScheduled={handleCalendlyScheduled}
                 title="Pick a time for your free estimate"
                 subtitle={"We come to your house, measure, and give you a straight price. No pressure.\nVisit takes about 30–45 minutes."}
                 compact={true}
-                progressLabel="Three easy steps · 3 of 3"
-                detailsProgressLabel="Three easy steps · 3 of 3"
+                progressLabel="Five easy steps · 5 of 5"
+                detailsProgressLabel="Five easy steps · 5 of 5"
                 fireBookingEvents={true}
               />
             </div>

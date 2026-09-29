@@ -31,8 +31,11 @@ interface QuizFlowProps {
   trustLine?: string;
   /** /quiz only: cap the flow at the first N steps (later steps stay saved for the homepage). */
   maxSteps?: number;
-  /** /quiz only: small progress note rendered under the headline (e.g. "Three easy steps · 1 of 3"). */
+  /** Estimate flow: small progress note in the top-right corner of each question. */
   progressLabel?: string;
+  progressTotal?: number;
+  /** Return from the estimate contact form to its last photo question. */
+  returnToQuestions?: number;
   /** Server-resolved content so step 1 photos paint on the first frame. */
   initialConfig?: QuizConfig;
 }
@@ -51,9 +54,14 @@ export function QuizFlow({
   trustLine,
   maxSteps,
   progressLabel,
+  progressTotal,
+  returnToQuestions = 0,
   initialConfig,
 }: QuizFlowProps) {
   const [step, setStep] = useState(1);
+  useLayoutEffect(() => {
+    if (returnToQuestions > 0) setStep(maxSteps ?? 1);
+  }, [returnToQuestions, maxSteps]);
   const [cueDismissed, setCueDismissed] = useState(false);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const hasMountedRef = React.useRef(false);
@@ -221,8 +229,8 @@ export function QuizFlow({
               >
                 ← Back
               </button>
-              {maxSteps === 1 ? (
-                // /quiz is a single step — no counter shown.
+              {progressLabel ? (
+                // The estimate flow has its own corner counter above the question.
                 <div className="w-12"></div>
               ) : (
                 <span className="text-sm font-medium text-muted-foreground">
@@ -237,13 +245,19 @@ export function QuizFlow({
             currentStep === stepIdx + 1 ? (
               <div key={stepConfig.id} className={cn("flex flex-col justify-center", compact ? "" : "min-h-[25rem] sm:min-h-[27rem]")}>
                 <div className={cn("text-center", compact ? "mb-1" : "mb-2 sm:mb-3")}>
-                  {stepIdx === 0 && progressLabel ? (
+                  {progressLabel ? (
                     <>
-                      {/* /quiz: counter alone in the top-right corner, headline centered. */}
+                      {/* Estimate: counter alone in the top-right corner, headline centered. */}
                       <div className="flex justify-end">
-                        <span className="shrink-0 whitespace-nowrap text-[9px] font-bold text-navy/70 sm:text-[10px]">{progressLabel}</span>
+                        <span className="shrink-0 whitespace-nowrap text-[9px] font-bold text-navy/70 sm:text-[10px]">
+                          {progressTotal ? `Five easy steps · ${stepIdx + 1} of ${progressTotal}` : progressLabel}
+                        </span>
                       </div>
-                      <h1 className="font-sans font-bold text-navy leading-snug text-center text-lg sm:text-xl md:text-lg">{stepConfig.title}</h1>
+                      {stepIdx === 0 ? (
+                        <h1 className="font-sans font-bold text-navy leading-snug text-center text-lg sm:text-xl md:text-lg">{stepConfig.title}</h1>
+                      ) : (
+                        <h2 className="font-bold text-foreground leading-snug text-center text-base sm:text-lg md:text-xl">{stepConfig.title}</h2>
+                      )}
                     </>
                   ) : stepIdx === 0 ? (
                     <>

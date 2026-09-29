@@ -297,8 +297,11 @@ export function useQuizConfig(initial?: QuizConfig): { config: QuizConfig; ready
       if (!active) return;
       await preloadImages(first.options.map((o) => o.image ?? ""));
       if (!active) return;
-      // First screen is ready — show it before touching later steps.
-      setConfig({ ...blank, steps: blank.steps.map((s, i) => (i === 0 ? first : s)) });
+      // Keep server-resolved later photos intact while a background refresh runs.
+      // Otherwise a fast tap into step 2 can briefly show blank photo cards.
+      if (!initial?.steps?.slice(1).every((s) => s.options.every((o) => !o.imagePending))) {
+        setConfig({ ...blank, steps: blank.steps.map((s, i) => (i === 0 ? first : s)) });
+      }
 
       const restSteps = await Promise.all(raw.steps.slice(1).map(resolveStepImages));
       if (!active) return;
