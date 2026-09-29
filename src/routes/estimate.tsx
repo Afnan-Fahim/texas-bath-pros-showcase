@@ -4,7 +4,7 @@ import { QuizFlow, QuizState } from "@/components/quiz/QuizFlow";
 import { CalendlyEmbed } from "@/components/CalendlyEmbed";
 import { captureAttribution, attributionNote } from "@/lib/tracking";
 import { cn } from "@/lib/utils";
-import logoImg from "@/assets/logo-footer.webp";
+import { SiteHeader } from "@/components/SiteHeader";
 
 import { useQuizConfig, DEFAULT_CALENDLY_URL, type QuizConfig } from "@/lib/quiz-content";
 import { loadQuizConfigWithStepOne } from "@/lib/quiz-preload";
@@ -173,21 +173,7 @@ function QuizPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col items-center">
-      <header
-        className={cn(
-          "relative z-20 w-full flex justify-center bg-[#0B1F3A] border-b border-white/10 py-1",
-          showCalendly && "hidden sm:flex"
-        )}
-      >
-        <img
-          src={logoImg}
-          alt="Texas Bath Solutions — Trusted Shower Experts"
-          className="relative z-20 h-24 w-auto max-w-[94vw] sm:h-[10.5rem] sm:max-w-none md:h-28"
-          width={400}
-          height={80}
-          fetchPriority="high"
-        />
-      </header>
+      <SiteHeader className={cn(showCalendly && "hidden sm:block")} />
 
       <main ref={stageRef} className="flex w-full flex-1 items-center justify-center px-4 sm:px-6 py-3 sm:py-5 md:py-1 relative">
         <div className={showCalendly ? "hidden" : "contents"}>
