@@ -79,6 +79,7 @@ function QuizPage() {
   const [quizData, setQuizData] = useState<QuizState | null>(null);
   const [contact, setContact] = useState<ContactForm>(EMPTY_CONTACT);
   const [formError, setFormError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
   const { quizConfig: initialQuizConfig } = Route.useLoaderData();
   const { config: quizConfig } = useQuizConfig(initialQuizConfig ?? undefined);
   const calendlyUrl = quizConfig.calendlyUrl || DEFAULT_CALENDLY_URL;
@@ -132,8 +133,9 @@ function QuizPage() {
     setStage(4);
   };
 
-  const handleContactSubmit = (e: FormEvent) => {
+  const handleContactSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (submitting) return;
     const c = {
       name: contact.name.trim(),
       email: contact.email.trim(),
@@ -148,8 +150,17 @@ function QuizPage() {
     setContact(c);
     // Save + email right away — no Meta Lead here (Lead fires only after booking).
     if (!quizData) return setFormError("Please choose a project first.");
-    submitLead({ data: buildLead(quizData, c, false) }).catch((err) => console.error(err));
-    setStage(5);
+    setSubmitting(true);
+    try {
+      const result = await submitLead({ data: buildLead(quizData, c, false) });
+      if (!result.ok) throw new Error("Lead notification failed");
+      setStage(5);
+    } catch (err) {
+      console.error(err);
+      setFormError("We couldn't send your details. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   useLayoutEffect(() => {
@@ -263,7 +274,7 @@ function QuizPage() {
                 </fieldset>
               </div>
               {formError && <p className="mt-3 text-sm text-destructive">{formError}</p>}
-              <Button type="submit" className="mt-4 h-12 w-full bg-navy text-base font-semibold text-primary-foreground">
+              <Button type="submit" disabled={submitting} className="mt-4 h-12 w-full bg-navy text-base font-semibold text-primary-foreground">
                 Continue to pick a time
               </Button>
             </form>
