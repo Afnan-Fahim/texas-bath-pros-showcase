@@ -1564,6 +1564,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
               </li>
             ))}
           </ul>
+          </div>
         </div>
         <div ref={stageRef} className="w-full">
           <div className="relative mx-auto w-full overflow-hidden rounded-3xl border border-navy bg-card shadow-elegant">
