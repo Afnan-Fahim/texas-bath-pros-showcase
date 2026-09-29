@@ -263,7 +263,7 @@ function Logo({
 }) {
   const isFooter = variant === "footer";
   return (
-    <a href="#top" className={cn("flex flex-row items-center gap-3 group", className)}>
+    <a href="#top" className={cn("flex flex-row items-center gap-3 group shrink-0", className)}>
       <img
         src={isFooter ? logoFooterImg : logoImg}
         alt="Texas Bath Solutions"
@@ -284,7 +284,7 @@ function Logo({
 
         <span
           className={cn(
-            "text-[0.78rem] md:text-[0.8775rem] font-medium tracking-wide whitespace-nowrap",
+            "text-[0.78rem] md:text-[0.8775rem] font-medium tracking-wide xl:whitespace-nowrap max-xl:w-[4.6rem]",
             dark ? "text-white" : "text-navy/70",
           )}
         >
