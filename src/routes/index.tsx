@@ -253,7 +253,9 @@ function Logo({
   size = "default",
   dark,
   variant = "header",
+  plate,
 }: {
+  plate?: boolean;
   className?: string;
   size?: "default" | "sm";
   dark?: boolean;
@@ -272,6 +274,7 @@ function Logo({
         loading={isFooter ? "lazy" : "eager"}
         className={cn(
           "w-auto object-contain",
+          plate && "rounded-2xl bg-white/95 p-1.5",
           isFooter ? "h-40 md:h-48" : size === "sm" ? "h-30 md:h-36" : "h-60 md:h-72",
         )}
       />
@@ -282,7 +285,7 @@ function Logo({
         <span
           className={cn(
             "text-[0.78rem] md:text-[0.8775rem] font-medium tracking-wide whitespace-nowrap",
-            dark ? "text-white/70" : "text-navy/70",
+            dark ? "text-white" : "text-navy/70",
           )}
         >
           San Antonio, TX
@@ -349,7 +352,7 @@ function Navbar({ onBook, onContact, forceHidden = false }: { onBook: () => void
       )}
     >
       <div className="container-x flex h-40 items-center gap-4 md:h-48">
-        <Logo size="sm" />
+        <Logo size="sm" dark plate />
         <nav className="ml-auto hidden lg:flex items-center gap-8">
           {links.map((l) => (
             <a
@@ -374,7 +377,7 @@ function Navbar({ onBook, onContact, forceHidden = false }: { onBook: () => void
             <Button
               onClick={onBook}
               size="default"
-              className="h-9 px-3 text-xs sm:h-10 sm:px-4 sm:text-sm bg-[#16355E] text-white border border-white/40 hover:bg-[#1d4274] shadow-none"
+              className="h-9 px-3 text-xs sm:h-10 sm:px-4 sm:text-sm bg-white text-navy font-semibold rounded-lg border border-white hover:bg-white/90 shadow-sm"
             >
               Book Free Estimate
             </Button>
@@ -421,7 +424,7 @@ function Navbar({ onBook, onContact, forceHidden = false }: { onBook: () => void
                 setOpen(false);
                 onBook();
               }}
-              className="mt-2 bg-[#16355E] text-white border border-white/40 hover:bg-[#1d4274]"
+              className="mt-2 bg-white text-navy font-semibold rounded-lg border border-white hover:bg-white/90"
             >
               Book Free Estimate
             </Button>
