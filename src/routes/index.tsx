@@ -896,26 +896,26 @@ function AboutBlock() {
 type InspirationImage = {
   src: string;
   alt: string;
+  name: string;
   width: number;
   height: number;
 };
 
 const INSPIRATION_IMAGES: InspirationImage[] = [
-  { src: inspirationGlacier.url, alt: "Glacier Ice walk-in shower inspiration", width: 1152, height: 1712 },
-  { src: inspirationTravertine.url, alt: "Bianco Travertine walk-in shower inspiration", width: 1152, height: 1712 },
-  { src: inspirationMarble.url, alt: "White marble walk-in shower inspiration", width: 1152, height: 1712 },
-  { src: inspirationGray.url, alt: "Gray stone walk-in shower inspiration", width: 1152, height: 1712 },
-  { src: inspirationTub.url, alt: "White freestanding bathtub inspiration", width: 1152, height: 1712 },
-  { src: inspirationVersailles.url, alt: "Versailles acrylic wall system inspiration", width: 1792, height: 1008 },
-  { src: inspirationHorizon.url, alt: "Horizon Beige acrylic wall system inspiration", width: 1792, height: 1008 },
+  { src: inspirationGlacier.url, alt: "Glacier Ice walk-in shower inspiration", name: "Glacier Ice", width: 1152, height: 1712 },
+  { src: inspirationTravertine.url, alt: "Bianco Travertine walk-in shower inspiration", name: "Bianco Travertine", width: 1152, height: 1712 },
+  { src: inspirationMarble.url, alt: "White marble walk-in shower inspiration", name: "White Marble", width: 1152, height: 1712 },
+  { src: inspirationGray.url, alt: "Gray stone walk-in shower inspiration", name: "Gray Stone", width: 1152, height: 1712 },
+  { src: inspirationTub.url, alt: "White freestanding bathtub inspiration", name: "White Freestanding Tub", width: 1152, height: 1712 },
+  { src: inspirationVersailles.url, alt: "Versailles acrylic wall system inspiration", name: "Versailles", width: 1792, height: 1008 },
+  { src: inspirationHorizon.url, alt: "Horizon Beige acrylic wall system inspiration", name: "Horizon Beige", width: 1792, height: 1008 },
 ];
 
 function Gallery() {
   const galleryRef = useViewContentTracking("Bathroom Inspiration");
   const [activeIndex, setActiveIndex] = useState(0);
   const touchStartX = useRef<number | null>(null);
-  const activeImage = INSPIRATION_IMAGES[activeIndex] ?? INSPIRATION_IMAGES[0];
-  const activeAspect = activeImage.width / activeImage.height;
+  const visibleImages = [0, 1, 2].map((offset) => INSPIRATION_IMAGES[(activeIndex + offset) % INSPIRATION_IMAGES.length]);
 
   const showPrevious = () => {
     setActiveIndex((current) => (current - 1 + INSPIRATION_IMAGES.length) % INSPIRATION_IMAGES.length);
@@ -926,7 +926,7 @@ function Gallery() {
   };
 
   return (
-    <section ref={galleryRef} id="work" className="scroll-mt-28 bg-secondary/40 py-7 md:scroll-mt-0 md:py-4">
+    <section ref={galleryRef} id="work" className="scroll-mt-28 bg-secondary/40 py-8 md:scroll-mt-0 md:py-10">
       <div className="container-x">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-3xl leading-tight text-navy text-balance md:text-5xl">
@@ -937,31 +937,20 @@ function Gallery() {
           </p>
         </div>
 
-        <div
-          className={cn(
-            "mx-auto mt-5 flex w-full items-center justify-center gap-1 px-1 sm:gap-2 sm:px-2 md:gap-3 md:px-3",
-            "[--gallery-h:min(100vw,60dvh)] md:mt-2 md:[--gallery-h:min(64dvh,480px)]",
-          )}
-        >
+        <div className="relative mt-6 md:mt-8">
           <Button
             type="button"
             variant="outline"
             size="icon"
             onClick={showPrevious}
             aria-label="Previous inspiration photo"
-            className="shrink-0 h-12 w-12 rounded-full border-border bg-background/90 text-navy shadow-card hover:bg-background sm:h-11 sm:w-11"
+            className="absolute left-0 top-1/2 z-10 hidden h-10 w-10 -translate-x-1/2 -translate-y-1/2 rounded-full border-border bg-background text-navy shadow-card hover:bg-background md:inline-flex"
           >
-            <ChevronLeft className="h-6 w-6 sm:h-5 sm:w-5" />
+            <ChevronLeft className="h-5 w-5" />
           </Button>
 
           <div
-            className="touch-pan-y overflow-hidden rounded-lg border border-border bg-card shadow-card transition-[width] duration-300"
-            style={{
-              aspectRatio: `${activeImage.width} / ${activeImage.height}`,
-              width: `min(100%, calc(var(--gallery-h) * ${activeAspect}))`,
-              maxWidth: "56rem",
-              maxHeight: "var(--gallery-h)",
-            }}
+            className="grid touch-pan-y grid-cols-1 gap-3 md:grid-cols-3 md:gap-4"
             onTouchStart={(event) => {
               touchStartX.current = event.touches[0]?.clientX ?? null;
             }}
@@ -975,23 +964,24 @@ function Gallery() {
               else showNext();
             }}
           >
-            <div
-              className="flex h-full transition-transform duration-500 ease-out motion-reduce:transition-none"
-              style={{ transform: `translateX(-${activeIndex * 100}%)` }}
-            >
-              {INSPIRATION_IMAGES.map((image, index) => (
-                <div key={image.src} className="relative h-full min-h-0 w-full shrink-0 bg-card">
+            {visibleImages.map((image, offset) => (
+              <article key={image.src} className={cn("min-w-0 overflow-hidden rounded-lg border border-border bg-card shadow-card", offset > 0 && "hidden md:block")}>
+                <div className="flex h-[min(120vw,520px)] items-center justify-center bg-card md:h-[min(50dvh,480px)]">
                   <OptimizedImage
                     src={image.src}
                     alt={image.alt}
-                     width={image.width}
-                     height={image.height}
-                    sizes="(min-width: 1024px) 896px, 100vw"
-                    className="absolute inset-0 h-full w-full object-contain"
+                    width={image.width}
+                    height={image.height}
+                    sizes="(min-width: 768px) 33vw, 100vw"
+                    className="h-full w-full object-contain"
                   />
                 </div>
-              ))}
-            </div>
+                <div className="px-4 py-3">
+                  <h3 className="truncate text-lg text-navy">{image.name}</h3>
+                  <p className="text-sm text-muted-foreground">Real style we install.</p>
+                </div>
+              </article>
+            ))}
           </div>
 
           <Button
@@ -1000,26 +990,56 @@ function Gallery() {
             size="icon"
             onClick={showNext}
             aria-label="Next inspiration photo"
-            className="shrink-0 h-12 w-12 rounded-full border-border bg-background/90 text-navy shadow-card hover:bg-background sm:h-11 sm:w-11"
+            className="absolute right-0 top-1/2 z-10 hidden h-10 w-10 translate-x-1/2 -translate-y-1/2 rounded-full border-border bg-background text-navy shadow-card hover:bg-background md:inline-flex"
           >
-            <ChevronRight className="h-6 w-6 sm:h-5 sm:w-5" />
+            <ChevronRight className="h-5 w-5" />
           </Button>
         </div>
 
-        <div className="mt-3 flex justify-center gap-2 md:mt-2" aria-label="Choose an inspiration photo">
+        <div className="mt-4 flex items-center justify-center gap-3 md:hidden">
+          <Button type="button" variant="outline" size="icon" onClick={showPrevious} aria-label="Previous inspiration photo" className="h-10 w-10 rounded-full text-navy"><ChevronLeft /></Button>
+          <span className="text-sm text-muted-foreground">{activeIndex + 1} / {INSPIRATION_IMAGES.length}</span>
+          <Button type="button" variant="outline" size="icon" onClick={showNext} aria-label="Next inspiration photo" className="h-10 w-10 rounded-full text-navy"><ChevronRight /></Button>
+        </div>
+
+        <div className="mt-3 flex justify-center gap-2" aria-label="Choose an inspiration photo">
           {INSPIRATION_IMAGES.map((image, index) => (
-            <button
+            <Button
               key={image.src}
               type="button"
+              variant="ghost"
               onClick={() => setActiveIndex(index)}
-              aria-label={`Show photo ${index + 1}`}
+              aria-label={`Show ${image.name}`}
               aria-current={activeIndex === index ? "true" : undefined}
               className={cn(
-                "h-3 rounded-full transition-all duration-300 md:h-2.5",
-                activeIndex === index ? "w-8 bg-navy md:w-7" : "w-3 bg-navy/25 hover:bg-navy/45 md:w-2.5",
+                "h-5 min-w-5 rounded-full p-0 transition-all duration-300",
+                activeIndex === index ? "w-8 bg-navy hover:bg-navy" : "w-5 bg-navy/25 hover:bg-navy/45",
               )}
-            />
+            ><span className="sr-only">{image.name}</span></Button>
           ))}
+        </div>
+
+        <div className="mt-5 flex gap-2 overflow-x-auto pb-2 md:grid md:grid-cols-7 md:overflow-visible" aria-label="Browse bathroom styles">
+          {INSPIRATION_IMAGES.map((image, index) => (
+            <Button
+              key={image.src}
+              type="button"
+              variant="ghost"
+              onClick={() => setActiveIndex(index)}
+              aria-label={`View ${image.name} style`}
+              aria-pressed={activeIndex === index}
+              className={cn("h-auto w-20 shrink-0 flex-col gap-1 rounded-md border p-1 text-foreground md:w-full", activeIndex === index ? "border-navy bg-accent" : "border-border bg-card hover:bg-accent")}
+            >
+              <OptimizedImage src={image.src} alt="" width={image.width} height={image.height} sizes="(min-width: 768px) 150px, 80px" className="h-16 w-full object-contain md:h-20" />
+              <span className="w-full truncate text-center text-[10px] font-medium">{image.name}</span>
+            </Button>
+          ))}
+        </div>
+
+        <div className="mt-6 text-center">
+          <Button asChild variant="destructive" size="lg" className="h-auto min-h-12 max-w-full whitespace-normal px-6 py-3 text-center text-base font-semibold">
+            <a href="https://texasbathsolutions.com/estimate">I want this look — book free estimate</a>
+          </Button>
         </div>
       </div>
     </section>
