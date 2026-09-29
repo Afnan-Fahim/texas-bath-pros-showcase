@@ -74,6 +74,7 @@ function QuizPage() {
   const [calendlyCompleted, setCalendlyCompleted] = useState(false);
   // 1–3 = saved admin questions, 4 = contact form, 5 = Calendly.
   const [stage, setStage] = useState<1 | 4 | 5>(1);
+  const [returnToQuestions, setReturnToQuestions] = useState(0);
   const showCalendly = stage !== 1;
   const [quizData, setQuizData] = useState<QuizState | null>(null);
   const [contact, setContact] = useState<ContactForm>(EMPTY_CONTACT);
@@ -190,6 +191,7 @@ function QuizPage() {
             maxSteps={3}
             progressLabel="Five easy steps · 1 of 5"
             progressTotal={5}
+            returnToQuestions={returnToQuestions}
             extraSubline="Free in-home estimate • San Antonio • (210) 702-0753"
             trustLine="Family-owned · A+ BBB · Licensed"
           />
@@ -217,7 +219,7 @@ function QuizPage() {
                     We don’t sell your info. It’s only to schedule your visit.
                   </p>
                 </div>
-                <Button type="button" variant="outline" className="shrink-0 border-navy/25 text-navy" onClick={() => setStage(1)}>
+                <Button type="button" variant="outline" className="shrink-0 border-navy/25 text-navy" onClick={() => { setReturnToQuestions((n) => n + 1); setStage(1); }}>
                   Back
                 </Button>
               </div>

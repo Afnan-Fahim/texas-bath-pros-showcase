@@ -34,6 +34,8 @@ interface QuizFlowProps {
   /** Estimate flow: small progress note in the top-right corner of each question. */
   progressLabel?: string;
   progressTotal?: number;
+  /** Return from the estimate contact form to its last photo question. */
+  returnToQuestions?: number;
   /** Server-resolved content so step 1 photos paint on the first frame. */
   initialConfig?: QuizConfig;
 }
@@ -53,9 +55,13 @@ export function QuizFlow({
   maxSteps,
   progressLabel,
   progressTotal,
+  returnToQuestions = 0,
   initialConfig,
 }: QuizFlowProps) {
   const [step, setStep] = useState(1);
+  useLayoutEffect(() => {
+    if (returnToQuestions > 0) setStep(maxSteps ?? 1);
+  }, [returnToQuestions, maxSteps]);
   const [cueDismissed, setCueDismissed] = useState(false);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const hasMountedRef = React.useRef(false);
