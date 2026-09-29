@@ -1535,7 +1535,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
           />
           <div
             aria-hidden="true"
-            className="absolute inset-0 -z-10 bg-gradient-to-b from-background/55 via-background/70 to-background lg:bg-gradient-to-r"
+            className="absolute inset-0 -z-10 bg-gradient-to-b from-background/35 via-background/55 to-background lg:bg-gradient-to-r"
           />
           <div className="p-6 md:p-8">
           <span className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-xs font-semibold normal-case tracking-wide text-navy">
