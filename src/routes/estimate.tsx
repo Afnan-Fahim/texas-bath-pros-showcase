@@ -210,7 +210,7 @@ function QuizPage() {
                 <div className="min-w-0 flex-1">
                   <h3 className="font-display text-lg font-semibold text-navy sm:text-xl">How do we reach you?</h3>
                   <p className="mt-1 text-sm text-muted-foreground">
-                    We’ll call to confirm your free in-home visit. Next screen you pick a time.
+                    We’ll text to confirm your Free In-Home visit. Next screen you pick a time.
                   </p>
                   <p className="mt-1 text-xs text-muted-foreground/80">
                     We don’t sell your info. It’s only to schedule your visit.
