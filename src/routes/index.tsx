@@ -927,8 +927,9 @@ function Gallery() {
 
   return (
     <section ref={galleryRef} id="work" className="scroll-mt-28 bg-secondary/40 py-8 md:scroll-mt-0 md:py-10">
-      {/* Heading band: navy strip on desktop (lg+) only; cream on mobile */}
-      <div className="lg:navy-band lg:py-9">
+      {/* Heading band: solid navy strip on desktop (lg+) only, matching the
+          trust-badge strip above; cream on mobile */}
+      <div className="lg:bg-navy lg:py-9">
         <div className="container-x">
           <div className="mx-auto max-w-3xl text-center">
             <h2 className="text-3xl leading-tight text-navy text-balance md:text-5xl lg:text-white">
