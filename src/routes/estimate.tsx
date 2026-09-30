@@ -150,17 +150,14 @@ function QuizPage() {
     setContact(c);
     // Save + email right away — no Meta Lead here (Lead fires only after booking).
     if (!quizData) return setFormError("Please choose a project first.");
-    setSubmitting(true);
-    try {
-      const result = await submitLead({ data: buildLead(quizData, c, false) });
-      if (!result.ok) throw new Error("Lead notification failed");
-      setStage(5);
-    } catch (err) {
-      console.error(err);
-      setFormError("We couldn't send your details. Please try again.");
-    } finally {
-      setSubmitting(false);
-    }
+    // Save + notify in the background; the customer always continues to the calendar.
+    void submitLead({ data: buildLead(quizData, c, false) })
+      .then((result) => {
+        if (!result.ok) console.error("[estimate] lead notification email failed");
+      })
+      .catch((err) => console.error("[estimate] lead submit failed", err));
+    setSubmitting(false);
+    setStage(5);
   };
 
   useLayoutEffect(() => {
