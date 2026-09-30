@@ -450,6 +450,7 @@ function Hero({ onBook }: { onBook: () => void }) {
   return (
     <section id="top" className="relative pt-52 md:pt-60 pb-12 md:pb-16 overflow-hidden">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_color-mix(in_oklab,var(--teal)_18%,transparent)_0%,transparent_60%)]" />
+      <div className="absolute inset-y-0 left-0 -z-10 hidden w-3/5 bg-[radial-gradient(ellipse_at_left,_color-mix(in_oklab,var(--gold)_16%,transparent)_0%,transparent_70%)] lg:block" />
       <div className="container-x grid gap-10 lg:grid-cols-2 lg:gap-16 items-center">
         <div className="animate-fade-up">
           <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs font-semibold uppercase tracking-wider text-navy">
@@ -477,7 +478,7 @@ function Hero({ onBook }: { onBook: () => void }) {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-navy/25 text-navy hover:bg-navy/5 text-base h-12 px-6"
+                className="border-navy/15 bg-transparent text-navy/75 hover:border-navy/30 hover:bg-navy/5 hover:text-navy lg:border-navy/15 lg:bg-transparent lg:text-navy/75 lg:hover:border-navy/30 lg:hover:bg-navy/5 lg:hover:text-navy text-base h-12 px-6"
               >
                 Browse Inspiration
               </Button>
