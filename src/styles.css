@@ -193,6 +193,16 @@
   }
 }
 
+/* /estimate mobile header: remain in normal flow below iPhone/Android system UI. */
+@media (max-width: 768px) {
+  .estimate-ad-header {
+    padding-top: calc(env(safe-area-inset-top, 47px) + 20px) !important;
+    margin-top: 0 !important;
+    position: relative !important;
+    transform: none !important;
+  }
+}
+
 /* Skip rendering work for offscreen sections until they scroll into view */
 @utility cv-auto {
   content-visibility: auto;
