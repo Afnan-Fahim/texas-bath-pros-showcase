@@ -41,15 +41,9 @@ export function AdHeader({ className }: { className?: string }) {
   );
 
   return (
-    <header className={cn("relative z-50 w-full bg-navy text-white", className)}>
+    <header className={cn("estimate-ad-header relative z-50 w-full bg-navy text-white", className)}>
       {/* Mobile: compact — only logo + guarantee */}
-      <div
-        className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3 px-4 py-2.5 md:hidden"
-        // Safe-area top padding: with viewport-fit=cover the page extends under
-        // the iOS/Android status bar, so push the logo + guarantee below it on
-        // mobile /estimate. Desktop has no inset, so env() is 0 there.
-        style={{ paddingTop: "calc(env(safe-area-inset-top, 0px) + 16px)" }}
-      >
+      <div className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3 px-4 py-2.5 md:hidden">
         <a href="/" aria-label="Texas Bath Solutions — home" className="flex shrink-0 items-center">
           <img
             src={logoImg}
