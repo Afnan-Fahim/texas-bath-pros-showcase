@@ -1530,8 +1530,9 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
       className="bg-gradient-to-b from-background to-secondary/60"
     >
       <div className="container-x grid items-start gap-10 py-16 md:py-20 lg:grid-cols-2 lg:gap-14">
-        <div className="relative overflow-hidden rounded-3xl lg:sticky lg:top-24">
-          {/* Soft blurred shower photo behind the text column, fading out toward the quiz card */}
+        <div className="lg:sticky lg:top-24">
+          <div className="relative overflow-hidden rounded-3xl">
+            {/* Soft blurred shower photo behind the text column, fading out toward the quiz card */}
           <img
             src={inspirationGlacier.url}
             alt=""
@@ -1571,6 +1572,14 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
             ))}
           </ul>
           </div>
+          </div>
+          <p className="mt-4 hidden text-sm text-muted-foreground lg:block">
+            Rather speak with us directly? Text{' '}
+            <a href="tel:2103734295" className="font-semibold text-navy underline-offset-2 hover:underline">
+              (210) 373-4295
+            </a>{' '}
+            and we’ll reply within one hour.
+          </p>
         </div>
         <div ref={stageRef} className="w-full">
           <div className="relative mx-auto w-full overflow-hidden rounded-3xl border border-navy bg-card shadow-elegant">
