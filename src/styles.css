@@ -196,9 +196,10 @@
 /* /estimate mobile header: remain in normal flow below iPhone/Android system UI. */
 @media (max-width: 768px) {
   .estimate-ad-header {
-    padding-top: calc(env(safe-area-inset-top, 47px) + 20px) !important;
+    padding-top: calc(env(safe-area-inset-top, 0px) + 56px) !important;
     margin-top: 0 !important;
     position: relative !important;
+    top: auto !important;
     transform: none !important;
   }
 }
