@@ -5,6 +5,7 @@ import {
   Heading,
   Hr,
   Html,
+  Img,
   Preview,
   Section,
   Text,
@@ -18,6 +19,8 @@ interface AppointmentConfirmationProps {
   phone?: string
   rescheduleUrl?: string
 }
+
+const LOGO_URL = 'https://texasbathsolutions.com/mms/texas-bath-solutions-logo.png'
 
 const paragraph = { fontSize: '15px', color: '#334155', lineHeight: '1.6', margin: '0 0 14px' } as const
 
@@ -40,7 +43,15 @@ function AppointmentConfirmation({
       </Preview>
       <Body style={{ backgroundColor: '#ffffff', fontFamily: 'Helvetica, Arial, sans-serif', margin: 0, padding: '32px 0' }}>
         <Container style={{ maxWidth: '600px', padding: '0 24px' }}>
-          <Heading style={{ color: '#0D3B66', fontSize: '24px', margin: '0 0 16px' }}>
+          <Section style={{ textAlign: 'center', padding: '0 0 20px' }}>
+            <Img
+              src={LOGO_URL}
+              alt="Texas Bath Solutions"
+              width="180"
+              style={{ width: '180px', height: 'auto', display: 'block', margin: '0 auto' }}
+            />
+          </Section>
+          <Heading style={{ color: '#0D3B66', fontSize: '24px', margin: '0 0 16px', textAlign: 'center' }}>
             Your appointment is confirmed
           </Heading>
           <Text style={paragraph}>Hi {firstName},</Text>
@@ -63,7 +74,7 @@ function AppointmentConfirmation({
 
           <Hr style={{ borderColor: '#E4E9EF', margin: '28px 0 16px' }} />
           <Text style={{ fontSize: '13px', color: '#5A6B7B', margin: '0 0 6px' }}>
-            Questions? Reply to this email or call (210) 702-0753.
+            Questions? Reply to this email or call (210) 373-4295.
           </Text>
           <Text style={{ fontSize: '12px', color: '#94A3B8', margin: 0 }}>
             Texas Bath Solutions • San Antonio, TX
