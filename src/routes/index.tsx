@@ -1578,7 +1578,7 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
             <a href="tel:2103734295" className="font-semibold text-navy underline-offset-2 hover:underline">
               (210) 373-4295
             </a>{' '}
-            and we’ll reply within one hour.
+            and we’ll reply within the hour!
           </p>
         </div>
         <div ref={stageRef} className="w-full">
