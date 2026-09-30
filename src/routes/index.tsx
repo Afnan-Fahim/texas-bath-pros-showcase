@@ -498,15 +498,13 @@ function Hero({ onBook }: { onBook: () => void }) {
 
             </div>
           </div>
-          <p className="mt-6 hidden items-center gap-2 text-sm text-foreground/75 lg:flex">
-            <CreditCard className="h-4 w-4 shrink-0 text-navy" />
-            <span className="whitespace-nowrap font-semibold text-navy">$0 Down Financing Available</span>
-            <span aria-hidden="true" className="text-border">•</span>
-            <span>
-              Hassle-free <span className="font-semibold text-navy">soft credit check</span> — won't affect your score ·{" "}
-              <span className="font-semibold text-navy">up to 12 months no interest</span> · payments as low as{" "}
-              <span className="font-semibold text-navy">$115 a month</span>
-            </span>
+          <p className="mt-6 hidden text-sm text-foreground/75 lg:block">
+            <CreditCard className="mr-1.5 -mt-0.5 inline h-4 w-4 align-middle text-navy" />
+            <span className="font-semibold text-navy">$0 Down Financing Available</span>
+            <span aria-hidden="true" className="mx-2 text-border">•</span>
+            Hassle-free <span className="font-semibold text-navy">soft credit check</span> — won't affect your score ·{" "}
+            <span className="font-semibold text-navy">up to 12 months no interest</span> · payments as low as{" "}
+            <span className="font-semibold text-navy">$115 a month</span>
           </p>
         </div>
         <div className="relative animate-fade-up">
