@@ -484,7 +484,7 @@ function Hero({ onBook }: { onBook: () => void }) {
               </Button>
             </a>
           </div>
-          <div className="mt-6 flex items-start gap-3 rounded-xl border border-teal/30 bg-teal/5 p-4 max-w-xl">
+          <div className="mt-6 flex items-start gap-3 rounded-xl border border-teal/30 bg-teal/5 p-4 max-w-xl lg:hidden">
             <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-teal/15 text-navy">
               <CreditCard className="h-5 w-5" />
             </div>
@@ -498,6 +498,16 @@ function Hero({ onBook }: { onBook: () => void }) {
 
             </div>
           </div>
+          <p className="mt-6 hidden items-center gap-2 text-sm text-foreground/75 lg:flex">
+            <CreditCard className="h-4 w-4 shrink-0 text-navy" />
+            <span className="whitespace-nowrap font-semibold text-navy">$0 Down Financing Available</span>
+            <span aria-hidden="true" className="text-border">•</span>
+            <span>
+              Hassle-free <span className="font-semibold text-navy">soft credit check</span> — won't affect your score ·{" "}
+              <span className="font-semibold text-navy">up to 12 months no interest</span> · payments as low as{" "}
+              <span className="font-semibold text-navy">$115 a month</span>
+            </span>
+          </p>
         </div>
         <div className="relative animate-fade-up">
           <div className="absolute -inset-6 -z-10 rounded-[2rem] bg-gradient-to-br from-teal/25 via-transparent to-navy/20 blur-2xl" />
