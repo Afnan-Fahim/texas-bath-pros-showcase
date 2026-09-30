@@ -927,16 +927,21 @@ function Gallery() {
 
   return (
     <section ref={galleryRef} id="work" className="scroll-mt-28 bg-secondary/40 py-8 md:scroll-mt-0 md:py-10">
-      <div className="container-x">
-        <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-3xl leading-tight text-navy text-balance md:text-5xl">
-            What your bathroom could look like
-          </h2>
-          <p className="mt-3 text-base leading-relaxed text-muted-foreground text-balance md:mt-0.5 md:text-lg">
-            Real styles we install. Tap through, then book a free estimate.
-          </p>
+      {/* Heading band: navy strip on desktop (lg+) only; cream on mobile */}
+      <div className="lg:navy-band lg:py-9">
+        <div className="container-x">
+          <div className="mx-auto max-w-3xl text-center">
+            <h2 className="text-3xl leading-tight text-navy text-balance md:text-5xl lg:text-white">
+              What your bathroom could look like
+            </h2>
+            <p className="mt-3 text-base leading-relaxed text-muted-foreground text-balance md:mt-0.5 md:text-lg lg:text-white/85">
+              Real styles we install. Tap through, then book a free estimate.
+            </p>
+          </div>
         </div>
+      </div>
 
+      <div className="container-x">
         <div className="relative mt-6 md:mt-8">
           <Button
             type="button"
