@@ -47,7 +47,11 @@ async function storeLead(lead: LeadInput) {
 }
 
 export async function notifyLead(lead: LeadInput) {
-  await storeLead(lead)
+  try {
+    await storeLead(lead)
+  } catch (err) {
+    console.error('[leads] failed to store lead:', err)
+  }
 
   const submittedAt = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/Chicago',
