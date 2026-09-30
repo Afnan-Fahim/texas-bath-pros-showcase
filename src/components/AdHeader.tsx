@@ -43,7 +43,12 @@ export function AdHeader({ className }: { className?: string }) {
   return (
     <header className={cn("relative z-50 w-full bg-navy text-white", className)}>
       {/* Mobile: compact — only logo + guarantee */}
-      <div className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3 px-4 py-2.5 md:hidden">
+      <div
+        className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3 px-4 py-2.5 md:hidden"
+        // Safe-area top padding so the header never sits under the iOS/Android
+        // status bar on first load (mobile /estimate only).
+        style={{ paddingTop: "calc(env(safe-area-inset-top, 0px) + 10px)" }}
+      >
         <a href="/" aria-label="Texas Bath Solutions — home" className="flex shrink-0 items-center">
           <img
             src={logoImg}
