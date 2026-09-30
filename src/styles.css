@@ -199,6 +199,16 @@
   contain-intrinsic-size: auto 700px;
 }
 
+/* Full-width navy band behind the gallery heading (desktop only), with soft
+   cream fades at the top and bottom edges so it doesn't read as a raw box. */
+@utility navy-band {
+  --band-fade-color: color-mix(in oklab, var(--secondary) 40%, var(--background));
+  background-color: var(--navy);
+  background-image:
+    linear-gradient(180deg, var(--band-fade-color) 0%, transparent 52px),
+    linear-gradient(0deg, var(--band-fade-color) 0%, transparent 52px);
+}
+
 /* Light gray woven-cloth texture (pure CSS — zero image weight) */
 @utility cloth-gray {
   background-color: oklch(0.9 0.003 90);
