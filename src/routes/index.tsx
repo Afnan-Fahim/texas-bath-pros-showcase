@@ -510,7 +510,7 @@ function Hero({ onBook }: { onBook: () => void }) {
           </p>
         </div>
         <div className="relative animate-fade-up">
-          <div className="absolute -inset-6 -z-10 rounded-[2rem] bg-gradient-to-br from-teal/25 via-transparent to-navy/20 blur-2xl" />
+          <div className="absolute -inset-6 -z-10 rounded-[2rem] bg-gradient-to-br from-teal/25 via-transparent to-navy/20 blur-2xl lg:hidden" />
           <HeroVideo />
           <div className="mt-4 mx-auto w-fit max-w-full flex md:mt-0 md:mx-0 md:w-auto md:absolute md:-bottom-6 md:-left-6 items-center gap-2.5 md:gap-3 rounded-xl bg-card px-3 py-2.5 md:px-4 md:py-3 shadow-card ring-1 ring-border">
             <svg className="h-6 w-6 shrink-0" viewBox="0 0 48 48" aria-hidden="true">
@@ -671,7 +671,7 @@ function HeroVideo() {
 
   return (
     <div
-      className="relative mx-auto w-full max-w-sm overflow-hidden rounded-2xl bg-navy shadow-elegant ring-1 ring-black/5"
+      className="relative mx-auto w-full max-w-sm overflow-hidden rounded-2xl bg-navy shadow-elegant ring-1 ring-black/5 lg:bg-transparent lg:shadow-card lg:ring-0"
     >
       <video
         ref={videoRef}
