@@ -15,6 +15,7 @@ import { Route as EstimateRouteImport } from './routes/estimate'
 import { Route as EstimateformRouteImport } from './routes/estimateform'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as QuizRouteImport } from './routes/quiz'
+import { Route as SmsOptinRouteImport } from './routes/sms-optin'
 import { Route as SmsTermsRouteImport } from './routes/sms-terms'
 import { Route as ApiManychatRouteImport } from './routes/api/manychat'
 import { Route as ApiMetaCapiRouteImport } from './routes/api/meta-capi'
@@ -50,6 +51,11 @@ const QuizRoute = QuizRouteImport.update({
   path: '/quiz',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SmsOptinRoute = SmsOptinRouteImport.update({
+  id: '/sms-optin',
+  path: '/sms-optin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SmsTermsRoute = SmsTermsRouteImport.update({
   id: '/sms-terms',
   path: '/sms-terms',
@@ -79,6 +85,7 @@ export interface FileRoutesByFullPath {
   '/estimateform': typeof EstimateformRoute
   '/privacy': typeof PrivacyRoute
   '/quiz': typeof QuizRoute
+  '/sms-optin': typeof SmsOptinRoute
   '/sms-terms': typeof SmsTermsRoute
   '/api/manychat': typeof ApiManychatRoute
   '/api/meta-capi': typeof ApiMetaCapiRoute
@@ -91,6 +98,7 @@ export interface FileRoutesByTo {
   '/estimateform': typeof EstimateformRoute
   '/privacy': typeof PrivacyRoute
   '/quiz': typeof QuizRoute
+  '/sms-optin': typeof SmsOptinRoute
   '/sms-terms': typeof SmsTermsRoute
   '/api/manychat': typeof ApiManychatRoute
   '/api/meta-capi': typeof ApiMetaCapiRoute
@@ -104,6 +112,7 @@ export interface FileRoutesById {
   '/estimateform': typeof EstimateformRoute
   '/privacy': typeof PrivacyRoute
   '/quiz': typeof QuizRoute
+  '/sms-optin': typeof SmsOptinRoute
   '/sms-terms': typeof SmsTermsRoute
   '/api/manychat': typeof ApiManychatRoute
   '/api/meta-capi': typeof ApiMetaCapiRoute
@@ -118,6 +127,7 @@ export interface FileRouteTypes {
     | '/estimateform'
     | '/privacy'
     | '/quiz'
+    | '/sms-optin'
     | '/sms-terms'
     | '/api/manychat'
     | '/api/meta-capi'
@@ -130,6 +140,7 @@ export interface FileRouteTypes {
     | '/estimateform'
     | '/privacy'
     | '/quiz'
+    | '/sms-optin'
     | '/sms-terms'
     | '/api/manychat'
     | '/api/meta-capi'
@@ -142,6 +153,7 @@ export interface FileRouteTypes {
     | '/estimateform'
     | '/privacy'
     | '/quiz'
+    | '/sms-optin'
     | '/sms-terms'
     | '/api/manychat'
     | '/api/meta-capi'
@@ -155,6 +167,7 @@ export interface RootRouteChildren {
   EstimateformRoute: typeof EstimateformRoute
   PrivacyRoute: typeof PrivacyRoute
   QuizRoute: typeof QuizRoute
+  SmsOptinRoute: typeof SmsOptinRoute
   SmsTermsRoute: typeof SmsTermsRoute
   ApiManychatRoute: typeof ApiManychatRoute
   ApiMetaCapiRoute: typeof ApiMetaCapiRoute
@@ -205,6 +218,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof QuizRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sms-optin': {
+      id: '/sms-optin'
+      path: '/sms-optin'
+      fullPath: '/sms-optin'
+      preLoaderRoute: typeof SmsOptinRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sms-terms': {
       id: '/sms-terms'
       path: '/sms-terms'
@@ -243,6 +263,7 @@ const rootRouteChildren: RootRouteChildren = {
   EstimateformRoute: EstimateformRoute,
   PrivacyRoute: PrivacyRoute,
   QuizRoute: QuizRoute,
+  SmsOptinRoute: SmsOptinRoute,
   SmsTermsRoute: SmsTermsRoute,
   ApiManychatRoute: ApiManychatRoute,
   ApiMetaCapiRoute: ApiMetaCapiRoute,
