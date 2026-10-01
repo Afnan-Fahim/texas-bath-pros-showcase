@@ -68,15 +68,7 @@ export function AdHeader({ className }: { className?: string }) {
 
         <div className="min-w-0 max-w-[620px]">{guarantee}</div>
 
-        <div className="ml-auto flex shrink-0 items-center gap-3">
-          <a
-            href={phone?.tel}
-            aria-label="Call Texas Bath Solutions"
-            className="flex items-center gap-1.5 font-semibold text-white hover:text-white/80 transition-colors"
-          >
-            <Phone className="h-4 w-4" />
-            <span className="whitespace-nowrap text-sm lg:text-base">{phone?.display ?? ""}</span>
-          </a>
+        <div className="ml-auto flex shrink-0 items-center">
           <p className="max-w-[300px] text-[11px] leading-snug text-white/85 lg:max-w-[400px] lg:text-xs">
             Prefer to speak with us directly? Call or text{" "}
             <a href="tel:+12103734295" className="font-semibold text-white underline underline-offset-2 hover:text-white/80">
