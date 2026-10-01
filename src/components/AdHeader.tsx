@@ -1,21 +1,13 @@
-import { useEffect, useState } from "react";
-import { Phone } from "lucide-react";
 import { cn } from "@/lib/utils";
 import logoImg from "@/assets/logo-header.webp";
-
-const PHONE_B64 = "KDIxMCkgNzAyLTA3NTM=";
 
 /**
  * Navy ad-landing header for /estimate only — not a website menu.
  * Mobile: compact logo + written guarantee only (no menu, no buttons).
- * Desktop: logo + guarantee wording + tap-to-call phone + text line.
+ * Desktop: logo + guarantee wording + text/call line.
  */
 export function AdHeader({ className }: { className?: string }) {
-  const [phone, setPhone] = useState<{ display: string; tel: string } | null>(null);
-  useEffect(() => {
-    const display = window.atob(PHONE_B64);
-    setPhone({ display, tel: `tel:+1${display.replace(/\D/g, "")}` });
-  }, []);
+
 
 
   const guarantee = (
