@@ -78,20 +78,13 @@ export function AdHeader({ className }: { className?: string }) {
             <Phone className="h-4 w-4" />
             <span className="whitespace-nowrap text-sm lg:text-base">{phone?.display ?? ""}</span>
           </a>
-          <Button
-            asChild
-            className="h-10 bg-white px-4 text-sm font-semibold text-navy hover:bg-white/90"
-          >
-            <a href={phone?.tel}>Call Now</a>
-          </Button>
-          <Button
-            asChild
-            variant="outline"
-            onClick={bookTime}
-            className="h-10 border-white/60 bg-transparent px-4 text-sm text-white hover:bg-white/10 hover:text-white"
-          >
-            <span>Book a Time</span>
-          </Button>
+          <p className="max-w-[300px] text-[11px] leading-snug text-white/85 lg:max-w-[400px] lg:text-xs">
+            Prefer to speak with us directly? Call or text{" "}
+            <a href="tel:+12103734295" className="font-semibold text-white underline underline-offset-2 hover:text-white/80">
+              (210) 373-4295
+            </a>{" "}
+            (texting is often faster) and we will get back to you ASAP.
+          </p>
         </div>
       </div>
     </header>
