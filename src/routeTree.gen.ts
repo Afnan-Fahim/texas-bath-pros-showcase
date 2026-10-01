@@ -9,46 +9,21 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as AdminRouteImport } from './routes/admin'
-import { Route as EstimateRouteImport } from './routes/estimate'
-import { Route as EstimateformRouteImport } from './routes/estimateform'
-import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as QuizRouteImport } from './routes/quiz'
-import { Route as SmsOptinRouteImport } from './routes/sms-optin'
 import { Route as SmsTermsRouteImport } from './routes/sms-terms'
-import { Route as ApiManychatRouteImport } from './routes/api/manychat'
+import { Route as SmsOptinRouteImport } from './routes/sms-optin'
+import { Route as QuizRouteImport } from './routes/quiz'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as EstimateformRouteImport } from './routes/estimateform'
+import { Route as EstimateRouteImport } from './routes/estimate'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiMetaCapiRouteImport } from './routes/api/meta-capi'
+import { Route as ApiManychatRouteImport } from './routes/api/manychat'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminRoute = AdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EstimateRoute = EstimateRouteImport.update({
-  id: '/estimate',
-  path: '/estimate',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EstimateformRoute = EstimateformRouteImport.update({
-  id: '/estimateform',
-  path: '/estimateform',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PrivacyRoute = PrivacyRouteImport.update({
-  id: '/privacy',
-  path: '/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const QuizRoute = QuizRouteImport.update({
-  id: '/quiz',
-  path: '/quiz',
+const SmsTermsRoute = SmsTermsRouteImport.update({
+  id: '/sms-terms',
+  path: '/sms-terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SmsOptinRoute = SmsOptinRouteImport.update({
@@ -56,19 +31,44 @@ const SmsOptinRoute = SmsOptinRouteImport.update({
   path: '/sms-optin',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SmsTermsRoute = SmsTermsRouteImport.update({
-  id: '/sms-terms',
-  path: '/sms-terms',
+const QuizRoute = QuizRouteImport.update({
+  id: '/quiz',
+  path: '/quiz',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiManychatRoute = ApiManychatRouteImport.update({
-  id: '/api/manychat',
-  path: '/api/manychat',
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EstimateformRoute = EstimateformRouteImport.update({
+  id: '/estimateform',
+  path: '/estimateform',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EstimateRoute = EstimateRouteImport.update({
+  id: '/estimate',
+  path: '/estimate',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiMetaCapiRoute = ApiMetaCapiRouteImport.update({
   id: '/api/meta-capi',
   path: '/api/meta-capi',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiManychatRoute = ApiManychatRouteImport.update({
+  id: '/api/manychat',
+  path: '/api/manychat',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LovableEmailTransactionalPreviewRoute =
@@ -176,46 +176,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/estimate': {
-      id: '/estimate'
-      path: '/estimate'
-      fullPath: '/estimate'
-      preLoaderRoute: typeof EstimateRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/estimateform': {
-      id: '/estimateform'
-      path: '/estimateform'
-      fullPath: '/estimateform'
-      preLoaderRoute: typeof EstimateformRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacy': {
-      id: '/privacy'
-      path: '/privacy'
-      fullPath: '/privacy'
-      preLoaderRoute: typeof PrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/quiz': {
-      id: '/quiz'
-      path: '/quiz'
-      fullPath: '/quiz'
-      preLoaderRoute: typeof QuizRouteImport
+    '/sms-terms': {
+      id: '/sms-terms'
+      path: '/sms-terms'
+      fullPath: '/sms-terms'
+      preLoaderRoute: typeof SmsTermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sms-optin': {
@@ -225,18 +190,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SmsOptinRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/sms-terms': {
-      id: '/sms-terms'
-      path: '/sms-terms'
-      fullPath: '/sms-terms'
-      preLoaderRoute: typeof SmsTermsRouteImport
+    '/quiz': {
+      id: '/quiz'
+      path: '/quiz'
+      fullPath: '/quiz'
+      preLoaderRoute: typeof QuizRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/manychat': {
-      id: '/api/manychat'
-      path: '/api/manychat'
-      fullPath: '/api/manychat'
-      preLoaderRoute: typeof ApiManychatRouteImport
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/estimateform': {
+      id: '/estimateform'
+      path: '/estimateform'
+      fullPath: '/estimateform'
+      preLoaderRoute: typeof EstimateformRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/estimate': {
+      id: '/estimate'
+      path: '/estimate'
+      fullPath: '/estimate'
+      preLoaderRoute: typeof EstimateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/meta-capi': {
@@ -244,6 +237,13 @@ declare module '@tanstack/react-router' {
       path: '/api/meta-capi'
       fullPath: '/api/meta-capi'
       preLoaderRoute: typeof ApiMetaCapiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/manychat': {
+      id: '/api/manychat'
+      path: '/api/manychat'
+      fullPath: '/api/manychat'
+      preLoaderRoute: typeof ApiManychatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/lovable/email/transactional/preview': {

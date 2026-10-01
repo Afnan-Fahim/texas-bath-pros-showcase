@@ -18,9 +18,6 @@ export function AdHeader({ className }: { className?: string }) {
     setPhone({ display, tel: `tel:+1${display.replace(/\D/g, "")}` });
   }, []);
 
-  const bookTime = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
 
   const guarantee = (
     <>
