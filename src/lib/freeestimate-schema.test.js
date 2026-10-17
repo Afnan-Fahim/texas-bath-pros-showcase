@@ -7,7 +7,7 @@ const valid = {
   email: 'visitor@example.com', phone: '2105550199', address: '123 Test Street', homeowner: 'Yes',
 }
 describe('Free estimate requirements', () => {
-  for (const field of ['desiredUpgrade', 'mainProblem', 'timeframe', 'name', 'email', 'phone', 'address', 'homeowner'] as const) {
+  for (const field of ['desiredUpgrade', 'mainProblem', 'timeframe', 'name', 'email', 'phone', 'address', 'homeowner']) {
     test(`${field} is required`, () => { expect(freeEstimateSchema.safeParse({ ...valid, [field]: '' }).success).toBe(false) })
   }
   test('both homeowner choices are accepted', () => {
