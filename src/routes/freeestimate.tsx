@@ -73,7 +73,7 @@ function FreeEstimatePage() {
         Proudly Serving San Antonio &amp; Surrounding Areas · We beat written quotes by $1,000+ on the same project and materials.
       </div>
       <img src={showerPhoto.url} alt="Walk-in shower remodel with gray vanity and brass fixtures by Texas Bath Solutions — $0 down, payments from just $115 a month" className="w-full h-auto lg:hidden" />
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-8 sm:px-8 sm:py-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)] lg:items-start">
+      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-8 sm:px-8 sm:py-12 lg:max-w-[1440px] lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:items-start">
       <div className="rounded-2xl border border-border bg-card p-5 shadow-xl sm:p-8">
         <header className="mb-8 border-b border-border pb-6">
           <h1 className="text-3xl font-semibold text-navy sm:text-4xl tracking-normal">Free in-home estimate</h1>
