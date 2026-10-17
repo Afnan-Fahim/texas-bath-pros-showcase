@@ -21,6 +21,7 @@ interface LeadNotificationProps {
   source?: string
   submittedAt?: string
   appointmentDate?: string
+  appointmentAtTop?: boolean
 }
 
 const row = { margin: '0 0 12px', fontSize: '15px', color: '#12263F', lineHeight: '1.5' } as const
@@ -36,6 +37,7 @@ function LeadNotification({
   source = 'Website booking form',
   submittedAt = '',
   appointmentDate,
+  appointmentAtTop,
 }: LeadNotificationProps) {
   const isCalendlyEmail = email === 'calendly@provided.com';
   const isQuiz = source === 'Website quiz form' || name === 'Provided in Calendly';
@@ -53,6 +55,13 @@ function LeadNotification({
             Captured via <strong>{source}</strong>
             {submittedAt ? ` on ${submittedAt}` : ''}
           </Text>
+          {appointmentAtTop && appointmentDate && (
+            <Section style={{ backgroundColor: '#EAF2FB', border: '2px solid #0D3B66', borderRadius: '12px', padding: '14px 20px', margin: '0 0 20px' }}>
+              <Text style={{ margin: 0, fontSize: '17px', fontWeight: 'bold', color: '#0D3B66' }}>
+                Appointment: {appointmentDate}
+              </Text>
+            </Section>
+          )}
           <Hr style={{ borderColor: '#E4E9EF', margin: '0 0 24px' }} />
           
           <Section style={{ backgroundColor: '#F8FAFC', padding: '24px', borderRadius: '12px', marginBottom: '24px' }}>
