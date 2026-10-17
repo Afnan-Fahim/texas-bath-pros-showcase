@@ -19,7 +19,7 @@ function TrustLine({ className }: { className?: string }) {
   return (
     <p className={cn('font-semibold text-navy', className)}>
       <span aria-hidden="true" className="text-gold-bright">★★★★★</span>{' '}
-      <span>5.0 Google · Perfect Score · BBB A+ · Insured · Warranty · Local · We Are Located In The Heart Of San Antonio</span>
+      <span>5.0 Google · Perfect Score · BBB A+ · Insured · Warranty · Local</span>
     </p>
   )
 }
