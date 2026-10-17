@@ -107,17 +107,19 @@ function FreeEstimatePage() {
         <form onSubmit={handleSubmit}>
           <fieldset disabled={busy || saved} className="space-y-7 disabled:opacity-75">
             {questions.map((question, index) => (
-              <fieldset key={question.key} className={index > 0 ? 'border-t border-border pt-6' : ''}>
-                <legend className="mb-3 text-lg font-bold tracking-tight text-navy">{question.title}</legend>
-                <div className="grid gap-3">
-                  {question.options.map(option => (
-                    <label key={option} className="flex cursor-pointer items-start gap-3 text-base">
-                      <input required type="radio" name={question.key} value={option} checked={form[question.key] === option} onChange={() => setValue(question.key, option)} className="mt-0.5 h-5 w-5 shrink-0 cursor-pointer appearance-none rounded-full border border-navy/40 bg-card outline-none transition checked:border-navy checked:bg-[radial-gradient(circle_at_center,var(--navy)_0_34%,transparent_36%)] focus-visible:ring-2 focus-visible:ring-ring" />
-                      <span>{option}</span>
-                    </label>
-                  ))}
-                </div>
-              </fieldset>
+              <div key={question.key} className={index > 0 ? 'border-t border-border pt-6' : ''}>
+                <fieldset>
+                  <legend className="mb-3 text-lg font-bold tracking-tight text-navy">{question.title}</legend>
+                  <div className="grid gap-3">
+                    {question.options.map(option => (
+                      <label key={option} className="flex cursor-pointer items-start gap-3 text-base">
+                        <input required type="radio" name={question.key} value={option} checked={form[question.key] === option} onChange={() => setValue(question.key, option)} className="mt-0.5 h-5 w-5 shrink-0 cursor-pointer appearance-none rounded-full border border-navy/40 bg-card outline-none transition checked:border-navy checked:bg-[radial-gradient(circle_at_center,var(--navy)_0_34%,transparent_36%)] focus-visible:ring-2 focus-visible:ring-ring" />
+                        <span>{option}</span>
+                      </label>
+                    ))}
+                  </div>
+                </fieldset>
+              </div>
             ))}
             <div className="grid gap-4 border-t border-border pt-7 sm:grid-cols-2">
               {([
