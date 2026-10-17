@@ -2,14 +2,15 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { queryOptions, useSuspenseQuery } from '@tanstack/react-query'
 import { useServerFn } from '@tanstack/react-start'
 import { useEffect, useRef, useState, type FormEvent } from 'react'
-import { fetchQuizConfig, DEFAULT_CALENDLY_URL } from '@/lib/quiz-content'
+import { fetchQuizConfig, resolveConfigImages, DEFAULT_CALENDLY_URL } from '@/lib/quiz-content'
 import { freeEstimateSchema, PROJECT_OPTIONS } from '@/lib/freeestimate-schema'
 import { submitFreeEstimate } from '@/lib/freeestimate.functions'
 import { captureAttribution, getAttribution } from '@/lib/tracking'
 import { CalendlyEmbed } from '@/components/CalendlyEmbed'
 import { Button } from '@/components/ui/button'
+import logoImg from '@/assets/logo-header.webp'
 
-const configQuery = queryOptions({ queryKey: ['freeestimate-options'], queryFn: fetchQuizConfig })
+const configQuery = queryOptions({ queryKey: ['freeestimate-options'], queryFn: async () => resolveConfigImages(await fetchQuizConfig()) })
 
 export const Route = createFileRoute('/freeestimate')({
   loader: ({ context }) => context.queryClient.ensureQueryData(configQuery),
@@ -62,9 +63,18 @@ function FreeEstimatePage() {
     { key: 'mainProblem' as const, title: "What's the main problem?", options: config.steps.find(s => s.key === 'mainProblem')?.options.map(o => o.label) ?? [] },
     { key: 'timeframe' as const, title: 'When would you like it done?', options: config.steps.find(s => s.key === 'timeline')?.options.map(o => o.label) ?? [] },
   ]
+  const showerImage = config.steps.find(s => s.key === 'desiredUpgrade')?.options.find(o => o.id === 'walk-in-shower')?.image || '/images/quiz/walk-in-shower.jpg'
   return (
-    <main className="min-h-screen bg-background px-5 py-10 text-foreground sm:px-8 sm:py-14">
-      <div className="mx-auto max-w-2xl">
+    <main className="min-h-screen bg-gradient-to-b from-secondary/60 to-background text-foreground">
+      <div className="bg-background px-5 py-3 sm:px-8">
+        <Link to="/" aria-label="Texas Bath Solutions home"><img src={logoImg} alt="Texas Bath Solutions" className="h-12 w-auto sm:h-14" /></Link>
+      </div>
+      <div className="bg-navy px-5 py-2.5 text-center text-xs font-medium text-navy-foreground sm:px-8 sm:text-sm">
+        Proudly Serving San Antonio &amp; Surrounding Areas · We beat written quotes by $1,000+ on the same project and materials.
+      </div>
+      <img src={showerImage} alt="Walk-in shower by Texas Bath Solutions" className="h-44 w-full object-cover lg:hidden" />
+      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-8 sm:px-8 sm:py-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)] lg:items-start">
+      <div className="rounded-2xl border border-border bg-card p-5 shadow-xl sm:p-8">
         <header className="mb-8 border-b border-border pb-6">
           <h1 className="text-3xl font-semibold text-navy sm:text-4xl tracking-normal">Free in-home estimate</h1>
           <p className="mt-3 text-base text-muted-foreground">Booking online takes about 30 seconds. No obligation.</p>
@@ -118,11 +128,15 @@ function FreeEstimatePage() {
             )}
           </section>
         )}
-        <footer className="mt-10 flex justify-center gap-4 text-xs text-muted-foreground">
+      </div>
+      <div className="hidden lg:sticky lg:top-8 lg:block">
+        <img src={showerImage} alt="Walk-in shower by Texas Bath Solutions" className="aspect-[4/5] w-full rounded-2xl object-cover shadow-xl" />
+      </div>
+      </div>
+        <footer className="pb-10 flex justify-center gap-4 text-xs text-muted-foreground">
           <Link to="/privacy" className="hover:underline">Privacy Policy</Link>
           <Link to="/sms-terms" className="hover:underline">SMS Terms</Link>
         </footer>
-      </div>
     </main>
   )
 }
