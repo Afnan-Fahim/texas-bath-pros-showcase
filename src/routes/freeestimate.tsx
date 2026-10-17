@@ -12,6 +12,7 @@ import logoImg from '@/assets/logo-header.webp'
 import showerPhoto from '@/assets/freeestimate-shower.png.asset.json'
 
 const configQuery = queryOptions({ queryKey: ['freeestimate-options'], queryFn: async () => resolveConfigImages(await fetchQuizConfig()) })
+const estimateIntro = 'Hey San Antonio & Surrounding Areas! We offer 0 down payment financing and can install before the holidays — or we pay your first payment. We also beat other same-scope estimates by $1000. Appointments are 100% no-obligation and no-hassle.'
 
 export const Route = createFileRoute('/freeestimate')({
   loader: ({ context }) => context.queryClient.ensureQueryData(configQuery),
@@ -72,13 +73,15 @@ function FreeEstimatePage() {
       <div className="bg-navy px-5 py-2.5 text-center text-xs font-medium text-navy-foreground sm:px-8 sm:text-sm">
         Proudly Serving San Antonio &amp; Surrounding Areas · We beat written quotes by $1,000+ on the same project and materials.
       </div>
-      <img src={showerPhoto.url} alt="Walk-in shower remodel with gray vanity and brass fixtures by Texas Bath Solutions — $0 down, payments from just $115 a month" className="w-full h-auto lg:hidden" />
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-8 sm:px-8 sm:py-12 lg:max-w-[1440px] lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:items-start">
-      <div className="rounded-2xl border border-border bg-card p-5 shadow-xl sm:p-8">
-        <header className="mb-8 border-b border-border pb-6">
+      <div className="bg-secondary/60 lg:hidden">
+        <img src={showerPhoto.url} alt="Walk-in shower remodel with gray vanity and brass fixtures by Texas Bath Solutions — $0 down, payments from just $115 a month" className="h-32 w-full object-contain sm:h-40" />
+      </div>
+      <p className="px-4 py-3 text-sm font-medium leading-5 text-navy sm:px-8 lg:hidden">{estimateIntro}</p>
+      <div className="mx-auto grid max-w-6xl gap-10 pb-8 lg:max-w-[1440px] lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:items-start lg:px-8 lg:py-12">
+      <div className="min-w-0 rounded-2xl border border-border bg-card p-4 shadow-xl sm:p-6 lg:p-8">
+        <header className="mb-5 border-b border-border pb-4 lg:mb-8 lg:pb-6">
           <h1 className="text-3xl font-semibold text-navy sm:text-4xl tracking-normal">Free in-home estimate</h1>
           <p className="mt-3 text-base text-muted-foreground">Booking online takes about 30 seconds. No obligation.</p>
-          <p className="mt-4 text-[15px] font-medium leading-relaxed text-navy sm:text-base">Hey San Antonio &amp; Surrounding Areas! We offer 0 down payment financing and can install before the holidays — or we pay your first payment. We also beat other same-scope estimates by $1000. Appointments are 100% no-obligation and no-hassle.</p>
         </header>
         <form onSubmit={handleSubmit}>
           <fieldset disabled={busy || saved} className="space-y-7 disabled:opacity-75">
@@ -132,6 +135,7 @@ function FreeEstimatePage() {
       </div>
       <div className="hidden lg:sticky lg:top-8 lg:block">
         <img src={showerPhoto.url} alt="Walk-in shower remodel with gray vanity and brass fixtures by Texas Bath Solutions — $0 down, payments from just $115 a month" className="w-full h-auto rounded-2xl shadow-xl" />
+        <p className="mt-4 text-base font-medium leading-relaxed text-navy">{estimateIntro}</p>
       </div>
       </div>
         <footer className="pb-10 flex justify-center gap-4 text-xs text-muted-foreground">

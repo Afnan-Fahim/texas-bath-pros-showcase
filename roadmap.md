@@ -1,7 +1,7 @@
 # Task roadmap
 
 ## Current
-- (none)
+- Verify the `/freeestimate` desktop paragraph placement and compact mobile banner/full-width form, then publish.
 
 ## Completed
 - Swap the `/freeestimate` photo for the uploaded walk-in shower image, shown uncropped and undistorted on the right on desktop and as a full-width banner under the header on mobile, add the financing/guarantee paragraph above the first question, and publish.
