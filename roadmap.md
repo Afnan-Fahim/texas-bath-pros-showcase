@@ -1,9 +1,10 @@
 # Task roadmap
 
 ## Current
-- Verify and publish the uploaded replacement photo on `/freeestimate`, keeping it uncropped and undistorted on desktop and mobile.
+- None.
 
 ## Completed
+- Replace the `/freeestimate` photo with the newly uploaded holiday image; verify the full image remains visible on desktop and mobile and request publishing.
 - Replace the `/freeestimate` photo paragraph with the new financing and guarantee wording at 19px Inter in dark navy with comfortable line spacing, aligned under the photo on desktop, and publish.
 - Move the `/freeestimate` intro below the large desktop photo and above the full-width mobile form beneath a compact uncropped banner; verify both layouts and request publishing.
 - Swap the `/freeestimate` photo for the uploaded walk-in shower image, shown uncropped and undistorted on the right on desktop and as a full-width banner under the header on mobile, add the financing/guarantee paragraph above the first question, and publish.
