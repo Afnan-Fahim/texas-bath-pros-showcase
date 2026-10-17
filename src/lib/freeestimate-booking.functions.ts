@@ -32,7 +32,7 @@ export const bookFreeEstimate = createServerFn({ method: 'POST' })
   .inputValidator((input: unknown) => z.object({ submissionId: z.string().uuid(), startTime: z.string().datetime() }).parse(input))
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import('@/integrations/supabase/client.server')
-    const { data: lead } = await supabaseAdmin.from('leads').select('id,name,email,phone,address,homeowner,desiredUpgrade,mainProblem,timeframe,booked,notes,source').eq('id', data.submissionId).maybeSingle()
+    const { data: lead } = await supabaseAdmin.from('leads').select('id,name,email,phone,address,homeowner,desired_upgrade,main_problem,timeframe,booked,notes,source').eq('id', data.submissionId).maybeSingle()
     if (!lead || lead.source !== 'Free estimate form') throw new Error('Please fill in the form again.')
     if (lead.booked) return { booked: true }
     const res = await calendly('/invitees', {
@@ -69,7 +69,7 @@ export const bookFreeEstimate = createServerFn({ method: 'POST' })
     const results = await Promise.allSettled(FREE_ESTIMATE_RECIPIENTS.map(to => sendTemplateEmail('lead-notification', to, {
       templateData: {
         name: lead.name, email: lead.email, phone: lead.phone, address: lead.address,
-        homeowner: lead.homeowner, desiredUpgrade: lead.desiredUpgrade, mainProblem: lead.mainProblem,
+        homeowner: lead.homeowner, desiredUpgrade: lead.desired_upgrade, mainProblem: lead.main_problem,
         timeframe: lead.timeframe, notes: bookedNotes, source: 'Free estimate form',
         submittedAt, appointmentDate, appointmentAtTop: true,
       },
