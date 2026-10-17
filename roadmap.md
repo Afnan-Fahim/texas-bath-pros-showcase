@@ -4,6 +4,7 @@
 - None.
 
 ## Completed
+- Add the gold five-star trust line to `/freeestimate` under the photo and paragraph on desktop and under the paragraph on mobile, verify both layouts, and request publishing.
 - Replace the `/freeestimate` photo with the newly uploaded holiday image; verify the full image remains visible on desktop and mobile and request publishing.
 - Replace the `/freeestimate` photo paragraph with the new financing and guarantee wording at 19px Inter in dark navy with comfortable line spacing, aligned under the photo on desktop, and publish.
 - Move the `/freeestimate` intro below the large desktop photo and above the full-width mobile form beneath a compact uncropped banner; verify both layouts and request publishing.
