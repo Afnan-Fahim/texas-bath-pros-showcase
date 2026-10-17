@@ -8,11 +8,21 @@ import { submitFreeEstimate } from '@/lib/freeestimate.functions'
 import { captureAttribution, getAttribution } from '@/lib/tracking'
 import { FreeEstimateTimePicker } from '@/components/FreeEstimateTimePicker'
 import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 import logoImg from '@/assets/logo-header.webp'
 import showerPhoto from '@/assets/freeestimate-shower-holiday.jpg.asset.json'
 
 const configQuery = queryOptions({ queryKey: ['freeestimate-options'], queryFn: async () => resolveConfigImages(await fetchQuizConfig()) })
 const estimateIntro = 'San Antonio & surrounding areas — we offer $0 down financing and can install before the holidays, or we’ll cover your first payment. We’ll also beat any same-scope written estimate by $1,000. Appointments are free, no-obligation, and no hassle.'
+
+function TrustLine({ className }: { className?: string }) {
+  return (
+    <p className={cn('font-semibold text-navy', className)}>
+      <span aria-hidden="true" className="text-gold-bright">★★★★★</span>{' '}
+      <span>5.0 Google · Perfect Score · BBB A+ · Insured · Warranty · Local · We Are Located In The Heart Of San Antonio</span>
+    </p>
+  )
+}
 
 export const Route = createFileRoute('/freeestimate')({
   loader: ({ context }) => context.queryClient.ensureQueryData(configQuery),
@@ -77,6 +87,7 @@ function FreeEstimatePage() {
         <img src={showerPhoto.url} alt="Walk-in shower remodel with gray vanity and brass fixtures by Texas Bath Solutions — $0 down, payments from just $115 a month" className="h-32 w-full object-contain sm:h-40" />
       </div>
       <p className="px-4 py-3 text-sm font-medium leading-5 text-navy sm:px-8 lg:hidden">{estimateIntro}</p>
+      <TrustLine className="px-4 pb-3 text-[13px] leading-5 sm:px-8 lg:hidden" />
       <div className="mx-auto grid max-w-6xl gap-10 pb-8 lg:max-w-[1440px] lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:items-start lg:px-8 lg:py-12">
       <div className="min-w-0 rounded-2xl border border-border bg-card p-4 shadow-xl sm:p-6 lg:p-8">
         <header className="mb-5 border-b border-border pb-4 lg:mb-8 lg:pb-6">
@@ -136,6 +147,7 @@ function FreeEstimatePage() {
       <div className="hidden lg:sticky lg:top-8 lg:block">
         <img src={showerPhoto.url} alt="Walk-in shower remodel with gray vanity and brass fixtures by Texas Bath Solutions — $0 down, payments from just $115 a month" className="w-full h-auto rounded-2xl shadow-xl" />
         <p className="mt-5 max-w-[46ch] font-sans text-[19px] font-medium leading-[1.65] text-navy">{estimateIntro}</p>
+        <TrustLine className="mt-4 text-[17px] leading-7" />
       </div>
       </div>
         <footer className="pb-10 flex justify-center gap-4 text-xs text-muted-foreground">
