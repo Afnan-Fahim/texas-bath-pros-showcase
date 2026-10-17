@@ -17,10 +17,10 @@ const estimateIntro = 'San Antonio & surrounding areas — we offer $0 down fina
 
 const TRUST_BADGES = ['5.0 Google', 'BBB A+', 'Insured', 'Warranty', 'Local', 'Heart of San Antonio']
 
-function TrustBadges({ className }: { className?: string }) {
+function TrustBadges({ badges = TRUST_BADGES, className }: { badges?: string[]; className?: string }) {
   return (
     <ul className={cn('flex flex-wrap items-center gap-2', className)}>
-      {TRUST_BADGES.map((badge, index) => (
+      {badges.map((badge, index) => (
         <li key={badge} className="inline-flex items-center gap-1.5 rounded-full border border-navy/10 bg-card px-3 py-1.5 text-xs font-semibold text-navy shadow-sm">
           {index === 0 && <span aria-hidden="true" className="text-gold-bright">★★★★★</span>}
           {badge}
@@ -58,9 +58,17 @@ function FreeEstimatePage() {
   const [busy, setBusy] = useState(false)
   const [saved, setSaved] = useState(false)
   const [booked, setBooked] = useState(false)
+  const [isDesktop, setIsDesktop] = useState(true)
   const submissionId = useRef('')
   const calendar = useRef<HTMLDivElement>(null)
   useEffect(() => { captureAttribution() }, [])
+  useEffect(() => {
+    const media = window.matchMedia('(min-width: 1024px)')
+    const update = () => setIsDesktop(media.matches)
+    update()
+    media.addEventListener('change', update)
+    return () => media.removeEventListener('change', update)
+  }, [])
   useEffect(() => { if (saved) calendar.current?.scrollIntoView({ block: 'start', behavior: 'smooth' }) }, [saved])
   const setValue = (key: keyof typeof form, value: string) => setForm(previous => ({ ...previous, [key]: value }))
 
@@ -84,19 +92,19 @@ function FreeEstimatePage() {
     { key: 'desiredUpgrade' as const, title: 'What can we help you with?', options: [...PROJECT_OPTIONS] },
     { key: 'mainProblem' as const, title: "What's the main problem?", options: config.steps.find(s => s.key === 'mainProblem')?.options.map(o => o.label) ?? [] },
     { key: 'timeframe' as const, title: 'When would you like it done?', options: config.steps.find(s => s.key === 'timeline')?.options.map(o => o.label) ?? [] },
-  ]
+  ].filter(question => isDesktop || question.key !== 'mainProblem')
   return (
     <main className="min-h-screen bg-page-wash text-foreground">
       <div className="bg-background px-5 py-3 sm:px-8">
         <Link to="/" aria-label="Texas Bath Solutions home"><img src={logoImg} alt="Texas Bath Solutions" className="h-12 w-auto sm:h-14" /></Link>
       </div>
-      <div className="bg-navy px-5 py-2.5 text-center text-xs font-medium text-navy-foreground sm:px-8 sm:text-sm">
+      <div className="hidden bg-navy px-5 py-2.5 text-center text-xs font-medium text-navy-foreground sm:px-8 sm:text-sm lg:block">
         Proudly Serving San Antonio &amp; Surrounding Areas · We beat written quotes by $1,000+ on the same project and materials.
       </div>
       <div className="lg:hidden">
         <img src={showerPhoto.url} alt="Walk-in shower remodel with gray vanity and brass fixtures by Texas Bath Solutions — $0 down, payments from just $115 a month" className="w-full h-auto" />
         <p className="px-4 pt-3 text-sm font-medium leading-5 text-navy sm:px-8">{estimateIntro}</p>
-        <TrustBadges className="px-4 pt-2 pb-1 sm:px-8" />
+        <TrustBadges badges={['5.0 Google']} className="px-4 pt-2 pb-1 sm:px-8" />
       </div>
       <div className="mx-auto grid max-w-6xl gap-6 px-4 pb-8 sm:px-6 lg:max-w-[1440px] lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:items-start lg:gap-10 lg:px-8 lg:py-12">
       <div className="min-w-0 rounded-2xl border-2 border-navy/15 bg-card p-6 shadow-lift sm:p-9 lg:p-12">
