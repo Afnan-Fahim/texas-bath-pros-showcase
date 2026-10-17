@@ -99,20 +99,20 @@ function FreeEstimatePage() {
         <TrustBadges className="px-4 pt-2 pb-1 sm:px-8" />
       </div>
       <div className="mx-auto grid max-w-6xl gap-6 px-4 pb-8 sm:px-6 lg:max-w-[1440px] lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:items-start lg:gap-10 lg:px-8 lg:py-12">
-      <div className="min-w-0 rounded-2xl border border-border bg-card p-5 shadow-card sm:p-8 lg:p-10">
+      <div className="min-w-0 rounded-2xl border-2 border-navy/15 bg-card p-6 shadow-lift sm:p-9 lg:p-12">
         <header className="mb-5 border-b border-border pb-4 lg:mb-8 lg:pb-6">
 <h1 className="text-2xl font-semibold text-navy sm:text-4xl tracking-normal">Free in-home estimate</h1>
           <p className="mt-2 text-base text-muted-foreground">Booking online takes about 30 seconds. No obligation.</p>
         </header>
         <form onSubmit={handleSubmit}>
           <fieldset disabled={busy || saved} className="space-y-7 disabled:opacity-75">
-            {questions.map(question => (
-              <fieldset key={question.key}>
-                <legend className="mb-3 text-lg font-semibold text-navy">{question.title}</legend>
+            {questions.map((question, index) => (
+              <fieldset key={question.key} className={index > 0 ? 'border-t border-border pt-6' : ''}>
+                <legend className="mb-3 text-lg font-bold tracking-tight text-navy">{question.title}</legend>
                 <div className="grid gap-3">
                   {question.options.map(option => (
                     <label key={option} className="flex cursor-pointer items-start gap-3 text-base">
-                      <input required type="radio" name={question.key} value={option} checked={form[question.key] === option} onChange={() => setValue(question.key, option)} className="mt-0.5 h-5 w-5 shrink-0 accent-primary" />
+                      <input required type="radio" name={question.key} value={option} checked={form[question.key] === option} onChange={() => setValue(question.key, option)} className="mt-0.5 h-5 w-5 shrink-0 cursor-pointer appearance-none rounded-full border border-navy/40 bg-card outline-none transition checked:border-navy checked:bg-[radial-gradient(circle_at_center,var(--navy)_0_34%,transparent_36%)] focus-visible:ring-2 focus-visible:ring-ring" />
                       <span>{option}</span>
                     </label>
                   ))}
@@ -133,11 +133,11 @@ function FreeEstimatePage() {
               ))}
             </div>
             <fieldset>
-              <legend className="mb-3 text-sm font-medium text-navy">Are you the homeowner?</legend>
+              <legend className="mb-3 text-sm font-bold text-navy">Are you the homeowner?</legend>
               <div className="flex gap-8">
                 {['Yes', 'No'].map(option => (
                   <label key={option} className="flex cursor-pointer items-center gap-3">
-                    <input required type="radio" name="homeowner" value={option} checked={form.homeowner === option} onChange={() => setValue('homeowner', option)} className="h-5 w-5 accent-primary" />{option}
+                    <input required type="radio" name="homeowner" value={option} checked={form.homeowner === option} onChange={() => setValue('homeowner', option)} className="h-5 w-5 shrink-0 cursor-pointer appearance-none rounded-full border border-navy/40 bg-card outline-none transition checked:border-navy checked:bg-[radial-gradient(circle_at_center,var(--navy)_0_34%,transparent_36%)] focus-visible:ring-2 focus-visible:ring-ring" />{option}
                   </label>
                 ))}
               </div>
