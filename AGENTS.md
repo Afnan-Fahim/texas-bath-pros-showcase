@@ -10,3 +10,4 @@
 <!-- LOVABLE:END -->
 
 - Keep the estimate's three saved photo questions in the shared QuizFlow, then use `/estimate` for its contact and Calendly stages; this preserves admin-edited options while keeping the homepage flow unchanged.
+- Keep `/freeestimate` isolated with its own validated submission function and the existing leads table and email template; this avoids changing other pages or their notification recipients.

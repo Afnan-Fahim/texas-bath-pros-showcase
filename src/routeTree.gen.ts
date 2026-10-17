@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as EstimateRouteImport } from './routes/estimate'
 import { Route as EstimateformRouteImport } from './routes/estimateform'
+import { Route as FreeestimateRouteImport } from './routes/freeestimate'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as QuizRouteImport } from './routes/quiz'
 import { Route as SmsOptinRouteImport } from './routes/sms-optin'
@@ -39,6 +40,11 @@ const EstimateRoute = EstimateRouteImport.update({
 const EstimateformRoute = EstimateformRouteImport.update({
   id: '/estimateform',
   path: '/estimateform',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FreeestimateRoute = FreeestimateRouteImport.update({
+  id: '/freeestimate',
+  path: '/freeestimate',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -83,6 +89,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRoute
   '/estimate': typeof EstimateRoute
   '/estimateform': typeof EstimateformRoute
+  '/freeestimate': typeof FreeestimateRoute
   '/privacy': typeof PrivacyRoute
   '/quiz': typeof QuizRoute
   '/sms-optin': typeof SmsOptinRoute
@@ -96,6 +103,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminRoute
   '/estimate': typeof EstimateRoute
   '/estimateform': typeof EstimateformRoute
+  '/freeestimate': typeof FreeestimateRoute
   '/privacy': typeof PrivacyRoute
   '/quiz': typeof QuizRoute
   '/sms-optin': typeof SmsOptinRoute
@@ -110,6 +118,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRoute
   '/estimate': typeof EstimateRoute
   '/estimateform': typeof EstimateformRoute
+  '/freeestimate': typeof FreeestimateRoute
   '/privacy': typeof PrivacyRoute
   '/quiz': typeof QuizRoute
   '/sms-optin': typeof SmsOptinRoute
@@ -125,6 +134,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/estimate'
     | '/estimateform'
+    | '/freeestimate'
     | '/privacy'
     | '/quiz'
     | '/sms-optin'
@@ -138,6 +148,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/estimate'
     | '/estimateform'
+    | '/freeestimate'
     | '/privacy'
     | '/quiz'
     | '/sms-optin'
@@ -151,6 +162,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/estimate'
     | '/estimateform'
+    | '/freeestimate'
     | '/privacy'
     | '/quiz'
     | '/sms-optin'
@@ -165,6 +177,7 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRoute
   EstimateRoute: typeof EstimateRoute
   EstimateformRoute: typeof EstimateformRoute
+  FreeestimateRoute: typeof FreeestimateRoute
   PrivacyRoute: typeof PrivacyRoute
   QuizRoute: typeof QuizRoute
   SmsOptinRoute: typeof SmsOptinRoute
@@ -202,6 +215,13 @@ declare module '@tanstack/react-router' {
       path: '/estimateform'
       fullPath: '/estimateform'
       preLoaderRoute: typeof EstimateformRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/freeestimate': {
+      id: '/freeestimate'
+      path: '/freeestimate'
+      fullPath: '/freeestimate'
+      preLoaderRoute: typeof FreeestimateRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -261,6 +281,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRoute,
   EstimateRoute: EstimateRoute,
   EstimateformRoute: EstimateformRoute,
+  FreeestimateRoute: FreeestimateRoute,
   PrivacyRoute: PrivacyRoute,
   QuizRoute: QuizRoute,
   SmsOptinRoute: SmsOptinRoute,
