@@ -32,7 +32,7 @@ export const bookFreeEstimate = createServerFn({ method: 'POST' })
   .inputValidator((input: unknown) => z.object({ submissionId: z.string().uuid(), startTime: z.string().datetime() }).parse(input))
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import('@/integrations/supabase/client.server')
-    const { data: lead } = await supabaseAdmin.from('leads').select('id,name,email,phone,address,homeowner,booked,notes,source').eq('id', data.submissionId).maybeSingle()
+    const { data: lead } = await supabaseAdmin.from('leads').select('id,name,email,phone,address,homeowner,desired_upgrade,main_problem,timeframe,booked,notes,source').eq('id', data.submissionId).maybeSingle()
     if (!lead || lead.source !== 'Free estimate form') throw new Error('Please fill in the form again.')
     if (lead.booked) return { booked: true }
     const res = await calendly('/invitees', {
@@ -52,6 +52,31 @@ export const bookFreeEstimate = createServerFn({ method: 'POST' })
       console.error('freeestimate booking failed', res.status, await res.text())
       throw new Error('That time was just taken. Please pick another time.')
     }
-    await supabaseAdmin.from('leads').update({ booked: true, notes: (lead.notes ?? '').replace('FORM SUBMITTED — NOT BOOKED YET', `BOOKED ${data.startTime}`) }).eq('id', lead.id)
+    const bookedNotes = (lead.notes ?? '').replace('FORM SUBMITTED — NOT BOOKED YET', `BOOKED ${data.startTime}`)
+    await supabaseAdmin.from('leads').update({ booked: true, notes: bookedNotes }).eq('id', lead.id)
+    const appointmentDate = `${new Intl.DateTimeFormat('en-US', {
+      timeZone: 'America/Chicago',
+      weekday: 'long',
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+    }).format(new Date(data.startTime))} (Central Time)`
+    const { sendTemplateEmail } = await import('./email-templates/send-email')
+    const { FREE_ESTIMATE_RECIPIENTS } = await import('./freeestimate-schema')
+    const submittedAt = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Chicago', dateStyle: 'medium', timeStyle: 'short' }).format(new Date())
+    const results = await Promise.allSettled(FREE_ESTIMATE_RECIPIENTS.map(to => sendTemplateEmail('lead-notification', to, {
+      templateData: {
+        name: lead.name, email: lead.email, phone: lead.phone, address: lead.address,
+        homeowner: lead.homeowner, desiredUpgrade: lead.desired_upgrade, mainProblem: lead.main_problem,
+        timeframe: lead.timeframe, notes: bookedNotes, source: 'Free estimate form',
+        submittedAt, appointmentDate, appointmentAtTop: true,
+      },
+      replyTo: lead.email, idempotencyKey: `freeestimate-booked-${lead.id}-${to}`,
+    })))
+    if (results.some(r => r.status !== 'fulfilled' || !r.value.sent)) {
+      console.error('[freeestimate] Booking notification email failed; booking itself remains confirmed.')
+    }
     return { booked: true }
   })
