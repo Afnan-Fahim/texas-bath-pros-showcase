@@ -1,7 +1,7 @@
 # Task roadmap
 
 ## Current
-- Publish `/freeestimate` to the live domain after security checks.
+- Await publication of `/freeestimate` after the approved security check.
 
 ## Completed
 - Add and verify the isolated `/freeestimate` single-page form with required answers, saved choices, immediate storage and two owner emails, and booking-only conversions (Calendly confirmation signal simulated; no appointment created).
