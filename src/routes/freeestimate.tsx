@@ -8,6 +8,7 @@ import { submitFreeEstimate } from '@/lib/freeestimate.functions'
 import { captureAttribution, getAttribution } from '@/lib/tracking'
 import { CalendlyEmbed } from '@/components/CalendlyEmbed'
 import { Button } from '@/components/ui/button'
+import logoImg from '@/assets/logo-header.webp'
 
 const configQuery = queryOptions({ queryKey: ['freeestimate-options'], queryFn: fetchQuizConfig })
 
