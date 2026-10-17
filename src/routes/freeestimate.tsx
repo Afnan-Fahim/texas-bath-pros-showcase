@@ -84,15 +84,15 @@ function FreeEstimatePage() {
         Proudly Serving San Antonio &amp; Surrounding Areas · We beat written quotes by $1,000+ on the same project and materials.
       </div>
       <div className="bg-secondary/60 lg:hidden">
-        <img src={showerPhoto.url} alt="Walk-in shower remodel with gray vanity and brass fixtures by Texas Bath Solutions — $0 down, payments from just $115 a month" className="h-32 w-full object-contain sm:h-40" />
+        <img src={showerPhoto.url} alt="Walk-in shower remodel with gray vanity and brass fixtures by Texas Bath Solutions — $0 down, payments from just $115 a month" className="w-full h-auto" />
       </div>
       <p className="px-4 py-3 text-sm font-medium leading-5 text-navy sm:px-8 lg:hidden">{estimateIntro}</p>
       <TrustLine className="px-4 pb-3 text-[13px] leading-5 sm:px-8 lg:hidden" />
       <div className="mx-auto grid max-w-6xl gap-10 pb-8 lg:max-w-[1440px] lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:items-start lg:px-8 lg:py-12">
       <div className="min-w-0 rounded-2xl border border-border bg-card p-4 shadow-xl sm:p-6 lg:p-8">
         <header className="mb-5 border-b border-border pb-4 lg:mb-8 lg:pb-6">
-          <h1 className="text-3xl font-semibold text-navy sm:text-4xl tracking-normal">Free in-home estimate</h1>
-          <p className="mt-3 text-base text-muted-foreground">Booking online takes about 30 seconds. No obligation.</p>
+<h1 className="text-2xl font-semibold text-navy sm:text-4xl tracking-normal">Free in-home estimate</h1>
+          <p className="mt-2 text-base text-muted-foreground">Booking online takes about 30 seconds. No obligation.</p>
         </header>
         <form onSubmit={handleSubmit}>
           <fieldset disabled={busy || saved} className="space-y-7 disabled:opacity-75">
@@ -102,7 +102,7 @@ function FreeEstimatePage() {
                 <div className="grid gap-3">
                   {question.options.map(option => (
                     <label key={option} className="flex cursor-pointer items-start gap-3 text-base">
-                      <input required type="radio" name={question.key} value={option} checked={form[question.key] === option} onChange={() => setValue(question.key, option)} className="mt-1 h-4 w-4 shrink-0 accent-primary" />
+                      <input required type="radio" name={question.key} value={option} checked={form[question.key] === option} onChange={() => setValue(question.key, option)} className="mt-0.5 h-5 w-5 shrink-0 accent-primary" />
                       <span>{option}</span>
                     </label>
                   ))}
@@ -127,7 +127,7 @@ function FreeEstimatePage() {
               <div className="flex gap-8">
                 {['Yes', 'No'].map(option => (
                   <label key={option} className="flex cursor-pointer items-center gap-3">
-                    <input required type="radio" name="homeowner" value={option} checked={form.homeowner === option} onChange={() => setValue('homeowner', option)} className="h-4 w-4 accent-primary" />{option}
+                    <input required type="radio" name="homeowner" value={option} checked={form.homeowner === option} onChange={() => setValue('homeowner', option)} className="h-5 w-5 accent-primary" />{option}
                   </label>
                 ))}
               </div>
