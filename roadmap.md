@@ -4,6 +4,7 @@
 - None.
 
 ## Completed
+- Restyle the `/freeestimate` form card: softer deeper drop shadow, slightly thicker light-navy border, more inner padding, light gray dividers between question sections, bolder question titles, and radio buttons with a thin navy outline; verify desktop and phone, keep wording, fields, button and pixel unchanged, and publish.
 - Polish `/freeestimate`: soft warm off-white page wash, deeper form-card padding and shadow, matching rounded shadowed photo, trust line restyled as gold-star pills, tighter photo/paragraph/badge spacing on desktop and mobile; verify both layouts and publish.
 - Add the gold five-star trust line to `/freeestimate` under the photo and paragraph on desktop and under the paragraph on mobile, verify both layouts, and request publishing.
 - Replace the `/freeestimate` photo with the newly uploaded holiday image; verify the full image remains visible on desktop and mobile and request publishing.
