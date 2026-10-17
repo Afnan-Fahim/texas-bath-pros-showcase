@@ -1,7 +1,7 @@
 # Task roadmap
 
 ## Current
-- Replace the `/freeestimate` photo with the newly uploaded picture (large on the right on desktop, banner under the navy header on mobile), show it uncropped and undistorted, then publish. **Blocked: the picture never arrived — no new file in the uploads; waiting on the user to re-attach it.**
+- Verify and publish the uploaded replacement photo on `/freeestimate`, keeping it uncropped and undistorted on desktop and mobile.
 
 ## Completed
 - Replace the `/freeestimate` photo paragraph with the new financing and guarantee wording at 19px Inter in dark navy with comfortable line spacing, aligned under the photo on desktop, and publish.

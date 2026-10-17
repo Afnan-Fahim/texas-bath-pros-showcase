@@ -9,7 +9,7 @@ import { captureAttribution, getAttribution } from '@/lib/tracking'
 import { FreeEstimateTimePicker } from '@/components/FreeEstimateTimePicker'
 import { Button } from '@/components/ui/button'
 import logoImg from '@/assets/logo-header.webp'
-import showerPhoto from '@/assets/freeestimate-shower.png.asset.json'
+import showerPhoto from '@/assets/freeestimate-shower-holiday.jpg.asset.json'
 
 const configQuery = queryOptions({ queryKey: ['freeestimate-options'], queryFn: async () => resolveConfigImages(await fetchQuizConfig()) })
 const estimateIntro = 'San Antonio & surrounding areas — we offer $0 down financing and can install before the holidays, or we’ll cover your first payment. We’ll also beat any same-scope written estimate by $1,000. Appointments are free, no-obligation, and no hassle.'
