@@ -2,11 +2,11 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { queryOptions, useSuspenseQuery } from '@tanstack/react-query'
 import { useServerFn } from '@tanstack/react-start'
 import { useEffect, useRef, useState, type FormEvent } from 'react'
-import { fetchQuizConfig, resolveConfigImages, DEFAULT_CALENDLY_URL } from '@/lib/quiz-content'
+import { fetchQuizConfig, resolveConfigImages } from '@/lib/quiz-content'
 import { freeEstimateSchema, PROJECT_OPTIONS } from '@/lib/freeestimate-schema'
 import { submitFreeEstimate } from '@/lib/freeestimate.functions'
 import { captureAttribution, getAttribution } from '@/lib/tracking'
-import { CalendlyEmbed } from '@/components/CalendlyEmbed'
+import { FreeEstimateTimePicker } from '@/components/FreeEstimateTimePicker'
 import { Button } from '@/components/ui/button'
 import logoImg from '@/assets/logo-header.webp'
 import showerPhoto from '@/assets/freeestimate-shower.png.asset.json'
@@ -127,8 +127,8 @@ function FreeEstimatePage() {
         </form>
         {saved && (
           <section ref={calendar} className="mt-10 scroll-mt-6 border-t border-border pt-7">
-            {booked ? <h2 role="status" className="text-2xl text-navy">Your appointment is confirmed</h2> : (
-              <CalendlyEmbed url={config.calendlyUrl || DEFAULT_CALENDLY_URL} prefill={{ name: form.name, email: form.email, phone: form.phone }} onBack={() => { submissionId.current = ''; setSaved(false); }} onScheduled={() => setBooked(true)} title="Pick a time for your free estimate" subtitle="Choose any open slot." fireBookingEvents />
+            {booked ? <div role="status"><h2 className="text-2xl font-semibold text-navy">Your appointment is confirmed</h2><p className="mt-2 text-base text-muted-foreground">We'll email your confirmation and text you before the visit.</p></div> : (
+              <FreeEstimateTimePicker submissionId={submissionId.current} identity={{ name: form.name, email: form.email, phone: form.phone }} onBooked={() => setBooked(true)} />
             )}
           </section>
         )}
