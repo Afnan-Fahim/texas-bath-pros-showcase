@@ -114,7 +114,7 @@ function FreeEstimatePage() {
         {saved && (
           <section ref={calendar} className="mt-10 scroll-mt-6 border-t border-border pt-7">
             {booked ? <h2 role="status" className="text-2xl text-navy">Your appointment is confirmed</h2> : (
-              <CalendlyEmbed url={config.calendlyUrl || DEFAULT_CALENDLY_URL} prefill={{ name: form.name, email: form.email, phone: form.phone }} onBack={() => { setSaved(false); }} onScheduled={() => setBooked(true)} title="Pick a time for your free estimate" subtitle="Choose any open slot." fireBookingEvents />
+              <CalendlyEmbed url={config.calendlyUrl || DEFAULT_CALENDLY_URL} prefill={{ name: form.name, email: form.email, phone: form.phone }} onBack={() => { submissionId.current = ''; setSaved(false); }} onScheduled={() => setBooked(true)} title="Pick a time for your free estimate" subtitle="Choose any open slot." fireBookingEvents />
             )}
           </section>
         )}
