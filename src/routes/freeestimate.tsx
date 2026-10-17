@@ -2,7 +2,7 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { queryOptions, useSuspenseQuery } from '@tanstack/react-query'
 import { useServerFn } from '@tanstack/react-start'
 import { useEffect, useRef, useState, type FormEvent } from 'react'
-import { fetchQuizConfig, DEFAULT_CALENDLY_URL } from '@/lib/quiz-content'
+import { fetchQuizConfig, resolveConfigImages, DEFAULT_CALENDLY_URL } from '@/lib/quiz-content'
 import { freeEstimateSchema, PROJECT_OPTIONS } from '@/lib/freeestimate-schema'
 import { submitFreeEstimate } from '@/lib/freeestimate.functions'
 import { captureAttribution, getAttribution } from '@/lib/tracking'
@@ -10,7 +10,7 @@ import { CalendlyEmbed } from '@/components/CalendlyEmbed'
 import { Button } from '@/components/ui/button'
 import logoImg from '@/assets/logo-header.webp'
 
-const configQuery = queryOptions({ queryKey: ['freeestimate-options'], queryFn: fetchQuizConfig })
+const configQuery = queryOptions({ queryKey: ['freeestimate-options'], queryFn: async () => resolveConfigImages(await fetchQuizConfig()) })
 
 export const Route = createFileRoute('/freeestimate')({
   loader: ({ context }) => context.queryClient.ensureQueryData(configQuery),
