@@ -30,7 +30,7 @@ export const submitFreeEstimate = createServerFn({ method: 'POST' })
     const { count, error: countError } = await supabaseAdmin.from('leads').select('id', { count: 'exact', head: true }).eq('source', 'Free estimate form').eq('phone', data.phone).gte('created_at', new Date(Date.now() - 10 * 60 * 1000).toISOString())
     if (countError) throw new Error('Unable to save your request. Please try again.')
     if ((count ?? 0) >= 3) throw new Error('Please wait a few minutes before sending another request.')
-    const notes = `Homeowner: ${data.homeowner}\nUpgrade: ${data.desiredUpgrade}\nProblem: ${data.mainProblem}\nStatus: FORM SUBMITTED — NOT BOOKED YET`
+    const notes = `Homeowner: ${data.homeowner}\nUpgrade: ${data.desiredUpgrade}\nProblem: ${data.mainProblem || 'Not provided'}\nStatus: FORM SUBMITTED — NOT BOOKED YET`
     const { error } = await supabaseAdmin.from('leads').insert({
       id: data.submissionId, name: data.name, email: data.email, phone: data.phone,
       address: data.address, desired_upgrade: data.desiredUpgrade, main_problem: data.mainProblem,

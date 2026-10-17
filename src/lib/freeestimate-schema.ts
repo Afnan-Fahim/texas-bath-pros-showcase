@@ -6,7 +6,7 @@ export const PROJECT_OPTIONS = ['I Want A Walk In Shower', 'I Want A New Tub', "
 export const freeEstimateSchema = z.object({
   submissionId: z.string().uuid(),
   desiredUpgrade: z.enum(PROJECT_OPTIONS),
-  mainProblem: z.string().trim().min(1, 'Choose the main problem.').max(160),
+  mainProblem: z.string().trim().max(160),
   timeframe: z.string().trim().min(1, 'Choose your timing.').max(80),
   name: z.string().trim().min(1, 'Enter your name.').max(120),
   email: z.string().trim().email('Enter a valid email.').max(160),
@@ -18,5 +18,5 @@ export const freeEstimateSchema = z.object({
 export type FreeEstimateInput = z.infer<typeof freeEstimateSchema>
 
 export function choicesAreValid(input: FreeEstimateInput, problems: string[], timings: string[]) {
-  return problems.includes(input.mainProblem) && timings.includes(input.timeframe)
+  return (!input.mainProblem || problems.includes(input.mainProblem)) && timings.includes(input.timeframe)
 }
