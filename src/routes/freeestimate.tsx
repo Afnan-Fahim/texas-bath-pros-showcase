@@ -68,7 +68,7 @@ function FreeEstimatePage() {
       <div className="bg-background px-5 py-3 sm:px-8">
         <Link to="/" aria-label="Texas Bath Solutions home"><img src={logoImg} alt="Texas Bath Solutions" className="h-12 w-auto sm:h-14" /></Link>
       </div>
-      <div className="bg-navy px-5 py-2.5 text-center text-xs font-medium text-primary-foreground sm:px-8 sm:text-sm">
+      <div className="bg-navy px-5 py-2.5 text-center text-xs font-medium text-navy-foreground sm:px-8 sm:text-sm">
         Proudly Serving San Antonio &amp; Surrounding Areas · We beat written quotes by $1,000+ on the same project and materials.
       </div>
       <img src={showerImage} alt="Walk-in shower by Texas Bath Solutions" className="h-44 w-full object-cover lg:hidden" />
