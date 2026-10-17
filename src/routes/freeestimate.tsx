@@ -15,12 +15,18 @@ import showerPhoto from '@/assets/freeestimate-shower-holiday.jpg.asset.json'
 const configQuery = queryOptions({ queryKey: ['freeestimate-options'], queryFn: async () => resolveConfigImages(await fetchQuizConfig()) })
 const estimateIntro = 'San Antonio & surrounding areas — we offer $0 down financing and can install before the holidays, or we’ll cover your first payment. We’ll also beat any same-scope written estimate by $1,000. Appointments are free, no-obligation, and no hassle.'
 
-function TrustLine({ className }: { className?: string }) {
+const TRUST_BADGES = ['5.0 Google', 'BBB A+', 'Insured', 'Warranty', 'Local', 'Heart of San Antonio']
+
+function TrustBadges({ className }: { className?: string }) {
   return (
-    <p className={cn('font-semibold text-navy', className)}>
-      <span aria-hidden="true" className="text-gold-bright">★★★★★</span>{' '}
-      <span>5.0 Google · Perfect Score · BBB A+ · Insured · Warranty · Local</span>
-    </p>
+    <ul className={cn('flex flex-wrap items-center gap-2', className)}>
+      {TRUST_BADGES.map((badge, index) => (
+        <li key={badge} className="inline-flex items-center gap-1.5 rounded-full border border-navy/10 bg-card px-3 py-1.5 text-xs font-semibold text-navy shadow-sm">
+          {index === 0 && <span aria-hidden="true" className="text-gold-bright">★★★★★</span>}
+          {badge}
+        </li>
+      ))}
+    </ul>
   )
 }
 
@@ -76,20 +82,20 @@ function FreeEstimatePage() {
     { key: 'timeframe' as const, title: 'When would you like it done?', options: config.steps.find(s => s.key === 'timeline')?.options.map(o => o.label) ?? [] },
   ]
   return (
-    <main className="min-h-screen bg-gradient-to-b from-secondary/60 to-background text-foreground">
+    <main className="min-h-screen bg-page-wash text-foreground">
       <div className="bg-background px-5 py-3 sm:px-8">
         <Link to="/" aria-label="Texas Bath Solutions home"><img src={logoImg} alt="Texas Bath Solutions" className="h-12 w-auto sm:h-14" /></Link>
       </div>
       <div className="bg-navy px-5 py-2.5 text-center text-xs font-medium text-navy-foreground sm:px-8 sm:text-sm">
         Proudly Serving San Antonio &amp; Surrounding Areas · We beat written quotes by $1,000+ on the same project and materials.
       </div>
-      <div className="bg-secondary/60 lg:hidden">
+      <div className="lg:hidden">
         <img src={showerPhoto.url} alt="Walk-in shower remodel with gray vanity and brass fixtures by Texas Bath Solutions — $0 down, payments from just $115 a month" className="w-full h-auto" />
+        <p className="px-4 pt-3 text-sm font-medium leading-5 text-navy sm:px-8">{estimateIntro}</p>
+        <TrustBadges className="px-4 pt-2 pb-1 sm:px-8" />
       </div>
-      <p className="px-4 py-3 text-sm font-medium leading-5 text-navy sm:px-8 lg:hidden">{estimateIntro}</p>
-      <TrustLine className="px-4 pb-3 text-[13px] leading-5 sm:px-8 lg:hidden" />
-      <div className="mx-auto grid max-w-6xl gap-10 pb-8 lg:max-w-[1440px] lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:items-start lg:px-8 lg:py-12">
-      <div className="min-w-0 rounded-2xl border border-border bg-card p-4 shadow-xl sm:p-6 lg:p-8">
+      <div className="mx-auto grid max-w-6xl gap-6 px-4 pb-8 sm:px-6 lg:max-w-[1440px] lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:items-start lg:gap-10 lg:px-8 lg:py-12">
+      <div className="min-w-0 rounded-2xl border border-border bg-card p-5 shadow-card sm:p-8 lg:p-10">
         <header className="mb-5 border-b border-border pb-4 lg:mb-8 lg:pb-6">
 <h1 className="text-2xl font-semibold text-navy sm:text-4xl tracking-normal">Free in-home estimate</h1>
           <p className="mt-2 text-base text-muted-foreground">Booking online takes about 30 seconds. No obligation.</p>
@@ -145,9 +151,9 @@ function FreeEstimatePage() {
         )}
       </div>
       <div className="hidden lg:sticky lg:top-8 lg:block">
-        <img src={showerPhoto.url} alt="Walk-in shower remodel with gray vanity and brass fixtures by Texas Bath Solutions — $0 down, payments from just $115 a month" className="w-full h-auto rounded-2xl shadow-xl" />
-        <p className="mt-5 max-w-[46ch] font-sans text-[19px] font-medium leading-[1.65] text-navy">{estimateIntro}</p>
-        <TrustLine className="mt-4 text-[17px] leading-7" />
+        <img src={showerPhoto.url} alt="Walk-in shower remodel with gray vanity and brass fixtures by Texas Bath Solutions — $0 down, payments from just $115 a month" className="w-full h-auto rounded-2xl shadow-card ring-1 ring-navy/5" />
+        <p className="mt-4 max-w-[46ch] font-sans text-[19px] font-medium leading-[1.65] text-navy">{estimateIntro}</p>
+        <TrustBadges className="mt-3" />
       </div>
       </div>
         <footer className="pb-10 flex justify-center gap-4 text-xs text-muted-foreground">
