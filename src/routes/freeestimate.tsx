@@ -12,7 +12,7 @@ import logoImg from '@/assets/logo-header.webp'
 import showerPhoto from '@/assets/freeestimate-shower.png.asset.json'
 
 const configQuery = queryOptions({ queryKey: ['freeestimate-options'], queryFn: async () => resolveConfigImages(await fetchQuizConfig()) })
-const estimateIntro = 'Hey San Antonio & Surrounding Areas! We offer 0 down payment financing and can install before the holidays — or we pay your first payment. We also beat other same-scope estimates by $1000. Appointments are 100% no-obligation and no-hassle.'
+const estimateIntro = 'San Antonio & surrounding areas — we offer $0 down financing and can install before the holidays, or we’ll cover your first payment. We’ll also beat any same-scope written estimate by $1,000. Appointments are free, no-obligation, and no hassle.'
 
 export const Route = createFileRoute('/freeestimate')({
   loader: ({ context }) => context.queryClient.ensureQueryData(configQuery),
@@ -135,7 +135,7 @@ function FreeEstimatePage() {
       </div>
       <div className="hidden lg:sticky lg:top-8 lg:block">
         <img src={showerPhoto.url} alt="Walk-in shower remodel with gray vanity and brass fixtures by Texas Bath Solutions — $0 down, payments from just $115 a month" className="w-full h-auto rounded-2xl shadow-xl" />
-        <p className="mt-4 text-base font-medium leading-relaxed text-navy">{estimateIntro}</p>
+        <p className="mt-5 max-w-[46ch] font-sans text-[19px] font-medium leading-[1.65] text-navy">{estimateIntro}</p>
       </div>
       </div>
         <footer className="pb-10 flex justify-center gap-4 text-xs text-muted-foreground">
