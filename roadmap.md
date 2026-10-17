@@ -4,6 +4,7 @@
 - (none)
 
 ## Completed
+- Replace the `/freeestimate` photo paragraph with the new financing and guarantee wording at 19px Inter in dark navy with comfortable line spacing, aligned under the photo on desktop, and publish.
 - Move the `/freeestimate` intro below the large desktop photo and above the full-width mobile form beneath a compact uncropped banner; verify both layouts and request publishing.
 - Swap the `/freeestimate` photo for the uploaded walk-in shower image, shown uncropped and undistorted on the right on desktop and as a full-width banner under the header on mobile, add the financing/guarantee paragraph above the first question, and publish.
 - Add and verify the isolated `/freeestimate` single-page form with required answers, saved choices, immediate storage and two owner emails, and booking-only conversions (Calendly confirmation signal simulated; no appointment created).
