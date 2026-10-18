@@ -15,7 +15,7 @@ import showerPhoto from '@/assets/freeestimate-shower-holiday.jpg.asset.json'
 const configQuery = queryOptions({ queryKey: ['freeestimate-options'], queryFn: async () => resolveConfigImages(await fetchQuizConfig()) })
 const estimateIntro = 'San Antonio & surrounding areas — we offer $0 down financing and can install before the holidays, or we’ll cover your first payment. We’ll also beat any same-scope written estimate by $1,000. Appointments are free, no-obligation, and no hassle.'
 
-const TRUST_BADGES = ['5.0 Google', 'BBB A+', 'Insured', 'Warranty', 'Local', 'Heart of San Antonio']
+const TRUST_BADGES = ['5.0 Google', 'BBB A+', 'Insured', 'Warranty', 'Local']
 
 function TrustBadges({ badges = TRUST_BADGES, className }: { badges?: string[]; className?: string }) {
   return (
