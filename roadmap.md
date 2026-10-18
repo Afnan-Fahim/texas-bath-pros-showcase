@@ -1,7 +1,7 @@
 # Task roadmap
 
 ## Current
-- None.
+- Correct customer confirmation sender to Contact@TexasBathSolutions.com; identify and resolve the external calendar sender used for confirmations and cancellations (requires access to the connected calendar account).
 
 ## Completed
 - Restyle the `/freeestimate` form card: softer deeper drop shadow, slightly thicker light-navy border, more inner padding, light gray dividers between question sections, bolder question titles, and radio buttons with a thin navy outline; verify desktop and phone, keep wording, fields, button and pixel unchanged, and publish.
