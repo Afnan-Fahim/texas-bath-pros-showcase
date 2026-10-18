@@ -1,7 +1,7 @@
 # Task roadmap
 
 ## Current
-- None.
+- Replace Calendly’s connected old Gmail calendar with Contact@TexasBathSolutions.com so confirmation and cancellation invitations use the correct sender; blocked on the account owner reconnecting the calendar in Calendly’s Calendar Sync settings. Screenshot confirms these invitations are sent by the old Gmail calendar, not Lovable Emails; website email changes cannot change their sender.
 
 ## Completed
 - Restyle the `/freeestimate` form card: softer deeper drop shadow, slightly thicker light-navy border, more inner padding, light gray dividers between question sections, bolder question titles, and radio buttons with a thin navy outline; verify desktop and phone, keep wording, fields, button and pixel unchanged, and publish.
