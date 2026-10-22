@@ -165,7 +165,7 @@ function FreeEstimatePage() {
         )}
       </div>
       <div className="hidden lg:sticky lg:top-5 lg:block">
-        <img src={showerPhoto.url} alt="Walk-in shower remodel with gray vanity and brass fixtures by Texas Bath Solutions — $0 down, payments from just $115 a month" className="mx-auto block h-auto max-h-[52vh] w-auto max-w-full rounded-2xl shadow-card ring-1 ring-navy/5" />
+        <img src={showerPhoto.url} alt="Walk-in shower remodel with gray vanity and brass fixtures by Texas Bath Solutions — $0 down, payments from just $115 a month" className="mx-auto block h-auto max-h-[46vh] w-auto max-w-full rounded-2xl shadow-card ring-1 ring-navy/5" />
         <p className="mt-3 font-sans text-base font-medium leading-[1.55] text-navy">{estimateIntro}</p>
         <TrustBadges className="mt-3" />
       </div>
