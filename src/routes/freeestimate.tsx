@@ -106,21 +106,21 @@ function FreeEstimatePage() {
         <p className="px-4 pt-3 text-sm font-medium leading-5 text-navy sm:px-8">{estimateIntro}</p>
         <TrustBadges badges={['5.0 Google']} className="px-4 pt-2 pb-1 sm:px-8" />
       </div>
-      <div className="mx-auto grid max-w-6xl gap-6 px-4 pb-8 sm:px-6 lg:max-w-[1440px] lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:items-start lg:gap-10 lg:px-8 lg:py-12">
-      <div className="min-w-0 rounded-2xl border-2 border-navy/15 bg-card p-6 shadow-lift sm:p-9 lg:p-12">
-        <header className="mb-5 border-b border-border pb-4 lg:mb-8 lg:pb-6">
-<h1 className="text-2xl font-semibold text-navy sm:text-4xl tracking-normal">Free in-home estimate</h1>
-          <p className="mt-2 text-base text-muted-foreground">Booking online takes about 30 seconds. No obligation.</p>
+      <div className="mx-auto grid max-w-6xl gap-6 px-4 pb-8 sm:px-6 lg:max-w-[1180px] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)] lg:items-start lg:gap-8 lg:px-8 lg:py-5">
+      <div className="min-w-0 rounded-2xl border-2 border-navy/15 bg-card p-6 shadow-lift sm:p-9 lg:p-6">
+        <header className="mb-5 border-b border-border pb-4 lg:mb-3 lg:pb-3">
+<h1 className="text-2xl font-semibold text-navy sm:text-4xl lg:text-2xl tracking-normal">Free in-home estimate</h1>
+          <p className="mt-2 text-base text-muted-foreground lg:mt-1 lg:text-sm">Booking online takes about 30 seconds. No obligation.</p>
         </header>
         <form onSubmit={handleSubmit}>
-          <fieldset disabled={busy || saved} className="space-y-7 disabled:opacity-75">
+          <fieldset disabled={busy || saved} className="space-y-7 lg:space-y-3 disabled:opacity-75">
             {questions.map((question, index) => (
-              <div key={question.key} className={index > 0 ? 'border-t border-border pt-6' : ''}>
+              <div key={question.key} className={index > 0 ? 'border-t border-border pt-6 lg:pt-3' : ''}>
                 <fieldset>
-                  <legend className="mb-3 text-lg font-bold tracking-tight text-navy">{question.title}</legend>
-                  <div className="grid gap-3">
+                  <legend className="mb-3 text-lg font-bold tracking-tight lg:mb-1.5 lg:text-[15px] text-navy">{question.title}</legend>
+                  <div className="grid gap-3 lg:grid-cols-2 lg:gap-x-4 lg:gap-y-1.5">
                     {question.options.map(option => (
-                      <label key={option} className="flex cursor-pointer items-start gap-3 text-base">
+                      <label key={option} className="flex cursor-pointer items-start gap-3 text-base lg:gap-2 lg:text-sm">
                         <input required type="radio" name={question.key} value={option} checked={form[question.key] === option} onChange={() => setValue(question.key, option)} className="mt-0.5 h-5 w-5 shrink-0 cursor-pointer appearance-none rounded-full border border-navy/40 bg-card outline-none transition checked:border-navy checked:bg-[radial-gradient(circle_at_center,var(--navy)_0_34%,transparent_36%)] focus-visible:ring-2 focus-visible:ring-ring" />
                         <span>{option}</span>
                       </label>
@@ -129,21 +129,21 @@ function FreeEstimatePage() {
                 </fieldset>
               </div>
             ))}
-            <div className="grid gap-4 border-t border-border pt-7 sm:grid-cols-2">
+            <div className="grid gap-4 border-t border-border pt-7 sm:grid-cols-2 lg:gap-3 lg:pt-3">
               {([
                 ['name', 'Name', 'text', 'name', 120],
                 ['email', 'Email', 'email', 'email', 160],
                 ['phone', 'Phone', 'tel', 'tel', 32],
                 ['address', 'Address', 'text', 'street-address', 240],
               ] as const).map(([key, label, type, autoComplete, maxLength]) => (
-                <label key={key} className="grid gap-2 text-sm font-medium text-navy">
+                <label key={key} className="grid gap-2 lg:gap-1 text-sm font-medium text-navy">
                   {label}
-                  <input required type={type} autoComplete={autoComplete} maxLength={maxLength} value={form[key]} onChange={e => setValue(key, e.target.value)} className="h-12 min-w-0 rounded-md border border-input bg-card px-3 text-base text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring" />
+                  <input required type={type} autoComplete={autoComplete} maxLength={maxLength} value={form[key]} onChange={e => setValue(key, e.target.value)} className="h-12 lg:h-10 min-w-0 rounded-md border border-input bg-card px-3 text-base text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring" />
                 </label>
               ))}
             </div>
             <fieldset>
-              <legend className="mb-3 text-sm font-bold text-navy">Are you the homeowner?</legend>
+              <legend className="mb-3 lg:mb-1.5 text-sm font-bold text-navy">Are you the homeowner?</legend>
               <div className="flex gap-8">
                 {['Yes', 'No'].map(option => (
                   <label key={option} className="flex cursor-pointer items-center gap-3">
@@ -153,7 +153,7 @@ function FreeEstimatePage() {
               </div>
             </fieldset>
             {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
-            <Button type="submit" disabled={busy || saved} className="h-auto min-h-12 w-full whitespace-normal px-4 py-3 text-base">{busy ? 'Saving…' : 'What Time Would Work Best?'}</Button>
+            <Button type="submit" disabled={busy || saved} className="h-auto min-h-12 w-full whitespace-normal px-4 py-3 text-base lg:min-h-10 lg:py-2">{busy ? 'Saving…' : 'What Time Would Work Best?'}</Button>
           </fieldset>
         </form>
         {saved && (
@@ -164,9 +164,9 @@ function FreeEstimatePage() {
           </section>
         )}
       </div>
-      <div className="hidden lg:sticky lg:top-8 lg:block">
-        <img src={showerPhoto.url} alt="Walk-in shower remodel with gray vanity and brass fixtures by Texas Bath Solutions — $0 down, payments from just $115 a month" className="w-full h-auto rounded-2xl shadow-card ring-1 ring-navy/5" />
-        <p className="mt-4 max-w-[46ch] font-sans text-[19px] font-medium leading-[1.65] text-navy">{estimateIntro}</p>
+      <div className="hidden lg:sticky lg:top-5 lg:block">
+        <img src={showerPhoto.url} alt="Walk-in shower remodel with gray vanity and brass fixtures by Texas Bath Solutions — $0 down, payments from just $115 a month" className="mx-auto block h-auto max-h-[46vh] w-auto max-w-full rounded-2xl shadow-card ring-1 ring-navy/5" />
+        <p className="mt-3 font-sans text-base font-medium leading-[1.55] text-navy">{estimateIntro}</p>
         <TrustBadges className="mt-3" />
       </div>
       </div>
