@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import logoImg from '@/assets/logo-header.webp'
 import showerPhoto from '@/assets/freeestimate-shower-holiday.jpg.asset.json'
+import sharePhoto from '@/assets/freeestimate-share-christmas.jpg.asset.json'
 
 const configQuery = queryOptions({ queryKey: ['freeestimate-options'], queryFn: async () => resolveConfigImages(await fetchQuizConfig()) })
 const estimateIntro = 'San Antonio & surrounding areas — we offer $0 down financing and can install before the holidays, or we’ll cover your first payment. We’ll also beat any same-scope written estimate by $1,000. Appointments are free, no-obligation, and no hassle.'
@@ -40,11 +41,11 @@ export const Route = createFileRoute('/freeestimate')({
       { property: 'og:title', content: 'Just in Time for the HOLIDAYS! Free Estimate' },
       { property: 'og:description', content: 'Request your free in-home bathroom estimate. Booking online takes about 30 seconds. No obligation.' },
       { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: 'https://texasbathsolutions.com/__l5e/assets-v1/904d2a61-a90c-48a1-b026-63c29f1550d3/freeestimate-shower-holiday.jpg' },
+      { property: 'og:image', content: `https://texasbathsolutions.com${sharePhoto.url}` },
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:title', content: 'Just in Time for the HOLIDAYS! Free Estimate' },
       { name: 'twitter:description', content: 'Request your free in-home bathroom estimate. Booking online takes about 30 seconds. No obligation.' },
-      { name: 'twitter:image', content: 'https://texasbathsolutions.com/__l5e/assets-v1/904d2a61-a90c-48a1-b026-63c29f1550d3/freeestimate-shower-holiday.jpg' },
+      { name: 'twitter:image', content: `https://texasbathsolutions.com${sharePhoto.url}` },
     ],
     links: [{ rel: 'canonical', href: 'https://texasbathsolutions.com/freeestimate' }],
   }),
