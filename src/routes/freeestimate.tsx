@@ -10,7 +10,7 @@ import { FreeEstimateTimePicker } from '@/components/FreeEstimateTimePicker'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import logoImg from '@/assets/logo-header.webp'
-import showerPhoto from '@/assets/freeestimate-shower-holiday.jpg.asset.json'
+import showerPhoto from '@/assets/freeestimate-shower-christmas.jpg.asset.json'
 import sharePhoto from '@/assets/freeestimate-share-christmas.jpg.asset.json'
 
 const configQuery = queryOptions({ queryKey: ['freeestimate-options'], queryFn: async () => resolveConfigImages(await fetchQuizConfig()) })
@@ -103,7 +103,7 @@ function FreeEstimatePage() {
         Proudly Serving San Antonio &amp; Surrounding Areas · We beat written quotes by $1,000+ on the same project and materials.
       </div>
       <div className="lg:hidden">
-        <img src={showerPhoto.url} alt="Walk-in shower remodel with gray vanity and brass fixtures by Texas Bath Solutions — $0 down, payments from just $115 a month" className="w-full h-auto" />
+        <img src={showerPhoto.url} alt="Walk-in shower remodel with marble walls, brass fixtures and Christmas decorations by Texas Bath Solutions — $0 down, payments from just $115 a month" className="w-full h-auto" />
         <p className="px-4 pt-3 text-sm font-medium leading-5 text-navy sm:px-8">{estimateIntro}</p>
         <TrustBadges badges={['5.0 Google']} className="px-4 pt-2 pb-1 sm:px-8" />
       </div>
@@ -166,7 +166,7 @@ function FreeEstimatePage() {
         )}
       </div>
       <div className="hidden lg:sticky lg:top-5 lg:block">
-        <img src={showerPhoto.url} alt="Walk-in shower remodel with gray vanity and brass fixtures by Texas Bath Solutions — $0 down, payments from just $115 a month" className="mx-auto block h-auto max-h-[46vh] w-auto max-w-full rounded-2xl shadow-card ring-1 ring-navy/5" />
+        <img src={showerPhoto.url} alt="Walk-in shower remodel with marble walls, brass fixtures and Christmas decorations by Texas Bath Solutions — $0 down, payments from just $115 a month" className="mx-auto block h-auto max-h-[46vh] w-auto max-w-full rounded-2xl shadow-card ring-1 ring-navy/5" />
         <p className="mt-3 font-sans text-base font-medium leading-[1.55] text-navy">{estimateIntro}</p>
         <TrustBadges className="mt-3" />
       </div>
