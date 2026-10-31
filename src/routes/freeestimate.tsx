@@ -99,8 +99,8 @@ function FreeEstimatePage() {
       <div className="bg-background px-5 py-3 sm:px-8">
         <Link to="/" aria-label="Texas Bath Solutions home"><img src={logoImg} alt="Texas Bath Solutions" className="h-12 w-auto sm:h-14" /></Link>
       </div>
-      <div className="hidden bg-navy px-5 py-2.5 text-center text-xs font-medium text-navy-foreground sm:px-8 sm:text-sm lg:block">
-        Proudly Serving San Antonio &amp; Surrounding Areas · We beat written quotes by $1,000+ on the same project and materials.
+      <div className="bg-navy px-5 py-2.5 text-center text-xs font-medium text-navy-foreground sm:px-8 sm:text-sm">
+        Tired of $25k bathroom remodels? We are a local family-owned company who provides insured and reasonable quotes.
       </div>
       <div className="lg:hidden">
         <img src={showerPhoto.url} alt="Walk-in shower remodel with marble walls, brass fixtures and Christmas decorations by Texas Bath Solutions — $0 down, payments from just $115 a month" className="w-full h-auto" />
