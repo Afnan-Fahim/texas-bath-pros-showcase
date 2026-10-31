@@ -154,7 +154,7 @@ function FreeEstimatePage() {
               </div>
             </fieldset>
             {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
-            <Button type="submit" disabled={busy || saved} className="h-auto min-h-12 w-full whitespace-normal px-4 py-3 text-base lg:min-h-10 lg:py-2">{busy ? 'Saving…' : 'What Time Would Work Best?'}</Button>
+            <Button type="submit" disabled={busy || saved} className="h-auto min-h-12 w-full whitespace-normal px-4 py-3 text-base lg:min-h-10 lg:py-2">{busy ? 'Saving…' : 'Pick Your Time'}</Button>
           </fieldset>
         </form>
         {saved && (
