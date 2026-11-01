@@ -35,11 +35,12 @@ export const bookFreeEstimate = createServerFn({ method: 'POST' })
     const { data: lead } = await supabaseAdmin.from('leads').select('id,name,email,phone,address,homeowner,desired_upgrade,main_problem,timeframe,booked,notes,source').eq('id', data.submissionId).maybeSingle()
     if (!lead || lead.source !== 'Free estimate form') throw new Error('Please fill in the form again.')
     if (lead.booked) return { booked: true }
+    // Calendly marks all three questions required; the page no longer asks about homeowner.
     const questionsAndAnswers = [
-      { question: 'What is the Address?', answer: lead.address ?? '', position: 0 },
-      { question: 'Phone Number?', answer: lead.phone ?? '', position: 1 },
+      { question: 'What is the Address?', answer: lead.address || 'Not provided', position: 0 },
+      { question: 'Phone Number?', answer: lead.phone || 'Not provided', position: 1 },
+      { question: 'Are you the Homeowner?', answer: lead.homeowner || 'Not asked', position: 2 },
     ]
-    if (lead.homeowner) questionsAndAnswers.push({ question: 'Are you the Homeowner?', answer: lead.homeowner, position: 2 })
     const res = await calendly('/invitees', {
       method: 'POST',
       body: JSON.stringify({

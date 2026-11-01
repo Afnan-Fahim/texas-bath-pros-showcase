@@ -17,3 +17,5 @@
 - Keep five-step counters and Back navigation; verify answer capture and booking tracking.
 - Publish the updated estimate flow to the live site.
 - [x] /freeestimate: show open times on page before clicking button; publish
+
+- [ ] /freeestimate: fix false "That time was just taken" error so open times book; publish and test
