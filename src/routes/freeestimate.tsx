@@ -37,6 +37,22 @@ function TrustBadges({ badges = TRUST_BADGES, className }: { badges?: string[]; 
   )
 }
 
+function EstimateIntro({ className }: { className?: string }) {
+  return (
+    <div className={cn('font-sans text-navy', className)}>
+      <p className="text-base font-bold leading-snug lg:text-[17px]">{estimateIntroTitle}</p>
+      <ul className="mt-2 space-y-1.5 text-sm leading-[1.5] lg:text-[15px]">
+        {estimateIntroPoints.map(point => (
+          <li key={point} className="flex gap-2">
+            <span aria-hidden="true" className="shrink-0 font-bold text-navy">•</span>
+            <span>{point}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
 export const Route = createFileRoute('/freeestimate')({
   loader: ({ context }) => context.queryClient.ensureQueryData(configQuery),
   component: FreeEstimatePage,
