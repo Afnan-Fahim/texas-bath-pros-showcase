@@ -81,18 +81,10 @@ function FreeEstimatePage() {
   const [busy, setBusy] = useState(false)
   const [saved, setSaved] = useState(false)
   const [booked, setBooked] = useState(false)
-  const [isDesktop, setIsDesktop] = useState(true)
   const submissionId = useRef('')
   const calendar = useRef<HTMLDivElement>(null)
   const formRef = useRef<HTMLFormElement>(null)
   useEffect(() => { captureAttribution() }, [])
-  useEffect(() => {
-    const media = window.matchMedia('(min-width: 1024px)')
-    const update = () => setIsDesktop(media.matches)
-    update()
-    media.addEventListener('change', update)
-    return () => media.removeEventListener('change', update)
-  }, [])
   useEffect(() => { if (saved) calendar.current?.scrollIntoView({ block: 'start', behavior: 'smooth' }) }, [saved])
   const setValue = (key: keyof typeof form, value: string) => setForm(previous => ({ ...previous, [key]: value }))
 
@@ -114,9 +106,8 @@ function FreeEstimatePage() {
 
   const questions = [
     { key: 'desiredUpgrade' as const, title: 'What can we help you with?', options: [...PROJECT_OPTIONS] },
-    { key: 'mainProblem' as const, title: "What's the main problem?", options: config.steps.find(s => s.key === 'mainProblem')?.options.map(o => o.label) ?? [] },
     { key: 'timeframe' as const, title: 'When would you like it done?', options: config.steps.find(s => s.key === 'timeline')?.options.map(o => o.label) ?? [] },
-  ].filter(question => isDesktop || question.key !== 'mainProblem')
+  ]
   return (
     <main className="min-h-screen bg-page-wash text-foreground">
       <div className="bg-background px-5 py-3 sm:px-8">
