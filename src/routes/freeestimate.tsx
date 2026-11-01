@@ -62,6 +62,7 @@ function FreeEstimatePage() {
   const [isDesktop, setIsDesktop] = useState(true)
   const submissionId = useRef('')
   const calendar = useRef<HTMLDivElement>(null)
+  const formRef = useRef<HTMLFormElement>(null)
   useEffect(() => { captureAttribution() }, [])
   useEffect(() => {
     const media = window.matchMedia('(min-width: 1024px)')
@@ -113,7 +114,7 @@ function FreeEstimatePage() {
 <h1 className="text-2xl font-semibold text-navy sm:text-4xl lg:text-2xl tracking-normal">Free In-Home Estimate for Facebook Visitors</h1>
           <p className="mt-2 text-base text-muted-foreground lg:mt-1 lg:text-sm">You found us on Facebook. Booking takes about 30 seconds. No obligation.</p>
         </header>
-        <form onSubmit={handleSubmit}>
+        <form ref={formRef} onSubmit={handleSubmit} className="scroll-mt-6">
           <fieldset disabled={busy || saved} className="space-y-7 lg:space-y-3 disabled:opacity-75">
             {questions.map((question, index) => (
               <div key={question.key} className={index > 0 ? 'border-t border-border pt-6 lg:pt-3' : ''}>
@@ -157,13 +158,11 @@ function FreeEstimatePage() {
             <Button type="submit" disabled={busy || saved} className="h-auto min-h-12 w-full whitespace-normal px-4 py-3 text-base lg:min-h-10 lg:py-2">{busy ? 'Saving…' : 'Pick Your Time'}</Button>
           </fieldset>
         </form>
-        {saved && (
-          <section ref={calendar} className="mt-10 scroll-mt-6 border-t border-border pt-7">
-            {booked ? <div role="status"><h2 className="text-2xl font-semibold text-navy">Your appointment is confirmed</h2><p className="mt-2 text-base text-muted-foreground">We'll email your confirmation and text you before the visit.</p></div> : (
-              <FreeEstimateTimePicker submissionId={submissionId.current} identity={{ name: form.name, email: form.email, phone: form.phone }} onBooked={() => setBooked(true)} />
-            )}
-          </section>
-        )}
+        <section ref={calendar} className="mt-8 scroll-mt-6 border-t border-border pt-6 lg:mt-5 lg:pt-4">
+          {booked ? <div role="status"><h2 className="text-2xl font-semibold text-navy">Your appointment is confirmed</h2><p className="mt-2 text-base text-muted-foreground">We'll email your confirmation and text you before the visit.</p></div> : (
+            <FreeEstimateTimePicker ready={saved} onNeedForm={() => { setError('Please fill in the form and tap Pick Your Time to book this time.'); formRef.current?.scrollIntoView({ block: 'start', behavior: 'smooth' }) }} submissionId={submissionId.current} identity={{ name: form.name, email: form.email, phone: form.phone }} onBooked={() => setBooked(true)} />
+          )}
+        </section>
       </div>
       <div className="hidden lg:sticky lg:top-5 lg:block">
         <img src={showerPhoto.url} alt="Walk-in shower remodel with marble walls, brass fixtures and Christmas decorations by Texas Bath Solutions — $0 down, payments from just $115 a month" className="mx-auto block h-auto max-h-[46vh] w-auto max-w-full rounded-2xl shadow-card ring-1 ring-navy/5" />

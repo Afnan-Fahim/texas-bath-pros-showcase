@@ -11,7 +11,7 @@ const dayKey = (iso: string) => new Date(iso).toLocaleDateString('en-CA', { time
 const dayLabel = (iso: string) => new Date(iso).toLocaleDateString('en-US', { timeZone: TZ, weekday: 'short', month: 'short', day: 'numeric' })
 const timeLabel = (iso: string) => new Date(iso).toLocaleTimeString('en-US', { timeZone: TZ, hour: 'numeric', minute: '2-digit' })
 
-export function FreeEstimateTimePicker({ submissionId, identity, onBooked }: { submissionId: string; identity: { name: string; email: string; phone: string }; onBooked: (startTime: string) => void }) {
+export function FreeEstimateTimePicker({ submissionId, identity, onBooked, ready = true, onNeedForm }: { submissionId: string; identity: { name: string; email: string; phone: string }; onBooked: (startTime: string) => void; ready?: boolean; onNeedForm?: () => void }) {
   const loadTimes = useServerFn(getFreeEstimateTimes)
   const book = useServerFn(bookFreeEstimate)
   const [times, setTimes] = useState<string[] | null>(null)
@@ -32,6 +32,7 @@ export function FreeEstimateTimePicker({ submissionId, identity, onBooked }: { s
 
   async function schedule() {
     if (!picked || busy) return
+    if (!ready) { onNeedForm?.(); return }
     setBusy(true); setError('')
     try {
       await book({ data: { submissionId, startTime: picked } })
@@ -66,7 +67,7 @@ export function FreeEstimateTimePicker({ submissionId, identity, onBooked }: { s
       </div>
       {error && <p role="alert" className="mt-4 text-sm text-destructive">{error}</p>}
       <Button type="button" onClick={schedule} disabled={!picked || busy} className="mt-6 h-auto min-h-12 w-full text-base">
-        {busy ? 'Scheduling…' : picked ? `Schedule Event · ${dayLabel(picked)}, ${timeLabel(picked)}` : 'Schedule Event'}
+        {busy ? 'Scheduling…' : picked && !ready ? 'Fill in your details above to book this time' : picked ? `Schedule Event · ${dayLabel(picked)}, ${timeLabel(picked)}` : 'Schedule Event'}
       </Button>
     </div>
   )
