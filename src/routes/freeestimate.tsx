@@ -43,8 +43,8 @@ function EstimateIntro({ className }: { className?: string }) {
       <p className="text-base font-bold leading-snug lg:text-[17px]">{estimateIntroTitle}</p>
       <ul className="mt-2 space-y-1.5 text-sm leading-[1.5] lg:text-[15px]">
         {estimateIntroPoints.map(point => (
-          <li key={point} className="flex gap-2">
-            <span aria-hidden="true" className="shrink-0 font-bold text-navy">•</span>
+          <li key={point} className="flex gap-2.5">
+            <span aria-hidden="true" className="mt-px shrink-0 text-[1.05em] font-bold leading-none text-check">✓</span>
             <span>{point}</span>
           </li>
         ))}
