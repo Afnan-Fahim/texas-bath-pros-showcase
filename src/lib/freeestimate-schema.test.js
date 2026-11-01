@@ -18,7 +18,7 @@ describe('Free estimate requirements', () => {
     expect(freeEstimateSchema.safeParse({ ...valid, homeowner: 'No' }).success).toBe(true)
     const { homeowner: _homeowner, ...noHomeowner } = valid
     expect(freeEstimateSchema.safeParse(noHomeowner).success).toBe(true)
-    expect(freeEstimateSchema.safeParse(noHomeowner).data?.homeowner).toBe('')
+    expect(freeEstimateSchema.safeParse(noHomeowner).data?.homeowner).toBeUndefined()
     expect(freeEstimateSchema.safeParse({ ...valid, homeowner: 'maybe' }).success).toBe(false)
   })
   test('only saved problem and timing choices can be submitted', () => {

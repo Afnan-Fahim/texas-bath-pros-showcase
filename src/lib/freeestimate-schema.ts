@@ -12,7 +12,7 @@ export const freeEstimateSchema = z.object({
   email: z.string().trim().email('Enter a valid email.').max(160),
   phone: z.string().trim().max(32).refine(v => /^(\+?1)?\D*\d/.test(v) && [10, 11].includes(v.replace(/\D/g, '').length), 'Enter a valid phone number.'),
   address: z.string().trim().min(1, 'Enter your address.').max(240),
-  homeowner: z.enum(['Yes', 'No']).default(''),
+  homeowner: z.enum(['Yes', 'No']).optional(),
   attribution: z.record(z.string().max(500)).optional().default({}),
 })
 export type FreeEstimateInput = z.infer<typeof freeEstimateSchema>

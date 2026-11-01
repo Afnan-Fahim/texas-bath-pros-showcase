@@ -34,7 +34,7 @@ export const submitFreeEstimate = createServerFn({ method: 'POST' })
     const { error } = await supabaseAdmin.from('leads').insert({
       id: data.submissionId, name: data.name, email: data.email, phone: data.phone,
       address: data.address, desired_upgrade: data.desiredUpgrade, main_problem: data.mainProblem,
-      timeframe: data.timeframe, homeowner: data.homeowner, notes, source: 'Free estimate form',
+      timeframe: data.timeframe, homeowner: data.homeowner ?? '', notes, source: 'Free estimate form',
       page_url: 'https://texasbathsolutions.com/freeestimate', attribution: data.attribution, booked: false,
     })
     if (error) throw new Error('Unable to save your request. Please try again.')
