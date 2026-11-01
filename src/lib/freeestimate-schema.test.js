@@ -7,15 +7,19 @@ const valid = {
   email: 'visitor@example.com', phone: '2105550199', address: '123 Test Street', homeowner: 'Yes',
 }
 describe('Free estimate requirements', () => {
-  for (const field of ['desiredUpgrade', 'timeframe', 'name', 'email', 'phone', 'address', 'homeowner']) {
+  for (const field of ['desiredUpgrade', 'timeframe', 'name', 'email', 'phone', 'address']) {
     test(`${field} is required`, () => { expect(freeEstimateSchema.safeParse({ ...valid, [field]: '' }).success).toBe(false) })
   }
   test('main problem may be omitted (mobile form drops the question)', () => {
     expect(freeEstimateSchema.safeParse({ ...valid, mainProblem: '' }).success).toBe(true)
   })
-  test('both homeowner choices are accepted', () => {
+  test('homeowner question removed: answer may be omitted, Yes or No still accepted', () => {
     expect(freeEstimateSchema.safeParse(valid).success).toBe(true)
     expect(freeEstimateSchema.safeParse({ ...valid, homeowner: 'No' }).success).toBe(true)
+    const { homeowner: _homeowner, ...noHomeowner } = valid
+    expect(freeEstimateSchema.safeParse(noHomeowner).success).toBe(true)
+    expect(freeEstimateSchema.safeParse(noHomeowner).data?.homeowner).toBeUndefined()
+    expect(freeEstimateSchema.safeParse({ ...valid, homeowner: 'maybe' }).success).toBe(false)
   })
   test('only saved problem and timing choices can be submitted', () => {
     const parsed = freeEstimateSchema.parse(valid)
