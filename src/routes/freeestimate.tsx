@@ -1,13 +1,12 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { queryOptions, useSuspenseQuery } from '@tanstack/react-query'
 import { useServerFn } from '@tanstack/react-start'
-import { useEffect, useRef, useState, type FormEvent } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { fetchQuizConfig, resolveConfigImages } from '@/lib/quiz-content'
 import { freeEstimateSchema, PROJECT_OPTIONS } from '@/lib/freeestimate-schema'
 import { submitFreeEstimate } from '@/lib/freeestimate.functions'
 import { captureAttribution, getAttribution } from '@/lib/tracking'
 import { FreeEstimateTimePicker } from '@/components/FreeEstimateTimePicker'
-import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import logoImg from '@/assets/logo-header.webp'
 import showerPhoto from '@/assets/freeestimate-shower-christmas.jpg.asset.json'
@@ -76,7 +75,7 @@ export const Route = createFileRoute('/freeestimate')({
 function FreeEstimatePage() {
   const { data: config } = useSuspenseQuery(configQuery)
   const submit = useServerFn(submitFreeEstimate)
-  const [form, setForm] = useState({ desiredUpgrade: '', mainProblem: '', timeframe: '', name: '', email: '', phone: '', address: '', homeowner: '' })
+  const [form, setForm] = useState({ desiredUpgrade: '', mainProblem: '', timeframe: '', name: '', email: '', phone: '', address: '' })
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
   const [saved, setSaved] = useState(false)
@@ -85,22 +84,28 @@ function FreeEstimatePage() {
   const calendar = useRef<HTMLDivElement>(null)
   const formRef = useRef<HTMLFormElement>(null)
   useEffect(() => { captureAttribution() }, [])
-  useEffect(() => { if (saved) calendar.current?.scrollIntoView({ block: 'start', behavior: 'smooth' }) }, [saved])
   const setValue = (key: keyof typeof form, value: string) => setForm(previous => ({ ...previous, [key]: value }))
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    if (busy || saved) return
+  async function ensureSaved(): Promise<string | null> {
+    if (saved) return submissionId.current
     if (!submissionId.current) submissionId.current = crypto.randomUUID()
     const parsed = freeEstimateSchema.safeParse({ ...form, submissionId: submissionId.current, attribution: getAttribution() })
-    if (!parsed.success) { setError(parsed.error.issues[0]?.message ?? 'Please fill in every field.'); return }
+    if (!parsed.success) {
+      setError(parsed.error.issues[0]?.message ?? 'Please fill in every field.')
+      formRef.current?.scrollIntoView({ block: 'start', behavior: 'smooth' })
+      return null
+    }
     setBusy(true)
     setError('')
     try {
       const result = await submit({ data: parsed.data })
-      if (result.saved) { setForm(parsed.data); setSaved(true) }
+      if (!result.saved) return null
+      setForm(parsed.data)
+      setSaved(true)
+      return submissionId.current
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unable to save your request. Please try again.')
+      return null
     } finally { setBusy(false) }
   }
 
@@ -127,7 +132,7 @@ function FreeEstimatePage() {
 <h1 className="text-2xl font-semibold text-navy sm:text-4xl lg:text-2xl tracking-normal">Fill Out This Form For A Free Estimate</h1>
           <p className="mt-2 text-base text-muted-foreground lg:mt-1 lg:text-sm">You found us on Facebook. Booking takes about 30 seconds. No obligation.</p>
         </header>
-        <form ref={formRef} onSubmit={handleSubmit} className="scroll-mt-6">
+        <form ref={formRef} onSubmit={e => e.preventDefault()} className="scroll-mt-6">
           <fieldset disabled={busy || saved} className="space-y-7 lg:space-y-3 disabled:opacity-75">
             {questions.map((question, index) => (
               <div key={question.key} className={index > 0 ? 'border-t border-border pt-6 lg:pt-3' : ''}>
@@ -157,23 +162,12 @@ function FreeEstimatePage() {
                 </label>
               ))}
             </div>
-            <fieldset>
-              <legend className="mb-3 lg:mb-1.5 text-sm font-bold text-navy">Are you the homeowner?</legend>
-              <div className="flex gap-8">
-                {['Yes', 'No'].map(option => (
-                  <label key={option} className="flex cursor-pointer items-center gap-3">
-                    <input required type="radio" name="homeowner" value={option} checked={form.homeowner === option} onChange={() => setValue('homeowner', option)} className="h-5 w-5 shrink-0 cursor-pointer appearance-none rounded-full border border-navy/40 bg-card outline-none transition checked:border-navy checked:bg-[radial-gradient(circle_at_center,var(--navy)_0_34%,transparent_36%)] focus-visible:ring-2 focus-visible:ring-ring" />{option}
-                  </label>
-                ))}
-              </div>
-            </fieldset>
             {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
-            <Button type="submit" disabled={busy || saved} className="h-auto min-h-12 w-full whitespace-normal px-4 py-3 text-base lg:min-h-10 lg:py-2">{busy ? 'Saving…' : 'Pick Your Time'}</Button>
           </fieldset>
         </form>
         <section ref={calendar} className="mt-8 scroll-mt-6 border-t border-border pt-6 lg:mt-5 lg:pt-4">
           {booked ? <div role="status"><h2 className="text-2xl font-semibold text-navy">Your appointment is confirmed</h2><p className="mt-2 text-base text-muted-foreground">We'll email your confirmation and text you before the visit.</p></div> : (
-            <FreeEstimateTimePicker ready={saved} onNeedForm={() => { setError('Please fill in the form and tap Pick Your Time to book this time.'); formRef.current?.scrollIntoView({ block: 'start', behavior: 'smooth' }) }} submissionId={submissionId.current} identity={{ name: form.name, email: form.email, phone: form.phone }} onBooked={() => setBooked(true)} />
+            <FreeEstimateTimePicker onEnsureSaved={ensureSaved} identity={{ name: form.name, email: form.email, phone: form.phone }} onBooked={() => setBooked(true)} />
           )}
         </section>
       </div>
