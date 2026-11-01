@@ -14,7 +14,13 @@ import showerPhoto from '@/assets/freeestimate-shower-christmas.jpg.asset.json'
 import sharePhoto from '@/assets/freeestimate-share-christmas.jpg.asset.json'
 
 const configQuery = queryOptions({ queryKey: ['freeestimate-options'], queryFn: async () => resolveConfigImages(await fetchQuizConfig()) })
-const estimateIntro = 'San Antonio & surrounding areas — we offer $0 down financing and can install before the holidays, or we’ll cover your first payment. We’ll also beat any same-scope written estimate by $1,000. Appointments are free, no-obligation, and no hassle.'
+const estimateIntroTitle = 'Free Estimate For San Antonio & Surrounding Areas'
+const estimateIntroPoints = [
+  'No Obligation Estimate',
+  'Totally Free and NO pressure',
+  'Respectful Design Consultant will come out and give you options for your Bathroom Remodel',
+  'Flexible Monthly Payment Options Available',
+]
 
 const TRUST_BADGES = ['5.0 Google', 'BBB A+', 'Insured', 'Warranty', 'Local']
 
@@ -28,6 +34,22 @@ function TrustBadges({ badges = TRUST_BADGES, className }: { badges?: string[]; 
         </li>
       ))}
     </ul>
+  )
+}
+
+function EstimateIntro({ className }: { className?: string }) {
+  return (
+    <div className={cn('font-sans text-navy', className)}>
+      <p className="text-base font-bold leading-snug lg:text-[17px]">{estimateIntroTitle}</p>
+      <ul className="mt-2 space-y-1.5 text-sm leading-[1.5] lg:text-[15px]">
+        {estimateIntroPoints.map(point => (
+          <li key={point} className="flex gap-2">
+            <span aria-hidden="true" className="shrink-0 font-bold text-navy">•</span>
+            <span>{point}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
   )
 }
 
@@ -105,7 +127,7 @@ function FreeEstimatePage() {
       </div>
       <div className="lg:hidden">
         <img src={showerPhoto.url} alt="Walk-in shower remodel with marble walls, brass fixtures and Christmas decorations by Texas Bath Solutions — $0 down, payments from just $115 a month" className="w-full h-auto" />
-        <p className="px-4 pt-3 text-sm font-medium leading-5 text-navy sm:px-8">{estimateIntro}</p>
+        <EstimateIntro className="px-4 pt-3 sm:px-8" />
         <TrustBadges badges={['5.0 Google']} className="px-4 pt-2 pb-1 sm:px-8" />
       </div>
       <div className="mx-auto grid max-w-6xl gap-6 px-4 pb-8 sm:px-6 lg:max-w-[1180px] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)] lg:items-start lg:gap-8 lg:px-8 lg:py-5">
@@ -166,7 +188,7 @@ function FreeEstimatePage() {
       </div>
       <div className="hidden lg:sticky lg:top-5 lg:block">
         <img src={showerPhoto.url} alt="Walk-in shower remodel with marble walls, brass fixtures and Christmas decorations by Texas Bath Solutions — $0 down, payments from just $115 a month" className="mx-auto block h-auto max-h-[46vh] w-auto max-w-full rounded-2xl shadow-card ring-1 ring-navy/5" />
-        <p className="mt-3 font-sans text-base font-medium leading-[1.55] text-navy">{estimateIntro}</p>
+        <EstimateIntro className="mt-3" />
         <TrustBadges className="mt-3" />
       </div>
       </div>
