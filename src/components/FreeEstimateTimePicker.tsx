@@ -21,7 +21,7 @@ export function FreeEstimateTimePicker({ submissionId, identity, onBooked, ready
   const [error, setError] = useState('')
   const tracked = useRef(false)
 
-  const refresh = () => loadTimes().then(r => { setTimes(r.times); setDay(d => d && r.times.some(t => dayKey(t) === d) ? d : (r.times[0] ? dayKey(r.times[0]) : '')) }).catch(() => setTimes([]))
+  const refresh = () => loadTimes().then(r => { setTimes(r.times); setDay(d => d && r.times.some(t => dayKey(t) === d) ? d : '') }).catch(() => setTimes([]))
   useEffect(() => { refresh() }, [])
 
   const days = useMemo(() => {
