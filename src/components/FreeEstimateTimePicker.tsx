@@ -21,7 +21,7 @@ export function FreeEstimateTimePicker({ submissionId, identity, onBooked, ready
   const [error, setError] = useState('')
   const tracked = useRef(false)
 
-  const refresh = () => loadTimes().then(r => { setTimes(r.times); setDay(d => d && r.times.some(t => dayKey(t) === d) ? d : (r.times[0] ? dayKey(r.times[0]) : '')) }).catch(() => setTimes([]))
+  const refresh = () => loadTimes().then(r => { setTimes(r.times); setDay(d => d && r.times.some(t => dayKey(t) === d) ? d : '') }).catch(() => setTimes([]))
   useEffect(() => { refresh() }, [])
 
   const days = useMemo(() => {
@@ -55,12 +55,9 @@ export function FreeEstimateTimePicker({ submissionId, identity, onBooked, ready
     <div>
       <h2 className="text-2xl font-semibold text-navy">Pick a time for your free estimate</h2>
       <p className="mt-1 text-sm text-muted-foreground">All times are Central Time. Visits take 30–45 minutes.</p>
-      <div className="mt-5 flex gap-2 overflow-x-auto pb-2">
-        {days.map(([key, iso]) => (
-          <button key={key} type="button" onClick={() => { setDay(key); setPicked('') }} className={cn('shrink-0 rounded-lg border px-4 py-2.5 text-sm font-medium', day === key ? 'border-navy bg-navy text-navy-foreground' : 'border-border bg-card text-navy')}>{dayLabel(iso)}</button>
-        ))}
-      </div>
-      <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
+      <MonthGrid available={new Set(days.map(([k]) => k))} selected={day} onSelect={(k) => { setDay(k); setPicked('') }} />
+      {day && <p className="mt-5 text-sm font-semibold text-navy">Open times for {dayLabel(days.find(([k]) => k === day)?.[1] ?? times[0])}</p>}
+      <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3">
         {times.filter(t => dayKey(t) === day).map(t => (
           <button key={t} type="button" onClick={() => setPicked(t)} className={cn('min-h-12 rounded-lg border text-base font-medium', picked === t ? 'border-navy bg-navy text-navy-foreground' : 'border-primary/40 bg-card text-primary')}>{timeLabel(t)}</button>
         ))}
@@ -69,6 +66,40 @@ export function FreeEstimateTimePicker({ submissionId, identity, onBooked, ready
       <Button type="button" onClick={schedule} disabled={!picked || busy} className="mt-6 h-auto min-h-12 w-full text-base">
         {busy ? 'Scheduling…' : picked && !ready ? 'Fill in your details above to book this time' : picked ? `Schedule Event · ${dayLabel(picked)}, ${timeLabel(picked)}` : 'Schedule Event'}
       </Button>
+    </div>
+  )
+}
+
+function MonthGrid({ available, selected, onSelect }: { available: Set<string>; selected: string; onSelect: (key: string) => void }) {
+  const first = [...available].sort()[0] ?? new Date().toLocaleDateString('en-CA', { timeZone: TZ })
+  const [month, setMonth] = useState(() => first.slice(0, 7))
+  const [y, m] = month.split('-').map(Number)
+  const startDow = new Date(Date.UTC(y, m - 1, 1)).getUTCDay()
+  const count = new Date(Date.UTC(y, m, 0)).getUTCDate()
+  const keys = [...available].sort()
+  const minMonth = keys[0]?.slice(0, 7) ?? month
+  const maxMonth = keys[keys.length - 1]?.slice(0, 7) ?? month
+  const shift = (n: number) => { const d = new Date(Date.UTC(y, m - 1 + n, 1)); setMonth(d.toISOString().slice(0, 7)) }
+  const title = new Date(Date.UTC(y, m - 1, 1)).toLocaleDateString('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' })
+  const cells: (number | null)[] = [...Array(startDow).fill(null), ...Array.from({ length: count }, (_, i) => i + 1)]
+  return (
+    <div className="mx-auto mt-5 max-w-sm rounded-xl border border-border bg-card p-3">
+      <div className="mb-2 flex items-center justify-between">
+        <button type="button" aria-label="Previous month" disabled={month <= minMonth} onClick={() => shift(-1)} className="h-9 w-9 rounded-full text-lg text-navy hover:bg-muted disabled:opacity-30">‹</button>
+        <span className="text-base font-semibold text-navy">{title}</span>
+        <button type="button" aria-label="Next month" disabled={month >= maxMonth} onClick={() => shift(1)} className="h-9 w-9 rounded-full text-lg text-navy hover:bg-muted disabled:opacity-30">›</button>
+      </div>
+      <div className="grid grid-cols-7 gap-1 text-center text-xs font-medium text-muted-foreground">
+        {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(d => <span key={d} className="py-1">{d}</span>)}
+        {cells.map((d, i) => {
+          if (!d) return <span key={`e${i}`} />
+          const key = `${month}-${String(d).padStart(2, '0')}`
+          const open = available.has(key)
+          return (
+            <button key={key} type="button" disabled={!open} onClick={() => onSelect(key)} className={cn('mx-auto flex h-10 w-10 items-center justify-center rounded-full text-sm', selected === key ? 'bg-navy font-semibold text-navy-foreground' : open ? 'bg-primary/10 font-semibold text-primary hover:bg-primary/20' : 'text-muted-foreground/40')}>{d}</button>
+          )
+        })}
+      </div>
     </div>
   )
 }
