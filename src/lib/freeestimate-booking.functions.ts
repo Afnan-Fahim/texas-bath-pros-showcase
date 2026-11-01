@@ -51,8 +51,12 @@ export const bookFreeEstimate = createServerFn({ method: 'POST' })
       }),
     })
     if (!res.ok) {
-      console.error('freeestimate booking failed', res.status, await res.text())
-      throw new Error('That time was just taken. Please pick another time.')
+      const detail = await res.text()
+      console.error('freeestimate booking failed', res.status, detail)
+      const taken = res.status === 409 || /no longer available|not available|unavailable|already (booked|taken)/i.test(detail)
+      throw new Error(taken
+        ? 'That time was just taken. Please pick another time.'
+        : "We couldn't book that time. Please try again, or call or text (210) 373-4295.")
     }
     const bookedNotes = (lead.notes ?? '').replace('FORM SUBMITTED — NOT BOOKED YET', `BOOKED ${data.startTime}`)
     await supabaseAdmin.from('leads').update({ booked: true, notes: bookedNotes }).eq('id', lead.id)
