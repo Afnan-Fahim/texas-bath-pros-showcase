@@ -54,7 +54,7 @@ export function FreeEstimateTimePicker({ submissionId, identity, onBooked, ready
   return (
     <div>
       <h2 className="text-2xl font-semibold text-navy">Pick a time for your free estimate</h2>
-      <p className="mt-1 text-sm text-muted-foreground">All times are Central Time. Visits take 30–45 minutes.</p>
+      <p className="mt-1 text-sm text-muted-foreground">Next 10 Customers who book an appointment will receive an ADDITIONAL $500.00 OFF</p>
       <MonthGrid available={new Set(days.map(([k]) => k))} selected={day} onSelect={(k) => { setDay(k); setPicked('') }} />
       {day && <p className="mt-5 text-sm font-semibold text-navy">Open times for {dayLabel(days.find(([k]) => k === day)?.[1] ?? times[0])}</p>}
       <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3">
