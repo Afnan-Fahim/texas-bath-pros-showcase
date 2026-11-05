@@ -10,6 +10,7 @@ import { FreeEstimateTimePicker } from '@/components/FreeEstimateTimePicker'
 import { cn } from '@/lib/utils'
 import logoImg from '@/assets/logo-header.webp'
 import showerPhoto from '@/assets/freeestimate-shower-christmas.jpg.asset.json'
+import mobilePhoto from '@/assets/freeestimate-mobile-photo.png.asset.json'
 import sharePhoto from '@/assets/freeestimate-share-christmas.jpg.asset.json'
 
 const configQuery = queryOptions({ queryKey: ['freeestimate-options'], queryFn: async () => resolveConfigImages(await fetchQuizConfig()) })
@@ -36,12 +37,17 @@ function TrustBadges({ badges = TRUST_BADGES, className }: { badges?: string[]; 
   )
 }
 
-function EstimateIntro({ className }: { className?: string }) {
+const mobileIntroPoints = [
+  'A Free No-Pressure Quote',
+  'Respectful Design Consultant will come out and give you options for your Bathroom Remodel',
+]
+
+function EstimateIntro({ className, points = estimateIntroPoints }: { className?: string; points?: string[] }) {
   return (
     <div className={cn('font-sans text-navy', className)}>
       <p className="text-base font-bold leading-snug lg:text-[17px]">{estimateIntroTitle}</p>
       <ul className="mt-2 space-y-1.5 text-sm leading-[1.5] lg:text-[15px]">
-        {estimateIntroPoints.map(point => (
+        {points.map(point => (
           <li key={point} className="flex gap-2.5">
             <span aria-hidden="true" className="mt-px shrink-0 text-[1.05em] font-bold leading-none text-check">✓</span>
             <span>{point}</span>
@@ -115,15 +121,15 @@ function FreeEstimatePage() {
   ]
   return (
     <main className="min-h-screen bg-page-wash text-foreground">
-      <div className="bg-background px-5 py-3 sm:px-8">
+      <div className="hidden bg-background px-5 py-3 sm:px-8 lg:block">
         <Link to="/" aria-label="Texas Bath Solutions home"><img src={logoImg} alt="Texas Bath Solutions" className="h-12 w-auto sm:h-14" /></Link>
       </div>
-      <div className="bg-navy px-5 py-2.5 text-center text-xs font-medium text-navy-foreground sm:px-8 sm:text-sm">
+      <div className="hidden lg:block bg-navy px-5 py-2.5 text-center text-xs font-medium text-navy-foreground sm:px-8 sm:text-sm">
         Tired of $25k bathroom remodels? We are a local family-owned company who provides insured and reasonable quotes.
       </div>
       <div className="lg:hidden">
-        <img src={showerPhoto.url} alt="Walk-in shower remodel with marble walls, brass fixtures and Christmas decorations by Texas Bath Solutions — $0 down, payments from just $115 a month" className="w-full h-auto" />
-        <EstimateIntro className="px-4 pt-3 sm:px-8" />
+        <img src={mobilePhoto.url} alt="San Antonio walk-in shower remodel with Christmas decorations by Texas Bath Solutions — $0 down, payments from just $115 a month" className="w-full h-auto" />
+        <EstimateIntro points={mobileIntroPoints} className="px-4 pt-3 sm:px-8" />
         <TrustBadges badges={['5.0 Google']} className="px-4 pt-2 pb-1 sm:px-8" />
       </div>
       <div className="mx-auto grid max-w-6xl gap-6 px-4 pb-8 sm:px-6 lg:max-w-[1180px] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)] lg:items-start lg:gap-8 lg:px-8 lg:py-5">
