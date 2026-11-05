@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { queryOptions, useSuspenseQuery } from '@tanstack/react-query'
 import { useServerFn } from '@tanstack/react-start'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { fetchQuizConfig, resolveConfigImages } from '@/lib/quiz-content'
 import { freeEstimateSchema, PROJECT_OPTIONS } from '@/lib/freeestimate-schema'
 import { submitFreeEstimate } from '@/lib/freeestimate.functions'
@@ -13,7 +13,9 @@ import mobilePhoto from '@/assets/freeestimate-mobile-photo.png.asset.json'
 import sharePhoto from '@/assets/freeestimate-share-christmas.jpg.asset.json'
 
 const configQuery = queryOptions({ queryKey: ['freeestimate-options'], queryFn: async () => resolveConfigImages(await fetchQuizConfig()) })
-const estimateIntroTitle = 'Next 10 appointments will receive an ADDITIONAL $500.00 off & a FREE seat.'
+const estimateIntroTitle: ReactNode = (
+  <>Next 10 Appointments Will Get an <span className="whitespace-nowrap font-bold">ADDITIONAL $500.00 OFF</span></>
+)
 const estimateIntroPoints = [
   'A Free No-Pressure Quote',
   'We Will Work With You To Design Your Dream Shower',
@@ -35,7 +37,7 @@ function TrustBadges({ badges = TRUST_BADGES, className }: { badges?: string[]; 
   )
 }
 
-function EstimateIntro({ className, points = estimateIntroPoints, title = estimateIntroTitle }: { className?: string; points?: string[]; title?: string }) {
+function EstimateIntro({ className, points = estimateIntroPoints, title = estimateIntroTitle }: { className?: string; points?: string[]; title?: ReactNode }) {
   return (
     <div className={cn('font-sans text-navy', className)}>
       <p className="text-base font-bold leading-snug lg:text-[17px]">{title}</p>
