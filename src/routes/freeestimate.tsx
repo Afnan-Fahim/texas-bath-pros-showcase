@@ -42,10 +42,12 @@ const mobileIntroPoints = [
   'Respectful Design Consultant will come out and give you options for your Bathroom Remodel',
 ]
 
-function EstimateIntro({ className, points = estimateIntroPoints }: { className?: string; points?: string[] }) {
+const mobileIntroTitle = 'Next 10 Customers who book an appointment will receive an ADDITIONAL $500.00 OFF & a FREE seat'
+
+function EstimateIntro({ className, points = estimateIntroPoints, title = estimateIntroTitle }: { className?: string; points?: string[]; title?: string }) {
   return (
     <div className={cn('font-sans text-navy', className)}>
-      <p className="text-base font-bold leading-snug lg:text-[17px]">{estimateIntroTitle}</p>
+      <p className="text-base font-bold leading-snug lg:text-[17px]">{title}</p>
       <ul className="mt-2 space-y-1.5 text-sm leading-[1.5] lg:text-[15px]">
         {points.map(point => (
           <li key={point} className="flex gap-2.5">
@@ -129,7 +131,7 @@ function FreeEstimatePage() {
       </div>
       <div className="lg:hidden">
         <img src={mobilePhoto.url} alt="San Antonio walk-in shower remodel with Christmas decorations by Texas Bath Solutions — $0 down, payments from just $115 a month" className="w-full h-auto" />
-        <EstimateIntro points={mobileIntroPoints} className="px-4 pt-3 sm:px-8" />
+        <EstimateIntro points={mobileIntroPoints} title={mobileIntroTitle} className="px-4 pt-3 sm:px-8" />
         <TrustBadges badges={['5.0 Google']} className="px-4 pt-2 pb-1 sm:px-8" />
       </div>
       <div className="mx-auto grid max-w-6xl gap-6 px-4 pb-8 sm:px-6 lg:max-w-[1180px] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)] lg:items-start lg:gap-8 lg:px-8 lg:py-5">
