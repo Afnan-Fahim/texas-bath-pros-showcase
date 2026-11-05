@@ -109,7 +109,7 @@ function FreeEstimatePage() {
   }
 
   const questions = [
-    { key: 'desiredUpgrade' as const, title: 'What can we help you with?', options: [...PROJECT_OPTIONS] },
+    { key: 'desiredUpgrade' as const, title: 'What project do you want?', options: [...PROJECT_OPTIONS] },
     { key: 'timeframe' as const, title: 'When would you like it done?', options: config.steps.find(s => s.key === 'timeline')?.options.map(o => o.label) ?? [] },
   ]
   return (
