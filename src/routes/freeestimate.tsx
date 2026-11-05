@@ -43,7 +43,7 @@ const mobileIntroPoints = [
   'Our quote is good for a FULL year',
 ]
 
-const mobileIntroTitle = 'Next 10 Customers who book an appointment will receive an ADDITIONAL $500.00 OFF & a FREE seat'
+const mobileIntroTitle = 'Next 10 appointments will receive an ADDITIONAL $500.00 off & a FREE seat.'
 
 function EstimateIntro({ className, points = estimateIntroPoints, title = estimateIntroTitle }: { className?: string; points?: string[]; title?: string }) {
   return (
