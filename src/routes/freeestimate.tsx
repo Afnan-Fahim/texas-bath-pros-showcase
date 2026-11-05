@@ -40,6 +40,7 @@ function TrustBadges({ badges = TRUST_BADGES, className }: { badges?: string[]; 
 const mobileIntroPoints = [
   'A Free No-Pressure Quote',
   'Respectful Design Consultant will come out and give you options for your Bathroom Remodel',
+  'Our quote is good for a FULL year',
 ]
 
 const mobileIntroTitle = 'Next 10 Customers who book an appointment will receive an ADDITIONAL $500.00 OFF & a FREE seat'
