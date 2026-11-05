@@ -14,7 +14,7 @@ import sharePhoto from '@/assets/freeestimate-share-christmas.jpg.asset.json'
 
 const configQuery = queryOptions({ queryKey: ['freeestimate-options'], queryFn: async () => resolveConfigImages(await fetchQuizConfig()) })
 const estimateIntroTitle: ReactNode = (
-  <>Next 10 Appointments Will Get an <span className="whitespace-nowrap font-bold">ADDITIONAL $500.00 OFF</span></>
+  <>Next 10 Appointments Will Get An <span className="whitespace-nowrap font-bold">ADDITIONAL $500.00 OFF</span></>
 )
 const estimateIntroPoints = [
   'A Free No-Pressure Quote',
