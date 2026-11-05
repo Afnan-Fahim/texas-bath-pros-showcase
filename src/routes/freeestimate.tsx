@@ -16,8 +16,8 @@ const configQuery = queryOptions({ queryKey: ['freeestimate-options'], queryFn: 
 const estimateIntroTitle = 'Next 10 appointments will receive an ADDITIONAL $500.00 off & a FREE seat.'
 const estimateIntroPoints = [
   'A Free No-Pressure Quote',
-  'We will work with you to design your dream shower',
-  'Our quote is good for a FULL year',
+  'We Will Work With You To Design Your Dream Shower',
+  'Our Quote Is Good For A FULL Year',
 ]
 
 const TRUST_BADGES = ['5.0 Google', 'BBB A+', 'Insured', 'Warranty', 'Local']

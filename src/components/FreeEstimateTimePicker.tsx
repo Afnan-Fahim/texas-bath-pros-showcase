@@ -54,7 +54,7 @@ export function FreeEstimateTimePicker({ identity, onBooked, onEnsureSaved }: { 
   if (!times.length) return <p className="text-base text-navy">No open times right now. Please call or text (210) 373-4295 and we'll get you scheduled.</p>
   return (
     <div>
-      <h2 className="text-2xl font-semibold text-navy">Pick a time for your free estimate</h2>
+      <h2 className="text-2xl font-semibold text-navy">Pick A Time For Your Free Estimate</h2>
       <p className="mt-3 rounded-xl border border-gold/40 border-l-4 border-l-gold bg-gold/10 px-4 py-3 text-sm leading-relaxed text-navy/80 shadow-sm">
         Next 10 appointments will receive an <span className="whitespace-nowrap font-bold tracking-tight text-navy">ADDITIONAL $500.00 off</span> &amp; a FREE seat.
       </p>
