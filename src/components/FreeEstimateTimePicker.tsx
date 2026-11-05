@@ -67,7 +67,7 @@ export function FreeEstimateTimePicker({ identity, onBooked, onEnsureSaved }: { 
       </div>
       {error && <p role="alert" className="mt-4 text-sm text-destructive">{error}</p>}
       <Button type="button" onClick={schedule} disabled={!picked || busy} className="mt-6 h-auto min-h-12 w-full text-base">
-        {busy ? 'Scheduling…' : picked ? `Lock In Your $500 OFF · ${dayLabel(picked)}, ${timeLabel(picked)}` : 'Lock In Your $500 OFF'}
+        {busy ? 'Scheduling…' : picked ? `Lock In My $500.00 OFF · ${dayLabel(picked)}, ${timeLabel(picked)}` : 'Lock In My $500.00 OFF'}
       </Button>
     </div>
   )
