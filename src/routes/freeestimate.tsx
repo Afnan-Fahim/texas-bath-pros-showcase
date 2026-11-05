@@ -121,7 +121,7 @@ function FreeEstimatePage() {
   ]
   return (
     <main className="min-h-screen bg-page-wash text-foreground">
-      <div className="hidden bg-background px-5 py-3 sm:px-8 lg:block">
+      <div className="bg-background px-5 py-3 sm:px-8">
         <Link to="/" aria-label="Texas Bath Solutions home"><img src={logoImg} alt="Texas Bath Solutions" className="h-12 w-auto sm:h-14" /></Link>
       </div>
       <div className="hidden lg:block bg-navy px-5 py-2.5 text-center text-xs font-medium text-navy-foreground sm:px-8 sm:text-sm">
@@ -135,8 +135,8 @@ function FreeEstimatePage() {
       <div className="mx-auto grid max-w-6xl gap-6 px-4 pb-8 sm:px-6 lg:max-w-[1180px] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)] lg:items-start lg:gap-8 lg:px-8 lg:py-5">
       <div className="min-w-0 rounded-2xl border-2 border-navy/15 bg-card p-6 shadow-lift sm:p-9 lg:p-6">
         <header className="mb-5 border-b border-border pb-4 lg:mb-3 lg:pb-3">
-<h1 className="text-2xl font-semibold text-navy sm:text-4xl lg:text-2xl tracking-normal">Fill Out This Form For A Free Estimate</h1>
-          <p className="mt-2 text-base text-muted-foreground lg:mt-1 lg:text-sm">You found us on Facebook. Booking takes about 30 seconds. No obligation.</p>
+<h1 className="text-2xl font-semibold text-navy sm:text-4xl lg:text-2xl tracking-normal"><span className="lg:hidden">Hey Facebook, Fill Out This Form For A Free Estimate</span><span className="hidden lg:inline">Fill Out This Form For A Free Estimate</span></h1>
+          <p className="mt-2 hidden text-base text-muted-foreground lg:mt-1 lg:block lg:text-sm">You found us on Facebook. Booking takes about 30 seconds. No obligation.</p>
         </header>
         <form ref={formRef} onSubmit={e => e.preventDefault()} className="scroll-mt-6">
           <fieldset disabled={busy || saved} className="space-y-7 lg:space-y-3 disabled:opacity-75">
