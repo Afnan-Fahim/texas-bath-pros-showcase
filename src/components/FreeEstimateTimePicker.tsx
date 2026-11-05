@@ -56,8 +56,7 @@ export function FreeEstimateTimePicker({ identity, onBooked, onEnsureSaved }: { 
     <div>
       <h2 className="text-2xl font-semibold text-navy">Pick a time for your free estimate</h2>
       <p className="mt-3 rounded-xl border border-gold/40 border-l-4 border-l-gold bg-gold/10 px-4 py-3 text-sm leading-relaxed text-navy/80 shadow-sm">
-        <span className="lg:hidden">Next 10 appointments will receive an <span className="whitespace-nowrap font-bold tracking-tight text-navy">ADDITIONAL $500.00 off</span> &amp; a FREE seat.</span>
-        <span className="hidden lg:inline">Next 10 Customers who book an appointment will receive an <span className="whitespace-nowrap font-bold tracking-tight text-navy">ADDITIONAL $500.00 OFF</span></span>
+        Next 10 appointments will receive an <span className="whitespace-nowrap font-bold tracking-tight text-navy">ADDITIONAL $500.00 off</span> &amp; a FREE seat.
       </p>
       <MonthGrid available={new Set(days.map(([k]) => k))} selected={day} onSelect={(k) => { setDay(k); setPicked('') }} />
       {day && <p className="mt-5 text-sm font-semibold text-navy">Open times for {dayLabel(days.find(([k]) => k === day)?.[1] ?? times[0])}</p>}

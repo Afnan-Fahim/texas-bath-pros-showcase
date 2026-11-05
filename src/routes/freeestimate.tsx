@@ -9,17 +9,15 @@ import { captureAttribution, getAttribution } from '@/lib/tracking'
 import { FreeEstimateTimePicker } from '@/components/FreeEstimateTimePicker'
 import { cn } from '@/lib/utils'
 import logoImg from '@/assets/logo-header.webp'
-import showerPhoto from '@/assets/freeestimate-shower-christmas.jpg.asset.json'
 import mobilePhoto from '@/assets/freeestimate-mobile-photo.png.asset.json'
 import sharePhoto from '@/assets/freeestimate-share-christmas.jpg.asset.json'
 
 const configQuery = queryOptions({ queryKey: ['freeestimate-options'], queryFn: async () => resolveConfigImages(await fetchQuizConfig()) })
-const estimateIntroTitle = 'Free Estimate For San Antonio & Surrounding Areas'
+const estimateIntroTitle = 'Next 10 appointments will receive an ADDITIONAL $500.00 off & a FREE seat.'
 const estimateIntroPoints = [
-  'No Obligation Estimate',
-  'Totally Free and NO pressure',
-  'Respectful Design Consultant will come out and give you options for your Bathroom Remodel',
-  'Flexible Monthly Payment Options Available',
+  'A Free No-Pressure Quote',
+  'We will work with you to design your dream shower',
+  'Our quote is good for a FULL year',
 ]
 
 const TRUST_BADGES = ['5.0 Google', 'BBB A+', 'Insured', 'Warranty', 'Local']
@@ -36,14 +34,6 @@ function TrustBadges({ badges = TRUST_BADGES, className }: { badges?: string[]; 
     </ul>
   )
 }
-
-const mobileIntroPoints = [
-  'A Free No-Pressure Quote',
-  'Respectful Design Consultant will come out and give you options for your Bathroom Remodel',
-  'Our quote is good for a FULL year',
-]
-
-const mobileIntroTitle = 'Next 10 appointments will receive an ADDITIONAL $500.00 off & a FREE seat.'
 
 function EstimateIntro({ className, points = estimateIntroPoints, title = estimateIntroTitle }: { className?: string; points?: string[]; title?: string }) {
   return (
@@ -127,19 +117,15 @@ function FreeEstimatePage() {
       <div className="bg-background px-5 py-3 sm:px-8">
         <Link to="/" aria-label="Texas Bath Solutions home"><img src={logoImg} alt="Texas Bath Solutions" className="h-12 w-auto sm:h-14" /></Link>
       </div>
-      <div className="hidden lg:block bg-navy px-5 py-2.5 text-center text-xs font-medium text-navy-foreground sm:px-8 sm:text-sm">
-        Tired of $25k bathroom remodels? We are a local family-owned company who provides insured and reasonable quotes.
-      </div>
       <div className="lg:hidden">
         <img src={mobilePhoto.url} alt="San Antonio walk-in shower remodel with Christmas decorations by Texas Bath Solutions — $0 down, payments from just $115 a month" className="w-full h-auto" />
-        <EstimateIntro points={mobileIntroPoints} title={mobileIntroTitle} className="px-4 pt-3 sm:px-8" />
+        <EstimateIntro className="px-4 pt-3 sm:px-8" />
         <TrustBadges badges={['5.0 Google']} className="px-4 pt-2 pb-1 sm:px-8" />
       </div>
       <div className="mx-auto grid max-w-6xl gap-6 px-4 pb-8 sm:px-6 lg:max-w-[1180px] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)] lg:items-start lg:gap-8 lg:px-8 lg:py-5">
       <div className="min-w-0 rounded-2xl border-2 border-navy/15 bg-card p-6 shadow-lift sm:p-9 lg:p-6">
         <header className="mb-5 border-b border-border pb-4 lg:mb-3 lg:pb-3">
-<h1 className="text-2xl font-semibold text-navy sm:text-4xl lg:text-2xl tracking-normal"><span className="lg:hidden">Hey Facebook, Fill Out This Form For A Free Estimate</span><span className="hidden lg:inline">Fill Out This Form For A Free Estimate</span></h1>
-          <p className="mt-2 hidden text-base text-muted-foreground lg:mt-1 lg:block lg:text-sm">You found us on Facebook. Booking takes about 30 seconds. No obligation.</p>
+<h1 className="text-2xl font-semibold text-navy sm:text-4xl lg:text-2xl tracking-normal">Hey Facebook, Fill Out This Form For A Free Estimate</h1>
         </header>
         <form ref={formRef} onSubmit={e => e.preventDefault()} className="scroll-mt-6">
           <fieldset disabled={busy || saved} className="space-y-7 lg:space-y-3 disabled:opacity-75">
@@ -181,7 +167,7 @@ function FreeEstimatePage() {
         </section>
       </div>
       <div className="hidden lg:sticky lg:top-5 lg:block">
-        <img src={showerPhoto.url} alt="Walk-in shower remodel with marble walls, brass fixtures and Christmas decorations by Texas Bath Solutions — $0 down, payments from just $115 a month" className="mx-auto block h-auto max-h-[46vh] w-auto max-w-full rounded-2xl shadow-card ring-1 ring-navy/5" />
+        <img src={mobilePhoto.url} alt="San Antonio walk-in shower remodel by Texas Bath Solutions — $0 down, payments from just $115 a month" className="mx-auto block h-auto max-h-[46vh] w-auto max-w-full rounded-2xl shadow-card ring-1 ring-navy/5" />
         <EstimateIntro className="mt-3" />
         <TrustBadges className="mt-3" />
         <div className="mt-4 rounded-xl border-2 border-gold/60 bg-gold/10 p-4 shadow-card">
