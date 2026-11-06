@@ -9,7 +9,7 @@ import { captureAttribution, getAttribution } from '@/lib/tracking'
 import { FreeEstimateTimePicker } from '@/components/FreeEstimateTimePicker'
 import { cn } from '@/lib/utils'
 import logoImg from '@/assets/logo-header.webp'
-import mobilePhoto from '@/assets/freeestimate-mobile-photo.png.asset.json'
+import heroPhoto from '@/assets/freeestimate-christmas-vanity.jpg.asset.json'
 import sharePhoto from '@/assets/freeestimate-share-christmas.jpg.asset.json'
 
 const configQuery = queryOptions({ queryKey: ['freeestimate-options'], queryFn: async () => resolveConfigImages(await fetchQuizConfig()) })
@@ -120,7 +120,7 @@ function FreeEstimatePage() {
         <Link to="/" aria-label="Texas Bath Solutions home"><img src={logoImg} alt="Texas Bath Solutions" className="h-12 w-auto sm:h-14" /></Link>
       </div>
       <div className="lg:hidden">
-        <img src={mobilePhoto.url} alt="San Antonio walk-in shower remodel with Christmas decorations by Texas Bath Solutions — $0 down, payments from just $115 a month" className="w-full h-auto" />
+        <img src={heroPhoto.url} alt="San Antonio bathroom remodel with Christmas decorations by Texas Bath Solutions — $0 down, payments from just $115 a month, get installed before Christmas" className="w-full h-auto" />
         <EstimateIntro className="px-4 pt-3 sm:px-8" />
         <TrustBadges badges={['5.0 Google']} className="px-4 pt-2 pb-1 sm:px-8" />
       </div>
@@ -169,7 +169,7 @@ function FreeEstimatePage() {
         </section>
       </div>
       <div className="hidden lg:sticky lg:top-5 lg:block">
-        <img src={mobilePhoto.url} alt="San Antonio walk-in shower remodel by Texas Bath Solutions — $0 down, payments from just $115 a month" className="mx-auto block h-auto max-h-[46vh] w-auto max-w-full rounded-2xl shadow-card ring-1 ring-navy/5" />
+        <img src={heroPhoto.url} alt="San Antonio bathroom remodel with Christmas decorations by Texas Bath Solutions — $0 down, payments from just $115 a month, get installed before Christmas" className="mx-auto block h-auto max-h-[46vh] w-auto max-w-full rounded-2xl shadow-card ring-1 ring-navy/5" />
         <EstimateIntro className="mt-3" />
         <TrustBadges className="mt-3" />
         <div className="mt-4 rounded-xl border-2 border-gold/60 bg-gold/10 p-4 shadow-card">
