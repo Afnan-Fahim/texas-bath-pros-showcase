@@ -9,7 +9,7 @@ import { captureAttribution, getAttribution } from '@/lib/tracking'
 import { FreeEstimateTimePicker } from '@/components/FreeEstimateTimePicker'
 import { cn } from '@/lib/utils'
 import logoImg from '@/assets/logo-header.webp'
-import heroPhoto from '@/assets/freeestimate-holiday-promo-2.jpg.asset.json'
+import heroPhoto from '@/assets/freeestimate-holiday-promo-3.jpg.asset.json'
 import sharePhoto from '@/assets/freeestimate-share-christmas.jpg.asset.json'
 
 const configQuery = queryOptions({ queryKey: ['freeestimate-options'], queryFn: async () => resolveConfigImages(await fetchQuizConfig()) })
