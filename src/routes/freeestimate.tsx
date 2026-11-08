@@ -120,12 +120,14 @@ function FreeEstimatePage() {
         <header className="mb-5 border-b border-border pb-4 lg:mb-3 lg:pb-3">
 <h1 className="text-2xl font-semibold text-navy sm:text-4xl lg:text-2xl tracking-normal">You Found Us On Facebook;</h1>
         </header>
-        <div className="mb-5 space-y-3 text-sm leading-relaxed text-navy lg:mb-3 lg:text-[15px]">
-          <p>Not only do we give a $250 HEB gift card on every completed project — we also beat other companies’ written quotes by $1,000 or more on the same scope.</p>
+        <div className="mb-5 space-y-3 font-sans text-sm leading-relaxed text-navy lg:mb-3 lg:text-[15px]">
+          <p className="text-base font-medium leading-relaxed lg:text-lg">
+            Not only do we give a <span className="font-bold">$250 HEB gift card</span> on every completed project — we also beat other companies’ written quotes by <span className="font-bold">$1,000 or more</span> on the same scope.
+          </p>
           <p>We’re a lean local crew of about 22 people with over 100 years of combined experience.</p>
           <p>If you want a bathroom remodel from a real local company (not one with 50 trucks and a warehouse), we’ve got you.</p>
           <p>Insured, licensed, and zero BBB complaints.</p>
-          <p>Prefer to talk or text? Call or text us anytime at <a href="tel:2103734295" className="font-semibold underline">(210) 373-4295</a>.</p>
+          <p>Prefer to talk or text? Call or text us anytime at <a href="tel:2103734295" className="font-bold underline">(210) 373-4295</a>.</p>
         </div>
         <form ref={formRef} onSubmit={e => e.preventDefault()} className="scroll-mt-6">
           <fieldset disabled={busy || saved} className="space-y-7 lg:space-y-3 disabled:opacity-75">
