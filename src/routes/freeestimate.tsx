@@ -1,9 +1,7 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { queryOptions, useSuspenseQuery } from '@tanstack/react-query'
 import { useServerFn } from '@tanstack/react-start'
 import { useEffect, useRef, useState, type ReactNode } from 'react'
-import { fetchQuizConfig, resolveConfigImages } from '@/lib/quiz-content'
-import { freeEstimateSchema, PROJECT_OPTIONS } from '@/lib/freeestimate-schema'
+import { freeEstimateSchema } from '@/lib/freeestimate-schema'
 import { submitFreeEstimate } from '@/lib/freeestimate.functions'
 import { captureAttribution, getAttribution } from '@/lib/tracking'
 import { FreeEstimateTimePicker } from '@/components/FreeEstimateTimePicker'
@@ -12,7 +10,6 @@ import logoImg from '@/assets/logo-header.webp'
 import heroPhoto from '@/assets/freeestimate-holiday-promo-3.jpg.asset.json'
 import sharePhoto from '@/assets/freeestimate-share-christmas.jpg.asset.json'
 
-const configQuery = queryOptions({ queryKey: ['freeestimate-options'], queryFn: async () => resolveConfigImages(await fetchQuizConfig()) })
 const estimateIntroTitle: ReactNode = (
   <>Next 10 Appointments Will Get An <span className="whitespace-nowrap font-bold">ADDITIONAL $500.00 OFF</span></>
 )
@@ -54,7 +51,6 @@ function EstimateIntro({ className, points = estimateIntroPoints, title = estima
 }
 
 export const Route = createFileRoute('/freeestimate')({
-  loader: ({ context }) => context.queryClient.ensureQueryData(configQuery),
   component: FreeEstimatePage,
   head: () => ({
     meta: [
@@ -74,7 +70,6 @@ export const Route = createFileRoute('/freeestimate')({
 })
 
 function FreeEstimatePage() {
-  const { data: config } = useSuspenseQuery(configQuery)
   const submit = useServerFn(submitFreeEstimate)
   const [form, setForm] = useState({ desiredUpgrade: '', mainProblem: '', timeframe: '', name: '', email: '', phone: '', address: '' })
   const [error, setError] = useState('')
@@ -110,10 +105,6 @@ function FreeEstimatePage() {
     } finally { setBusy(false) }
   }
 
-  const questions = [
-    { key: 'desiredUpgrade' as const, title: 'What project do you want?', options: [...PROJECT_OPTIONS] },
-    { key: 'timeframe' as const, title: 'When would you like it done?', options: config.steps.find(s => s.key === 'timeline')?.options.map(o => o.label) ?? [] },
-  ]
   return (
     <main className="min-h-screen bg-page-wash text-foreground">
       <div className="bg-background px-5 py-3 sm:px-8">
@@ -129,23 +120,15 @@ function FreeEstimatePage() {
         <header className="mb-5 border-b border-border pb-4 lg:mb-3 lg:pb-3">
 <h1 className="text-2xl font-semibold text-navy sm:text-4xl lg:text-2xl tracking-normal">You Found Us On Facebook;</h1>
         </header>
+        <div className="mb-5 space-y-3 text-sm leading-relaxed text-navy lg:mb-3 lg:text-[15px]">
+          <p>Not only do we give a $250 HEB gift card on every completed project — we also beat other companies’ written quotes by $1,000 or more on the same scope.</p>
+          <p>We’re a lean local crew of about 22 people with over 100 years of combined experience.</p>
+          <p>If you want a bathroom remodel from a real local company (not one with 50 trucks and a warehouse), we’ve got you.</p>
+          <p>Insured, licensed, and zero BBB complaints.</p>
+          <p>Prefer to talk or text? Call or text us anytime at <a href="tel:2103734295" className="font-semibold underline">(210) 373-4295</a>.</p>
+        </div>
         <form ref={formRef} onSubmit={e => e.preventDefault()} className="scroll-mt-6">
           <fieldset disabled={busy || saved} className="space-y-7 lg:space-y-3 disabled:opacity-75">
-            {questions.map((question, index) => (
-              <div key={question.key} className={index > 0 ? 'border-t border-border pt-6 lg:pt-3' : ''}>
-                <fieldset>
-                  <legend className="mb-3 text-lg font-bold tracking-tight lg:mb-1.5 lg:text-[15px] text-navy">{question.title}</legend>
-                  <div className="grid gap-3 lg:grid-cols-2 lg:gap-x-4 lg:gap-y-1.5">
-                    {question.options.map(option => (
-                      <label key={option} className="flex cursor-pointer items-start gap-3 text-base lg:gap-2 lg:text-sm">
-                        <input required type="radio" name={question.key} value={option} checked={form[question.key] === option} onChange={() => setValue(question.key, option)} className="mt-0.5 h-5 w-5 shrink-0 cursor-pointer appearance-none rounded-full border border-navy/40 bg-card outline-none transition checked:border-navy checked:bg-[radial-gradient(circle_at_center,var(--navy)_0_34%,transparent_36%)] focus-visible:ring-2 focus-visible:ring-ring" />
-                        <span>{option}</span>
-                      </label>
-                    ))}
-                  </div>
-                </fieldset>
-              </div>
-            ))}
             <div className="grid gap-4 border-t border-border pt-7 sm:grid-cols-2 lg:gap-3 lg:pt-3">
               {([
                 ['name', 'Name', 'text', 'name', 120],

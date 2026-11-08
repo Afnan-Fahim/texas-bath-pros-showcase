@@ -7,9 +7,14 @@ const valid = {
   email: 'visitor@example.com', phone: '2105550199', address: '123 Test Street', homeowner: 'Yes',
 }
 describe('Free estimate requirements', () => {
-  for (const field of ['desiredUpgrade', 'timeframe', 'name', 'email', 'phone', 'address']) {
+  for (const field of ['name', 'email', 'phone', 'address']) {
     test(`${field} is required`, () => { expect(freeEstimateSchema.safeParse({ ...valid, [field]: '' }).success).toBe(false) })
   }
+  test('project and timing questions removed: both may be omitted', () => {
+    const { desiredUpgrade: _d, timeframe: _t, ...noQuestions } = valid
+    expect(freeEstimateSchema.safeParse(noQuestions).success).toBe(true)
+    expect(freeEstimateSchema.safeParse({ ...valid, desiredUpgrade: '', timeframe: '' }).success).toBe(true)
+  })
   test('main problem may be omitted (mobile form drops the question)', () => {
     expect(freeEstimateSchema.safeParse({ ...valid, mainProblem: '' }).success).toBe(true)
   })
@@ -26,6 +31,7 @@ describe('Free estimate requirements', () => {
     expect(choicesAreValid(parsed, ['Hard to step over'], ['ASAP'])).toBe(true)
     expect(choicesAreValid({ ...parsed, mainProblem: '' }, ['Hard to step over'], ['ASAP'])).toBe(true)
     expect(choicesAreValid({ ...parsed, mainProblem: 'invented' }, ['Hard to step over'], ['ASAP'])).toBe(false)
+    expect(choicesAreValid({ ...parsed, timeframe: '' }, ['Hard to step over'], ['ASAP'])).toBe(true)
     expect(choicesAreValid({ ...parsed, timeframe: 'invented' }, ['Hard to step over'], ['ASAP'])).toBe(false)
   })
   test('notifications go only to Justin and Josiah', () => {
