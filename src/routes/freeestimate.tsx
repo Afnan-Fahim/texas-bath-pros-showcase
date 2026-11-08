@@ -126,7 +126,6 @@ function FreeEstimatePage() {
           </p>
           <p>We’re a lean local crew of about 22 people with over 100 years of combined experience.</p>
           <p>If you want a bathroom remodel from a real local company (not one with 50 trucks and a warehouse), we’ve got you.</p>
-          <p>Insured, licensed, and zero BBB complaints.</p>
           <p>Prefer to talk or text? Call or text us anytime at <a href="tel:2103734295" className="font-bold underline">(210) 373-4295</a>.</p>
         </div>
         <form ref={formRef} onSubmit={e => e.preventDefault()} className="scroll-mt-6">
