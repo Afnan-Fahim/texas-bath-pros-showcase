@@ -125,7 +125,7 @@ function FreeEstimatePage() {
             Not only do we give a <span className="font-bold">$250 HEB gift card</span> on every completed project — we also beat other companies’ written quotes by <span className="font-bold">$1,000 or more</span> on the same scope.
           </p>
           <p>We’re a lean local crew of about 22 people with over 100 years of combined experience.</p>
-          <p>If you want a bathroom remodel from a real local company (not one with 50 trucks and a warehouse), we’ve got you.</p>
+          <p>Want a bathroom remodel from a real local company? We’ve got you. No big-truck overhead — just a local crew that shows up and does the work.</p>
           <p>Prefer to talk or text? Call or text us anytime at <a href="tel:2103734295" className="font-bold underline">(210) 373-4295</a>.</p>
         </div>
         <form ref={formRef} onSubmit={e => e.preventDefault()} className="scroll-mt-6">
