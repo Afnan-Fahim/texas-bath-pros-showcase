@@ -168,10 +168,6 @@ function FreeEstimatePage() {
         <img src={heroPhoto.url} alt="San Antonio bathroom remodel with Christmas decorations by Texas Bath Solutions — $0 down, payments from just $115 a month, get installed before Christmas" className="mx-auto block h-auto max-h-[46vh] w-auto max-w-full rounded-2xl shadow-card ring-1 ring-navy/5" />
         <EstimateIntro className="mt-3" />
         <TrustBadges className="mt-3" />
-        <div className="mt-4 rounded-xl border-2 border-gold/60 bg-gold/10 p-4 shadow-card">
-          <p className="text-base font-bold tracking-tight text-navy">November Special</p>
-          <p className="mt-1 text-sm leading-6 text-navy/90">We cover your first 2 monthly payments on select financing plans.</p>
-        </div>
       </div>
       </div>
         <footer className="pb-10 flex justify-center gap-4 text-xs text-muted-foreground">
