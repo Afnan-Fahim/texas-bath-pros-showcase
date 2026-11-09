@@ -135,8 +135,8 @@ function FreeEstimatePage() {
           <p className="text-base font-medium leading-relaxed lg:text-lg">
             Not only do we give a <span className="font-bold">$250 HEB Gift Card</span> on every completed project — we also beat other companies’ written quotes by <span className="font-bold">$1,000 or more</span> on the same scope.
           </p>
-          <p><span className="underline decoration-check decoration-[3px] underline-offset-4">We’re a Small Family Owned Company and have a Lean Local Crew with Decades of Combined Experience.</span></p>
-          <p>That’s how we beat other companies on the same job.</p>
+          <p>We’re a Small Family Owned Company and have a Lean Local Crew with Decades of Combined Experience.</p>
+          <p><span className="underline decoration-check decoration-[3px] underline-offset-4">That’s how we beat other companies on the same job.</span></p>
           <p>Prefer to talk or text? Call or text us anytime at <a href="tel:2103734295" className="font-bold underline">(210) 373-4295</a>.</p>
         </div>
         <form ref={formRef} onSubmit={e => e.preventDefault()} className="scroll-mt-6">
