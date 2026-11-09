@@ -3,6 +3,7 @@ import { useServerFn } from '@tanstack/react-start'
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { freeEstimateSchema } from '@/lib/freeestimate-schema'
 import { submitFreeEstimate } from '@/lib/freeestimate.functions'
+import { getFreeEstimateTimes } from '@/lib/freeestimate-booking.functions'
 import { captureAttribution, getAttribution } from '@/lib/tracking'
 import { FreeEstimateTimePicker } from '@/components/FreeEstimateTimePicker'
 import { cn } from '@/lib/utils'
@@ -52,6 +53,15 @@ function EstimateIntro({ className, points = estimateIntroPoints, title = estima
 
 export const Route = createFileRoute('/freeestimate')({
   component: FreeEstimatePage,
+  // Fetch Calendly availability during SSR so the calendar renders with times
+  // on first paint instead of showing a loading state.
+  loader: async () => {
+    try {
+      return await getFreeEstimateTimes()
+    } catch {
+      return { times: [] as string[] }
+    }
+  },
   head: () => ({
     meta: [
       { title: 'Free in-home estimate | Texas Bath Solutions' },
@@ -70,6 +80,7 @@ export const Route = createFileRoute('/freeestimate')({
 })
 
 function FreeEstimatePage() {
+  const { times: initialTimes } = Route.useLoaderData()
   const submit = useServerFn(submitFreeEstimate)
   const [form, setForm] = useState({ desiredUpgrade: '', mainProblem: '', timeframe: '', name: '', email: '', phone: '', address: '' })
   const [error, setError] = useState('')
@@ -149,7 +160,7 @@ function FreeEstimatePage() {
         </form>
         <section ref={calendar} className="mt-8 scroll-mt-6 border-t border-border pt-6 lg:mt-5 lg:pt-4">
           {booked ? <div role="status"><h2 className="text-2xl font-semibold text-navy">Your appointment is confirmed</h2><p className="mt-2 text-base text-muted-foreground">We'll email your confirmation and text you before the visit.</p></div> : (
-            <FreeEstimateTimePicker onEnsureSaved={ensureSaved} identity={{ name: form.name, email: form.email, phone: form.phone }} onBooked={() => setBooked(true)} />
+            <FreeEstimateTimePicker initialTimes={initialTimes} onEnsureSaved={ensureSaved} identity={{ name: form.name, email: form.email, phone: form.phone }} onBooked={() => setBooked(true)} />
           )}
         </section>
       </div>

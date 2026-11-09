@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { useServerFn } from '@tanstack/react-start'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -11,10 +11,12 @@ const dayKey = (iso: string) => new Date(iso).toLocaleDateString('en-CA', { time
 const dayLabel = (iso: string) => new Date(iso).toLocaleDateString('en-US', { timeZone: TZ, weekday: 'short', month: 'short', day: 'numeric' })
 const timeLabel = (iso: string) => new Date(iso).toLocaleTimeString('en-US', { timeZone: TZ, hour: 'numeric', minute: '2-digit' })
 
-export function FreeEstimateTimePicker({ identity, onBooked, onEnsureSaved }: { identity: { name: string; email: string; phone: string }; onBooked: (startTime: string) => void; onEnsureSaved: () => Promise<string | null> }) {
+export function FreeEstimateTimePicker({ identity, onBooked, onEnsureSaved, initialTimes }: { identity: { name: string; email: string; phone: string }; onBooked: (startTime: string) => void; onEnsureSaved: () => Promise<string | null>; initialTimes: string[] }) {
   const loadTimes = useServerFn(getFreeEstimateTimes)
   const book = useServerFn(bookFreeEstimate)
-  const [times, setTimes] = useState<string[] | null>(null)
+  // Times are preloaded by the route loader (SSR), so the calendar renders
+  // immediately; refresh() only re-fetches after a failed booking attempt.
+  const [times, setTimes] = useState<string[]>(initialTimes)
   const [day, setDay] = useState('')
   const [picked, setPicked] = useState('')
   const [busy, setBusy] = useState(false)
@@ -22,7 +24,6 @@ export function FreeEstimateTimePicker({ identity, onBooked, onEnsureSaved }: { 
   const tracked = useRef(false)
 
   const refresh = () => loadTimes().then(r => { setTimes(r.times); setDay(d => d && r.times.some(t => dayKey(t) === d) ? d : '') }).catch(() => setTimes([]))
-  useEffect(() => { refresh() }, [])
 
   const days = useMemo(() => {
     const map = new Map<string, string>()
@@ -50,7 +51,6 @@ export function FreeEstimateTimePicker({ identity, onBooked, onEnsureSaved }: { 
     } finally { setBusy(false) }
   }
 
-  if (times === null) return <p className="text-base text-muted-foreground">Loading open times…</p>
   if (!times.length) return <p className="text-base text-navy">No open times right now. Please call or text (210) 373-4295 and we'll get you scheduled.</p>
   return (
     <div>
