@@ -56,7 +56,7 @@ export function FreeEstimateTimePicker({ identity, onBooked, onEnsureSaved, init
     <div>
       <p className="rounded-xl border border-gold/40 border-l-4 border-l-gold bg-gold/10 px-4 py-3 text-sm leading-relaxed text-navy/80 shadow-sm">
         <span className="block font-bold text-navy">What happens at your free estimate?</span>
-        We’ll come by, measure the space, you pick your colors you want and give you an exact quote to the penny! No pressure, no obligation — usually takes about 30–45 minutes.
+        We’ll come by, measure the space, you pick your colors you want and we give you an exact quote to the penny! No pressure, no obligation — usually takes about 30–45 minutes.
       </p>
       <MonthGrid available={new Set(days.map(([k]) => k))} selected={day} onSelect={(k) => { setDay(k); setPicked('') }} />
       {day && <p className="mt-5 text-sm font-semibold text-navy">Open times for {dayLabel(days.find(([k]) => k === day)?.[1] ?? times[0])}</p>}
