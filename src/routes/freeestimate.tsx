@@ -7,13 +7,10 @@ import { getFreeEstimateTimes } from '@/lib/freeestimate-booking.functions'
 import { captureAttribution, getAttribution } from '@/lib/tracking'
 import { FreeEstimateTimePicker } from '@/components/FreeEstimateTimePicker'
 import { cn } from '@/lib/utils'
-import logoPhoto from '@/assets/freeestimate-logo.webp.asset.json'
-import heroPhoto from '@/assets/freeestimate-shower-1280.webp.asset.json'
-import mobilePhoto from '@/assets/freeestimate-shower-640.webp.asset.json'
+import logoPhoto from '@/assets/freeestimate-logo-compact.webp.asset.json'
+import heroPhoto from '@/assets/freeestimate-shower-desktop-compact.webp.asset.json'
+import mobilePhoto from '@/assets/freeestimate-shower-mobile-compact.webp.asset.json'
 import sharePhoto from '@/assets/freeestimate-share-christmas.jpg.asset.json'
-
-const photoSrcSet = `${mobilePhoto.url} 640w, ${heroPhoto.url} 1280w`
-const photoSizes = '(min-width: 1024px) 480px, 100vw'
 
 const estimateIntroTitle: ReactNode = (
   <>Next 10 Appointments Will Get An <span className="whitespace-nowrap font-bold">ADDITIONAL $500.00 OFF</span></>
@@ -82,7 +79,7 @@ export const Route = createFileRoute('/freeestimate')({
     links: [
       { rel: 'canonical', href: 'https://texasbathsolutions.com/freeestimate' },
       { rel: 'preload', as: 'image', href: heroPhoto.url, media: '(min-width: 1024px)', fetchPriority: 'high' },
-      { rel: 'preload', as: 'image', href: mobilePhoto.url, media: '(max-width: 1023px)', imageSrcSet: photoSrcSet, imageSizes: photoSizes, fetchPriority: 'high' },
+      { rel: 'preload', as: 'image', href: mobilePhoto.url, media: '(max-width: 1023px)', fetchPriority: 'high' },
     ],
   }),
 })
@@ -132,7 +129,7 @@ function FreeEstimatePage() {
       <div className="lg:hidden">
         <picture>
         <source media="(min-width: 1024px)" srcSet={heroPhoto.url} />
-        <img src={heroPhoto.url} srcSet={photoSrcSet} sizes={photoSizes} width={1568} height={1264} loading="eager" decoding="async" fetchPriority="high" alt="San Antonio bathroom remodel with Christmas decorations by Texas Bath Solutions — $0 down, payments from just $115 a month, get installed before Christmas" className="w-full h-auto" />
+        <img src={mobilePhoto.url} width={1568} height={1264} loading="eager" decoding="async" fetchPriority="high" alt="San Antonio bathroom remodel with Christmas decorations by Texas Bath Solutions — $0 down, payments from just $115 a month, get installed before Christmas" className="w-full h-auto" />
         </picture>
         <EstimateIntro className="px-4 pt-3 sm:px-8" />
         <TrustBadges badges={['5.0 Google']} className="px-4 pt-2 pb-1 sm:px-8" />
@@ -177,8 +174,8 @@ function FreeEstimatePage() {
       </div>
       <div className="hidden lg:sticky lg:top-5 lg:block">
         <picture>
-        <source media="(max-width: 1023px)" srcSet={photoSrcSet} sizes={photoSizes} />
-        <img src={heroPhoto.url} width={1568} height={1264} loading="eager" decoding="async" alt="San Antonio bathroom remodel with Christmas decorations by Texas Bath Solutions — $0 down, payments from just $115 a month, get installed before Christmas" className="mx-auto block h-auto max-h-[46vh] w-auto max-w-full rounded-2xl shadow-card ring-1 ring-navy/5" />
+        <source media="(min-width: 1024px)" srcSet={heroPhoto.url} />
+        <img src={mobilePhoto.url} width={1568} height={1264} loading="eager" decoding="async" alt="San Antonio bathroom remodel with Christmas decorations by Texas Bath Solutions — $0 down, payments from just $115 a month, get installed before Christmas" className="mx-auto block h-auto max-h-[46vh] w-auto max-w-full rounded-2xl shadow-card ring-1 ring-navy/5" />
         </picture>
         <EstimateIntro className="mt-3" />
         <TrustBadges className="mt-3" />

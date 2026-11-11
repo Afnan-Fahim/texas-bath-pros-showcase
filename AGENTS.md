@@ -11,4 +11,4 @@
 
 - Keep the estimate's three saved photo questions in the shared QuizFlow, then use `/estimate` for its contact and Calendly stages; this preserves admin-edited options while keeping the homepage flow unchanged.
 - Keep `/freeestimate` isolated with its own validated submission function and the existing leads table and email template; this avoids changing other pages or their notification recipients.
-- Fetch `/freeestimate` calendar weeks concurrently during SSR without caching availability, and use responsive compressed copies of existing images; this reduces first-display delay without stale booking slots or layout changes.
+- Fetch `/freeestimate` calendar weeks concurrently during SSR without caching availability, and select compressed photo copies with explicit mobile/desktop picture media sources (including hidden copies); this avoids high-density phones downloading the desktop image and preserves fresh booking slots and layout.
