@@ -15,17 +15,8 @@ async function calendly(path: string, init?: RequestInit) {
 }
 
 export const getFreeEstimateTimes = createServerFn({ method: 'GET' }).handler(async () => {
-  const times: string[] = []
-  const now = Date.now() + 5 * 60 * 1000
-  for (let week = 0; week < 2; week++) {
-    const start = new Date(now + week * 7 * 864e5).toISOString()
-    const end = new Date(now + (week + 1) * 7 * 864e5 - 60000).toISOString()
-    const res = await calendly(`/event_type_available_times?event_type=${encodeURIComponent(EVENT_TYPE)}&start_time=${start}&end_time=${end}`)
-    if (!res.ok) continue
-    const body = (await res.json()) as { collection?: { start_time: string; status: string }[] }
-    for (const slot of body.collection ?? []) if (slot.status === 'available') times.push(slot.start_time)
-  }
-  return { times }
+  const { fetchEstimateAvailability } = await import('./freeestimate-availability.server')
+  return fetchEstimateAvailability(EVENT_TYPE, calendly)
 })
 
 export const bookFreeEstimate = createServerFn({ method: 'POST' })

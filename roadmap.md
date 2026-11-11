@@ -1,6 +1,7 @@
 # Task roadmap
 
 ## Current
+- Improve only `/freeestimate` loading: parallel calendar preloading, compress page images, verify early Pixel and Facebook phone landing, publish and test live; preserve form, wording and layout.
 - Replace Calendly’s connected old Gmail calendar with Contact@TexasBathSolutions.com so confirmation and cancellation invitations use the correct sender; blocked on the account owner reconnecting the calendar in Calendly’s Calendar Sync settings. Screenshot confirms these invitations are sent by the old Gmail calendar, not Lovable Emails; website email changes cannot change their sender.
 
 ## Completed
