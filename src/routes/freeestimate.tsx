@@ -130,7 +130,10 @@ function FreeEstimatePage() {
         <Link to="/" aria-label="Texas Bath Solutions home"><img src={logoPhoto.url} width={900} height={669} decoding="async" alt="Texas Bath Solutions" className="h-12 w-auto sm:h-14" /></Link>
       </div>
       <div className="lg:hidden">
+        <picture>
+        <source media="(min-width: 1024px)" srcSet={heroPhoto.url} />
         <img src={heroPhoto.url} srcSet={photoSrcSet} sizes={photoSizes} width={1568} height={1264} loading="eager" decoding="async" fetchPriority="high" alt="San Antonio bathroom remodel with Christmas decorations by Texas Bath Solutions — $0 down, payments from just $115 a month, get installed before Christmas" className="w-full h-auto" />
+        </picture>
         <EstimateIntro className="px-4 pt-3 sm:px-8" />
         <TrustBadges badges={['5.0 Google']} className="px-4 pt-2 pb-1 sm:px-8" />
       </div>
@@ -173,7 +176,10 @@ function FreeEstimatePage() {
         </section>
       </div>
       <div className="hidden lg:sticky lg:top-5 lg:block">
+        <picture>
+        <source media="(max-width: 1023px)" srcSet={photoSrcSet} sizes={photoSizes} />
         <img src={heroPhoto.url} width={1568} height={1264} loading="eager" decoding="async" alt="San Antonio bathroom remodel with Christmas decorations by Texas Bath Solutions — $0 down, payments from just $115 a month, get installed before Christmas" className="mx-auto block h-auto max-h-[46vh] w-auto max-w-full rounded-2xl shadow-card ring-1 ring-navy/5" />
+        </picture>
         <EstimateIntro className="mt-3" />
         <TrustBadges className="mt-3" />
       </div>
