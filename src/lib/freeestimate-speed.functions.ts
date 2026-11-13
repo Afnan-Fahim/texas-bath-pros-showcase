@@ -19,6 +19,10 @@ export const reportEstimateSpeed = createServerFn({ method: 'POST' })
     const { supabaseAdmin } = await import('@/integrations/supabase/client.server')
     const { sendTemplateEmail } = await import('./email-templates/send-email')
     return processSpeedReport(data, {
+      recover: async () => {
+        const { refreshEstimateAvailability } = await import('./freeestimate-recovery.server')
+        await refreshEstimateAvailability(true)
+      },
       now: Date.now(),
       read: async () => {
         const { data: row, error } = await supabaseAdmin.from('freeestimate_availability').select('speed_state').eq('id', 1).single()

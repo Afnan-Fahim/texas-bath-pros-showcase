@@ -36,6 +36,7 @@ export async function processCalendarObservation(observation: CalendarObservatio
   claim: (previous: CalendarHealthState, next: CalendarHealthState) => Promise<boolean>
   send: (recipient: string, notice: CalendarNotice) => Promise<unknown>
   rollback: (next: CalendarHealthState, previous: CalendarHealthState) => Promise<void>
+  recover?: () => Promise<void>
 }) {
   const previous = await dependencies.read()
   const { state, notice } = calendarHealthTransition(previous, observation)
@@ -46,6 +47,10 @@ export async function processCalendarObservation(observation: CalendarObservatio
     dependencies.send(CALENDAR_ALERT_RECIPIENTS[0], notice),
     dependencies.send(CALENDAR_ALERT_RECIPIENTS[1], notice),
   ])
+  if (notice.kind === 'warning' && dependencies.recover) {
+    try { await dependencies.recover() }
+    catch (error) { console.error('[freeestimate] Automatic calendar recovery failed', error instanceof Error ? error.message : 'Unknown failure') }
+  }
   if (results.some(result => result.status === 'rejected')) {
     // Preserve the event key on retry: the managed sender deduplicates any
     // recipient already accepted. Next availability check retries the event.

@@ -22,6 +22,7 @@ export async function processSpeedReport(report: SpeedReport, dependencies: {
   claim: (previous: SpeedAlertState, next: SpeedAlertState) => Promise<boolean>
   send: (to: string, report: SpeedReport, eventId: string) => Promise<unknown>
   rollback: (next: SpeedAlertState, previous: SpeedAlertState) => Promise<void>
+  recover?: () => Promise<void>
 }) {
   if (report.durationMs <= SLOW_PAGE_THRESHOLD_MS) return { alerted: false }
   const previous = await dependencies.read()
@@ -34,5 +35,12 @@ export async function processSpeedReport(report: SpeedReport, dependencies: {
   } catch (error) {
     await dependencies.rollback(next, previous)
     throw error
+  } finally {
+    // Recovery is independent of email delivery and cannot turn a sent alert
+    // into a failed report or cause duplicate warnings.
+    if (dependencies.recover) {
+      try { await dependencies.recover() }
+      catch (error) { console.error('[freeestimate] Automatic speed-alert recovery failed', error instanceof Error ? error.message : 'Unknown failure') }
+    }
   }
 }

@@ -75,3 +75,16 @@ test('older concurrent observations cannot reverse newer health', () => {
   const current = { ...initial, checkedAt: '2026-11-13T02:31:00.000Z' }
   expect(calendarHealthTransition(current, observe('failed')).notice).toBeNull()
 })
+
+test('warning triggers one recovery attempt, recovery emails never trigger another', async () => {
+  let state = initial
+  let recoveries = 0
+  const deps = {
+    read: async () => state,
+    claim: async (previous, next) => { if (previous !== state) return false; state = next; return true },
+    send: async () => {}, rollback: async () => {}, recover: async () => { recoveries++ },
+  }
+  await Promise.all([processCalendarObservation(observe('failed'), deps), processCalendarObservation(observe('failed'), deps)])
+  await processCalendarObservation(observe('healthy', '2026-11-13T02:30:00.000Z'), deps)
+  expect(recoveries).toBe(1)
+})

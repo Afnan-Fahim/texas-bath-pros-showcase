@@ -43,3 +43,19 @@ test('signed reports reject tampering and expire after fifteen minutes', async (
   expect(await verifySpeedToken(token, key, now + 900001)).toBe(false)
   expect(await verifySpeedToken(token.slice(0, -1) + (token.endsWith('0') ? '1' : '0'), key, now)).toBe(false)
 })
+
+test('a claimed slow alert triggers recovery exactly once even with concurrent reports', async () => {
+  let state = { lastAlertAt: null }
+  const events = []
+  const deps = {
+    now, read: async () => state,
+    claim: async (previous, next) => { if (previous !== state) return false; state = next; return true },
+    send: async () => { events.push('email') },
+    recover: async () => { events.push('recovery') },
+    rollback: async () => {},
+  }
+  await Promise.all([processSpeedReport({ durationMs: 2501 }, deps), processSpeedReport({ durationMs: 2501 }, deps)])
+  expect(events).toEqual(['email', 'recovery'])
+  await processSpeedReport({ durationMs: 2500 }, deps)
+  expect(events).toHaveLength(2)
+})

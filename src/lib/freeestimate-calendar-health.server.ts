@@ -1,9 +1,13 @@
 import { processCalendarObservation, type CalendarHealthState, type CalendarObservation } from './freeestimate-calendar-health'
 
-export async function recordCalendarHealth(observation: CalendarObservation) {
+export async function recordCalendarHealth(observation: CalendarObservation, allowRecovery = true) {
   const { supabaseAdmin } = await import('@/integrations/supabase/client.server')
   const { sendTemplateEmail } = await import('./email-templates/send-email')
   await processCalendarObservation(observation, {
+    recover: allowRecovery ? async () => {
+      const { refreshEstimateAvailability } = await import('./freeestimate-recovery.server')
+      await refreshEstimateAvailability(true)
+    } : undefined,
     read: async () => {
       const { data, error } = await supabaseAdmin.from('freeestimate_availability').select('monitor_state').eq('id', 1).single()
       if (error || !data) throw new Error('Cannot read calendar health state')
