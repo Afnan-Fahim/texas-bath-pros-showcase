@@ -1,11 +1,11 @@
 # Task roadmap
 
 ## Current
-- Warranty page: add a clean white box near the top with "We have one of the strongest warranties in the industry.", keep the 5-star/no-complaints line, refine spacing, keep plumbing lower, then publish.
 - Activate daily website speed/loading reports for Josiah at 4:58 p.m. and 7:58 p.m. America/Chicago; both managed schedules verified active, separate per-time delivery identities fixed, blocked on publishing approval. Reports check homepage, /estimate and /freeestimate server HTML loading and saved calendar/slow-alert state, not full mobile rendering.
 - Replace Calendly’s connected old Gmail calendar with Contact@TexasBathSolutions.com so confirmation and cancellation invitations use the correct sender; blocked on the account owner reconnecting the calendar in Calendly’s Calendar Sync settings. Screenshot confirms these invitations are sent by the old Gmail calendar, not Lovable Emails; website email changes cannot change their sender.
 
 ## Completed
+- Warranty page: added the clean white "We have one of the strongest warranties in the industry." box under the heading with the 5-star/no-complaints line kept inside it, stacked Plumbing Warranty below the grab bars / faucets box, kept covered/not-covered side by side on desktop, and verified every warranty sentence unchanged; published.
 - Warranty page design polish: soft navy accent bar and 5-star/no-complaints line under the heading, side-by-side covered/not-covered cards on desktop (stacked on mobile), polished grab-bars and plumbing boxes, all warranty wording verified unchanged; published and checked live on phone and computer.
 - Warranty page at /warranty: headline "Hey San Antonio & Surrounding Areas, You're Protected… FOR LIFE!", BCI lifetime details, covered/not-covered, grab bars and faucets, then Plumbing Warranty (1-year) near the bottom; published and verified live on phone and computer.
 - Automate bounded retry and real saved-time refresh after claimed calendar-warning and slow-page alerts; errors preserve the complete snapshot and recovery notices do not recurse. Tests passed; preview phone form/calendar readiness 1.02 seconds, computer 0.49 seconds with no page errors. Preview only; publishing required. Cannot repair visitor connectivity, Calendly account access, or rewrite/deploy site code automatically.
