@@ -18,6 +18,7 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as QuizRouteImport } from './routes/quiz'
 import { Route as SmsOptinRouteImport } from './routes/sms-optin'
 import { Route as SmsTermsRouteImport } from './routes/sms-terms'
+import { Route as WarrantyRouteImport } from './routes/warranty'
 import { Route as ApiManychatRouteImport } from './routes/api/manychat'
 import { Route as ApiMetaCapiRouteImport } from './routes/api/meta-capi'
 import { Route as ApiPublicDailySpeedReportRouteImport } from './routes/api/public/daily-speed-report'
@@ -68,6 +69,11 @@ const SmsTermsRoute = SmsTermsRouteImport.update({
   path: '/sms-terms',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WarrantyRoute = WarrantyRouteImport.update({
+  id: '/warranty',
+  path: '/warranty',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiManychatRoute = ApiManychatRouteImport.update({
   id: '/api/manychat',
   path: '/api/manychat',
@@ -101,6 +107,7 @@ export interface FileRoutesByFullPath {
   '/quiz': typeof QuizRoute
   '/sms-optin': typeof SmsOptinRoute
   '/sms-terms': typeof SmsTermsRoute
+  '/warranty': typeof WarrantyRoute
   '/api/manychat': typeof ApiManychatRoute
   '/api/meta-capi': typeof ApiMetaCapiRoute
   '/api/public/daily-speed-report': typeof ApiPublicDailySpeedReportRoute
@@ -116,6 +123,7 @@ export interface FileRoutesByTo {
   '/quiz': typeof QuizRoute
   '/sms-optin': typeof SmsOptinRoute
   '/sms-terms': typeof SmsTermsRoute
+  '/warranty': typeof WarrantyRoute
   '/api/manychat': typeof ApiManychatRoute
   '/api/meta-capi': typeof ApiMetaCapiRoute
   '/api/public/daily-speed-report': typeof ApiPublicDailySpeedReportRoute
@@ -132,6 +140,7 @@ export interface FileRoutesById {
   '/quiz': typeof QuizRoute
   '/sms-optin': typeof SmsOptinRoute
   '/sms-terms': typeof SmsTermsRoute
+  '/warranty': typeof WarrantyRoute
   '/api/manychat': typeof ApiManychatRoute
   '/api/meta-capi': typeof ApiMetaCapiRoute
   '/api/public/daily-speed-report': typeof ApiPublicDailySpeedReportRoute
@@ -149,6 +158,7 @@ export interface FileRouteTypes {
     | '/quiz'
     | '/sms-optin'
     | '/sms-terms'
+    | '/warranty'
     | '/api/manychat'
     | '/api/meta-capi'
     | '/api/public/daily-speed-report'
@@ -164,6 +174,7 @@ export interface FileRouteTypes {
     | '/quiz'
     | '/sms-optin'
     | '/sms-terms'
+    | '/warranty'
     | '/api/manychat'
     | '/api/meta-capi'
     | '/api/public/daily-speed-report'
@@ -179,6 +190,7 @@ export interface FileRouteTypes {
     | '/quiz'
     | '/sms-optin'
     | '/sms-terms'
+    | '/warranty'
     | '/api/manychat'
     | '/api/meta-capi'
     | '/api/public/daily-speed-report'
@@ -195,6 +207,7 @@ export interface RootRouteChildren {
   QuizRoute: typeof QuizRoute
   SmsOptinRoute: typeof SmsOptinRoute
   SmsTermsRoute: typeof SmsTermsRoute
+  WarrantyRoute: typeof WarrantyRoute
   ApiManychatRoute: typeof ApiManychatRoute
   ApiMetaCapiRoute: typeof ApiMetaCapiRoute
   ApiPublicDailySpeedReportRoute: typeof ApiPublicDailySpeedReportRoute
@@ -266,6 +279,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SmsTermsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/warranty': {
+      id: '/warranty'
+      path: '/warranty'
+      fullPath: '/warranty'
+      preLoaderRoute: typeof WarrantyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/manychat': {
       id: '/api/manychat'
       path: '/api/manychat'
@@ -307,6 +327,7 @@ const rootRouteChildren: RootRouteChildren = {
   QuizRoute: QuizRoute,
   SmsOptinRoute: SmsOptinRoute,
   SmsTermsRoute: SmsTermsRoute,
+  WarrantyRoute: WarrantyRoute,
   ApiManychatRoute: ApiManychatRoute,
   ApiMetaCapiRoute: ApiMetaCapiRoute,
   ApiPublicDailySpeedReportRoute: ApiPublicDailySpeedReportRoute,

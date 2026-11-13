@@ -1832,6 +1832,14 @@ function Footer() {
           >
             <Mail className="h-4 w-4" /> Contact@TexasBathSolutions.com
           </a>
+          <div className="mt-5">
+            <Link
+              to="/warranty"
+              className="inline-flex items-center gap-2 rounded-full bg-navy px-5 py-2.5 text-sm font-semibold text-navy-foreground shadow-card transition-colors hover:bg-navy/90"
+            >
+              Warranty
+            </Link>
+          </div>
         </div>
         <div className="md:justify-self-end">
           <h4 className="font-semibold text-neutral-900">Trust &amp; Credentials</h4>
@@ -1873,6 +1881,8 @@ function Footer() {
             <Link to="/privacy" className="hover:underline transition-colors">Privacy Policy</Link>
             {"  |  "}
             <Link to="/sms-terms" className="hover:underline transition-colors">SMS Terms</Link>
+            {"  |  "}
+            <Link to="/warranty" className="hover:underline transition-colors">Warranty</Link>
           </p>
         </div>
       </div>
