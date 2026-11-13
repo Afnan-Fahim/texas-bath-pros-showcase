@@ -14,7 +14,7 @@ export async function sendDailySpeedReport(now = new Date()) {
   const speed = row?.speed_state as { lastAlertAt?: string } | undefined
   const format = (value?: string | null) => value ? new Date(value).toLocaleString('en-US', { timeZone: 'America/Chicago', timeZoneName: 'short' }) : 'Unknown'
   const result = await sendTemplateEmail('daily-speed-report', DAILY_REPORT_RECIPIENT, {
-    idempotencyKey: `scheduled-daily-speed-report:${timing.date}`,
+    idempotencyKey: `scheduled-daily-speed-report:${timing.date}:${timing.slot}`,
     templateData: { date: timing.date, checks, futureSlots: Array.isArray(row?.times) ? row.times.filter(time => typeof time === 'string' && Date.parse(time) > now.getTime()).length : 0, snapshotAt: format(row?.updated_at), calendarStatus: health?.status ?? 'Unknown — availability status could not be read', lastSlowAlert: speed?.lastAlertAt ? format(speed.lastAlertAt) : 'None recorded' },
   })
   return { skipped: false, sent: result.sent }

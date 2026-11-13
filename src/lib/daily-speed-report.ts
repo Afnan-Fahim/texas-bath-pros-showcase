@@ -5,7 +5,7 @@ export function centralReportTime(now: Date) {
   const parts = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Chicago', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(now)
   const value = (type: string) => parts.find(part => part.type === type)?.value
   const due = (value('hour') === '16' || value('hour') === '19') && value('minute') === '58'
-  return { due, date: `${value('year')}-${value('month')}-${value('day')}` }
+  return { due, date: `${value('year')}-${value('month')}-${value('day')}`, slot: `${value('hour')}:${value('minute')}` }
 }
 
 export interface PageSpeedCheck {

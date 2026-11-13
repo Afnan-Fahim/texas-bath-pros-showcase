@@ -6,7 +6,7 @@ test('daily report targets Josiah and prioritizes freeestimate', () => {
   expect(DAILY_REPORT_PATHS[0]).toBe('/freeestimate')
 })
 test('report runs at 4:58pm Central in standard time', () => {
-  expect(centralReportTime(new Date('2026-11-13T22:58:00Z'))).toEqual({ due: true, date: '2026-11-13' })
+  expect(centralReportTime(new Date('2026-11-13T22:58:00Z'))).toEqual({ due: true, date: '2026-11-13', slot: '16:58' })
   expect(centralReportTime(new Date('2026-11-13T21:58:00Z')).due).toBe(false)
   expect(centralReportTime(new Date('2026-11-13T22:57:00Z')).due).toBe(false)
 })
@@ -24,6 +24,15 @@ test('loading check detects missing form and calendar instead of passing a blank
   const result = await checkPageLoading('/freeestimate', async () => new Response('<html></html>'))
   expect(result.formPresent).toBe(false)
   expect(result.calendarPresent).toBe(false)
+})
+test('both daily reports have distinct delivery identities while retries match', () => {
+  const afternoon = centralReportTime(new Date('2026-11-13T22:58:00Z'))
+  const evening = centralReportTime(new Date('2026-11-14T01:58:00Z'))
+  expect(afternoon.date).toBe(evening.date)
+  expect(afternoon.slot).toBe('16:58')
+  expect(evening.slot).toBe('19:58')
+  expect(`${afternoon.date}:${afternoon.slot}`).not.toBe(`${evening.date}:${evening.slot}`)
+  expect(centralReportTime(new Date('2026-11-14T01:58:25Z'))).toEqual(evening)
 })
 test('loading check records server failures', async () => {
   const result = await checkPageLoading('/', async () => new Response('error', { status: 500 }))
