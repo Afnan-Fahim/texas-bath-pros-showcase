@@ -14,6 +14,12 @@ test('report follows Central daylight saving time', () => {
   expect(centralReportTime(new Date('2027-07-13T21:58:00Z')).due).toBe(true)
   expect(centralReportTime(new Date('2027-07-13T22:58:00Z')).due).toBe(false)
 })
+test('report also runs at 7:58pm Central in both standard and daylight time', () => {
+  expect(centralReportTime(new Date('2026-11-14T01:58:00Z')).due).toBe(true)
+  expect(centralReportTime(new Date('2027-07-14T00:58:00Z')).due).toBe(true)
+  expect(centralReportTime(new Date('2026-11-14T00:58:00Z')).due).toBe(false)
+  expect(centralReportTime(new Date('2026-11-14T01:57:00Z')).due).toBe(false)
+})
 test('loading check detects missing form and calendar instead of passing a blank page', async () => {
   const result = await checkPageLoading('/freeestimate', async () => new Response('<html></html>'))
   expect(result.formPresent).toBe(false)

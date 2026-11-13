@@ -4,7 +4,8 @@ export const DAILY_REPORT_PATHS = ['/freeestimate', '/', '/estimate'] as const
 export function centralReportTime(now: Date) {
   const parts = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Chicago', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(now)
   const value = (type: string) => parts.find(part => part.type === type)?.value
-  return { due: value('hour') === '16' && value('minute') === '58', date: `${value('year')}-${value('month')}-${value('day')}` }
+  const due = (value('hour') === '16' || value('hour') === '19') && value('minute') === '58'
+  return { due, date: `${value('year')}-${value('month')}-${value('day')}` }
 }
 
 export interface PageSpeedCheck {
