@@ -13,7 +13,7 @@ test('repeated slow visits are deduplicated for four hours', () => {
   expect(shouldAlertSlowPage(3200, previous, now + 14399999)).toBe(false)
   expect(shouldAlertSlowPage(3200, previous, now + 14400000)).toBe(true)
 })
-test('concurrent slow visitors notify only Justin once', async () => {
+test('concurrent slow visitors notify only Josiah once', async () => {
   let state = { lastAlertAt: null }
   const sent = []
   const report = { token: 'not-used-by-unit-test', durationMs: 3200, device: 'phone', calendarReady: true }
@@ -24,7 +24,7 @@ test('concurrent slow visitors notify only Justin once', async () => {
     rollback: async (next, previous) => { state = previous },
   }
   await Promise.all([processSpeedReport(report, deps), processSpeedReport(report, deps)])
-  expect(sent).toEqual([{ to: 'justin@texasbathsolutions.com', durationMs: 3200 }])
+  expect(sent).toEqual([{ to: 'josiah@texasbathsolutions.com', durationMs: 3200 }])
 })
 test('fast visits cause no database reads or sends', async () => {
   let reads = 0

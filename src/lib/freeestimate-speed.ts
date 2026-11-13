@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 export const SLOW_PAGE_THRESHOLD_MS = 2500
 export const SPEED_ALERT_COOLDOWN_MS = 4 * 60 * 60 * 1000
-export const SPEED_ALERT_RECIPIENT = 'justin@texasbathsolutions.com'
+export const SPEED_ALERT_RECIPIENT = 'josiah@texasbathsolutions.com'
 export const speedReportSchema = z.object({
   token: z.string().min(20).max(512),
   durationMs: z.number().finite().min(0).max(600000),
