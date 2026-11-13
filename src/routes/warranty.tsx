@@ -81,13 +81,10 @@ function WarrantyPage() {
         {/* ---------- BCI intro ---------- */}
         <div className="space-y-5 text-sm leading-relaxed text-neutral-700 md:text-base">
           <p>
-            Our acrylic shower bases and wall surrounds are covered by a limited lifetime
-            manufacturer&rsquo;s warranty from BCI Concepts (BCI Acrylic / Bath Concepts) for
-            residential use.
-          </p>
-          <p>
-            The warranty covers the product for as long as the original residential purchaser owns
-            the home. It can transfer once under certain conditions (usually within 2 years).
+            Your acrylic shower base and wall surrounds are covered by a limited lifetime
+            manufacturer&rsquo;s warranty from BCI Concepts for residential use. As long as you take
+            care of it, this protection lasts for as long as you own your home. It can also transfer
+            once under certain conditions (usually within 2 years).
           </p>
         </div>
 
