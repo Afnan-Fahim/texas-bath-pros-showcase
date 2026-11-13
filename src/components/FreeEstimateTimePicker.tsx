@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useServerFn } from '@tanstack/react-start'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -23,7 +23,10 @@ export function FreeEstimateTimePicker({ identity, onBooked, onEnsureSaved, init
   const [error, setError] = useState('')
   const tracked = useRef(false)
 
-  const refresh = () => loadTimes().then(r => { setTimes(r.times); setDay(d => d && r.times.some(t => dayKey(t) === d) ? d : '') }).catch(() => setTimes([]))
+  const refresh = () => loadTimes({ data: { fresh: true } }).then(r => { setTimes(r.times); setDay(d => d && r.times.some(t => dayKey(t) === d) ? d : '') }).catch(() => setTimes([]))
+
+  // Silently swap in the latest Calendly times after the saved copy has shown.
+  useEffect(() => { loadTimes({ data: { fresh: true } }).then(r => { if (r.times.length) { setTimes(r.times); setDay(d => d && r.times.some(t => dayKey(t) === d) ? d : '') } }).catch(() => {}) }, [])
 
   const days = useMemo(() => {
     const map = new Map<string, string>()

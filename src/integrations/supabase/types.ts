@@ -14,6 +14,24 @@ export type Database = {
   }
   public: {
     Tables: {
+      freeestimate_availability: {
+        Row: {
+          id: number
+          times: Json
+          updated_at: string
+        }
+        Insert: {
+          id?: number
+          times?: Json
+          updated_at?: string
+        }
+        Update: {
+          id?: number
+          times?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
       leads: {
         Row: {
           address: string

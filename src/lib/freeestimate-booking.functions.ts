@@ -14,10 +14,34 @@ async function calendly(path: string, init?: RequestInit) {
   })
 }
 
-export const getFreeEstimateTimes = createServerFn({ method: 'GET' }).handler(async () => {
+// Calendly's availability API can take 6–8s, so the page renders from the last
+// saved copy instantly; the browser then asks for fresh times, which also
+// updates the saved copy. Booking still validates the slot with Calendly.
+async function liveTimes() {
   const { fetchEstimateAvailability } = await import('./freeestimate-availability.server')
-  return fetchEstimateAvailability(EVENT_TYPE, calendly)
-})
+  const result = await fetchEstimateAvailability(EVENT_TYPE, calendly)
+  if (result.times.length) {
+    const { supabaseAdmin } = await import('@/integrations/supabase/client.server')
+    await supabaseAdmin.from('freeestimate_availability').upsert({ id: 1, times: result.times, updated_at: new Date().toISOString() })
+  }
+  return result
+}
+
+export const getFreeEstimateTimes = createServerFn({ method: 'GET' })
+  .inputValidator((input: unknown) => z.object({ fresh: z.boolean().optional() }).optional().parse(input))
+  .handler(async ({ data }) => {
+    if (!data?.fresh) {
+      const { supabaseAdmin } = await import('@/integrations/supabase/client.server')
+      const { data: row } = await supabaseAdmin.from('freeestimate_availability').select('times').eq('id', 1).maybeSingle()
+      const now = Date.now()
+      const times = ((row?.times as string[] | null) ?? []).filter(t => Date.parse(t) > now + 5 * 60 * 1000)
+      if (times.length) return { times }
+      // Never hold the first page load on a slow Calendly; the browser refreshes after.
+      const live = liveTimes()
+      return Promise.race([live, new Promise<{ times: string[] }>(r => setTimeout(() => r({ times: [] }), 1500))])
+    }
+    return liveTimes()
+  })
 
 export const bookFreeEstimate = createServerFn({ method: 'POST' })
   .inputValidator((input: unknown) => z.object({ submissionId: z.string().uuid(), startTime: z.string().datetime() }).parse(input))
