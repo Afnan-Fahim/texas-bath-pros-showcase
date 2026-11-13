@@ -24,6 +24,16 @@ test('loading check detects missing form and calendar instead of passing a blank
   const result = await checkPageLoading('/freeestimate', async () => new Response('<html></html>'))
   expect(result.formPresent).toBe(false)
   expect(result.calendarPresent).toBe(false)
+  expect(result.withinLimit).toBe(true)
+})
+test('freeestimate check flags loads over the 2.5 second limit', async () => {
+  const slow = await checkPageLoading('/freeestimate', async () => {
+    await new Promise(resolve => setTimeout(resolve, 2600))
+    return new Response('<html><form></form><button aria-label="Next month"></button></html>')
+  })
+  expect(slow.withinLimit).toBe(false)
+  const fast = await checkPageLoading('/freeestimate', async () => new Response('<html><form></form><button aria-label="Next month"></button></html>'))
+  expect(fast.withinLimit).toBe(true)
 })
 test('both daily reports have distinct delivery identities while retries match', () => {
   const afternoon = centralReportTime(new Date('2026-11-13T22:58:00Z'))
