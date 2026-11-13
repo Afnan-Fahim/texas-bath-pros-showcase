@@ -18,18 +18,21 @@ export type Database = {
         Row: {
           id: number
           monitor_state: Json
+          speed_state: Json
           times: Json
           updated_at: string
         }
         Insert: {
           id?: number
           monitor_state?: Json
+          speed_state?: Json
           times?: Json
           updated_at?: string
         }
         Update: {
           id?: number
           monitor_state?: Json
+          speed_state?: Json
           times?: Json
           updated_at?: string
         }

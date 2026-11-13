@@ -2,6 +2,7 @@ import type { ComponentType } from 'react'
 import { template as leadNotificationTemplate } from './lead-notification'
 import { template as appointmentConfirmationTemplate } from './appointment-confirmation'
 import { template as calendarHealthTemplate } from './calendar-health'
+import { template as slowEstimatePageTemplate } from './slow-estimate-page'
 
 
 export interface TemplateEntry {
@@ -25,4 +26,5 @@ export const TEMPLATES: Record<string, TemplateEntry> = {
   'lead-notification': leadNotificationTemplate,
   'appointment-confirmation': appointmentConfirmationTemplate,
   'calendar-health': calendarHealthTemplate,
+  'slow-estimate-page': slowEstimatePageTemplate,
 }

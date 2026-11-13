@@ -1,0 +1,2 @@
+ALTER TABLE public.freeestimate_availability ADD COLUMN speed_state jsonb NOT NULL DEFAULT '{"lastAlertAt":null}'::jsonb;
+COMMENT ON COLUMN public.freeestimate_availability.speed_state IS 'Last slow-page alert state for owner notification deduplication; service-role only, not an email queue.';

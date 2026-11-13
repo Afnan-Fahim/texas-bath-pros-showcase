@@ -15,6 +15,13 @@
       "when": 1794536996035,
       "tag": "0001_freeestimate_calendar_health",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794537404187,
+      "tag": "0002_freeestimate_speed_health",
+      "breakpoints": true
     }
   ]
 }

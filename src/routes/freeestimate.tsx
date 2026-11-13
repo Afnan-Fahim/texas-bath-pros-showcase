@@ -4,6 +4,8 @@ import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { freeEstimateSchema } from '@/lib/freeestimate-schema'
 import { submitFreeEstimate } from '@/lib/freeestimate.functions'
 import { getFreeEstimateTimes } from '@/lib/freeestimate-booking.functions'
+import { getSpeedReportToken, reportEstimateSpeed } from '@/lib/freeestimate-speed.functions'
+import { SLOW_PAGE_THRESHOLD_MS } from '@/lib/freeestimate-speed'
 import { captureAttribution, getAttribution } from '@/lib/tracking'
 import { FreeEstimateTimePicker } from '@/components/FreeEstimateTimePicker'
 import { cn } from '@/lib/utils'
@@ -87,6 +89,8 @@ export const Route = createFileRoute('/freeestimate')({
 function FreeEstimatePage() {
   const { times: initialTimes } = Route.useLoaderData()
   const submit = useServerFn(submitFreeEstimate)
+  const getSpeedToken = useServerFn(getSpeedReportToken)
+  const reportSpeed = useServerFn(reportEstimateSpeed)
   const [form, setForm] = useState({ desiredUpgrade: '', mainProblem: '', timeframe: '', name: '', email: '', phone: '', address: '' })
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
@@ -96,6 +100,23 @@ function FreeEstimatePage() {
   const calendar = useRef<HTMLDivElement>(null)
   const formRef = useRef<HTMLFormElement>(null)
   useEffect(() => { captureAttribution() }, [])
+  useEffect(() => {
+    // No network or observer is added to the initial loading path. Measure
+    // the first painted frame after hydration; report only slow full loads.
+    const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined
+    if (!navigation || new URL(navigation.name).pathname !== '/freeestimate' || navigation.type === 'back_forward' || document.visibilityState !== 'visible') return
+    let cancelled = false
+    const frame = requestAnimationFrame(() => {
+      const durationMs = Math.round(performance.now())
+      if (durationMs <= SLOW_PAGE_THRESHOLD_MS) return
+      const calendarReady = !!calendar.current?.querySelector('button[aria-label="Next month"]')
+      void getSpeedToken().then(({ token }) => {
+        if (!token || cancelled) return
+        return reportSpeed({ data: { token, durationMs, device: matchMedia('(max-width: 1023px)').matches ? 'phone' : 'computer', calendarReady } })
+      }).catch(() => { /* Monitoring must never interrupt the form. */ })
+    })
+    return () => { cancelled = true; cancelAnimationFrame(frame) }
+  }, [])
   const setValue = (key: keyof typeof form, value: string) => setForm(previous => ({ ...previous, [key]: value }))
 
   async function ensureSaved(): Promise<string | null> {
