@@ -33,7 +33,9 @@ function WarrantyPage() {
 
       <main className="container-x py-10 md:py-14 max-w-3xl">
         <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-navy">
-          Lifetime Warranty
+          Hey San Antonio &amp; Surrounding Areas,
+          <br />
+          You&rsquo;re Protected&hellip; FOR LIFE!
         </h1>
 
         <div className="mt-6 space-y-5 text-sm md:text-base leading-relaxed text-neutral-700">
@@ -91,6 +93,22 @@ function WarrantyPage() {
             <p>
               Our faucets (Moen and Delta) are also covered by a lifetime manufacturer&rsquo;s
               warranty.
+            </p>
+          </div>
+        </section>
+
+        <section className="mt-10">
+          <h2 className="text-xl md:text-2xl font-bold tracking-tight text-navy">
+            Plumbing Warranty
+          </h2>
+          <div className="mt-3 space-y-3 text-sm md:text-base leading-relaxed text-neutral-700">
+            <p>
+              Our plumbing work is backed by a 1-year warranty on everything we install and work
+              on.
+            </p>
+            <p>
+              We stand behind our work and match the level of protection you&rsquo;ll find with
+              some of the best companies in the area.
             </p>
           </div>
         </section>

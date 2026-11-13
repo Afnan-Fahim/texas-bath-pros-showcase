@@ -1,6 +1,7 @@
 # Task roadmap
 
 ## Current
+- Warranty page: new top heading "Hey San Antonio & Surrounding Areas, You're Protected… FOR LIFE!" and a Plumbing Warranty section (1-year warranty) placed near the bottom after the BCI details and grab bars/faucets; publish to the live domain.
 - Activate daily website speed/loading reports for Josiah at 4:58 p.m. and 7:58 p.m. America/Chicago; both managed schedules verified active, separate per-time delivery identities fixed, blocked on publishing approval. Reports check homepage, /estimate and /freeestimate server HTML loading and saved calendar/slow-alert state, not full mobile rendering.
 - Replace Calendly’s connected old Gmail calendar with Contact@TexasBathSolutions.com so confirmation and cancellation invitations use the correct sender; blocked on the account owner reconnecting the calendar in Calendly’s Calendar Sync settings. Screenshot confirms these invitations are sent by the old Gmail calendar, not Lovable Emails; website email changes cannot change their sender.
 
