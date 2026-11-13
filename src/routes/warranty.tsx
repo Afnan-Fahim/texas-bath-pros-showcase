@@ -86,6 +86,10 @@ function WarrantyPage() {
             care of it, this protection lasts for as long as you own your home. It can also transfer
             once under certain conditions (usually within 2 years).
           </p>
+          <p>
+            Most companies only cover labor for a year. Your walls and base are covered for as long
+            as you own the home.
+          </p>
         </div>
 
         {/* ---------- Covered / not covered ---------- */}
@@ -192,6 +196,17 @@ function WarrantyPage() {
           <p className="mt-4 text-sm leading-relaxed text-neutral-700 md:text-base">
             Always follow the care guidelines that come with your products to keep the warranty
             valid. For the full details, refer to the paperwork from your installer or contact us.
+          </p>
+          <p className="mt-4 text-sm leading-relaxed text-neutral-700 md:text-base">
+            Just use mild cleaners and avoid harsh chemicals. That&rsquo;s all it takes to keep the
+            warranty valid.
+          </p>
+          <p className="mt-3 text-sm leading-relaxed text-neutral-700 md:text-base">
+            Questions about your warranty? Call or text us at{" "}
+            <a href="tel:2103734295" className="font-semibold text-navy hover:underline">
+              (210) 373-4295
+            </a>
+            .
           </p>
           <div className="mt-5 border-t border-neutral-900/10 pt-5 text-sm leading-relaxed text-neutral-700">
             <p className="font-semibold text-navy">Texas Bath Solutions LLC</p>
