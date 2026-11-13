@@ -42,7 +42,7 @@ function WarrantyPage() {
 
       {/* ---------- Heading band ---------- */}
       <header className="border-b border-navy/10 bg-gradient-to-b from-navy/[0.07] via-navy/[0.03] to-transparent">
-        <div className="container-x max-w-3xl py-10 md:py-14">
+        <div className="container-x max-w-3xl pt-10 pb-12 md:pt-14 md:pb-16">
           <span className="inline-flex items-center gap-2 rounded-full bg-navy/[0.07] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-navy">
             <ShieldCheck className="h-3.5 w-3.5" aria-hidden />
             Lifetime Warranty
@@ -59,14 +59,20 @@ function WarrantyPage() {
             className="mt-6 h-1.5 w-28 rounded-full bg-gradient-to-r from-navy via-navy/70 to-teal"
           />
 
-          <p className="mt-6 text-base leading-relaxed font-medium text-neutral-700 md:text-lg">
-            There is a reason why we have no complaints and maintain a 5-star review status on
-            Google.
-          </p>
-          <div className="mt-3 flex items-center gap-1" aria-hidden>
-            {[0, 1, 2, 3, 4].map((i) => (
-              <Star key={i} className="h-4 w-4 fill-gold text-gold" />
-            ))}
+          {/* clean white statement box */}
+          <div className="mt-7 rounded-2xl border border-border bg-card p-6 shadow-card md:p-7">
+            <p className="text-lg leading-snug font-semibold text-navy md:text-xl">
+              We have one of the strongest warranties in the industry.
+            </p>
+            <p className="mt-3 text-sm leading-relaxed text-neutral-700 md:text-base">
+              There is a reason why we have no complaints and maintain a 5-star review status on
+              Google.
+            </p>
+            <div className="mt-3 flex items-center gap-1" aria-hidden>
+              {[0, 1, 2, 3, 4].map((i) => (
+                <Star key={i} className="h-4 w-4 fill-gold text-gold" />
+              ))}
+            </div>
           </div>
         </div>
       </header>
@@ -135,7 +141,7 @@ function WarrantyPage() {
         </div>
 
         {/* ---------- Grab bars / faucets + plumbing ---------- */}
-        <div className="mt-10 grid gap-5 md:grid-cols-2">
+        <div className="mt-10 space-y-5">
           <section className="rounded-2xl border border-border bg-navy/[0.04] p-6">
             <div className="flex items-center gap-3">
               <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-navy text-navy-foreground">
