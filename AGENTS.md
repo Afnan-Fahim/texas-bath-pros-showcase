@@ -11,4 +11,5 @@
 
 - Keep the estimate's three saved photo questions in the shared QuizFlow, then use `/estimate` for its contact and Calendly stages; this preserves admin-edited options while keeping the homepage flow unchanged.
 - Keep `/freeestimate` isolated with its own validated submission function and the existing leads table and email template; this avoids changing other pages or their notification recipients.
-- Fetch `/freeestimate` calendar weeks concurrently during SSR without caching availability, and select compressed photo copies with explicit mobile/desktop picture media sources (including hidden copies); this avoids high-density phones downloading the desktop image and preserves fresh booking slots and layout.
+- Render `/freeestimate` from its saved availability snapshot, refresh both calendar weeks concurrently after hydration, and retain explicit mobile/desktop compressed picture sources; this keeps first paint independent of slow Calendly calls while booking validates current availability.
+- Observe calendar health only on actual live availability checks; store compare-and-swap health/cooldown state on the existing availability row and send fixed owner notices synchronously through managed email, never a queue or public email endpoint, so concurrent visitors cannot duplicate alerts or slow cached first paint.

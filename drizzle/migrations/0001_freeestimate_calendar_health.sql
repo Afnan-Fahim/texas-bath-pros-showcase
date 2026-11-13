@@ -1,0 +1,2 @@
+ALTER TABLE public.freeestimate_availability ADD COLUMN monitor_state jsonb NOT NULL DEFAULT '{"status":"healthy","incidentAt":null,"lastAlertAt":null}'::jsonb;
+COMMENT ON COLUMN public.freeestimate_availability.monitor_state IS 'Calendar health and alert cooldown state; service-role only, not an email queue.';

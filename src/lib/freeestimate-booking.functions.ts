@@ -18,13 +18,22 @@ async function calendly(path: string, init?: RequestInit) {
 // saved copy instantly; the browser then asks for fresh times, which also
 // updates the saved copy. Booking still validates the slot with Calendly.
 async function liveTimes() {
+  const checkedAt = new Date().toISOString()
   const { fetchEstimateAvailability } = await import('./freeestimate-availability.server')
   const result = await fetchEstimateAvailability(EVENT_TYPE, calendly)
   if (result.times.length) {
     const { supabaseAdmin } = await import('@/integrations/supabase/client.server')
     await supabaseAdmin.from('freeestimate_availability').upsert({ id: 1, times: result.times, updated_at: new Date().toISOString() })
   }
-  return result
+  // This runs on the existing fresh request after hydration, never on the
+  // cached first-paint path. Alert failures must not affect visitor booking.
+  try {
+    const { recordCalendarHealth } = await import('./freeestimate-calendar-health.server')
+    await recordCalendarHealth({ status: result.status, detail: result.detail, checkedAt })
+  } catch (error) {
+    console.error('[freeestimate] Calendar health notification failed', error instanceof Error ? error.message : 'Unknown failure')
+  }
+  return { times: result.times }
 }
 
 export const getFreeEstimateTimes = createServerFn({ method: 'GET' })

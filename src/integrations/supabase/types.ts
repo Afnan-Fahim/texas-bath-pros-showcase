@@ -17,16 +17,19 @@ export type Database = {
       freeestimate_availability: {
         Row: {
           id: number
+          monitor_state: Json
           times: Json
           updated_at: string
         }
         Insert: {
           id?: number
+          monitor_state?: Json
           times?: Json
           updated_at?: string
         }
         Update: {
           id?: number
+          monitor_state?: Json
           times?: Json
           updated_at?: string
         }
