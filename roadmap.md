@@ -1,11 +1,11 @@
 # Task roadmap
 
 ## Current
-- Warranty page: add the "Most companies only cover labor for a year" line under the BCI paragraph and the mild-cleaners + call/text line above the address, then publish.
 - Activate daily website speed/loading reports for Josiah at 4:58 p.m. and 7:58 p.m. America/Chicago; both managed schedules verified active, separate per-time delivery identities fixed, blocked on publishing approval. Reports check homepage, /estimate and /freeestimate server HTML loading and saved calendar/slow-alert state, not full mobile rendering.
 - Replace Calendly’s connected old Gmail calendar with Contact@TexasBathSolutions.com so confirmation and cancellation invitations use the correct sender; blocked on the account owner reconnecting the calendar in Calendly’s Calendar Sync settings. Screenshot confirms these invitations are sent by the old Gmail calendar, not Lovable Emails; website email changes cannot change their sender.
 
 ## Completed
+- Warranty page: added "Most companies only cover labor for a year. Your walls and base are covered for as long as you own the home." under the BCI paragraph, and "Just use mild cleaners and avoid harsh chemicals. That's all it takes to keep the warranty valid." plus "Questions about your warranty? Call or text us at (210) 373-4295." (click-to-call) above the company address; the white top box and the 1-year plumbing section were left untouched; published and verified live.
 - Warranty page: replaced the BCI intro with the user's chosen wording ("Your acrylic shower base and wall surrounds are covered by a limited lifetime manufacturer's warranty from BCI Concepts for residential use. As long as you take care of it, this protection lasts for as long as you own your home. It can also transfer once under certain conditions (usually within 2 years)."); published and verified live.
 - Warranty page: added the clean white "We have one of the strongest warranties in the industry." box under the heading with the 5-star/no-complaints line kept inside it, stacked Plumbing Warranty below the grab bars / faucets box, kept covered/not-covered side by side on desktop, and verified every warranty sentence unchanged; published.
 - Warranty page design polish: soft navy accent bar and 5-star/no-complaints line under the heading, side-by-side covered/not-covered cards on desktop (stacked on mobile), polished grab-bars and plumbing boxes, all warranty wording verified unchanged; published and checked live on phone and computer.
