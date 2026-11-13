@@ -197,10 +197,6 @@ function WarrantyPage() {
             Always follow the care guidelines that come with your products to keep the warranty
             valid. For the full details, refer to the paperwork from your installer or contact us.
           </p>
-          <p className="mt-4 text-sm leading-relaxed text-neutral-700 md:text-base">
-            Just use mild cleaners and avoid harsh chemicals. That&rsquo;s all it takes to keep the
-            warranty valid.
-          </p>
           <p className="mt-3 text-sm leading-relaxed text-neutral-700 md:text-base">
             Questions about your warranty? Call or text us at{" "}
             <a href="tel:2107020753" className="font-semibold text-navy hover:underline">
