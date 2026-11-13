@@ -3,6 +3,7 @@ import { template as leadNotificationTemplate } from './lead-notification'
 import { template as appointmentConfirmationTemplate } from './appointment-confirmation'
 import { template as calendarHealthTemplate } from './calendar-health'
 import { template as slowEstimatePageTemplate } from './slow-estimate-page'
+import { template as dailySpeedReportTemplate } from './daily-speed-report'
 
 
 export interface TemplateEntry {
@@ -27,4 +28,5 @@ export const TEMPLATES: Record<string, TemplateEntry> = {
   'appointment-confirmation': appointmentConfirmationTemplate,
   'calendar-health': calendarHealthTemplate,
   'slow-estimate-page': slowEstimatePageTemplate,
+  'daily-speed-report': dailySpeedReportTemplate,
 }
