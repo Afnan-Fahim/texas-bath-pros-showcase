@@ -20,6 +20,7 @@ import { Route as SmsOptinRouteImport } from './routes/sms-optin'
 import { Route as SmsTermsRouteImport } from './routes/sms-terms'
 import { Route as ApiManychatRouteImport } from './routes/api/manychat'
 import { Route as ApiMetaCapiRouteImport } from './routes/api/meta-capi'
+import { Route as ApiPublicDailySpeedReportRouteImport } from './routes/api/public/daily-speed-report'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 
 const IndexRoute = IndexRouteImport.update({
@@ -77,6 +78,12 @@ const ApiMetaCapiRoute = ApiMetaCapiRouteImport.update({
   path: '/api/meta-capi',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicDailySpeedReportRoute =
+  ApiPublicDailySpeedReportRouteImport.update({
+    id: '/api/public/daily-speed-report',
+    path: '/api/public/daily-speed-report',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const LovableEmailTransactionalPreviewRoute =
   LovableEmailTransactionalPreviewRouteImport.update({
     id: '/lovable/email/transactional/preview',
@@ -96,6 +103,7 @@ export interface FileRoutesByFullPath {
   '/sms-terms': typeof SmsTermsRoute
   '/api/manychat': typeof ApiManychatRoute
   '/api/meta-capi': typeof ApiMetaCapiRoute
+  '/api/public/daily-speed-report': typeof ApiPublicDailySpeedReportRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRoutesByTo {
@@ -110,6 +118,7 @@ export interface FileRoutesByTo {
   '/sms-terms': typeof SmsTermsRoute
   '/api/manychat': typeof ApiManychatRoute
   '/api/meta-capi': typeof ApiMetaCapiRoute
+  '/api/public/daily-speed-report': typeof ApiPublicDailySpeedReportRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRoutesById {
@@ -125,6 +134,7 @@ export interface FileRoutesById {
   '/sms-terms': typeof SmsTermsRoute
   '/api/manychat': typeof ApiManychatRoute
   '/api/meta-capi': typeof ApiMetaCapiRoute
+  '/api/public/daily-speed-report': typeof ApiPublicDailySpeedReportRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRouteTypes {
@@ -141,6 +151,7 @@ export interface FileRouteTypes {
     | '/sms-terms'
     | '/api/manychat'
     | '/api/meta-capi'
+    | '/api/public/daily-speed-report'
     | '/lovable/email/transactional/preview'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -155,6 +166,7 @@ export interface FileRouteTypes {
     | '/sms-terms'
     | '/api/manychat'
     | '/api/meta-capi'
+    | '/api/public/daily-speed-report'
     | '/lovable/email/transactional/preview'
   id:
     | '__root__'
@@ -169,6 +181,7 @@ export interface FileRouteTypes {
     | '/sms-terms'
     | '/api/manychat'
     | '/api/meta-capi'
+    | '/api/public/daily-speed-report'
     | '/lovable/email/transactional/preview'
   fileRoutesById: FileRoutesById
 }
@@ -184,6 +197,7 @@ export interface RootRouteChildren {
   SmsTermsRoute: typeof SmsTermsRoute
   ApiManychatRoute: typeof ApiManychatRoute
   ApiMetaCapiRoute: typeof ApiMetaCapiRoute
+  ApiPublicDailySpeedReportRoute: typeof ApiPublicDailySpeedReportRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
 }
 
@@ -266,6 +280,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiMetaCapiRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/daily-speed-report': {
+      id: '/api/public/daily-speed-report'
+      path: '/api/public/daily-speed-report'
+      fullPath: '/api/public/daily-speed-report'
+      preLoaderRoute: typeof ApiPublicDailySpeedReportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/lovable/email/transactional/preview': {
       id: '/lovable/email/transactional/preview'
       path: '/lovable/email/transactional/preview'
@@ -288,6 +309,7 @@ const rootRouteChildren: RootRouteChildren = {
   SmsTermsRoute: SmsTermsRoute,
   ApiManychatRoute: ApiManychatRoute,
   ApiMetaCapiRoute: ApiMetaCapiRoute,
+  ApiPublicDailySpeedReportRoute: ApiPublicDailySpeedReportRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
 }
 export const routeTree = rootRouteImport
