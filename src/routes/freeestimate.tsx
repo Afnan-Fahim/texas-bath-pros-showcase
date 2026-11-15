@@ -172,7 +172,7 @@ function FreeEstimatePage() {
         </div>
         <form ref={formRef} onSubmit={e => e.preventDefault()} className="scroll-mt-6">
           <fieldset disabled={busy || saved} className="space-y-7 lg:space-y-3 disabled:opacity-75">
-            <p className="border-t border-border pt-7 text-base font-bold text-navy lg:pt-3">Fill This Out, Then Pick A Time For Your Estimate. (It’s Totally Free &amp; No Obligation!)</p>
+            <p className="border-t border-border pt-7 text-base font-bold text-navy lg:pt-3">Fill This Out, Then Pick A Time For Your Estimate. (It’s Totally Free &amp; No Obligation!)<span className="mt-1.5 block text-xs font-normal leading-snug text-muted-foreground lg:hidden">Takes about 40 seconds — no pressure.</span></p>
             <div className="grid gap-4 sm:grid-cols-2 lg:gap-3">
               {([
                 ['name', 'Name', 'text', 'name', 120],
