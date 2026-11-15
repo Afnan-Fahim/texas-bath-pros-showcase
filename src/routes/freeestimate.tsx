@@ -19,7 +19,7 @@ const estimateIntroTitle: ReactNode = (
 )
 const estimateIntroPoints = [
   'A Free No-Pressure Quote for Entire Remodels, Walk-In Showers or Tubs',
-  'We Will Work With You To Design Your Dream Shower',
+  'Most jobs finished in 2-3 days.',
   'Our Quote Is Good For A FULL Year',
 ]
 
