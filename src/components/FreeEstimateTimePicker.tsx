@@ -11,7 +11,7 @@ const dayKey = (iso: string) => new Date(iso).toLocaleDateString('en-CA', { time
 const dayLabel = (iso: string) => new Date(iso).toLocaleDateString('en-US', { timeZone: TZ, weekday: 'short', month: 'short', day: 'numeric' })
 const timeLabel = (iso: string) => new Date(iso).toLocaleTimeString('en-US', { timeZone: TZ, hour: 'numeric', minute: '2-digit' })
 
-export function FreeEstimateTimePicker({ identity, onBooked, onEnsureSaved, initialTimes }: { identity: { name: string; email: string; phone: string }; onBooked: (startTime: string) => void; onEnsureSaved: () => Promise<string | null>; initialTimes: string[] }) {
+export function FreeEstimateTimePicker({ identity, onBooked, onEnsureSaved, initialTimes, mobileBookLabel }: { identity: { name: string; email: string; phone: string }; onBooked: (startTime: string) => void; onEnsureSaved: () => Promise<string | null>; initialTimes: string[]; mobileBookLabel?: string }) {
   const loadTimes = useServerFn(getFreeEstimateTimes)
   const book = useServerFn(bookFreeEstimate)
   // Times are preloaded by the route loader (SSR), so the calendar renders
@@ -55,6 +55,7 @@ export function FreeEstimateTimePicker({ identity, onBooked, onEnsureSaved, init
   }
 
   if (!times.length) return <p className="text-base text-navy">No open times right now. Please call or text (210) 373-4295 and we'll get you scheduled.</p>
+  const desktopLabel = picked ? `Lock In My $500.00 OFF · ${dayLabel(picked)}, ${timeLabel(picked)}` : 'Lock In My $500.00 OFF'
   return (
     <div>
       <p className="rounded-xl border border-gold/40 border-l-4 border-l-gold bg-gold/10 px-4 py-3 text-sm leading-relaxed text-navy/80 shadow-sm">
@@ -70,7 +71,12 @@ export function FreeEstimateTimePicker({ identity, onBooked, onEnsureSaved, init
       </div>
       {error && <p role="alert" className="mt-4 text-sm text-destructive">{error}</p>}
       <Button type="button" onClick={schedule} disabled={!picked || busy} className="mt-6 h-auto min-h-12 w-full text-base">
-        {busy ? 'Scheduling…' : picked ? `Lock In My $500.00 OFF · ${dayLabel(picked)}, ${timeLabel(picked)}` : 'Lock In My $500.00 OFF'}
+        {busy ? 'Scheduling…' : mobileBookLabel ? (
+          <>
+            <span className="lg:hidden">{mobileBookLabel}</span>
+            <span className="hidden lg:inline">{desktopLabel}</span>
+          </>
+        ) : desktopLabel}
       </Button>
     </div>
   )

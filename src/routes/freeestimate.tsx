@@ -24,6 +24,8 @@ const estimateIntroPoints = [
 ]
 
 const TRUST_BADGES = ['5.0 Google', 'BBB A+', 'Insured', 'Warranty', 'Local']
+// Mobile-only trust row: the combined star line plus the extra bubbles.
+const MOBILE_TRUST_BADGES = ['5.0 Google', '⭐ 5.0 Google · A+ BBB · Family-Owned', 'Insured', 'Warranty', 'Local']
 
 function TrustBadges({ badges = TRUST_BADGES, className }: { badges?: string[]; className?: string }) {
   return (
@@ -38,11 +40,11 @@ function TrustBadges({ badges = TRUST_BADGES, className }: { badges?: string[]; 
   )
 }
 
-function EstimateIntro({ className, points = estimateIntroPoints, title = estimateIntroTitle }: { className?: string; points?: string[]; title?: ReactNode }) {
+function EstimateIntro({ className, points = estimateIntroPoints, title = estimateIntroTitle }: { className?: string; points?: string[]; title?: ReactNode | null }) {
   return (
     <div className={cn('font-sans text-navy', className)}>
-      <p className="text-base font-bold leading-snug lg:text-[17px]">{title}</p>
-      <ul className="mt-2 space-y-1.5 text-sm leading-[1.5] lg:text-[15px]">
+      {title ? <p className="text-base font-bold leading-snug lg:text-[17px]">{title}</p> : null}
+      <ul className={cn('space-y-1.5 text-sm leading-[1.5] lg:text-[15px]', title && 'mt-2')}>
         {points.map(point => (
           <li key={point} className="flex gap-2.5">
             <span aria-hidden="true" className="mt-px shrink-0 text-[1.05em] font-bold leading-none text-check">✓</span>
@@ -152,8 +154,8 @@ function FreeEstimatePage() {
         <source media="(min-width: 1024px)" srcSet={heroPhoto.url} />
         <img src={mobilePhoto.url} width={1568} height={1264} loading="eager" decoding="async" fetchPriority="high" alt="San Antonio bathroom remodel with Christmas decorations by Texas Bath Solutions — $0 down, payments from just $115 a month, get installed before Christmas" className="w-full h-auto" />
         </picture>
-        <EstimateIntro className="px-4 pt-3 sm:px-8" />
-        <TrustBadges badges={['5.0 Google']} className="px-4 pt-2 pb-1 sm:px-8" />
+        <EstimateIntro className="px-4 pt-3 sm:px-8" title={null} />
+        <TrustBadges badges={MOBILE_TRUST_BADGES} className="px-4 pt-2 pb-1 sm:px-8" />
       </div>
       <div className="mx-auto grid max-w-6xl gap-6 px-4 pb-8 sm:px-6 lg:max-w-[1180px] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)] lg:items-start lg:gap-8 lg:px-8 lg:py-5">
       <div className="min-w-0 rounded-2xl border-2 border-navy/15 bg-card p-6 shadow-lift sm:p-9 lg:p-6">
@@ -189,7 +191,7 @@ function FreeEstimatePage() {
         </form>
         <section ref={calendar} className="mt-8 scroll-mt-6 border-t border-border pt-6 lg:mt-5 lg:pt-4">
           {booked ? <div role="status"><h2 className="text-2xl font-semibold text-navy">Your appointment is confirmed</h2><p className="mt-2 text-base text-muted-foreground">We'll email your confirmation and text you before the visit.</p></div> : (
-            <FreeEstimateTimePicker initialTimes={initialTimes} onEnsureSaved={ensureSaved} identity={{ name: form.name, email: form.email, phone: form.phone }} onBooked={() => setBooked(true)} />
+            <FreeEstimateTimePicker initialTimes={initialTimes} onEnsureSaved={ensureSaved} identity={{ name: form.name, email: form.email, phone: form.phone }} onBooked={() => setBooked(true)} mobileBookLabel="Lock In My $250.00 HEB Gift Card!" />
           )}
         </section>
       </div>
