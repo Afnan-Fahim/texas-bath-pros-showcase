@@ -24,15 +24,15 @@ const estimateIntroPoints = [
 ]
 
 const TRUST_BADGES = ['5.0 Google', 'BBB A+', 'Insured', 'Warranty', 'Local']
-// Mobile-only trust row: the combined star line plus the extra bubbles.
-const MOBILE_TRUST_BADGES = ['5.0 Google', '⭐ 5.0 Google · A+ BBB · Family-Owned', 'Insured', 'Warranty', 'Local']
+// Mobile-only trust row: one clean 5.0 Google bubble, then the separate bubbles.
+const MOBILE_TRUST_BADGES = ['⭐ 5.0 Google', 'A+ BBB', 'Family-Owned', 'Insured', 'Warranty', 'Local']
 
-function TrustBadges({ badges = TRUST_BADGES, className }: { badges?: string[]; className?: string }) {
+function TrustBadges({ badges = TRUST_BADGES, className, autoStars = true }: { badges?: string[]; className?: string; autoStars?: boolean }) {
   return (
     <ul className={cn('flex flex-wrap items-center gap-2', className)}>
       {badges.map((badge, index) => (
         <li key={badge} className="inline-flex items-center gap-1.5 rounded-full border border-navy/10 bg-card px-3 py-1.5 text-xs font-semibold text-navy shadow-sm">
-          {index === 0 && <span aria-hidden="true" className="text-gold-bright">★★★★★</span>}
+          {index === 0 && autoStars && <span aria-hidden="true" className="text-gold-bright">★★★★★</span>}
           {badge}
         </li>
       ))}
@@ -155,7 +155,7 @@ function FreeEstimatePage() {
         <img src={mobilePhoto.url} width={1568} height={1264} loading="eager" decoding="async" fetchPriority="high" alt="San Antonio bathroom remodel with Christmas decorations by Texas Bath Solutions — $0 down, payments from just $115 a month, get installed before Christmas" className="w-full h-auto" />
         </picture>
         <EstimateIntro className="px-4 pt-3 sm:px-8" title={null} />
-        <TrustBadges badges={MOBILE_TRUST_BADGES} className="px-4 pt-2 pb-1 sm:px-8" />
+        <TrustBadges badges={MOBILE_TRUST_BADGES} autoStars={false} className="px-4 pt-2 pb-1 sm:px-8" />
       </div>
       <div className="mx-auto grid max-w-6xl gap-6 px-4 pb-8 sm:px-6 lg:max-w-[1180px] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)] lg:items-start lg:gap-8 lg:px-8 lg:py-5">
       <div className="min-w-0 rounded-2xl border-2 border-navy/15 bg-card p-6 shadow-lift sm:p-9 lg:p-6">
