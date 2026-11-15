@@ -18,7 +18,7 @@ const estimateIntroTitle: ReactNode = (
   <>Next 10 Appointments Will Get An <span className="whitespace-nowrap font-bold">ADDITIONAL $500.00 OFF</span></>
 )
 const estimateIntroPoints = [
-  'A Free No-Pressure Quote',
+  'A Free No-Pressure Quote for Entire Remodels, Walk-In Showers or Tubs',
   'We Will Work With You To Design Your Dream Shower',
   'Our Quote Is Good For A FULL Year',
 ]
