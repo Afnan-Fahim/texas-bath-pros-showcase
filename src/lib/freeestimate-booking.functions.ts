@@ -2,8 +2,8 @@ import { createServerFn } from '@tanstack/react-start'
 import { z } from 'zod'
 
 // /freeestimate books directly through the Calendly API so visitors never
-// re-type their details inside Calendly. The lead row saved by our form is the
-// only source of the invitee's name, email, phone, address and homeowner answer.
+// re-type their details inside Calendly. The lead row supplies the invitee's
+// name, phone, address and homeowner answer; Calendly uses the dummy email.
 const EVENT_TYPE = 'https://api.calendly.com/event_types/fade14bc-6fea-43a5-9df1-91afe922dbec'
 
 async function calendly(path: string, init?: RequestInit) {
@@ -56,7 +56,7 @@ export const bookFreeEstimate = createServerFn({ method: 'POST' })
       body: JSON.stringify({
         event_type: EVENT_TYPE,
         start_time: data.startTime,
-        invitee: { name: lead.name.trim(), email: lead.email.trim(), timezone: 'America/Chicago' },
+        invitee: { name: lead.name.trim(), email: 'noemail@texasbathsolutions.com', timezone: 'America/Chicago' },
         questions_and_answers: questionsAndAnswers,
       }),
     })
