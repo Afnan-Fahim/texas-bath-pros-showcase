@@ -168,20 +168,20 @@ function FreeEstimatePage() {
           <h1 className="hidden lg:block text-2xl font-semibold text-navy sm:text-4xl lg:text-2xl tracking-normal">Hey San Antonio!</h1>
         </header>
         <div className="mb-5 space-y-3 font-sans text-sm leading-relaxed text-navy lg:mb-3 lg:text-[15px]">
-          <p className="text-base font-medium leading-relaxed lg:text-lg">
+          <p className="hidden lg:block text-base font-medium leading-relaxed lg:text-lg">
             Not only do we give a <span className="font-bold">$250 HEB Gift Card</span> on every completed project — we also beat other companies’ written quotes by <span className="font-bold">$1,000 or more</span> on the same scope.
           </p>
           <p className="hidden lg:block">We’re a Small Family Owned Company and have a Lean Local Crew with Decades of Combined Experience.</p>
           <div className="lg:hidden">
-            <p className="text-[28px] font-bold leading-tight text-check">Here is how We BEAT other Companies on the Exact Same Bathroom Remodel:</p>
-            <ul className="mt-2 space-y-2">
+            <p className="text-[16.8px] font-bold leading-tight text-navy underline decoration-check decoration-[3px] underline-offset-4">Here is how We BEAT other Companies on the Exact Same Bathroom Remodel:</p>
+            <ul className="mt-3 space-y-3 text-[42px] font-medium leading-[1.15] tracking-tight">
               {([
                 'Get a FREE $250 HEB Gift Card after we complete your Remodel',
                 'We Guarantee the Lowest Price on every same scope project',
                 'Most Projects only take 2-3 Days',
                 '$0 Down with Payments as low as $115 a Month',
               ] as const).map(bullet => (
-                <li key={bullet} className="flex gap-2.5">
+                <li key={bullet} className="flex gap-3">
                   <span aria-hidden className="text-check">•</span>
                   <span>{bullet}</span>
                 </li>
