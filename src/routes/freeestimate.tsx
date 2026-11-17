@@ -24,15 +24,13 @@ const estimateIntroPoints = [
 ]
 
 const TRUST_BADGES = ['5.0 Google', 'BBB A+', 'Insured', 'Warranty', 'Local']
-// Mobile-only trust row: one clean 5.0 Google bubble, then the separate bubbles.
-const MOBILE_TRUST_BADGES = ['⭐ 5.0 Google', 'A+ BBB', 'Family-Owned', 'Insured', 'Local']
 
-function TrustBadges({ badges = TRUST_BADGES, className, autoStars = true, compact = false }: { badges?: string[]; className?: string; autoStars?: boolean; compact?: boolean }) {
+function TrustBadges({ badges = TRUST_BADGES, className }: { badges?: string[]; className?: string }) {
   return (
-    <ul className={cn('flex flex-wrap items-center gap-2', compact && 'gap-[3px] max-[360px]:gap-[2px]', className)}>
+    <ul className={cn('flex flex-wrap items-center gap-2', className)}>
       {badges.map((badge, index) => (
-        <li key={badge} className={cn('inline-flex items-center gap-1.5 rounded-full border border-navy/10 bg-card px-3 py-1.5 text-xs font-semibold text-navy shadow-sm', compact && 'gap-[3px] whitespace-nowrap px-1.5 py-1 text-[10px] max-[360px]:px-1 max-[360px]:text-[9px]')}>
-          {index === 0 && autoStars && <span aria-hidden="true" className="text-gold-bright">★★★★★</span>}
+        <li key={badge} className="inline-flex items-center gap-1.5 rounded-full border border-navy/10 bg-card px-3 py-1.5 text-xs font-semibold text-navy shadow-sm">
+          {index === 0 && <span aria-hidden="true" className="text-gold-bright">★★★★★</span>}
           {badge}
         </li>
       ))}
@@ -40,11 +38,11 @@ function TrustBadges({ badges = TRUST_BADGES, className, autoStars = true, compa
   )
 }
 
-function EstimateIntro({ className, points = estimateIntroPoints, title = estimateIntroTitle }: { className?: string; points?: string[]; title?: ReactNode | null }) {
+function EstimateIntro({ className, points = estimateIntroPoints, title = estimateIntroTitle }: { className?: string; points?: string[]; title?: ReactNode }) {
   return (
     <div className={cn('font-sans text-navy', className)}>
-      {title ? <p className="text-base font-bold leading-snug lg:text-[17px]">{title}</p> : null}
-      <ul className={cn('space-y-1.5 text-sm leading-[1.5] lg:text-[15px]', title && 'mt-2')}>
+      <p className="text-base font-bold leading-snug lg:text-[17px]">{title}</p>
+      <ul className="mt-2 space-y-1.5 text-sm leading-[1.5] lg:text-[15px]">
         {points.map(point => (
           <li key={point} className="flex gap-2.5">
             <span aria-hidden="true" className="mt-px shrink-0 text-[1.05em] font-bold leading-none text-check">✓</span>
@@ -154,8 +152,8 @@ function FreeEstimatePage() {
         <source media="(min-width: 1024px)" srcSet={heroPhoto.url} />
         <img src={mobilePhoto.url} width={1568} height={1264} loading="eager" decoding="async" fetchPriority="high" alt="San Antonio bathroom remodel with Christmas decorations by Texas Bath Solutions — $0 down, payments from just $115 a month, get installed before Christmas" className="w-full h-auto" />
         </picture>
-        <EstimateIntro className="px-4 pt-3 sm:px-8" title={null} />
-        <TrustBadges badges={MOBILE_TRUST_BADGES} autoStars={false} compact className="px-4 pt-2 pb-1 sm:px-8" />
+        <EstimateIntro className="px-4 pt-3 sm:px-8" />
+        <TrustBadges badges={['5.0 Google']} className="px-4 pt-2 pb-1 sm:px-8" />
       </div>
       <div className="mx-auto grid max-w-6xl gap-6 px-4 pb-8 sm:px-6 lg:max-w-[1180px] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)] lg:items-start lg:gap-8 lg:px-8 lg:py-5">
       <div className="min-w-0 rounded-2xl border-2 border-navy/15 bg-card p-6 shadow-lift sm:p-9 lg:p-6">
@@ -172,7 +170,7 @@ function FreeEstimatePage() {
         </div>
         <form ref={formRef} onSubmit={e => e.preventDefault()} className="scroll-mt-6">
           <fieldset disabled={busy || saved} className="space-y-7 lg:space-y-3 disabled:opacity-75">
-            <p className="border-t border-border pt-7 text-base font-bold text-navy lg:pt-3">Fill This Out, Then Pick A Time For Your Estimate. (It’s Totally Free &amp; No Obligation!)<span className="mt-1.5 block text-xs font-normal leading-snug text-muted-foreground lg:hidden">Takes about 40 seconds!</span></p>
+            <p className="border-t border-border pt-7 text-base font-bold text-navy lg:pt-3">Fill This Out, Then Pick A Time For Your Estimate. (It’s Totally Free &amp; No Obligation!)</p>
             <div className="grid gap-4 sm:grid-cols-2 lg:gap-3">
               {([
                 ['name', 'Name', 'text', 'name', 120],
@@ -191,7 +189,7 @@ function FreeEstimatePage() {
         </form>
         <section ref={calendar} className="mt-8 scroll-mt-6 border-t border-border pt-6 lg:mt-5 lg:pt-4">
           {booked ? <div role="status"><h2 className="text-2xl font-semibold text-navy">Your appointment is confirmed</h2><p className="mt-2 text-base text-muted-foreground">We'll email your confirmation and text you before the visit.</p></div> : (
-            <FreeEstimateTimePicker initialTimes={initialTimes} onEnsureSaved={ensureSaved} identity={{ name: form.name, email: form.email, phone: form.phone }} onBooked={() => setBooked(true)} mobileBookLabel="Lock In My $250.00 HEB Gift Card!" />
+            <FreeEstimateTimePicker initialTimes={initialTimes} onEnsureSaved={ensureSaved} identity={{ name: form.name, email: form.email, phone: form.phone }} onBooked={() => setBooked(true)} />
           )}
         </section>
       </div>
