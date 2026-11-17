@@ -197,7 +197,8 @@ function FreeEstimatePage() {
             </ul>
           </div>
           <p className="hidden lg:block"><span className="underline decoration-check decoration-[3px] underline-offset-4">That’s how we beat other companies on the same job.</span></p>
-          <p>Prefer to talk or text? Call or text us anytime at <a href="tel:2103734295" className="font-bold underline">(210) 373-4295</a>.</p>
+          <p className="lg:hidden">Call or Text us Anytime at <a href="tel:2103734295" className="font-bold underline">(210) 373-4295</a>.</p>
+          <p className="hidden lg:block">Prefer to talk or text? Call or text us anytime at <a href="tel:2103734295" className="font-bold underline">(210) 373-4295</a>.</p>
         </div>
         <form ref={formRef} onSubmit={e => e.preventDefault()} className="scroll-mt-6">
           {!booked && (
