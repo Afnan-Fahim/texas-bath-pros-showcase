@@ -24,6 +24,7 @@ const estimateIntroPoints = [
 ]
 
 const TRUST_BADGES = ['5.0 Google', 'BBB A+', 'Insured', 'Warranty', 'Local']
+const MOBILE_PREFILL_EMAIL = 'noemail@texasbathsolutions.com'
 
 function TrustBadges({ badges = TRUST_BADGES, className }: { badges?: string[]; className?: string }) {
   return (
@@ -101,7 +102,10 @@ function FreeEstimatePage() {
   const submissionId = useRef('')
   const calendar = useRef<HTMLDivElement>(null)
   const formRef = useRef<HTMLFormElement>(null)
-  useEffect(() => { captureAttribution() }, [])
+  useEffect(() => {
+    captureAttribution()
+    if (matchMedia('(max-width: 1023px)').matches) setForm(previous => ({ ...previous, email: MOBILE_PREFILL_EMAIL }))
+  }, [])
   useEffect(() => {
     // No network or observer is added to the initial loading path. Measure
     // the first painted frame after hydration; report only slow full loads.
@@ -180,7 +184,7 @@ function FreeEstimatePage() {
                 ['phone', 'Phone', 'tel', 'tel', 32],
                 ['address', 'Address', 'text', 'street-address', 240],
               ] as const).map(([key, label, type, autoComplete, maxLength]) => (
-                <label key={key} className="grid gap-2 lg:gap-1 text-sm font-medium text-navy">
+                <label key={key} className={cn('grid gap-2 lg:gap-1 text-sm font-medium text-navy', key === 'email' && 'hidden lg:grid')}>
                   {label}
                   <input required type={type} autoComplete={autoComplete} maxLength={maxLength} value={form[key]} onChange={e => setValue(key, e.target.value)} className="h-12 lg:h-10 min-w-0 rounded-md border border-input bg-card px-3 text-base text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring" />
                 </label>
