@@ -189,7 +189,7 @@ function FreeEstimatePage() {
                   )}
                   <span className="text-[16.8px] leading-[1.35]">
                     {bullet.includes('FREE $250 HEB Gift Card') ? (
-                      <>Get a <span className="text-holiday-red">FREE $250 HEB Gift Card</span> after we complete your Remodel</>
+                      <>Get a <span className="text-holiday-red">FREE $250 HEB Gift Card</span><br />after we complete your Remodel</>
                     ) : bullet}
                   </span>
                 </li>
