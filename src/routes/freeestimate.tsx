@@ -164,7 +164,7 @@ function FreeEstimatePage() {
       <div className="mx-auto grid max-w-6xl gap-6 px-4 pb-8 sm:px-6 lg:max-w-[1180px] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)] lg:items-start lg:gap-8 lg:px-8 lg:py-5">
       <div className="min-w-0 rounded-2xl border-2 border-navy/15 bg-card p-6 shadow-lift sm:p-9 lg:p-6">
         <header className="mb-5 border-b border-border pb-4 lg:mb-3 lg:pb-3">
-<h1 className="text-2xl font-semibold text-navy sm:text-4xl tracking-normal lg:hidden">We’re a Small Family Owned Company with Decades of Experience, Proudly Serving San Antonio!</h1>
+<h1 className="text-2xl font-semibold text-navy sm:text-4xl tracking-normal lg:hidden">We’re a Small Family Owned Company, with Decades of Experience Proudly Serving San Antonio!</h1>
           <h1 className="hidden lg:block text-2xl font-semibold text-navy sm:text-4xl lg:text-2xl tracking-normal">Hey San Antonio!</h1>
         </header>
         <div className="mb-5 space-y-3 font-sans text-sm leading-relaxed text-navy lg:mb-3 lg:text-[15px]">
@@ -172,7 +172,7 @@ function FreeEstimatePage() {
             Not only do we give a <span className="font-bold">$250 HEB Gift Card</span> on every completed project — we also beat other companies’ written quotes by <span className="font-bold">$1,000 or more</span> on the same scope.
           </p>
           <p className="hidden lg:block">We’re a Small Family Owned Company and have a Lean Local Crew with Decades of Combined Experience.</p>
-          <div className="lg:hidden">
+          <div className="lg:hidden pt-6">
             <p className="text-[16.8px] font-bold leading-tight text-navy underline decoration-check decoration-[3px] underline-offset-4">Here is how We BEAT other Companies on the Exact Same Bathroom Remodel:</p>
             <ul className="mt-3 space-y-3 text-[42px] font-medium leading-[1.15] tracking-tight">
               {([
@@ -181,7 +181,7 @@ function FreeEstimatePage() {
                 'Most Projects only take 2-3 Days',
                 '$0 Down with Payments as low as $115 a Month',
               ] as const).map(bullet => (
-                <li key={bullet} className="flex gap-3">
+                <li key={bullet} className="flex items-center gap-3">
                   {bullet.startsWith('Get a FREE') ? (
                     <span aria-hidden className="text-[24px] leading-none">🎁</span>
                   ) : (
@@ -202,7 +202,7 @@ function FreeEstimatePage() {
         </div>
         <form ref={formRef} onSubmit={e => e.preventDefault()} className="scroll-mt-6">
           {!booked && (
-            <p className="rounded-xl border-2 border-holiday-red bg-holiday-green px-4 py-3 text-sm leading-relaxed text-navy/80 shadow-sm lg:hidden">
+            <p className="mb-7 rounded-xl border-2 border-holiday-red bg-holiday-green px-4 py-3 text-sm leading-relaxed text-navy/80 shadow-sm lg:hidden">
               <span className="block font-bold text-navy">What happens at your free estimate?</span>
               It’s Super Easy. We’ll come by, measure the space, you pick your colors you want and we will give you an exact quote to the penny! No pressure, no obligation — usually takes about 30–45 minutes.
             </p>
