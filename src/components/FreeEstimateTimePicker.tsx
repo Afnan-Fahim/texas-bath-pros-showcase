@@ -57,7 +57,7 @@ export function FreeEstimateTimePicker({ identity, onBooked, onEnsureSaved, init
   if (!times.length) return <p className="text-base text-navy">No open times right now. Please call or text (210) 373-4295 and we'll get you scheduled.</p>
   return (
     <div>
-      <p className="rounded-xl border border-gold/40 border-l-4 border-l-gold bg-gold/10 px-4 py-3 text-sm leading-relaxed text-navy/80 shadow-sm">
+      <p className="hidden lg:block rounded-xl border border-gold/40 border-l-4 border-l-gold bg-gold/10 px-4 py-3 text-sm leading-relaxed text-navy/80 shadow-sm">
         <span className="block font-bold text-navy">What happens at your free estimate?</span>
         It’s Super Easy. We’ll come by, measure the space, you pick your colors you want and we will give you an exact quote to the penny! No pressure, no obligation — usually takes about 30–45 minutes.
       </p>

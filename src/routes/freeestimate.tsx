@@ -187,7 +187,11 @@ function FreeEstimatePage() {
                   ) : (
                     <span aria-hidden className="text-check">•</span>
                   )}
-                  <span className="text-[21px] leading-[1.35]">{bullet}</span>
+                  <span className="text-[16.8px] leading-[1.35]">
+                    {bullet.includes('FREE $250 HEB Gift Card') ? (
+                      <>Get a <span className="text-holiday-red">FREE $250 HEB Gift Card</span> after we complete your Remodel</>
+                    ) : bullet}
+                  </span>
                 </li>
               ))}
             </ul>
@@ -196,8 +200,14 @@ function FreeEstimatePage() {
           <p>Prefer to talk or text? Call or text us anytime at <a href="tel:2103734295" className="font-bold underline">(210) 373-4295</a>.</p>
         </div>
         <form ref={formRef} onSubmit={e => e.preventDefault()} className="scroll-mt-6">
+          {!booked && (
+            <p className="rounded-xl border-2 border-holiday-red bg-holiday-green px-4 py-3 text-sm leading-relaxed text-navy/80 shadow-sm lg:hidden">
+              <span className="block font-bold text-navy">What happens at your free estimate?</span>
+              It’s Super Easy. We’ll come by, measure the space, you pick your colors you want and we will give you an exact quote to the penny! No pressure, no obligation — usually takes about 30–45 minutes.
+            </p>
+          )}
           <fieldset disabled={busy || saved} className="space-y-7 lg:space-y-3 disabled:opacity-75">
-            <p className="border-t border-border pt-7 text-base font-bold text-navy lg:pt-3"><span className="hidden lg:inline">Fill This Out, </span>Then Pick A Time For Your Estimate. (It’s Totally Free &amp; No Obligation!)</p>
+            <p className="hidden lg:block border-t border-border pt-7 text-base font-bold text-navy lg:pt-3"><span className="hidden lg:inline">Fill This Out, </span>Then Pick A Time For Your Estimate. (It’s Totally Free &amp; No Obligation!)</p>
             <div className="grid gap-4 sm:grid-cols-2 lg:gap-3">
               {([
                 ['name', 'Name', 'text', 'name', 120],
