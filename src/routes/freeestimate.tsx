@@ -182,8 +182,12 @@ function FreeEstimatePage() {
                 '$0 Down with Payments as low as $115 a Month',
               ] as const).map(bullet => (
                 <li key={bullet} className="flex gap-3">
-                  <span aria-hidden className="text-check">•</span>
-                  <span>{bullet}</span>
+                  {bullet.startsWith('Get a FREE') ? (
+                    <span aria-hidden className="text-[24px] leading-none">🎁</span>
+                  ) : (
+                    <span aria-hidden className="text-check">•</span>
+                  )}
+                  <span className="text-[21px] leading-[1.35]">{bullet}</span>
                 </li>
               ))}
             </ul>
