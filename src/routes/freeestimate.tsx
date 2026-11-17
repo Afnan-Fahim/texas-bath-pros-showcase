@@ -38,10 +38,11 @@ function TrustBadges({ badges = TRUST_BADGES, className }: { badges?: string[]; 
   )
 }
 
-function EstimateIntro({ className, points = estimateIntroPoints, title = estimateIntroTitle }: { className?: string; points?: string[]; title?: ReactNode }) {
+function EstimateIntro({ className, points = estimateIntroPoints, title = estimateIntroTitle, titleClass = 'text-base font-bold leading-snug lg:text-[17px]' }: { className?: string; points?: string[]; title?: ReactNode; titleClass?: string }) {
   return (
     <div className={cn('font-sans text-navy', className)}>
-      <p className="text-base font-bold leading-snug lg:text-[17px]">{title}</p>
+      <p className={titleClass}>{title}</p>
+      {points.length > 0 && (
       <ul className="mt-2 space-y-1.5 text-sm leading-[1.5] lg:text-[15px]">
         {points.map(point => (
           <li key={point} className="flex gap-2.5">
@@ -50,6 +51,7 @@ function EstimateIntro({ className, points = estimateIntroPoints, title = estima
           </li>
         ))}
       </ul>
+      )}
     </div>
   )
 }
@@ -152,8 +154,8 @@ function FreeEstimatePage() {
         <source media="(min-width: 1024px)" srcSet={heroPhoto.url} />
         <img src={mobilePhoto.url} width={1568} height={1264} loading="eager" decoding="async" fetchPriority="high" alt="San Antonio bathroom remodel with Christmas decorations by Texas Bath Solutions — $0 down, payments from just $115 a month, get installed before Christmas" className="w-full h-auto" />
         </picture>
-        <EstimateIntro className="px-4 pt-3 sm:px-8" />
-        <TrustBadges badges={['5.0 Google']} className="px-4 pt-2 pb-1 sm:px-8" />
+        <EstimateIntro className="px-4 pt-3 sm:px-8" points={[]} titleClass="text-[20.8px] font-bold leading-snug lg:text-[17px]" />
+        <TrustBadges badges={['5.0 Google', 'Lifetime Warranty', 'Local']} className="px-4 pt-2 pb-1 sm:px-8" />
       </div>
       <div className="mx-auto grid max-w-6xl gap-6 px-4 pb-8 sm:px-6 lg:max-w-[1180px] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)] lg:items-start lg:gap-8 lg:px-8 lg:py-5">
       <div className="min-w-0 rounded-2xl border-2 border-navy/15 bg-card p-6 shadow-lift sm:p-9 lg:p-6">
