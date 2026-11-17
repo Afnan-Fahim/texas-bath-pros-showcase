@@ -164,13 +164,14 @@ function FreeEstimatePage() {
       <div className="mx-auto grid max-w-6xl gap-6 px-4 pb-8 sm:px-6 lg:max-w-[1180px] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)] lg:items-start lg:gap-8 lg:px-8 lg:py-5">
       <div className="min-w-0 rounded-2xl border-2 border-navy/15 bg-card p-6 shadow-lift sm:p-9 lg:p-6">
         <header className="mb-5 border-b border-border pb-4 lg:mb-3 lg:pb-3">
-<h1 className="text-2xl font-semibold text-navy sm:text-4xl lg:text-2xl tracking-normal">Hey San Antonio!</h1>
+<h1 className="text-2xl font-semibold text-navy sm:text-4xl tracking-normal lg:hidden">We’re a Small Family Owned Company and have a Lean Local Crew with Decades of Combined Experience.</h1>
+          <h1 className="hidden lg:block text-2xl font-semibold text-navy sm:text-4xl lg:text-2xl tracking-normal">Hey San Antonio!</h1>
         </header>
         <div className="mb-5 space-y-3 font-sans text-sm leading-relaxed text-navy lg:mb-3 lg:text-[15px]">
           <p className="text-base font-medium leading-relaxed lg:text-lg">
             Not only do we give a <span className="font-bold">$250 HEB Gift Card</span> on every completed project — we also beat other companies’ written quotes by <span className="font-bold">$1,000 or more</span> on the same scope.
           </p>
-          <p>We’re a Small Family Owned Company and have a Lean Local Crew with Decades of Combined Experience.</p>
+          <p className="hidden lg:block">We’re a Small Family Owned Company and have a Lean Local Crew with Decades of Combined Experience.</p>
           <p><span className="underline decoration-check decoration-[3px] underline-offset-4">That’s how we beat other companies on the same job.</span></p>
           <p>Prefer to talk or text? Call or text us anytime at <a href="tel:2103734295" className="font-bold underline">(210) 373-4295</a>.</p>
         </div>
