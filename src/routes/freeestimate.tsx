@@ -242,7 +242,7 @@ function FreeEstimatePage() {
           </fieldset>
         </form>
         <section ref={calendar} className="mt-8 scroll-mt-6 border-t border-border pt-6 lg:mt-5 lg:pt-4">
-          {booked ? <div role="status"><h2 className="text-2xl font-semibold text-navy">Your appointment is confirmed</h2><p className="mt-2 text-base text-muted-foreground">We'll email your confirmation and text you before the visit.</p></div> : (
+          {booked ? <div role="status"><h2 className="text-2xl font-semibold text-navy">Your appointment is confirmed</h2><p className="mt-2 text-base text-muted-foreground lg:hidden">Thank you! We'll message you confirmation, and text you before the visit.</p><p className="mt-2 hidden text-base text-muted-foreground lg:block">We'll email your confirmation and text you before the visit.</p></div> : (
             <FreeEstimateTimePicker initialTimes={initialTimes} onEnsureSaved={ensureSaved} identity={{ name: form.name, email: form.email, phone: form.phone }} onBooked={() => setBooked(true)} />
           )}
         </section>
