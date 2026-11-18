@@ -26,11 +26,11 @@ const estimateIntroPoints = [
 const TRUST_BADGES = ['5.0 Google', 'BBB A+', 'Insured', 'Warranty', 'Local']
 const MOBILE_PREFILL_EMAIL = 'noemail@texasbathsolutions.com'
 
-function TrustBadges({ badges = TRUST_BADGES, className }: { badges?: string[]; className?: string }) {
+function TrustBadges({ badges = TRUST_BADGES, className, badgeClassName }: { badges?: string[]; className?: string; badgeClassName?: string }) {
   return (
     <ul className={cn('flex flex-wrap items-center gap-2', className)}>
       {badges.map((badge, index) => (
-        <li key={badge} className="inline-flex items-center gap-1.5 rounded-full border border-navy/10 bg-card px-3 py-1.5 text-xs font-semibold text-navy shadow-sm">
+        <li key={badge} className={cn('inline-flex items-center gap-1.5 rounded-full border border-navy/10 bg-card px-3 py-1.5 text-xs font-semibold text-navy shadow-sm', badgeClassName)}>
           {index === 0 && <span aria-hidden="true" className="text-gold-bright">★★★★★</span>}
           {badge}
         </li>
@@ -159,7 +159,7 @@ function FreeEstimatePage() {
         <img src={mobilePhoto.url} width={1568} height={1264} loading="eager" decoding="async" fetchPriority="high" alt="San Antonio bathroom remodel with Christmas decorations by Texas Bath Solutions — $0 down, payments from just $115 a month, get installed before Christmas" className="w-full h-auto" />
         </picture>
         <EstimateIntro className="px-4 pt-3 sm:px-8" points={[]} titleClass="text-[20.8px] font-bold leading-snug lg:text-[17px]" />
-        <TrustBadges badges={['5.0 Google', 'Lifetime Warranty', 'Local']} className="px-4 pt-2 pb-1 sm:px-8" />
+        <TrustBadges badges={['5.0 Google', 'Lifetime Warranty', 'Local']} className="px-4 pt-2 pb-1 sm:px-8" badgeClassName="border-transparent bg-check text-white lg:border-navy/10 lg:bg-card lg:text-navy" />
       </div>
       <div className="mx-auto grid max-w-6xl gap-6 px-4 pb-8 sm:px-6 lg:max-w-[1180px] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)] lg:items-start lg:gap-8 lg:px-8 lg:py-5">
       <div className="min-w-0 rounded-2xl border-2 border-navy/15 bg-card p-6 shadow-lift sm:p-9 lg:p-6">
@@ -206,11 +206,11 @@ function FreeEstimatePage() {
           {!booked && (
             <div className="mb-7 rounded-xl border-2 border-check bg-holiday-green px-4 py-3 text-sm leading-relaxed text-navy/80 shadow-sm lg:hidden">
               <span className="block font-bold text-navy">What happens at your Hassle-Free Estimate?</span>
-              <ul className="mt-2 list-disc space-y-1 pl-5">
-                <li>We come measure your Bathroom, and you pick the colors you want</li>
+              <ol className="mt-2 list-decimal space-y-1 pl-5">
+                <li>We come measure your Bathroom,<br />and you pick your Favorite Colors</li>
                 <li>We help Design Your Dream Bathroom</li>
-                <li>In roughly 30 Minutes we give you a Pressure Free Exact Quote down to the Penny</li>
-              </ul>
+                <li>In roughly 30 Minutes we can give you<br />-a Exact Quote-<br />with No Hidden Charges or Fees</li>
+              </ol>
               <p className="mt-2 flex items-center justify-center gap-2 text-center font-bold text-navy">
                 <span aria-hidden className="flex h-[22.68px] shrink-0 items-center justify-center text-[18px] leading-none text-navy">•</span>
                 <span className="whitespace-nowrap">Your Quote is Good for a FULL Year</span>
