@@ -202,8 +202,8 @@ function FreeEstimatePage() {
         </div>
         <form ref={formRef} onSubmit={e => e.preventDefault()} className="scroll-mt-6">
           {!booked && (
-            <p className="mb-7 rounded-xl border-2 border-holiday-red bg-holiday-green px-4 py-3 text-sm leading-relaxed text-navy/80 shadow-sm lg:hidden">
-              <span className="block font-bold text-navy">What happens at your free estimate?</span>
+            <p className="mb-7 rounded-xl border-2 border-check bg-holiday-green px-4 py-3 text-sm leading-relaxed text-navy/80 shadow-sm lg:hidden">
+              <span className="block font-bold text-navy">What happens at your Hassle-Free Estimate?</span>
               It’s Super Easy. We’ll come by, measure the space, you pick your colors you want and we will give you an exact quote to the penny! No pressure, no obligation — usually takes about 30–45 minutes.
             </p>
           )}
