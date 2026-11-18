@@ -40,3 +40,5 @@
 - [x] /freeestimate: show open times on page before clicking button; publish
 
 - [x] /freeestimate: fix false "That time was just taken" error so open times book; publish and test
+
+- [x] /freeestimate: soft continuous fade pulse on the 7 in the mobile promo line; publish
