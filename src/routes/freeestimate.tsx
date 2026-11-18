@@ -222,7 +222,7 @@ function FreeEstimatePage() {
           <fieldset disabled={busy || saved} className="space-y-7 lg:space-y-3 disabled:opacity-75">
             <p className="hidden lg:block border-t border-border pt-7 text-base font-bold text-navy lg:pt-3"><span className="hidden lg:inline">Fill This Out, </span>Then Pick A Time For Your Estimate. (It’s Totally Free &amp; No Obligation!)</p>
             <div className="lg:hidden">
-              <p className="text-base font-bold leading-snug text-navy">LAST STEP: What time works Best?</p>
+              <p className="text-base font-bold leading-snug text-navy">LAST STEP: When’s Good for You?</p>
               <p className="text-center text-base font-bold leading-snug text-navy"><span className="underline decoration-check decoration-[3px] underline-offset-4">Only Takes 20 Seconds</span>!</p>
             </div>
             <div className="grid gap-4 sm:grid-cols-2 lg:gap-3">
