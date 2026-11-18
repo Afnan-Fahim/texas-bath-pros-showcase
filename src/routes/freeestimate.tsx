@@ -173,7 +173,7 @@ function FreeEstimatePage() {
           </p>
           <p className="hidden lg:block">We’re a Small Family Owned Company and have a Lean Local Crew with Decades of Combined Experience.</p>
           <div className="lg:hidden pt-2">
-            <p className="underline decoration-check decoration-[3px] underline-offset-4 text-[16.8px] font-bold leading-tight text-navy">Here is how We BEAT other Companies on the Exact Same Bathroom Remodel:</p>
+            <p className="underline decoration-check decoration-[3px] underline-offset-4 text-[16.8px] font-bold leading-tight text-navy">Here is how We BEAT other Companies:</p>
             <ul className="mt-3 space-y-3 text-[42px] font-medium leading-[1.15] tracking-tight">
               {([
                 'Get a FREE $250 HEB Gift Card with our New Bathroom Remodel',
@@ -210,7 +210,7 @@ function FreeEstimatePage() {
               <ol className="mt-2 list-decimal space-y-1 pl-5">
                 <li>We come measure your Bathroom,<br />and you pick your Favorite Colors</li>
                 <li>We help Design Your Dream Bathroom</li>
-                <li>In roughly 30 Minutes we can give you<span className="block text-center">-a Exact Quote-</span><span className="block text-center">with No Hidden Charges or Fees</span></li>
+                <li>In roughly 30 Minutes we can give you<span className="block">an Exact Quote, with No Hidden Fees</span></li>
               </ol>
               <p className="mt-2 flex items-center justify-center gap-2 text-center font-bold text-navy">
                 <span aria-hidden className="flex h-[22.68px] shrink-0 items-center justify-center text-[18px] leading-none text-navy">•</span>
