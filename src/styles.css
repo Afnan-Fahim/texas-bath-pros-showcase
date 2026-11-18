@@ -179,6 +179,16 @@
   50% { transform: translateY(14px); }
 }
 
+/* Soft continuous fade-out / fade-in for a single highlighted number */
+@keyframes numPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.12; }
+}
+
+@utility animate-num-pulse {
+  animation: numPulse 1.7s ease-in-out infinite;
+}
+
 @utility animate-soft-bounce {
   animation: soft-bounce 1.8s ease-in-out infinite;
 }
@@ -204,7 +214,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .animate-subtle-float,
-  .animate-soft-bounce {
+  .animate-soft-bounce,
+  .animate-num-pulse {
     animation: none !important;
   }
 }
