@@ -190,6 +190,8 @@ function FreeEstimatePage() {
                   <span className="text-[16.8px] leading-[1.35]">
                     {bullet.includes('FREE $250 HEB Gift Card') ? (
                       <>Get a <span className="text-holiday-red">FREE $250 HEB Gift Card</span><br />after we complete your Remodel</>
+                    ) : bullet.startsWith('We Guarantee') ? (
+                      <>We Guarantee the Lowest Price on EVERY<br />Bathroom Project, with the same scope!</>
                     ) : bullet.startsWith('$0 Down') ? (
                       <>$0 Down with Payments as low as $115.<br />Comes with a Lifetime Warranty</>
                     ) : bullet}
@@ -199,7 +201,6 @@ function FreeEstimatePage() {
             </ul>
           </div>
           <p className="hidden lg:block"><span className="underline decoration-check decoration-[3px] underline-offset-4">That’s how we beat other companies on the same job.</span></p>
-          <p className="lg:hidden text-center">- Call or Text us Anytime at <a href="tel:2103734295" className="font-bold underline">(210) 373-4295</a> -</p>
           <p className="hidden lg:block">Prefer to talk or text? Call or text us anytime at <a href="tel:2103734295" className="font-bold underline">(210) 373-4295</a>.</p>
         </div>
         <form ref={formRef} onSubmit={e => e.preventDefault()} className="scroll-mt-6">
@@ -255,9 +256,13 @@ function FreeEstimatePage() {
         <TrustBadges className="mt-3" />
       </div>
       </div>
-        <footer className="pb-10 flex justify-center gap-4 text-xs text-muted-foreground">
-          <Link to="/privacy" className="hover:underline">Privacy Policy</Link>
-          <Link to="/sms-terms" className="hover:underline">SMS Terms</Link>
+        <footer className="pb-10 flex flex-col items-center gap-2 text-xs text-muted-foreground">
+          <p className="lg:hidden text-center text-sm">- Call or Text us Anytime at <a href="tel:2103734295" className="font-bold underline">(210) 373-4295</a> -</p>
+          <div className="flex justify-center gap-4">
+            <Link to="/privacy" className="hover:underline">Privacy Policy</Link>
+            <Link to="/sms-terms" className="hover:underline">SMS Terms</Link>
+            <Link to="/terms" className="hover:underline lg:hidden">Terms and Conditions</Link>
+          </div>
         </footer>
     </main>
   )

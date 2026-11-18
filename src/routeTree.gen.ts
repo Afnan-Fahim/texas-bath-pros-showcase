@@ -18,6 +18,7 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as QuizRouteImport } from './routes/quiz'
 import { Route as SmsOptinRouteImport } from './routes/sms-optin'
 import { Route as SmsTermsRouteImport } from './routes/sms-terms'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as WarrantyRouteImport } from './routes/warranty'
 import { Route as ApiManychatRouteImport } from './routes/api/manychat'
 import { Route as ApiMetaCapiRouteImport } from './routes/api/meta-capi'
@@ -69,6 +70,11 @@ const SmsTermsRoute = SmsTermsRouteImport.update({
   path: '/sms-terms',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WarrantyRoute = WarrantyRouteImport.update({
   id: '/warranty',
   path: '/warranty',
@@ -107,6 +113,7 @@ export interface FileRoutesByFullPath {
   '/quiz': typeof QuizRoute
   '/sms-optin': typeof SmsOptinRoute
   '/sms-terms': typeof SmsTermsRoute
+  '/terms': typeof TermsRoute
   '/warranty': typeof WarrantyRoute
   '/api/manychat': typeof ApiManychatRoute
   '/api/meta-capi': typeof ApiMetaCapiRoute
@@ -123,6 +130,7 @@ export interface FileRoutesByTo {
   '/quiz': typeof QuizRoute
   '/sms-optin': typeof SmsOptinRoute
   '/sms-terms': typeof SmsTermsRoute
+  '/terms': typeof TermsRoute
   '/warranty': typeof WarrantyRoute
   '/api/manychat': typeof ApiManychatRoute
   '/api/meta-capi': typeof ApiMetaCapiRoute
@@ -140,6 +148,7 @@ export interface FileRoutesById {
   '/quiz': typeof QuizRoute
   '/sms-optin': typeof SmsOptinRoute
   '/sms-terms': typeof SmsTermsRoute
+  '/terms': typeof TermsRoute
   '/warranty': typeof WarrantyRoute
   '/api/manychat': typeof ApiManychatRoute
   '/api/meta-capi': typeof ApiMetaCapiRoute
@@ -158,6 +167,7 @@ export interface FileRouteTypes {
     | '/quiz'
     | '/sms-optin'
     | '/sms-terms'
+    | '/terms'
     | '/warranty'
     | '/api/manychat'
     | '/api/meta-capi'
@@ -174,6 +184,7 @@ export interface FileRouteTypes {
     | '/quiz'
     | '/sms-optin'
     | '/sms-terms'
+    | '/terms'
     | '/warranty'
     | '/api/manychat'
     | '/api/meta-capi'
@@ -190,6 +201,7 @@ export interface FileRouteTypes {
     | '/quiz'
     | '/sms-optin'
     | '/sms-terms'
+    | '/terms'
     | '/warranty'
     | '/api/manychat'
     | '/api/meta-capi'
@@ -207,6 +219,7 @@ export interface RootRouteChildren {
   QuizRoute: typeof QuizRoute
   SmsOptinRoute: typeof SmsOptinRoute
   SmsTermsRoute: typeof SmsTermsRoute
+  TermsRoute: typeof TermsRoute
   WarrantyRoute: typeof WarrantyRoute
   ApiManychatRoute: typeof ApiManychatRoute
   ApiMetaCapiRoute: typeof ApiMetaCapiRoute
@@ -279,6 +292,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SmsTermsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/warranty': {
       id: '/warranty'
       path: '/warranty'
@@ -327,6 +347,7 @@ const rootRouteChildren: RootRouteChildren = {
   QuizRoute: QuizRoute,
   SmsOptinRoute: SmsOptinRoute,
   SmsTermsRoute: SmsTermsRoute,
+  TermsRoute: TermsRoute,
   WarrantyRoute: WarrantyRoute,
   ApiManychatRoute: ApiManychatRoute,
   ApiMetaCapiRoute: ApiMetaCapiRoute,

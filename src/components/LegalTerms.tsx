@@ -7,12 +7,12 @@ import {
 
 const COMPANY = "Texas Bath Solutions";
 
-export function LegalTerms() {
+export function LegalTerms({ defaultOpen = false }: { defaultOpen?: boolean }) {
   const year = new Date().getFullYear();
   return (
     <div className="border-t border-neutral-900/10">
       <div className="container-x py-4">
-        <Accordion type="single" collapsible>
+        <Accordion type="single" collapsible defaultValue={defaultOpen ? 'terms' : undefined}>
           <AccordionItem value="terms" className="border-none">
             <AccordionTrigger className="text-xs font-semibold text-neutral-700 hover:no-underline">
               Terms &amp; Conditions of Use, Legal Disclaimers, and Privacy Notice (click to read)
