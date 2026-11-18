@@ -1,7 +1,7 @@
 # Task roadmap
 
 ## Current
-- /freeestimate mobile-only: "LAST STEP: Pick a Time that works Best for you - Only Takes 20 Seconds!" above the Name field (green underline on "Only Takes 20 Seconds") and "Your Quote is Good for a FULL Year" centered with same-sized green bullets on both sides — both committed (382b509) and verified in preview, but the live site still serves the previous build after three publish attempts and ~5 minutes of polling; blocked on the deploy rolling out.
+- (none)
 - Activate daily website speed/loading reports for Josiah at 4:58 p.m. and 7:58 p.m. America/Chicago; both managed schedules verified active, separate per-time delivery identities fixed, blocked on publishing approval. Reports check homepage, /estimate and /freeestimate server HTML loading and saved calendar/slow-alert state, not full mobile rendering.
 - Replace Calendly’s connected old Gmail calendar with Contact@TexasBathSolutions.com so confirmation and cancellation invitations use the correct sender; blocked on the account owner reconnecting the calendar in Calendly’s Calendar Sync settings. Screenshot confirms these invitations are sent by the old Gmail calendar, not Lovable Emails; website email changes cannot change their sender.
 
