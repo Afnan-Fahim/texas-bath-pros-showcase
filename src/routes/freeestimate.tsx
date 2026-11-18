@@ -202,10 +202,15 @@ function FreeEstimatePage() {
         </div>
         <form ref={formRef} onSubmit={e => e.preventDefault()} className="scroll-mt-6">
           {!booked && (
-            <p className="mb-7 rounded-xl border-2 border-check bg-holiday-green px-4 py-3 text-sm leading-relaxed text-navy/80 shadow-sm lg:hidden">
+            <div className="mb-7 rounded-xl border-2 border-check bg-holiday-green px-4 py-3 text-sm leading-relaxed text-navy/80 shadow-sm lg:hidden">
               <span className="block font-bold text-navy">What happens at your Hassle-Free Estimate?</span>
-              It’s Super Easy. We’ll come by, measure the space, you pick your colors you want and we will give you an exact quote to the penny! No pressure, no obligation — usually takes about 30–45 minutes.
-            </p>
+              <ul className="mt-2 list-disc space-y-1 pl-5">
+                <li>We come measure your Bathroom, and you pick the colors you want</li>
+                <li>We help Design Your Dream Bathroom</li>
+                <li>In roughly 30 Minutes we give you a Pressure Free Exact Quote down to the Penny</li>
+              </ul>
+              <p className="mt-2 text-center font-bold text-navy">Quote Good for FULL Year</p>
+            </div>
           )}
           <fieldset disabled={busy || saved} className="space-y-7 lg:space-y-3 disabled:opacity-75">
             <p className="hidden lg:block border-t border-border pt-7 text-base font-bold text-navy lg:pt-3"><span className="hidden lg:inline">Fill This Out, </span>Then Pick A Time For Your Estimate. (It’s Totally Free &amp; No Obligation!)</p>
