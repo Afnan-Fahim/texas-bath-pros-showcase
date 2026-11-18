@@ -179,7 +179,7 @@ function FreeEstimatePage() {
                 'Get a FREE $250 HEB Gift Card after we complete your Remodel',
                 'We Guarantee the Lowest Price on every same scope project',
                 'Most Projects only take 2-3 Days',
-                '$0 Down with Payments as low as $115 a Month',
+                '$0 Down with Payments as low as $115 a Month, with a Lifetime Warranty',
               ] as const).map(bullet => (
                 <li key={bullet} className="flex items-start gap-3">
                   {bullet.startsWith('Get a FREE') ? (
