@@ -1,10 +1,12 @@
 # Task roadmap
 
 ## Current
+- Cancel the QA test appointment left in Calendly (Wed Nov 18, 5:00 PM Central, invitee "QA Confirm Copy Test", dummy email); blocked because the calendar connection returns 403 for event lookups, so it cannot be cancelled from here. The matching lead record was already deleted from the database.
 - Activate daily website speed/loading reports for Josiah at 4:58 p.m. and 7:58 p.m. America/Chicago; both managed schedules verified active, separate per-time delivery identities fixed, blocked on publishing approval. Reports check homepage, /estimate and /freeestimate server HTML loading and saved calendar/slow-alert state, not full mobile rendering.
 - Replace Calendly’s connected old Gmail calendar with Contact@TexasBathSolutions.com so confirmation and cancellation invitations use the correct sender; blocked on the account owner reconnecting the calendar in Calendly’s Calendar Sync settings. Screenshot confirms these invitations are sent by the old Gmail calendar, not Lovable Emails; website email changes cannot change their sender.
 
 ## Completed
+- /freeestimate mobile-only: after a booking, the confirmation line now reads "Thank you! We'll message you confirmation, and text you before the visit." (desktop keeps "We'll email your confirmation and text you before the visit."); verified with a real test booking on a phone and on a computer in preview; published three times, live rollout still serving the previous copy.
 - /freeestimate mobile-only: headline shortened to "Here is how We BEAT other Companies:" (green underline kept), and numbered point 3's bottom line removed with the middle line now "an Exact Quote, with No Hidden Fees" left-aligned; desktop untouched; published and verified live on a phone with no page errors.
 - /freeestimate mobile-only: first bullet's second line now reads "with our New Bathroom Remodel", and the green dots for the guarantee, 2-3 days, and $0 down bullets are vertically centered against their text; gift-box bullet keeps first-line alignment; desktop untouched; published and verified live on a phone with no page errors.
 - /freeestimate mobile-only: LAST STEP line now reads "LAST STEP: When’s Good for You?" (question part replaced, label kept), and numbered point 3's middle/bottom lines stay centered under the top line; desktop untouched; published and verified live on a phone with no page errors.
