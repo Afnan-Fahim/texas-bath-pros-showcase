@@ -173,7 +173,7 @@ function FreeEstimatePage() {
           </p>
           <p className="hidden lg:block">We’re a Small Family Owned Company and have a Lean Local Crew with Decades of Combined Experience.</p>
           <div className="lg:hidden pt-2">
-            <p className="text-[16.8px] font-bold leading-tight text-navy"><span className="underline decoration-check decoration-[3px] underline-offset-4">Here is how We BEAT other Companies on the Exact Same </span><span className="underline decoration-check decoration-[3px] underline-offset-[0.5px]">Bathroom Remodel:</span></p>
+            <p className="border-b-[3px] border-check pb-1.5 text-[16.8px] font-bold leading-tight text-navy">Here is how We BEAT other Companies on the Exact Same Bathroom Remodel:</p>
             <ul className="mt-3 space-y-3 text-[42px] font-medium leading-[1.15] tracking-tight">
               {([
                 'Get a FREE $250 HEB Gift Card after we complete your Remodel',
