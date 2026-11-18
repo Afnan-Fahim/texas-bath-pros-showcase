@@ -209,7 +209,11 @@ function FreeEstimatePage() {
                 <li>We help Design Your Dream Bathroom</li>
                 <li>In roughly 30 Minutes we give you a Pressure Free Exact Quote down to the Penny</li>
               </ul>
-              <p className="mt-2 text-center font-bold text-navy">Quote Good for FULL Year</p>
+              <p className="mt-2 flex items-center justify-center gap-2 text-center font-bold text-navy">
+                <span aria-hidden className="flex h-[22.68px] shrink-0 items-center justify-center text-[42px] leading-none text-check">•</span>
+                <span className="whitespace-nowrap">Your Quote is Good for a FULL Year</span>
+                <span aria-hidden className="flex h-[22.68px] shrink-0 items-center justify-center text-[42px] leading-none text-check">•</span>
+              </p>
             </div>
           )}
           <fieldset disabled={busy || saved} className="space-y-7 lg:space-y-3 disabled:opacity-75">
