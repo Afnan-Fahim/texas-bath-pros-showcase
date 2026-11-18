@@ -11,7 +11,6 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import frauncesLatin from "@fontsource-variable/fraunces/files/fraunces-latin-standard-normal.woff2?url";
 import interLatin from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
@@ -99,8 +98,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     links: [
       { rel: "stylesheet", href: appCss },
       { rel: "icon", type: "image/png", href: "/favicon.png" },
-      // Heading + body font files actually used above the fold.
-      { rel: "preload", as: "font", type: "font/woff2", href: frauncesLatin, crossOrigin: "anonymous" },
+      // Body/heading font file actually used above the fold.
       { rel: "preload", as: "font", type: "font/woff2", href: interLatin, crossOrigin: "anonymous" },
       // Calendly + Meta are loaded lazily, so only warm DNS for them.
       { rel: "dns-prefetch", href: "https://assets.calendly.com" },
