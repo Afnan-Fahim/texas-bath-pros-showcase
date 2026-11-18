@@ -176,12 +176,12 @@ function FreeEstimatePage() {
             <p className="underline decoration-check decoration-[3px] underline-offset-4 text-[16.8px] font-bold leading-tight text-navy">Here is how We BEAT other Companies on the Exact Same Bathroom Remodel:</p>
             <ul className="mt-3 space-y-3 text-[42px] font-medium leading-[1.15] tracking-tight">
               {([
-                'Get a FREE $250 HEB Gift Card after we complete your Remodel',
+                'Get a FREE $250 HEB Gift Card with our New Bathroom Remodel',
                 'We Guarantee the Lowest Price on every same scope project',
                 'Most Projects only take 2-3 Days',
                 '$0 Down with Payments as low as $115 a Month, with a Lifetime Warranty',
               ] as const).map(bullet => (
-                <li key={bullet} className="flex items-start gap-3">
+                <li key={bullet} className={cn('flex gap-3', bullet.startsWith('Get a FREE') ? 'items-start' : 'items-center')}>
                   {bullet.startsWith('Get a FREE') ? (
                     <span aria-hidden className="flex h-[22.68px] shrink-0 items-center justify-center text-[24px] leading-none">🎁</span>
                   ) : (
@@ -189,7 +189,7 @@ function FreeEstimatePage() {
                   )}
                   <span className="text-[16.8px] leading-[1.35]">
                     {bullet.includes('FREE $250 HEB Gift Card') ? (
-                      <>Get a <span className="text-holiday-red">FREE $250 HEB Gift Card</span><br />after we complete your Remodel</>
+                      <>Get a <span className="text-holiday-red">FREE $250 HEB Gift Card</span><br />with our New Bathroom Remodel</>
                     ) : bullet.startsWith('We Guarantee') ? (
                       <>We Guarantee the Lowest Price on EVERY<br />Bathroom Project, with the same scope!</>
                     ) : bullet.startsWith('$0 Down') ? (
