@@ -190,6 +190,8 @@ function FreeEstimatePage() {
                   <span className="text-[16.8px] leading-[1.35]">
                     {bullet.includes('FREE $250 HEB Gift Card') ? (
                       <>Get a <span className="text-holiday-red">FREE $250 HEB Gift Card</span><br />after we complete your Remodel</>
+                    ) : bullet.startsWith('$0 Down') ? (
+                      <>$0 Down with Payments as low as $115.<br />Comes with a Lifetime Warranty</>
                     ) : bullet}
                   </span>
                 </li>
@@ -210,9 +212,9 @@ function FreeEstimatePage() {
                 <li>In roughly 30 Minutes we give you a Pressure Free Exact Quote down to the Penny</li>
               </ul>
               <p className="mt-2 flex items-center justify-center gap-2 text-center font-bold text-navy">
-                <span aria-hidden className="flex h-[22.68px] shrink-0 items-center justify-center text-[42px] leading-none text-check">•</span>
+                <span aria-hidden className="flex h-[22.68px] shrink-0 items-center justify-center text-[18px] leading-none text-navy">•</span>
                 <span className="whitespace-nowrap">Your Quote is Good for a FULL Year</span>
-                <span aria-hidden className="flex h-[22.68px] shrink-0 items-center justify-center text-[42px] leading-none text-check">•</span>
+                <span aria-hidden className="flex h-[22.68px] shrink-0 items-center justify-center text-[18px] leading-none text-navy">•</span>
               </p>
             </div>
           )}
