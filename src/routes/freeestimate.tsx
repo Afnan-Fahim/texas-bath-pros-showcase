@@ -173,7 +173,7 @@ function FreeEstimatePage() {
           </p>
           <p className="hidden lg:block">We’re a Small Family Owned Company and have a Lean Local Crew with Decades of Combined Experience.</p>
           <div className="lg:hidden pt-2">
-            <p className="text-[16.8px] font-bold leading-tight text-navy underline decoration-check decoration-[3px] underline-offset-4">Here is how We BEAT other Companies on the Exact Same Bathroom Remodel:</p>
+            <p className="text-[16.8px] font-bold leading-tight text-navy"><span className="underline decoration-check decoration-[3px] underline-offset-4">Here is how We BEAT other Companies on the Exact Same </span><span className="underline decoration-check decoration-[3px] underline-offset-[0.5px]">Bathroom Remodel:</span></p>
             <ul className="mt-3 space-y-3 text-[42px] font-medium leading-[1.15] tracking-tight">
               {([
                 'Get a FREE $250 HEB Gift Card after we complete your Remodel',
@@ -197,7 +197,7 @@ function FreeEstimatePage() {
             </ul>
           </div>
           <p className="hidden lg:block"><span className="underline decoration-check decoration-[3px] underline-offset-4">That’s how we beat other companies on the same job.</span></p>
-          <p className="lg:hidden">- Call or Text us Anytime at <a href="tel:2103734295" className="font-bold underline">(210) 373-4295</a> -</p>
+          <p className="lg:hidden text-center">- Call or Text us Anytime at <a href="tel:2103734295" className="font-bold underline">(210) 373-4295</a> -</p>
           <p className="hidden lg:block">Prefer to talk or text? Call or text us anytime at <a href="tel:2103734295" className="font-bold underline">(210) 373-4295</a>.</p>
         </div>
         <form ref={formRef} onSubmit={e => e.preventDefault()} className="scroll-mt-6">
