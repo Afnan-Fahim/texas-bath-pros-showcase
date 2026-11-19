@@ -22,15 +22,24 @@ async function liveTimes() {
   return refreshEstimateAvailability()
 }
 
+let snapshotCache: { at: number; times: string[] } | null = null
+
 export const getFreeEstimateTimes = createServerFn({ method: 'GET' })
   .inputValidator((input: unknown) => z.object({ fresh: z.boolean().optional() }).optional().parse(input))
   .handler(async ({ data }) => {
     if (!data?.fresh) {
+      // Reuse the saved snapshot for 60s per server instance so first paint skips a database round trip;
+      // the browser still refreshes live times after load and booking re-checks availability.
+      const cachedNow = Date.now()
+      if (snapshotCache && cachedNow - snapshotCache.at < 60_000) {
+        const t = snapshotCache.times.filter(x => Date.parse(x) > cachedNow + 5 * 60 * 1000)
+        if (t.length) return { times: t }
+      }
       const { supabaseAdmin } = await import('@/integrations/supabase/client.server')
       const { data: row } = await supabaseAdmin.from('freeestimate_availability').select('times').eq('id', 1).maybeSingle()
       const now = Date.now()
       const times = ((row?.times as string[] | null) ?? []).filter(t => Date.parse(t) > now + 5 * 60 * 1000)
-      if (times.length) return { times }
+      if (times.length) { snapshotCache = { at: now, times }; return { times } }
       // Never hold the first page load on a slow Calendly; the browser refreshes after.
       const live = liveTimes()
       return Promise.race([live, new Promise<{ times: string[] }>(r => setTimeout(() => r({ times: [] }), 1500))])
