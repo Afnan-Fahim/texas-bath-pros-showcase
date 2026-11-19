@@ -57,10 +57,6 @@ export function FreeEstimateTimePicker({ identity, onBooked, onEnsureSaved, init
   if (!times.length) return <p className="text-base text-navy">No open times right now. Please call or text (210) 373-4295 and we'll get you scheduled.</p>
   return (
     <div>
-      <p className="hidden lg:block rounded-xl border border-gold/40 border-l-4 border-l-gold bg-gold/10 px-4 py-3 text-sm leading-relaxed text-navy/80 shadow-sm">
-        <span className="block font-bold text-navy">What happens at your free estimate?</span>
-        It’s Super Easy. We’ll come by, measure the space, you pick your colors you want and we will give you an exact quote to the penny! No pressure, no obligation — usually takes about 30–45 minutes.
-      </p>
       <MonthGrid available={new Set(days.map(([k]) => k))} selected={day} onSelect={(k) => { setDay(k); setPicked('') }} />
       {day && <p className="mt-5 text-sm font-semibold text-navy">Open times for {dayLabel(days.find(([k]) => k === day)?.[1] ?? times[0])}</p>}
       <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3">
@@ -69,10 +65,7 @@ export function FreeEstimateTimePicker({ identity, onBooked, onEnsureSaved, init
         ))}
       </div>
       {error && <p role="alert" className="mt-4 text-sm text-destructive">{error}</p>}
-      <Button type="button" onClick={schedule} disabled={!picked || busy} className="mt-6 hidden h-auto min-h-12 w-full text-base lg:flex">
-        {busy ? 'Scheduling…' : picked ? `Lock In My $500.00 OFF · ${dayLabel(picked)}, ${timeLabel(picked)}` : 'Lock In My $500.00 OFF'}
-      </Button>
-      <Button type="button" onClick={schedule} disabled={!picked || busy} className="mt-6 h-auto min-h-12 w-full bg-check text-base text-navy-foreground shadow hover:bg-check/90 lg:hidden">
+      <Button type="button" onClick={schedule} disabled={!picked || busy} className="mt-6 h-auto min-h-12 w-full bg-check text-base text-navy-foreground shadow hover:bg-check/90">
         {busy ? 'Scheduling…' : 'Claim MY $500.00 OFF'}
       </Button>
     </div>

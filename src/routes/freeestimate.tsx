@@ -167,15 +167,10 @@ function FreeEstimatePage() {
       <div className="mx-auto grid max-w-6xl gap-6 px-4 pb-8 sm:px-6 lg:max-w-[1180px] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)] lg:items-start lg:gap-8 lg:px-8 lg:py-5">
       <div className="min-w-0 rounded-2xl border-2 border-navy/15 bg-card p-6 shadow-lift sm:p-9 lg:p-6">
         <header className="mb-5 border-b border-border pb-4 lg:mb-3 lg:pb-3">
-<h1 className="text-2xl font-semibold text-navy sm:text-4xl tracking-normal lg:hidden">We’re a Small Family-Owned Company, with Decades of Experience Proudly Serving San Antonio!</h1>
-          <h1 className="hidden lg:block text-2xl font-semibold text-navy sm:text-4xl lg:text-2xl tracking-normal">Hey San Antonio!</h1>
+<h1 className="text-2xl font-semibold text-navy sm:text-4xl lg:text-[28px] lg:leading-tight tracking-normal">We’re a Small Family-Owned Company, with Decades of Experience Proudly Serving San Antonio!</h1>
         </header>
-        <div className="mb-5 space-y-3 font-sans text-sm leading-relaxed text-navy lg:mb-3 lg:text-[15px]">
-          <p className="hidden lg:block text-base font-medium leading-relaxed lg:text-lg">
-            Not only do we give a <span className="font-bold">$250 HEB Gift Card</span> on every completed project — we also beat other companies’ written quotes by <span className="font-bold">$1,000 or more</span> on the same scope.
-          </p>
-          <p className="hidden lg:block">We’re a Small Family Owned Company and have a Lean Local Crew with Decades of Combined Experience.</p>
-          <div className="lg:hidden pt-2">
+        <div className="mb-5 space-y-3 font-sans text-sm leading-relaxed text-navy lg:mb-3">
+          <div className="pt-2">
             <p className="underline decoration-check decoration-[3px] underline-offset-4 text-[16.8px] font-bold leading-tight text-navy">Here is how We BEAT other Companies:</p>
             <ul className="mt-3 space-y-3 text-[42px] font-medium leading-[1.15] tracking-tight">
               {([
@@ -203,12 +198,10 @@ function FreeEstimatePage() {
               ))}
             </ul>
           </div>
-          <p className="hidden lg:block"><span className="underline decoration-check decoration-[3px] underline-offset-4">That’s how we beat other companies on the same job.</span></p>
-          <p className="hidden lg:block">Prefer to talk or text? Call or text us anytime at <a href="tel:2103734295" className="font-bold underline">(210) 373-4295</a>.</p>
         </div>
         <form ref={formRef} onSubmit={e => e.preventDefault()} className="scroll-mt-6">
           {!booked && (
-            <div className="mb-7 rounded-xl border-2 border-check bg-navy px-4 py-3 text-sm leading-relaxed text-white shadow-sm lg:hidden">
+            <div className="mb-7 rounded-xl border-2 border-check bg-navy px-4 py-3 text-sm leading-relaxed text-white shadow-sm lg:mb-4 lg:text-[15px]">
               <span className="block font-bold text-white">What happens at your Hassle-Free Estimate?</span>
               <ol className="mt-2 list-decimal space-y-1 pl-5">
                 <li>We come measure your Bathroom,<br />and you pick your Favorite Colors</li>
@@ -223,8 +216,7 @@ function FreeEstimatePage() {
             </div>
           )}
           <fieldset disabled={busy || saved} className="space-y-7 lg:space-y-3 disabled:opacity-75">
-            <p className="hidden lg:block border-t border-border pt-7 text-base font-bold text-navy lg:pt-3"><span className="hidden lg:inline">Fill This Out, </span>Then Pick A Time For Your Estimate. (It’s Totally Free &amp; No Obligation!)</p>
-            <div className="lg:hidden">
+            <div>
               <p className="text-base font-bold leading-snug text-navy">LAST STEP: When’s Good for You?</p>
               <p className="text-center text-base font-bold leading-snug text-navy"><span className="underline decoration-check decoration-[3px] underline-offset-4">Only Takes 20 Seconds</span>!</p>
             </div>
@@ -245,7 +237,7 @@ function FreeEstimatePage() {
           </fieldset>
         </form>
         <section ref={calendar} className="mt-8 scroll-mt-6 border-t border-border pt-6 lg:mt-5 lg:pt-4">
-          {booked ? <div role="status"><h2 className="text-2xl font-semibold text-navy">Your appointment is confirmed</h2><p className="mt-2 text-base text-muted-foreground lg:hidden">Thank you! We'll message you confirmation, and text you before the visit.</p><p className="mt-2 hidden text-base text-muted-foreground lg:block">We'll email your confirmation and text you before the visit.</p></div> : (
+          {booked ? <div role="status"><h2 className="text-2xl font-semibold text-navy">Your appointment is confirmed</h2><p className="mt-2 text-base text-muted-foreground">Thank you! We'll message you confirmation, and text you before the visit.</p></div> : (
             <FreeEstimateTimePicker initialTimes={initialTimes} onEnsureSaved={ensureSaved} identity={{ name: form.name, email: form.email, phone: form.phone }} onBooked={() => setBooked(true)} />
           )}
         </section>
@@ -255,16 +247,16 @@ function FreeEstimatePage() {
         <source media="(min-width: 1024px)" srcSet={heroPhoto.url} />
         <img src={mobilePhoto.url} width={1568} height={1264} loading="eager" decoding="async" alt="San Antonio bathroom remodel with Christmas decorations by Texas Bath Solutions — $0 down, payments from just $115 a month, get installed before Christmas" className="mx-auto block h-auto max-h-[46vh] w-auto max-w-full rounded-2xl shadow-card ring-1 ring-navy/5" />
         </picture>
-        <EstimateIntro className="mt-3" />
-        <TrustBadges className="mt-3" />
+        <EstimateIntro className="mt-3" points={[]} title={estimateIntroTitleMobile} titleClass="text-[20.8px] font-bold leading-snug" />
+        <TrustBadges badges={['5.0 Google', 'Lifetime Warranty', 'Local']} className="mt-3" badgeClassName="border-transparent bg-navy text-white" />
       </div>
       </div>
         <footer className="pb-10 flex flex-col items-center gap-2 text-xs text-muted-foreground">
-          <p className="lg:hidden text-center text-sm">- Call or Text us Anytime at <a href="tel:2103734295" className="font-bold underline">(210) 373-4295</a> -</p>
+          <p className="text-center text-sm">- Call or Text us Anytime at <a href="tel:2103734295" className="font-bold underline">(210) 373-4295</a> -</p>
           <div className="flex justify-center gap-4">
             <Link to="/privacy" className="hover:underline">Privacy Policy</Link>
             <Link to="/sms-terms" className="hover:underline">SMS Terms</Link>
-            <Link to="/terms" className="hover:underline lg:hidden">Terms and Conditions</Link>
+            <Link to="/terms" className="hover:underline">Terms and Conditions</Link>
           </div>
         </footer>
     </main>
