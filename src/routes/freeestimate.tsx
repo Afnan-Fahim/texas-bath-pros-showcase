@@ -208,17 +208,17 @@ function FreeEstimatePage() {
         </div>
         <form ref={formRef} onSubmit={e => e.preventDefault()} className="scroll-mt-6">
           {!booked && (
-            <div className="mb-7 rounded-xl border-2 border-check bg-holiday-green px-4 py-3 text-sm leading-relaxed text-navy/80 shadow-sm lg:hidden">
-              <span className="block font-bold text-navy">What happens at your Hassle-Free Estimate?</span>
+            <div className="mb-7 rounded-xl border-2 border-check bg-navy px-4 py-3 text-sm leading-relaxed text-white shadow-sm lg:hidden">
+              <span className="block font-bold text-white">What happens at your Hassle-Free Estimate?</span>
               <ol className="mt-2 list-decimal space-y-1 pl-5">
                 <li>We come measure your Bathroom,<br />and you pick your Favorite Colors</li>
                 <li>We help Design Your Dream Bathroom</li>
                 <li>In roughly 30 Minutes we can give you<span className="block">an Exact Quote, with No Hidden Fees</span></li>
               </ol>
-              <p className="mt-2 flex items-center justify-center gap-2 text-center font-bold text-navy">
-                <span aria-hidden className="flex h-[22.68px] shrink-0 items-center justify-center text-[18px] leading-none text-navy">•</span>
+              <p className="mt-2 flex items-center justify-center gap-2 text-center font-bold text-white">
+                <span aria-hidden className="flex h-[22.68px] shrink-0 items-center justify-center text-[18px] leading-none text-white">•</span>
                 <span className="whitespace-nowrap">Your Quote is Good for a FULL Year</span>
-                <span aria-hidden className="flex h-[22.68px] shrink-0 items-center justify-center text-[18px] leading-none text-navy">•</span>
+                <span aria-hidden className="flex h-[22.68px] shrink-0 items-center justify-center text-[18px] leading-none text-white">•</span>
               </p>
             </div>
           )}
