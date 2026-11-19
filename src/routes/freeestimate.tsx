@@ -42,6 +42,24 @@ function TrustBadges({ badges = TRUST_BADGES, className, badgeClassName }: { bad
   )
 }
 
+function EstimateInfoBox({ className }: { className?: string }) {
+  return (
+    <div className={cn('rounded-xl border-2 border-check bg-navy px-4 py-3 text-sm leading-relaxed text-white shadow-sm lg:text-[15px]', className)}>
+      <span className="block font-bold text-white">What happens at your Hassle-Free Estimate?</span>
+      <ol className="mt-2 list-decimal space-y-1 pl-5">
+        <li>We come measure your Bathroom,<br />and you pick your Favorite Colors</li>
+        <li>We help Design Your Dream Bathroom</li>
+        <li>In roughly 30 Minutes we can give you<span className="block">an Exact Quote, with No Hidden Fees</span></li>
+      </ol>
+      <p className="mt-2 flex items-center justify-center gap-2 text-center font-bold text-white">
+        <span aria-hidden className="flex h-[22.68px] shrink-0 items-center justify-center text-[18px] leading-none text-white">•</span>
+        <span className="whitespace-nowrap">Your Quote is Good for a FULL Year</span>
+        <span aria-hidden className="flex h-[22.68px] shrink-0 items-center justify-center text-[18px] leading-none text-white">•</span>
+      </p>
+    </div>
+  )
+}
+
 function EstimateIntro({ className, points = estimateIntroPoints, title = estimateIntroTitle, titleClass = 'text-base font-bold leading-snug lg:text-[17px]' }: { className?: string; points?: string[]; title?: ReactNode; titleClass?: string }) {
   return (
     <div className={cn('font-sans text-navy', className)}>
@@ -200,21 +218,7 @@ function FreeEstimatePage() {
           </div>
         </div>
         <form ref={formRef} onSubmit={e => e.preventDefault()} className="scroll-mt-6">
-          {!booked && (
-            <div className="mb-7 rounded-xl border-2 border-check bg-navy px-4 py-3 text-sm leading-relaxed text-white shadow-sm lg:mb-4 lg:text-[15px]">
-              <span className="block font-bold text-white">What happens at your Hassle-Free Estimate?</span>
-              <ol className="mt-2 list-decimal space-y-1 pl-5">
-                <li>We come measure your Bathroom,<br />and you pick your Favorite Colors</li>
-                <li>We help Design Your Dream Bathroom</li>
-                <li>In roughly 30 Minutes we can give you<span className="block">an Exact Quote, with No Hidden Fees</span></li>
-              </ol>
-              <p className="mt-2 flex items-center justify-center gap-2 text-center font-bold text-white">
-                <span aria-hidden className="flex h-[22.68px] shrink-0 items-center justify-center text-[18px] leading-none text-white">•</span>
-                <span className="whitespace-nowrap">Your Quote is Good for a FULL Year</span>
-                <span aria-hidden className="flex h-[22.68px] shrink-0 items-center justify-center text-[18px] leading-none text-white">•</span>
-              </p>
-            </div>
-          )}
+          {!booked && <EstimateInfoBox className="mb-7 lg:hidden" />}
           <fieldset disabled={busy || saved} className="space-y-7 lg:space-y-3 disabled:opacity-75">
             <div>
               <p className="text-base font-bold leading-snug text-navy">LAST STEP: When’s Good for You?</p>
@@ -249,6 +253,7 @@ function FreeEstimatePage() {
         </picture>
         <EstimateIntro className="mt-3" points={[]} title={estimateIntroTitleMobile} titleClass="text-[20.8px] font-bold leading-snug" />
         <TrustBadges badges={['5.0 Google', 'Lifetime Warranty', 'Local']} className="mt-3" badgeClassName="border-transparent bg-navy text-white" />
+        {!booked && <EstimateInfoBox className="mt-3" />}
       </div>
       </div>
         <footer className="pb-10 flex flex-col items-center gap-2 text-xs text-muted-foreground">
