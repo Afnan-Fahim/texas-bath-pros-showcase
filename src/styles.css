@@ -186,7 +186,7 @@
 }
 
 @utility animate-num-pulse {
-  animation: numPulse 2.62s ease-in-out infinite;
+  animation: numPulse 8.73s ease-in-out infinite;
 }
 
 @utility animate-soft-bounce {
