@@ -189,7 +189,7 @@ function FreeEstimatePage() {
         </header>
         <div className="mb-5 space-y-3 font-sans text-sm leading-relaxed text-navy lg:mb-3">
           <div className="pt-2">
-            <p className="underline decoration-check decoration-[3px] underline-offset-4 text-[16.8px] font-bold leading-tight text-navy lg:text-center">Here is how We BEAT other Companies:</p>
+            <p className="underline decoration-check decoration-[3px] underline-offset-4 text-[16.8px] font-bold leading-tight text-navy lg:text-center lg:text-[20px]">Here is how We BEAT other Companies:</p>
             <ul className="mt-3 space-y-3 text-[42px] font-medium leading-[1.15] tracking-tight lg:text-left">
               {([
                 'Get a FREE $250 HEB Gift Card with our New Bathroom Remodel',

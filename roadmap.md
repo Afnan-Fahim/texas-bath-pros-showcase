@@ -54,3 +54,5 @@
 - [x] /freeestimate: fix false "That time was just taken" error so open times book; publish and test
 
 - [x] /freeestimate: soft continuous fade pulse on the 7 in the mobile promo line; publish
+
+- [x] /freeestimate: desktop-only, make "Here is how We BEAT other Companies:" heading slightly bigger (20px); publish
