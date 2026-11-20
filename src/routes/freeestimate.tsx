@@ -205,7 +205,7 @@ function FreeEstimatePage() {
                   )}
                   <span className="text-[16.8px] leading-[1.35]">
                     {bullet.includes('FREE $250 HEB Gift Card') ? (
-                      <>Get a <span className="text-holiday-red">FREE $250 HEB Gift Card</span><br />with our New Bathroom Remodel</>
+                      <>Get a <span className="text-holiday-red lg:font-bold lg:text-holiday-red-bright">FREE $250 HEB Gift Card</span><br />with our New Bathroom Remodel</>
                     ) : bullet.startsWith('We Guarantee') ? (
                       <>We Guarantee the Lowest Price on EVERY<br />Bathroom Project, with the same scope!</>
                     ) : bullet.startsWith('$0 Down') ? (

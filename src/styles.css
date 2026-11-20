@@ -41,6 +41,7 @@
   --color-gold-bright: var(--gold-bright);
   --color-holiday-green: var(--holiday-green);
   --color-holiday-red: var(--holiday-red);
+  --color-holiday-red-bright: var(--holiday-red-bright);
   --color-check: var(--check);
   --color-page-wash: var(--page-wash);
 
@@ -97,6 +98,8 @@
   /* Holiday accent: light green panel + Christmas red */
   --holiday-green: oklch(0.965 0.055 152);
   --holiday-red: oklch(0.55 0.22 25);
+  /* Brighter, warmer call-to-action red for desktop emphasis */
+  --holiday-red-bright: oklch(0.6 0.22 25);
   /* Solid professional green for confirmation check marks */
   --check: oklch(0.51 0.13 152);
 
