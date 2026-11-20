@@ -57,3 +57,5 @@
 - [x] /freeestimate: soft continuous fade pulse on the 7 in the mobile promo line; publish
 
 - [x] /freeestimate: desktop-only, make "Here is how We BEAT other Companies:" heading slightly bigger (20px); publish
+
+- [x] Contact Us dialog: replace message form with Name/Phone/Address fields plus the shared Calendly time picker (same booking setup as mobile /freeestimate); verified in preview; publish

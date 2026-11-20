@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { Suspense, lazy, useEffect, useMemo, useRef, useState } from "react";
 import { format } from "date-fns";
 import {
@@ -40,7 +41,10 @@ import inspirationHorizon from "@/assets/inspiration/grok-image-8e98888b-4785-4e
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { FreeEstimateTimePicker } from "@/components/FreeEstimateTimePicker";
+import { freeEstimateSchema } from "@/lib/freeestimate-schema";
+import { submitFreeEstimate } from "@/lib/freeestimate.functions";
+import { getFreeEstimateTimes } from "@/lib/freeestimate-booking.functions";
 import {
   Select,
   SelectContent,
@@ -1894,129 +1898,153 @@ function Footer() {
 
 /* ---------------- PAGE ---------------- */
 /* ---------------- CONTACT US DIALOG ---------------- */
+const CONTACT_DUMMY_EMAIL = "noemail@texasbathsolutions.com";
+
 function ContactUsDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v: boolean) => void }) {
-  const [state, setState] = useState({ name: "", email: "", phone: "", message: "" });
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [submitted, setSubmitted] = useState(false);
+  const submit = useServerFn(submitFreeEstimate);
+  const loadTimes = useServerFn(getFreeEstimateTimes);
+  const [form, setForm] = useState({ name: "", phone: "", address: "" });
+  const [times, setTimes] = useState<string[] | null>(null);
+  const [saved, setSaved] = useState(false);
+  const [booked, setBooked] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const submissionId = useRef("");
 
-  const update = <K extends keyof typeof state>(k: K, v: (typeof state)[K]) => {
-    setState((s) => ({ ...s, [k]: v }));
-    if (errors[k]) setErrors((e) => ({ ...e, [k]: "" }));
+  // Load the calendar's available times when the dialog opens.
+  useEffect(() => {
+    if (!open || times !== null) return;
+    let cancelled = false;
+    loadTimes()
+      .then((r) => { if (!cancelled) setTimes(r.times); })
+      .catch(() => { if (!cancelled) setTimes([]); });
+    return () => { cancelled = true; };
+  }, [open, times, loadTimes]);
+
+  const update = (key: keyof typeof form, value: string) => {
+    setForm((previous) => ({ ...previous, [key]: value }));
+    if (error) setError("");
   };
 
-  const validate = () => {
-    const e: Record<string, string> = {};
-    if (!state.name.trim()) e.name = "Please enter your name";
-    if (state.phone.replace(/\D/g, "").length !== 10) e.phone = "Enter a valid 10-digit phone";
-    if (!state.email.trim()) e.email = "Email is required";
-    else if (!/^\S+@\S+\.\S+$/.test(state.email)) e.email = "Invalid email";
-    if (!state.message.trim()) e.message = "Please enter a message";
-    setErrors(e);
-    return Object.keys(e).length === 0;
-  };
+  async function ensureSaved(): Promise<string | null> {
+    if (saved) return submissionId.current;
+    if (!submissionId.current) submissionId.current = crypto.randomUUID();
+    const parsed = freeEstimateSchema.safeParse({
+      submissionId: submissionId.current,
+      desiredUpgrade: "",
+      mainProblem: "",
+      timeframe: "",
+      name: form.name,
+      email: CONTACT_DUMMY_EMAIL,
+      phone: form.phone,
+      address: form.address,
+      attribution: getAttribution(),
+    });
+    if (!parsed.success) {
+      setError(parsed.error.issues[0]?.message ?? "Please fill in every field.");
+      return null;
+    }
+    setBusy(true);
+    setError("");
+    try {
+      const result = await submit({ data: parsed.data });
+      if (!result.saved) return null;
+      setSaved(true);
+      return submissionId.current;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to save your request. Please try again.");
+      return null;
+    } finally {
+      setBusy(false);
+    }
+  }
 
-  const submit = (ev: React.FormEvent) => {
-    ev.preventDefault();
-    if (!validate()) return;
-    void submitLead({
-      data: {
-        name: state.name,
-        phone: state.phone,
-        email: state.email,
-        address: "Not provided (Contact Us form)",
-        timeframe: "",
-        notes: state.message + attributionNote(),
-        source: "Contact Us form",
-      },
-    }).catch((err: unknown) => console.error("Lead notification failed", err));
-    setSubmitted(true);
-  };
-
-  const reset = () => {
-    setState({ name: "", email: "", phone: "", message: "" });
-    setErrors({});
-    setSubmitted(false);
+  const handleOpenChange = (value: boolean) => {
+    onOpenChange(value);
+    if (!value) {
+      setForm({ name: "", phone: "", address: "" });
+      setTimes(null);
+      setSaved(false);
+      setBooked(false);
+      setBusy(false);
+      setError("");
+      submissionId.current = "";
+    }
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg">
+    <Dialog open={open} onOpenChange={handleOpenChange}>
+      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-xl">
         <DialogHeader>
           <DialogTitle className="text-2xl text-navy">Contact Us</DialogTitle>
           <DialogDescription>
-            Send a message to{" "}
-            <a href="mailto:Contact@TexasBathSolutions.com" className="font-semibold text-navy hover:underline">
-              Contact@TexasBathSolutions.com
-            </a>
-            . We typically reply within one business day.
+            Tell us how to reach you, then pick a time for your free in-home estimate.
           </DialogDescription>
         </DialogHeader>
-        {submitted ? (
+        {booked ? (
           <div className="py-8 text-center space-y-4" data-lead-success="true">
-            <LeadEventTracker
-              dedupeKey={`contact:${state.email}:${state.phone}`}
-              identity={{ name: state.name, email: state.email, phone: state.phone }}
-            />
             <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-navy text-navy-foreground">
               <Check className="h-7 w-7" strokeWidth={3} />
             </div>
-            <h3 className="text-xl font-semibold text-navy">Message sent</h3>
+            <h3 className="text-xl font-semibold text-navy">Your appointment is confirmed</h3>
             <p className="text-muted-foreground">
-              Thanks! Our team has your message and will reply within one business day.
+              Thank you! We'll message you confirmation, and text you before the visit.
             </p>
-            <Button onClick={reset} variant="outline" className="border-navy/25 text-navy hover:bg-navy/5">
-              Send another message
+            <Button onClick={() => handleOpenChange(false)} variant="outline" className="border-navy/25 text-navy hover:bg-navy/5">
+              Close
             </Button>
           </div>
         ) : (
-          <form onSubmit={submit} className="space-y-4" noValidate>
-            <Field label="Full Name" error={errors.name} required>
-              <Input
-                value={state.name}
-                onChange={(e) => update("name", e.target.value)}
-                placeholder="Your Name"
-                autoComplete="name"
-              />
-            </Field>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="Email" error={errors.email} required>
-                <Input
-                  type="email"
-                  value={state.email}
-                  onChange={(e) => update("email", e.target.value)}
-                  placeholder="Your Email"
-                  autoComplete="email"
+          <div>
+            <form onSubmit={(e) => e.preventDefault()} noValidate>
+              <fieldset disabled={busy || saved} className="grid gap-4 disabled:opacity-75">
+                <Field label="Name" required>
+                  <Input
+                    value={form.name}
+                    onChange={(e) => update("name", e.target.value)}
+                    placeholder="Your Name"
+                    autoComplete="name"
+                    maxLength={120}
+                    className="h-12"
+                  />
+                </Field>
+                <Field label="Phone" required>
+                  <Input
+                    value={form.phone}
+                    onChange={(e) => update("phone", formatPhone(e.target.value))}
+                    placeholder="(210) 555-0123"
+                    inputMode="tel"
+                    autoComplete="tel"
+                    maxLength={32}
+                    className="h-12"
+                  />
+                </Field>
+                <Field label="Address" required>
+                  <Input
+                    value={form.address}
+                    onChange={(e) => update("address", e.target.value)}
+                    placeholder="Your Address"
+                    autoComplete="street-address"
+                    maxLength={240}
+                    className="h-12"
+                  />
+                </Field>
+              </fieldset>
+              {error && <p role="alert" className="mt-3 text-sm text-destructive">{error}</p>}
+            </form>
+            <section className="mt-6 border-t border-border pt-5">
+              {times === null ? (
+                <p className="py-6 text-center text-sm text-muted-foreground">Loading available times…</p>
+              ) : (
+                <FreeEstimateTimePicker
+                  initialTimes={times}
+                  onEnsureSaved={ensureSaved}
+                  identity={{ name: form.name, email: CONTACT_DUMMY_EMAIL, phone: form.phone }}
+                  onBooked={() => setBooked(true)}
                 />
-              </Field>
-              <Field label="Phone Number" error={errors.phone} required>
-                <Input
-                  value={state.phone}
-                  onChange={(e) => update("phone", formatPhone(e.target.value))}
-                  placeholder="(210) 555-0123"
-                  inputMode="tel"
-                  autoComplete="tel"
-                />
-              </Field>
-            </div>
-            <Field label="Message" error={errors.message} required>
-              <Textarea
-                value={state.message}
-                onChange={(e) => update("message", e.target.value)}
-                placeholder="How can we help with your bathroom project?"
-                rows={4}
-              />
-            </Field>
-            <div className="rounded-lg bg-secondary p-3 text-sm text-muted-foreground">
-              Recipient: <span className="font-medium text-foreground">Contact@TexasBathSolutions.com</span>
-            </div>
-            <Button
-              type="submit"
-              size="lg"
-              className="w-full h-12 bg-navy text-navy-foreground hover:bg-navy/90 text-base font-semibold shadow-elegant"
-            >
-              Send Message
-            </Button>
-          </form>
+              )}
+            </section>
+          </div>
         )}
       </DialogContent>
     </Dialog>
