@@ -190,18 +190,18 @@ function FreeEstimatePage() {
         <div className="mb-5 space-y-3 font-sans text-sm leading-relaxed text-navy lg:mb-3">
           <div className="pt-2">
             <p className="underline decoration-check decoration-[3px] underline-offset-4 text-[16.8px] font-bold leading-tight text-navy lg:text-center">Here is how We BEAT other Companies:</p>
-            <ul className="mt-3 space-y-3 text-[42px] font-medium leading-[1.15] tracking-tight lg:mx-auto lg:max-w-[26rem] lg:text-center">
+            <ul className="mt-3 space-y-3 text-[42px] font-medium leading-[1.15] tracking-tight lg:text-left">
               {([
                 'Get a FREE $250 HEB Gift Card with our New Bathroom Remodel',
                 'We Guarantee the Lowest Price on every same scope project',
                 'Most Projects only take 2-3 Days',
                 '$0 Down with Payments as low as $115 a Month, with a Lifetime Warranty',
               ] as const).map(bullet => (
-                <li key={bullet} className={cn('flex gap-3 lg:justify-center', bullet.startsWith('Get a FREE') ? 'items-start' : 'items-center')}>
+                <li key={bullet} className={cn('flex gap-3', bullet.startsWith('Get a FREE') ? 'items-start' : 'items-center')}>
                   {bullet.startsWith('Get a FREE') ? (
-                    <span aria-hidden className="flex h-[22.68px] shrink-0 items-center justify-center text-[24px] leading-none">🎁</span>
+                    <span aria-hidden className="flex h-[22.68px] shrink-0 items-center justify-center text-[24px] leading-none lg:w-[26px]">🎁</span>
                   ) : (
-                    <span aria-hidden className="flex h-[22.68px] shrink-0 items-center justify-center text-[22px] leading-none text-check">✓</span>
+                    <span aria-hidden className="flex h-[22.68px] shrink-0 items-center justify-center text-[22px] leading-none text-check lg:w-[26px]">✓</span>
                   )}
                   <span className="text-[16.8px] leading-[1.35]">
                     {bullet.includes('FREE $250 HEB Gift Card') ? (
@@ -221,8 +221,8 @@ function FreeEstimatePage() {
           {!booked && <EstimateInfoBox className="mb-7 lg:hidden" />}
           <fieldset disabled={busy || saved} className="space-y-7 lg:space-y-3 disabled:opacity-75">
             <div>
-              <p className="text-base font-bold leading-snug text-navy lg:text-center">LAST STEP: When’s Good for You?</p>
-              <p className="text-center text-base font-bold leading-snug text-navy"><span className="underline decoration-check decoration-[3px] underline-offset-4">Only Takes 20 Seconds</span>!</p>
+              <p className="text-base font-bold leading-snug text-navy">LAST STEP: When’s Good for You?</p>
+              <p className="text-center text-base font-bold leading-snug text-navy lg:text-left"><span className="underline decoration-check decoration-[3px] underline-offset-4">Only Takes 20 Seconds</span>!</p>
             </div>
             <div className="grid gap-4 sm:grid-cols-2 lg:gap-3">
               {([
