@@ -1978,7 +1978,7 @@ function ContactUsDialog({ open, onOpenChange }: { open: boolean; onOpenChange: 
         <DialogHeader>
           <DialogTitle className="text-2xl text-navy">Contact Us</DialogTitle>
           <DialogDescription>
-            Tell us how to reach you, then pick a time for your free in-home estimate.
+            Tell us how to reach you, then pick a time for your Free No-Hassle Quote.
           </DialogDescription>
         </DialogHeader>
         {booked ? (
