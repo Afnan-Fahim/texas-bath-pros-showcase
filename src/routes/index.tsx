@@ -203,7 +203,7 @@ export const Route = createFileRoute("/")({
 
 /* Phone is stored encoded so it never appears in the raw HTML/JS source as a
    harvestable string; it is decoded in the browser after hydration. */
-const PHONE_B64 = "KDIxMCkgNzAyLTA3NTM=";
+const PHONE_B64 = "KDIxMCkgMzczLTQyOTU=";
 
 function decodePhone() {
   if (typeof window === "undefined") return null;
