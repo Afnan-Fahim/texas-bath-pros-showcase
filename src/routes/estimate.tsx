@@ -186,7 +186,7 @@ function QuizPage() {
             progressLabel="Five easy steps · 1 of 5"
             progressTotal={5}
             returnToQuestions={returnToQuestions}
-            extraSubline="Free in-home estimate • San Antonio • (210) 702-0753"
+            extraSubline="Free in-home estimate • San Antonio • (210) 373-4295"
             trustLine="Family-owned · A+ BBB · Licensed"
           />
         </div>
