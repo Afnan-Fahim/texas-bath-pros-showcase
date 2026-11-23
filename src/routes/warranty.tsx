@@ -199,8 +199,8 @@ function WarrantyPage() {
           </p>
           <p className="mt-3 text-sm leading-relaxed text-neutral-700 md:text-base">
             Questions about your warranty? Call or text us at{" "}
-            <a href="tel:2103734295" className="font-semibold text-navy hover:underline">
-              (210) 373-4295
+            <a href="tel:2107170507" className="font-semibold text-navy hover:underline">
+              (210) 717-0507
             </a>
             .
           </p>

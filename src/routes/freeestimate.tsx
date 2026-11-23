@@ -257,7 +257,7 @@ function FreeEstimatePage() {
       </div>
       </div>
         <footer className="pb-10 flex flex-col items-center gap-2 text-xs text-muted-foreground">
-          <p className="text-center text-sm">- Call or Text us Anytime at <a href="tel:2103734295" className="font-bold underline">(210) 373-4295</a> -</p>
+          <p className="text-center text-sm">- Call or Text us Anytime at <a href="tel:2107170507" className="font-bold underline">(210) 717-0507</a> -</p>
           <div className="flex justify-center gap-4">
             <Link to="/privacy" className="hover:underline">Privacy Policy</Link>
             <Link to="/sms-terms" className="hover:underline">SMS Terms</Link>

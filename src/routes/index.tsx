@@ -203,7 +203,7 @@ export const Route = createFileRoute("/")({
 
 /* Phone is stored encoded so it never appears in the raw HTML/JS source as a
    harvestable string; it is decoded in the browser after hydration. */
-const PHONE_B64 = "KDIxMCkgMzczLTQyOTU=";
+const PHONE_B64 = "KDIxMCkgNzE3LTA1MDc=";
 
 function decodePhone() {
   if (typeof window === "undefined") return null;
@@ -1588,8 +1588,8 @@ function BookingForm({ formRef }: { formRef: React.RefObject<HTMLElement | null>
           </div>
           <p className="mt-4 hidden text-sm text-muted-foreground lg:block">
             Rather speak with us directly? Text{' '}
-            <a href="tel:2103734295" className="font-semibold text-navy underline-offset-2 hover:underline">
-              (210) 373-4295
+            <a href="tel:2107170507" className="font-semibold text-navy underline-offset-2 hover:underline">
+              (210) 717-0507
             </a>{' '}
             and we’ll reply within the hour!
           </p>

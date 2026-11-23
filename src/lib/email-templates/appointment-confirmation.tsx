@@ -74,7 +74,7 @@ function AppointmentConfirmation({
 
           <Hr style={{ borderColor: '#E4E9EF', margin: '28px 0 16px' }} />
           <Text style={{ fontSize: '13px', color: '#5A6B7B', margin: '0 0 6px' }}>
-            Questions? Reply to this email or call (210) 373-4295.
+            Questions? Reply to this email or call (210) 717-0507.
           </Text>
           <Text style={{ fontSize: '12px', color: '#94A3B8', margin: 0 }}>
             Texas Bath Solutions • San Antonio, TX

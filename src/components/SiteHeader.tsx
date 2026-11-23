@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import logoImg from "@/assets/logo-header.webp";
 
-const PHONE_B64 = "KDIxMCkgMzczLTQyOTU=";
+const PHONE_B64 = "KDIxMCkgNzE3LTA1MDc=";
 
 const links = [
   { href: "/#work", label: "Inspiration" },

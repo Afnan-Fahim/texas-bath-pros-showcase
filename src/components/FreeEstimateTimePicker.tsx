@@ -54,7 +54,7 @@ export function FreeEstimateTimePicker({ identity, onBooked, onEnsureSaved, init
     } finally { setBusy(false) }
   }
 
-  if (!times.length) return <p className="text-base text-navy">No open times right now. Please call or text (210) 373-4295 and we'll get you scheduled.</p>
+  if (!times.length) return <p className="text-base text-navy">No open times right now. Please call or text (210) 717-0507 and we'll get you scheduled.</p>
   return (
     <div>
       <MonthGrid available={new Set(days.map(([k]) => k))} selected={day} onSelect={(k) => { setDay(k); setPicked('') }} />

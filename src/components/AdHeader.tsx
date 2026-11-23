@@ -63,8 +63,8 @@ export function AdHeader({ className }: { className?: string }) {
         <div className="ml-auto flex shrink-0 items-center">
           <p className="max-w-[300px] text-[11px] leading-snug text-white/85 lg:max-w-[400px] lg:text-xs">
             Prefer to speak with us directly? Call or text{" "}
-            <a href="tel:+12103734295" className="font-semibold text-white underline underline-offset-2 hover:text-white/80">
-              (210) 373-4295
+            <a href="tel:+12107170507" className="font-semibold text-white underline underline-offset-2 hover:text-white/80">
+              (210) 717-0507
             </a>{" "}
             (texting is often faster) and we will get back to you ASAP.
           </p>
